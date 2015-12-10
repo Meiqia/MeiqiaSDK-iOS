@@ -67,8 +67,8 @@
 		CCE9D2341C181418004E862E /* FBSquareFont.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1AD1C181418004E862E /* FBSquareFont.m */; };
 		CCE9D2351C181418004E862E /* FBSquareFontView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1AF1C181418004E862E /* FBSquareFontView.m */; };
 		CCE9D2361C181418004E862E /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1B21C181418004E862E /* HPGrowingTextView.m */; };
-		CCE9D2371C181418004E862E /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1B41C181418004E862E /* HPTextViewInternal.m */; };
-		CCE9D2381C181418004E862E /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1B71C181418004E862E /* MHFacebookImageViewer.m */; };
+		CCE9D2371C181418004E862E /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1B41C181418004E862E /* HPTextViewInternal.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		CCE9D2381C181418004E862E /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1B71C181418004E862E /* MHFacebookImageViewer.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		CCE9D2391C181418004E862E /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1B91C181418004E862E /* UIImageView+MHFacebookImageViewer.m */; };
 		CCE9D23A1C181418004E862E /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1C41C181418004E862E /* libopencore-amrnb.a */; };
 		CCE9D23B1C181418004E862E /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1C51C181418004E862E /* libopencore-amrwb.a */; };
@@ -93,7 +93,7 @@
 		CCE9D24E1C181418004E862E /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1EE1C181418004E862E /* UIImageView+WebCache.m */; };
 		CCE9D24F1C181418004E862E /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1F01C181418004E862E /* UIView+WebCacheOperation.m */; };
 		CCE9D2501C181418004E862E /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1F31C181418004E862E /* TTTAttributedLabel.m */; };
-		CCE9D2511C181418004E862E /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1F71C181418004E862E /* amrFileCodec.mm */; };
+		CCE9D2511C181418004E862E /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1F71C181418004E862E /* amrFileCodec.mm */; settings = {COMPILER_FLAGS = "-w"; }; };
 		CCE9D2521C181418004E862E /* wav.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1F91C181418004E862E /* wav.mm */; };
 		CCE9D2531C181418004E862E /* VoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1FB1C181418004E862E /* VoiceConverter.mm */; };
 		CCE9D2541C181418004E862E /* MQChatTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1FE1C181418004E862E /* MQChatTableView.m */; };
@@ -1113,7 +1113,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1151,7 +1151,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1264,6 +1264,7 @@
 				CCE9D1351C1812F6004E862E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CCE9D1361C1812F6004E862E /* Build configuration list for PBXNativeTarget "Meiqia-SDK-DemoTests" */ = {
 			isa = XCConfigurationList;
@@ -1272,6 +1273,7 @@
 				CCE9D1381C1812F6004E862E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CCE9D1391C1812F6004E862E /* Build configuration list for PBXNativeTarget "Meiqia-SDK-DemoUITests" */ = {
 			isa = XCConfigurationList;
@@ -1280,6 +1282,7 @@
 				CCE9D13B1C1812F6004E862E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
