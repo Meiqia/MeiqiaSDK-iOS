@@ -554,8 +554,8 @@ appkey|AppKey
 
 ## 8. 常见问题
 
-[SDK初始化失败](#sdk-初始化失败)
-[was built for newer iOS version (7.0) than being linked (6.0)](#was-built-for-newer-ios-version-70-than-being-linked-60)
+- [SDK初始化失败](#sdk-初始化失败)
+- [was built for newer iOS version (7.0) than being linked (6.0)](#was-built-for-newer-ios-version-70-than-being-linked-60)
 
 ### SDK 初始化失败
 
