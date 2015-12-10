@@ -120,31 +120,31 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     [tableView deselectRowAtIndexPath:indexPath animated:true];
     if (indexPath.section == 0) {
         switch (indexPath.row) {
-            case 1:
+            case 0:
                 [self setCurrentClientOnline];
                 break;
-            case 2:
+            case 1:
                 [self inputClientId];
                 break;
-            case 3:
+            case 2:
                 [self inputCustomizedId];
                 break;
-            case 4:
+            case 3:
                 [self getCurrentClientId];
                 break;
-            case 5:
+            case 4:
                 [self creatMQClient];
                 break;
-            case 6:
+            case 5:
                 [self inputScheduledAgentToken];
                 break;
-            case 7:
+            case 6:
                 [self inputScheduledGroupToken];
                 break;
-            case 8:
+            case 7:
                 [self showClientAttributes];
                 break;
-            case 9:
+            case 8:
                 [self copyCurrentClientIdToPasteboard];
                 break;
             default:
