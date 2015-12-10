@@ -11,6 +11,7 @@
 * [美洽开源聊天界面集成客服功能](#4-使用美洽开源聊天界面集成客服功能)
 * [美洽 API 接口介绍](#5-美洽-api-接口介绍)
 * [消息推送](#7-消息推送)
+* [常见问题](#8-常见问题)
 
 ## 1. SDK 工作流程
 
@@ -443,7 +444,6 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 **注意**，由于没有同步服务端的消息，所以本地数据库的历史消息有可能少于服务端的消息。
 
-
 #### 接收即时消息
 
 开发者可能注意到了，使用上面提到的3个顾客上线接口，都有一个参数是`设置接收消息的代理`，开发者可在此设置接收消息的代理，由代理来接收消息。
@@ -516,7 +516,6 @@ MQAgent *agent = [MQManager getCurrentAgent];
 }
 ```
 
-
 #### 关闭美洽推送
 
 在 App 进入前台时，应该通知美洽服务端，让其将以后的消息发送给SDK，而不再推送给开发者提供的服务端。
@@ -552,3 +551,28 @@ weibo|微博ID
 weixin|微信号
 email|电子邮箱
 appkey|AppKey
+
+## 8. 常见问题
+
+[SDK初始化失败](#sdk-初始化失败)
+[was built for newer iOS version (7.0) than being linked (6.0)](#was-built-for-newer-ios-version-70-than-being-linked-60)
+
+### SDK 初始化失败
+
+#### 1. 美洽的AppKey版本不正确
+当前SDK是为美洽3.0提供服务，如果你使用的 AppKey 是美洽2.0的，请使用美洽2.0 SDK
+
+#### 2. 没有配置NSExceptionDomains
+如果没有配置`NSExceptionDomains`，美洽SDK会返回`MQErrorCodePlistConfigurationError`，并且在控制台中打印：`!!!美洽 SDK Error：请开发者在 App 的 info.plist 中增加 NSExceptionDomains，具体操作方法请见「https://github.com/Meiqia/MeiqiaSDK-iOS#info.plist设置」`。如果出现上诉情况，请[配置NSExceptionDomains](#infoplist设置)
+
+#### 3. 网络异常
+如果上诉情况均不存在，请检查引入美洽SDK的设备的网络是否通畅
+
+### was built for newer iOS version (7.0) than being linked (6.0)
+
+如果开发者的App最低支持系统是7.0一下，将会出现这种waring。
+
+`ld: warning: object file (/Meiqia-SDK-Demo/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrnb.a(wrapper.o)) was built for newer iOS version (7.0) than being linked (6.0)`
+
+原因是美洽将SDK中使用的开源库 [opencore-amr](http://sourceforge.net/projects/opencore-amr/) 针对支持Bitcode而从新编译了一次，但这并不影响SDK在iOS 6中的使用。如果你介意，并且不会使用Bitcode，可以将美洽SDK中使用`opencore-amr`替换为老版本：[传送门](https://github.com/molon/MLAudioRecorder/tree/master/MLRecorder/MLAudioRecorder/amr_en_de/lib)
+
