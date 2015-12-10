@@ -1,7 +1,9 @@
-# MeiqiaSDK-iOS
-美洽 iOS SDK 3.0 面向开发者的 Demo，公开项目。
-
-**编辑中**
+---
+layout: docs_show
+title: 美洽移动应用 SDK 3.0 for iOS 开发文档
+permalink: $文档链接
+edition: 2015121014
+---
 
 # 美洽移动应用 SDK 3.0 for iOS 开发文档
 
@@ -71,13 +73,13 @@ framework中的文件 | 说明
 
 ### 三分钟快速应用 SDK
 如上所述，使用美洽 SDK ，必不可少的一步便是[初始化 SDK](#初始化-sdk)，完成初始化后便可操作 SDK 其他功能和接口，比如推出视图等。美洽提供的 UI 简化了开发流程，使得为 APP 添加客服功能最低仅需2行代码和一个info.plist配置：
-```objective-c
+```objc
 //建议在AppDelegate.m中系统回调didFinishLaunchingWithOptions中增加
 [MQManager initWithAppkey:@"开发者注册的App的AppKey" completion:^(NSString *clientId, NSError *error) {
 }];
 ```
 
-```objective-c
+```objc
 MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 [chatViewManager pushMQChatViewControllerInViewController:self];
 ```
@@ -88,19 +90,19 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 所以为了能让聊天界面正确显示图片和语音，开发者需要在 App 的 info.plist 中增加如下设置 (右键点击`info.plist` -> `Open As` -> `Source Code`):
 
-```
+```xml
 <key>NSAppTransportSecurity</key>
 <dict>
-<key>NSAllowsArbitraryLoads</key>
-<true/>
-<key>NSExceptionDomains</key>
-<dict>
-<key>s3.cn-north-1.amazonaws.com.cn</key>
-<dict>
-<key>NSExceptionRequiresForwardSecrecy</key>
-<false/>
-</dict>
-</dict>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
+	<key>NSExceptionDomains</key>
+	<dict>
+		<key>s3.cn-north-1.amazonaws.com.cn</key>
+			<dict>
+			<key>NSExceptionRequiresForwardSecrecy</key>
+			<false/>
+		</dict>
+	</dict>
 </dict>
 ```
 添加完成后，info.plist显示效果如图：
@@ -124,7 +126,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 开发者在美洽工作台注册 App 后，可获取到一个可用的 AppKey。在 `AppDelegate.m` 的系统回调 `didFinishLaunchingWithOptions` 中调用初始化 SDK 接口：
 
-```objective-c
+```objc
 [MQManager initWithAppkey:@"开发者注册的App的AppKey" completion:^(NSString *clientId, NSError *error) {
 }];
 ```
@@ -139,7 +141,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 App 进入后台后，美洽推送给开发者服务端的消息数据格式中，会有 deviceToken 的字段。
 
 将下列代码添加到 `AppDelegate.m` 中系统回调 `didRegisterForRemoteNotificationsWithDeviceToken` 中：
-```objective-c
+```objc
 [MQManager registerDeviceToken:deviceToken];
 ```
 
@@ -153,16 +155,16 @@ App 进入后台后，美洽推送给开发者服务端的消息数据格式中�
 
 为了让客服能更准确帮助用户，开发者可上传不同用户的属性信息。示例如下：
 
-```objective-c
+```objc
 //创建自定义信息
 NSDictionary* clientCustomizedAttrs = @{
-@"name"        : @"Kobe Bryant",
-@"avatar"      : @"http://meiqia.com/avatar.png",
-@"身高"         : @"1.98m",
-@"体重"         : @"93.0kg",
-@"效力球队"      : @"洛杉矶湖人队",
-@"场上位置"      : @"得分后卫",
-@"球衣号码"      : @"24号"
+	@"name"        : @"Kobe Bryant",
+	@"avatar"      : @"http://meiqia.com/avatar.png",
+	@"身高"         : @"1.98m",
+	@"体重"         : @"93.0kg",
+	@"效力球队"      : @"洛杉矶湖人队",
+	@"场上位置"      : @"得分后卫",
+	@"球衣号码"      : @"24号"
 };
 [MQManager setClientInfo:clientCustomizedAttrs completion:^(BOOL success) {
 }];
@@ -192,14 +194,14 @@ NSDictionary* clientCustomizedAttrs = @{
 
 如果您使用美洽提供的 UI ，可对 UI 进行如下配置，进行指定分配：
 
-```objective-c
+```objc
 MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 [chatViewManager setScheduledAgentToken:agentToken];
 ```
 
 如果您自定义 UI，可直接使用如下美洽 SDK 逻辑接口：
 
-```objective-c
+```objc
 //分配到指定客服，或指定组里面的客服，指定客服优先级高
 [MQManager setScheduledAgentWithAgentToken:agentToken agentGroupToken:agentGroupToken];
 ```
@@ -215,7 +217,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 你只需要在用户需要客服服务的时候，推出美洽 UI。如下所示：
 
-```objective-c
+```objc
 //当用户需要使用客服服务时，创建并推出视图
 MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 [chatViewManager pushMQChatViewControllerInViewController:self];
@@ -242,7 +244,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 如果关闭消息同步，则是获取本机数据库中的历史消息；
 
 由于顾客可能在多设备聊天，关闭消息同步后获取的历史消息，将可能少于服务端的历史消息。
-```objective-c
+```objc
 MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 //开启同步消息
 [chatViewManager enableSyncServerMessage:true];
@@ -260,7 +262,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 设置开发者自定义 id 后，将会以该自定义 id 对应的顾客上线。
 
 **注意**，如果美洽服务端没有找到该自定义 id 对应的顾客，则美洽将会自动关联该 id 与 SDK 当前的顾客。
-```objective-c
+```objc
 MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 [chatViewManager setLoginCustomizedId:customizedId];
 [chatViewManager pushMQChatViewControllerInViewController:self];
@@ -274,7 +276,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 #### 设置登录客服的顾客 id
 
 设置美洽顾客的 id 后，该id对应的顾客将会上线。
-```objective-c
+```objc
 MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 [chatViewManager setLoginMQClientId:clientId];
 [chatViewManager pushMQChatViewControllerInViewController:self];
@@ -304,7 +306,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 #### 初始化SDK
 
 美洽建议开发者在 `AppDelegate.m` 的系统回调 `didFinishLaunchingWithOptions` 中，调用初始化 SDK 接口。这是因为第一次初始化美洽 SDK，SDK 会向美洽服务端发送一个初始化顾客的请求，SDK 其他接口都必须是在初始化 SDK 成功后进行，所以 App 应尽早初始化 SDK 。
-```objective-c
+```objc
 //建议在AppDelegate.m系统回调didFinishLaunchingWithOptions中增加
 [MQManager initWithAppkey:@"开发者注册的App的AppKey" completion:^(NSString *clientId, NSError *error) {
 }];
@@ -316,7 +318,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 美洽需要获取每个设备的 deviceToken，才能在 App 进入后台以后，推送消息给开发者的服务端。消息数据中有 deviceToken 字段，开发者获取到后，可通知 APNS 推送给该设备。
 
 在 AppDelegate.m中的系统回调 `didRegisterForRemoteNotificationsWithDeviceToken` 中，调用上传 deviceToken 接口：
-```objective-c
+```objc
 [MQManager registerDeviceToken:deviceToken];
 ```
 
@@ -339,7 +341,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 #### 让当前的顾客上线。
 
 初始化 SDK 成功后，SDK 中有一个可使用的顾客 id，调用该接口即可让其上线，如下代码：
-```objective-c
+```objc
 [MQManager setCurrentClientOnlineWithCompletion:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
 //可根据result来判断是否上线成功
 } receiveMessageDelegate:self];
@@ -350,7 +352,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 开发者可通过[获取当前顾客 id](#获取当前顾客-id) 接口，取得顾客 id ，保存到开发者的服务端，以此来绑定美洽顾客和开发者用户系统。
 如果开发者保存了美洽的顾客 id，可调用如下接口让其上线。调用此接口后，当前可用的顾客即为开发者传的顾客 id。
-```objective-c
+```objc
 [MQManager setClientOnlineWithClientId:clientId completion:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
 //可根据result来判断是否上线成功
 } receiveMessageDelegate:self];
@@ -364,7 +366,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 调用此接口后，当前可用的顾客即为该自定义 id 对应的顾客 id。
 
 **特别注意：**传给美洽的自定义 id 不能为自增长的，否则非常容易受到中间人攻击，此情况的开发者建议保存美洽顾客 id。
-```objective-c
+```objc
 [MQManager setClientOnlineWithCustomizedId:customizedId completion:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
 //可根据result来判断是否上线成功
 } receiveMessageDelegate:self];
@@ -374,7 +376,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 #### 获取当前顾客 id
 
 开发者可通过此接口接口，取得顾客 id，保存到开发者的服务端，以此来绑定美洽顾客和开发者用户系统。
-```objective-c
+```objc
 NSString *clientId = [MQManager getCurrentClientId];
 ```
 
@@ -386,7 +388,7 @@ NSString *clientId = [MQManager getCurrentClientId];
 该顾客没有任何历史记录及用户信息。
 
 开发者可选择将该 id 保存并与 App 的用户绑定。
-```objective-c
+```objc
 [MQManager createClient:^(BOOL success, NSString *clientId) {
 //开发者可保存该clientId
 }];
@@ -395,7 +397,7 @@ NSString *clientId = [MQManager getCurrentClientId];
 
 #### 设置顾客离线
 
-```objective-c
+```objc
 NSString *clientId = [MQManager setClientOffline];
 ```
 
@@ -411,7 +413,7 @@ NSString *clientId = [MQManager setClientOffline];
 开发者可在合适的地方，监听收到消息的广播，用于提醒顾客有新消息。
 
 **注意**，如果顾客推出聊天界面，开发者没有调用设置顾客离线接口的话，以后该顾客收到新消息，仍能收到`有新消息的广播`。
-```objective-c
+```objc
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMeiqiaMessage) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
 ```
 
@@ -419,7 +421,7 @@ NSString *clientId = [MQManager setClientOffline];
 #### 获取当前正在接待的客服信息
 
 开发者可用此接口获取当前正在接待顾客的客服信息：
-```objective-c
+```objc
 MQAgent *agent = [MQManager getCurrentAgent];
 ```
 
@@ -432,7 +434,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 #### 从服务端获取更多消息
 
 开发者可用此接口获取服务端的历史消息：
-```objective-c
+```objc
 [MQManager getServerHistoryMessagesWithUTCMsgDate:firstMessageDate messagesNumber:messageNumber success:^(NSArray<MQMessage *> *messagesArray) {
 //显示获取到的消息等逻辑
 } failure:^(NSError *error) {
@@ -447,7 +449,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 由于使用[从服务端获取更多消息](#从服务端获取更多消息)接口，会产生数据流量，开发者也可使用此接口来获取 iOS SDK 本地的历史消息。
 
-```objective-c
+```objc
 [MQManager getDatabaseHistoryMessagesWithMsgDate:firstMessageDate messagesNumber:messageNumber result:^(NSArray<MQMessage *> *messagesArray) {
 //显示获取到的消息等逻辑
 }];
@@ -466,21 +468,21 @@ MQAgent *agent = [MQManager getCurrentAgent];
 #### 发送消息
 
 开发者调用此接口来发送**文字消息**：
-```objective-c
+```objc
 [MQManager sendTextMessageWithContent:content completion:^(MQMessage *sendedMessage) {
 //消息发送成功后的处理
 }];
 ```
 
 开发者调用此接口来发送**图片消息**：
-```objective-c
+```objc
 [MQManager sendImageMessageWithImage:image completion:^(MQMessage *sendedMessage) {
 //消息发送成功后的处理
 }];
 ```
 
 开发者调用此接口来发送**语音消息**：
-```objective-c
+```objc
 [MQManager sendAudioMessage:audioData completion:^(MQMessage *sendedMessage, NSError *error) {
 //消息发送成功后的处理
 }];
@@ -522,7 +524,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 在 App 进入后台时，应该通知美洽服务端，让其将以后的消息推送给开发者提供的服务器地址。
 
 开发者需要在 `AppDelegate.m` 的系统回调 `applicationDidEnterBackground` 调用打开美洽推送的接口，如下代码：
-```objective-c
+```objc
 - (void)applicationDidEnterBackground:(UIApplication *)application {
 [MQManager openMeiQiaRemotePushService];
 }
@@ -534,7 +536,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 在 App 进入前台时，应该通知美洽服务端，让其将以后的消息发送给SDK，而不再推送给开发者提供的服务端。
 
 开发者需要在 `AppDelegate.m` 的系统回调 `applicationWillEnterForeground` 调用关闭美洽推送的接口，如下代码：
-```objective-c
+```objc
 - (void)applicationWillEnterForeground:(UIApplication *)application {
 [MQManager closeMeiQiaRemotePushService];
 }
@@ -543,7 +545,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 ##### 推送消息数据结构
 
-当有消息需要推送时，美洽服务器会向开发者设置的服务器地址发送推送消息，类型为 *POST* ，参数有：
+当有消息需要推送时，美洽服务器会向开发者设置的服务器地址发送推送消息，方法类型为 *POST*，数据格式为 *JSON* ，参数有：
 
 参数|说明
 ---|---
