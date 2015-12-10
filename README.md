@@ -1,10 +1,3 @@
----
-layout: docs_show
-title: 美洽移动应用 SDK 3.0 for iOS 开发文档
-permalink: $文档链接
-edition: 2015121014
----
-
 # 美洽移动应用 SDK 3.0 for iOS 开发文档
 
 > 在您阅读此文档之前，我们假定您已经具备了基础的 iOS 应用开发经验，并能够理解相关基础概念。
@@ -15,9 +8,9 @@ edition: 2015121014
 * [SDK 工作流程](#1-sdk-工作流程)
 * [导入美洽 SDK](#2-导入美洽-sdk)
 * [快速集成 SDK](#3-快速集成-sdk)
-* [使用美洽开源聊天界面集成客服功能](#4-使用美洽开源聊天界面集成客服功能)
-* [直接使用美洽 API 接口开发客服功能](#5-直接使用美洽api接口开发客服功能)
-
+* [美洽开源聊天界面集成客服功能](#4-使用美洽开源聊天界面集成客服功能)
+* [美洽 API 接口介绍](#5-美洽-api-接口介绍)
+* [消息推送](#7-消息推送)
 
 ## 1. SDK 工作流程
 
@@ -293,10 +286,9 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 更多配置，可参见 [MQChatViewManager.h](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/Config/MQChatViewManager.h) 文件。
 
+## 5. 美洽 API 接口介绍
 
-## 5. 直接使用美洽API接口开发客服功能
-
-此小节介绍美洽的API接口。
+**本节主要介绍部分重要的接口。在`MeiqiaSDK.framework`的`MQManager.h`中，所有接口都有详细注释。**
 
 开发者可使用美洽提供的API，自行定制聊天界面。使用以下接口前，别忘了[初始化 SDK](#初始化-sdk)。
 
@@ -322,15 +314,9 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 [MQManager registerDeviceToken:deviceToken];
 ```
 
-
-#### 通知美洽服务端发送消息至开发者的推送服务端
-
-目前，美洽的推送是通过推送消息给开发者提供的 URL 上来实现的，详细介绍请见[消息推送](#消息推送)
-
-
 #### 关闭美洽推送
 
-详细介绍请见[消息推送](#消息推送)。
+详细介绍请见[消息推送](#7-消息推送)。
 
 
 #### 指定分配客服和客服组接口
@@ -503,7 +489,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 在之后发布你的 SDK 时，将 `MQChatViewAsset.bundle` 一起打包即可。
 
 
-## 消息推送
+## 7. 消息推送
 
 当前仅支持一种推送方案，即美洽服务端发送消息至开发者的服务端，开发者再推送消息到 App，可见 [SDK 工作流程](#SDK-工作流程) 。
 
@@ -526,7 +512,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 开发者需要在 `AppDelegate.m` 的系统回调 `applicationDidEnterBackground` 调用打开美洽推送的接口，如下代码：
 ```objc
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-[MQManager openMeiQiaRemotePushService];
+	[MQManager openMeiQiaRemotePushService];
 }
 ```
 
@@ -538,7 +524,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 开发者需要在 `AppDelegate.m` 的系统回调 `applicationWillEnterForeground` 调用关闭美洽推送的接口，如下代码：
 ```objc
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-[MQManager closeMeiQiaRemotePushService];
+	[MQManager closeMeiQiaRemotePushService];
 }
 ```
 
@@ -566,6 +552,3 @@ weibo|微博ID
 weixin|微信号
 email|电子邮箱
 appkey|AppKey
-
-
-## 更新日志
