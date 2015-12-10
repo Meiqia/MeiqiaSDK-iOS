@@ -30,9 +30,11 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 
 @implementation DevelopViewController{
     UITableView *configTableView;
-    NSArray *tableCellTextArray;
+    NSArray *sectionHeaders;
+    NSArray *sectionTextArray;
     NSString *currentClientId;
     NSDictionary *clientCustomizedAttrs;
+    
 }
 
 
@@ -40,18 +42,33 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    tableCellTextArray = @[
-                           @"以下是开发者可能会用到的客服功能，请参考^.^",
-                           @"使用当前的顾客Id上线，并同步消息",
-                           @"输入美洽顾客id进行上线",
-                           @"输入自定义Id进行上线",
-                           @"查看当前美洽顾客id",
-                           @"建立一个全新美洽顾客id账号",
-                           @"输入一个客服Token进行指定分配",
-                           @"输入一个客服组Token进行指定分配",
-                           @"上传该顾客的自定义信息",
-                           @"当前的美洽顾客id为：(点击复制该顾客id)"
-                           ];
+    sectionHeaders = @[
+                       @"以下是开发者可能会用到的客服功能，请参考^.^",
+                       @"以下是不同的开源界面的设置"
+                       ];
+    
+    sectionTextArray = @[
+                         @[
+                             @"使用当前的顾客Id上线，并同步消息",
+                             @"输入美洽顾客id进行上线",
+                             @"输入自定义Id进行上线",
+                             @"查看当前美洽顾客id",
+                             @"建立一个全新美洽顾客id账号",
+                             @"输入一个客服Token进行指定分配",
+                             @"输入一个客服组Token进行指定分配",
+                             @"上传该顾客的自定义信息",
+                             @"当前的美洽顾客id为：(点击复制该顾客id)"
+                             ],
+                         @[
+                             @"chatViewStyle1",
+                             @"chatViewStyle2",
+                             @"chatViewStyle3",
+                             @"chatViewStyle4",
+                             @"chatViewStyle5",
+                             @"chatViewStyle6"
+                             ]
+                         ];;
+    
     clientCustomizedAttrs = @{
                               @"name"       :   @"Kobe Bryant",
                               @"avatar"     :   @"https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/07eaa42f339963e9",
@@ -87,7 +104,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 - (void)initTableView {
-    configTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStylePlain];
+    configTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStyleGrouped];
     configTableView.delegate = self;
     configTableView.dataSource = self;
     [self.view addSubview:configTableView];
@@ -101,33 +118,58 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:true];
+    if (indexPath.section == 0) {
+        switch (indexPath.row) {
+            case 1:
+                [self setCurrentClientOnline];
+                break;
+            case 2:
+                [self inputClientId];
+                break;
+            case 3:
+                [self inputCustomizedId];
+                break;
+            case 4:
+                [self getCurrentClientId];
+                break;
+            case 5:
+                [self creatMQClient];
+                break;
+            case 6:
+                [self inputScheduledAgentToken];
+                break;
+            case 7:
+                [self inputScheduledGroupToken];
+                break;
+            case 8:
+                [self showClientAttributes];
+                break;
+            case 9:
+                [self copyCurrentClientIdToPasteboard];
+                break;
+            default:
+                break;
+        }
+        return;
+    }
     switch (indexPath.row) {
+        case 0:
+            [self chatViewStyle1];
+            break;
         case 1:
-            [self setCurrentClientOnline];
+            [self chatViewStyle2];
             break;
         case 2:
-            [self inputClientId];
+            [self chatViewStyle3];
             break;
         case 3:
-            [self inputCustomizedId];
+            [self chatViewStyle4];
             break;
         case 4:
-            [self getCurrentClientId];
+            [self chatViewStyle5];
             break;
         case 5:
-            [self creatMQClient];
-            break;
-        case 6:
-            [self inputScheduledAgentToken];
-            break;
-        case 7:
-            [self inputScheduledGroupToken];
-            break;
-        case 8:
-            [self showClientAttributes];
-            break;
-        case 9:
-            [self copyCurrentClientIdToPasteboard];
+            [self chatViewStyle6];
             break;
         default:
             break;
@@ -135,30 +177,33 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 #pragma UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return [sectionHeaders count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [sectionHeaders objectAtIndex:section];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section
 {
-    return [tableCellTextArray count];
+    return [[sectionTextArray objectAtIndex:section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[tableCellTextArray objectAtIndex:indexPath.row]];
+    NSArray *textArray = [sectionTextArray objectAtIndex:indexPath.section];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[textArray objectAtIndex:indexPath.row]];
     if (!cell){
-        if (indexPath.row + 1 == [tableCellTextArray count]) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:[tableCellTextArray objectAtIndex:indexPath.row]];
+        if (indexPath.row + 1 == [textArray count] && indexPath.section == 0) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:[textArray objectAtIndex:indexPath.row]];
         } else {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[tableCellTextArray objectAtIndex:indexPath.row]];
-            
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[textArray objectAtIndex:indexPath.row]];
         }
     }
-    if (indexPath.row == 0) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.textLabel.font = [UIFont systemFontOfSize:13.0];
-        cell.textLabel.textColor = [UIColor blueColor];
-    } else if (indexPath.row + 1 == [tableCellTextArray count]) {
+    if (indexPath.row + 1 == [textArray count] && indexPath.section == 0) {
         cell.detailTextLabel.text = currentClientId;
         cell.detailTextLabel.textColor = [UIColor redColor];
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -170,7 +215,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
         cell.textLabel.font = [UIFont systemFontOfSize:15.0];
         cell.textLabel.textColor = [UIColor darkTextColor];
     }
-    cell.textLabel.text = [tableCellTextArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = [textArray objectAtIndex:indexPath.row];
     return cell;
 }
 
@@ -354,6 +399,94 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                 break;
         }
     }
+}
+
+/**
+ *  开发者可这样配置：底部按钮、修改气泡颜色、文字颜色、使头像设为圆形
+ */
+- (void)chatViewStyle1 {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    UIImage *photoImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleTwo"];
+    UIImage *photoHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleTwo"];
+    UIImage *voiceImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleTwo"];
+    UIImage *voiceHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleTwo"];
+    UIImage *keyboardImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputImageNormalStyleTwo"];
+    UIImage *keyboardHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleTwo"];
+    UIImage *resightKeyboardImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleTwo"];
+    UIImage *resightKeyboardHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
+    [chatViewManager setPhotoSenderImage:photoImage highlightedImage:photoHighlightedImage];
+    [chatViewManager setVoiceSenderImage:voiceImage highlightedImage:voiceHighlightedImage];
+    [chatViewManager setTextSenderImage:keyboardImage highlightedImage:keyboardHighlightedImage];
+    [chatViewManager setResignKeyboardImage:resightKeyboardImage highlightedImage:resightKeyboardHighlightedImage];
+    [chatViewManager setIncomingBubbleColor:[UIColor redColor]];
+    [chatViewManager setIncomingMessageTextColor:[UIColor whiteColor]];
+    [chatViewManager setOutgoingBubbleColor:[UIColor yellowColor]];
+    [chatViewManager setOutgoingMessageTextColor:[UIColor darkTextColor]];
+    [chatViewManager enableRoundAvatar:true];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+/**
+ *  开发者可这样配置：是否支持发送语音、是否显示本机头像、修改气泡的样式
+ */
+- (void)chatViewStyle2 {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    UIImage *incomingBubbleImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubbleIncomingStyleTwo"];
+    UIImage *outgoingBubbleImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubbleOutgoingStyleTwo"];
+    CGPoint stretchPoint = CGPointMake(incomingBubbleImage.size.width / 2.0f - 4.0, incomingBubbleImage.size.height / 2.0f);
+    [chatViewManager enableSendVoiceMessage:false];
+    [chatViewManager enableOutgoingAvatar:false];
+    [chatViewManager setIncomingBubbleImage:incomingBubbleImage];
+    [chatViewManager setOutgoingBubbleImage:outgoingBubbleImage];
+    [chatViewManager setIncomingBubbleColor:[UIColor yellowColor]];
+    [chatViewManager setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+/**
+ *  开发者可这样配置：增加可点击链接的正则表达式( Library 本身已支持多种格式链接，如未满足需求可增加)、增加欢迎语、是否开启消息声音、修改接受消息的铃声
+ */
+- (void)chatViewStyle3 {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager setMessageLinkRegex:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"];
+    [chatViewManager enableChatWelcome:true];
+    [chatViewManager setChatWelcomeText:@"你好，请问有什么可以帮助到您？"];
+    [chatViewManager setIncomingMessageSoundFileName:@"MQNewMessageRingStyleTwo.wav"];
+    [chatViewManager enableMessageSound:true];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+/**
+ *  如果 tableView 没有在底部，开发者可这样打开消息的提示
+ */
+- (void)chatViewStyle4 {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager enableShowNewMessageAlert:true];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+/**
+ *  开发者可这样配置：是否支持下拉刷新、修改下拉刷新颜色、增加导航栏标题
+ */
+- (void)chatViewStyle5 {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager enableTopPullRefresh:true];
+    [chatViewManager setPullRefreshColor:[UIColor redColor]];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+/**
+ *  开发者可这样修改导航栏颜色、导航栏左右键、取消图片消息的mask效果
+ */
+- (void)chatViewStyle6 {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightButton.backgroundColor = [UIColor redColor];
+    rightButton.frame = CGRectMake(10, 10, 20, 20);
+    [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
+    [chatViewManager setNavRightButton:rightButton];
+    [chatViewManager enableMessageImageMask:false];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
 

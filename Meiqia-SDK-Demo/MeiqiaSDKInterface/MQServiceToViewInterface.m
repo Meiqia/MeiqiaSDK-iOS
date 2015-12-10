@@ -129,8 +129,6 @@
     }
     toMessage.messageId = fromMessage.messageId;
     toMessage.date = fromMessage.createdOn;
-    toMessage.userName = fromMessage.agent.nickname;
-    toMessage.userAvatarPath = fromMessage.agent.avatarPath;
     switch (fromMessage.sendStatus) {
         case MQMessageSendStatusSuccess:
             toMessage.sendStatus = MQChatMessageSendStatusSuccess;
@@ -146,11 +144,19 @@
     }
     switch (fromMessage.fromType) {
         case MQMessageFromTypeAgent:
+        {
+            toMessage.userName = fromMessage.agent.nickname;
+            toMessage.userAvatarPath = fromMessage.agent.avatarPath;
             toMessage.fromType = MQChatMessageIncoming;
             break;
+        }
         case MQMessageFromTypeClient:
+        {
+            toMessage.userName = @"顾客";
+            toMessage.userAvatarPath = nil;
             toMessage.fromType = MQChatMessageOutgoing;
             break;
+        }
         default:
             break;
     }
@@ -258,8 +264,8 @@
 }
 
 - (void)setClientOnlineWithClientId:(NSString *)clientId
-                              success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
-               receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
+                            success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+             receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
 {
     self.serviceToViewDelegate = receiveMessageDelegate;
     if (!clientId || clientId.length == 0) {
