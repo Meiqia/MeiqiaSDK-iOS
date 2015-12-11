@@ -530,45 +530,26 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 ##### 推送消息数据结构
 
-当有消息需要推送时，美洽服务器会向开发者设置的服务器地址发送推送消息，方法类型为 *POST*，数据格式为 *JSON* ，参数有：
+当有消息需要推送时，美洽服务器会向开发者设置的服务器地址发送推送消息，方法类型为 *POST*，数据格式为 *JSON* 。
 
-参数|说明
----|---
-messgeId|消息ID
-content|消息内容
-fromName|客服名称
-status|消息状态
-createdTime|消息创建时间
-metadata|开发者自定义的用户数据
-deviceToken|设备唯一标识符
-os|系统版本
-device|设备型号
-from|渠道
-clientId|顾客ID
-tel|手机号码
-qq|QQ号等信息
-weibo|微博ID
-weixin|微信号
-email|电子邮箱
-appkey|AppKey
 
 ## 8. 常见问题
 
-- [SDK初始化失败](#sdk-初始化失败)
-- [was built for newer iOS version (7.0) than being linked (6.0)](#was-built-for-newer-ios-version-70-than-being-linked-60)
+- [SDK 初始化失败](#sdk-初始化失败)
+- [Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)](#xcode-warning-was-built-for-newer-ios-version-70-than-being-linked-60)
 
 ### SDK 初始化失败
 
-#### 1. 美洽的AppKey版本不正确
+#### 1. 美洽的 AppKey 版本不正确
 当前SDK是为美洽3.0提供服务，如果你使用的 AppKey 是美洽2.0的，请使用美洽2.0 SDK
 
-#### 2. 没有配置NSExceptionDomains
+#### 2. 没有配置 NSExceptionDomains
 如果没有配置`NSExceptionDomains`，美洽SDK会返回`MQErrorCodePlistConfigurationError`，并且在控制台中打印：`!!!美洽 SDK Error：请开发者在 App 的 info.plist 中增加 NSExceptionDomains，具体操作方法请见「https://github.com/Meiqia/MeiqiaSDK-iOS#info.plist设置」`。如果出现上诉情况，请[配置NSExceptionDomains](#infoplist设置)
 
 #### 3. 网络异常
 如果上诉情况均不存在，请检查引入美洽SDK的设备的网络是否通畅
 
-### was built for newer iOS version (7.0) than being linked (6.0)
+### Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)
 
 如果开发者的App最低支持系统是7.0一下，将会出现这种waring。
 
