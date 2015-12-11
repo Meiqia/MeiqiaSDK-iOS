@@ -57,7 +57,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.enableIncomingAvatar    = true;
     self.enableMessageImageMask  = true;
     self.enableMessageSound      = true;
-    self.enableOutgoingAvatar    = false;
+    self.enableOutgoingAvatar    = true;
     self.enableTopPullRefresh    = false;
     self.enableBottomPullRefresh = false;
     

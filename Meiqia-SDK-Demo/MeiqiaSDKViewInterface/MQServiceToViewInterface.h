@@ -151,8 +151,8 @@
  * @param ;
  */
 - (void)setClientOnlineWithClientId:(NSString *)clientId
-                              success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
-               receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
+                            success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+             receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**
  *  设置指定分配的客服或客服组
@@ -178,5 +178,22 @@
  *  获取当前客服名字
  */
 + (NSString *)getCurrentAgentName;
+
+/**
+ *  当前是否有客服
+ *
+ */
++ (BOOL)isThereAgent;
+
+/**
+ *  下载多媒体消息的多媒体内容
+ *
+ *  @param messageId     消息id
+ *  @param progressBlock 下载进度
+ *  @param completion    完成回调
+ */
++ (void)downloadMediaWithUrlString:(NSString *)urlString
+                          progress:(void (^)(float progress))progressBlock
+                        completion:(void (^)(NSData *mediaData, NSError *error))completion;
 
 @end

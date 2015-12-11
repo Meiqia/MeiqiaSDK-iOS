@@ -235,7 +235,23 @@
 }
 
 + (NSString *)getCurrentAgentName {
-    return [MQManager getCurrentAgent].nickname;
+    NSString *agentName = [MQManager getCurrentAgent].nickname;
+    return agentName.length == 0 ? @"在线客服" : agentName;
+}
+
++ (BOOL)isThereAgent {
+    return [MQManager getCurrentAgent].agentId.length > 0;
+}
+
++ (void)downloadMediaWithUrlString:(NSString *)urlString
+                          progress:(void (^)(float progress))progressBlock
+                        completion:(void (^)(NSData *mediaData, NSError *error))completion
+{
+    [MQManager downloadMediaWithUrlString:urlString progress:^(float progress) {
+        progressBlock(progress);
+    } completion:^(NSData *mediaData, NSError *error) {
+        completion(mediaData, error);
+    }];
 }
 
 #pragma 实例方法
