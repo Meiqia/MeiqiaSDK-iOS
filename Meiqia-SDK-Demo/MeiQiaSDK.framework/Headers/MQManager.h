@@ -185,6 +185,24 @@
                                        result:(void (^)(NSArray<MQMessage *> *messagesArray))result;
 
 /**
+ *  下载多媒体消息的多媒体内容
+ *
+ *  @param messageId     消息id
+ *  @param progressBlock 下载进度
+ *  @param completion    完成回调
+ */
++ (void)downloadMediaWithUrlString:(NSString *)urlString
+                          progress:(void (^)(float progress))progressBlock
+                        completion:(void (^)(NSData *mediaData, NSError *error))completion;
+
+/**
+ *  清除所有美洽的多媒体缓存
+ *
+ *  @param mediaSize 美洽缓存多媒体的大小，以 M 为单位
+ */
++ (void)removeAllMediaDataWithCompletion:(void (^)(float mediaSize))completion;
+
+/**
  * 发送文字消息
  *
  * @param content 消息内容。会做前后去空格处理，处理后的消息长度不能为0，否则不执行发送操作
@@ -197,22 +215,24 @@
                                completion:(void (^)(MQMessage *sendedMessage, NSError *error))completion;
 
 /**
- * 发送图片消息。SDK不会去压缩图片大小，如果开发者需要限制图片大小，需要压缩后，再使用此接口
+ * 发送图片消息。
  *
  * @param image 图片
  * @param sendedMessage 返回发送后的消息。如果发送成功，message的content为图片的网络地址。消息是否发送成功，需根据message的sendStatus判断。
  * @return 该条图片消息。此时该消息状态为发送中，message的content属性是本地图片路径
+ * @warning SDK不会去压缩图片大小，如果开发者需要限制图片大小，需要压缩后，再使用此接口
  * @warning 需要在初始化成功后，且顾客是在线状态时调用才有效
  */
 + (MQMessage *)sendImageMessageWithImage:(UIImage *)image
                               completion:(void (^)(MQMessage *sendedMessage, NSError *error))completion;
 
 /**
- * 发送语音消息。使用该接口，需要开发者提供一条amr格式的语音.
+ * 发送语音消息。
  *
  * @param audio 需要发送的语音消息，格式为amr。
  * @param sendedMessage 返回发送后的消息。如果发送成功，message的content为语音的网络地址。消息是否发送成功，需根据message的sendStatus判断。
  * @return 该条语音消息。此时该消息状态为发送中，message的content属性是本地语音路径.
+ * @warning 使用该接口，需要开发者提供一条amr格式的语音.
  * @warning 需要在初始化成功后，且顾客是在线状态时调用才有效
  */
 + (MQMessage *)sendAudioMessage:(NSData *)audio

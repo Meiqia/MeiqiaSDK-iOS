@@ -19,7 +19,9 @@ typedef enum : NSUInteger {
     MQSDKDemoManagerCustomizedId,
     MQSDKDemoManagerAgentToken,
     MQSDKDemoManagerGroupToken,
-    MQSDKDemoManagerClientAttrs
+    MQSDKDemoManagerClientAttrs,
+    MQSDKDemoManagerClientOffline,
+    MQSDKDemoManagerEndConversation
 } MQSDKDemoManager;
 
 static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
@@ -57,6 +59,9 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                              @"输入一个客服Token进行指定分配",
                              @"输入一个客服组Token进行指定分配",
                              @"上传该顾客的自定义信息",
+                             @"设置当前顾客为离线状态",
+                             @"结束当前对话",
+                             @"删除所有美洽多媒体存储",
                              @"当前的美洽顾客id为：(点击复制该顾客id)"
                              ],
                          @[
@@ -67,7 +72,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                              @"chatViewStyle5",
                              @"chatViewStyle6"
                              ]
-                         ];;
+                         ];
     
     clientCustomizedAttrs = @{
                               @"name"       :   @"Kobe Bryant",
@@ -142,9 +147,18 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                 [self inputScheduledGroupToken];
                 break;
             case 7:
-                [self showClientAttributes];
+                [self showSetClientAttributesAlertView];
                 break;
             case 8:
+                [self showSetClientOfflineAlertView];
+                break;
+            case 9:
+                [self showEndConversationAlertView];
+                break;
+            case 10:
+                [self removeMeiqiaMediaData];
+                break;
+            case 11:
                 [self copyCurrentClientIdToPasteboard];
                 break;
             default:
@@ -343,6 +357,51 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 /**
+ *  显示 设置顾客离线 的alertView
+ */
+- (void)showSetClientOfflineAlertView {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"设置当前顾客离线吗？" message:@"美洽建议，退出聊天界面，不需要让顾客离线，这样 SDK 还能接收客服发送的消息。" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerClientOffline;
+    [alertView show];
+}
+
+/**
+ *  主动设置当前顾客离线。美洽建议，退出聊天界面，不需要让顾客离线，这样 SDK 还能接收客服发送的消息
+ */
+- (void)setCurrentClientOffline {
+    [MQManager setClientOffline];
+}
+
+- (void)showEndConversationAlertView {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"结束当前对话吗？" message:@"美洽建议，让美洽后台自动超时结束对话，否则结束对话后，顾客得重新分配客服，建了一个新的客服对话。" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerEndConversation;
+    [alertView show];
+}
+
+/**
+ *  主动结束当前对话。美洽建议，让美洽后台自动超时结束对话，否则结束对话后，顾客得重新分配客服，建了一个新的客服对话。
+ */
+- (void)endCurrentConversation {
+    [MQManager endCurrentConversationWithCompletion:^(BOOL success, NSError *error) {
+        if (success) {
+            [MQToast showToast:@"对话已结束" duration:1.0 window:self.view];
+        } else {
+            [MQToast showToast:@"对话结束失败" duration:1.0 window:self.view];
+        }
+    }];
+}
+
+/**
+ *  删除美洽多媒体存储
+ */
+- (void)removeMeiqiaMediaData {
+    [MQManager removeAllMediaDataWithCompletion:^(float mediaSize) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"已为您移除多媒体存储，共 %f M", mediaSize] message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+        [alertView show];
+    }];
+}
+
+/**
  *  复制当前顾客id到剪切板
  */
 - (void)copyCurrentClientIdToPasteboard {
@@ -353,7 +412,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 /**
  *  显示顾客的属性
  */
-- (void)showClientAttributes {
+- (void)showSetClientAttributesAlertView {
     NSString *attrs = [NSString stringWithCString:[clientCustomizedAttrs.description cStringUsingEncoding:NSUTF8StringEncoding] encoding:NSNonLossyASCIIStringEncoding];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"上传下列属性吗？" message:attrs delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerClientAttrs;
@@ -394,6 +453,12 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                 break;
             case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerClientAttrs:
                 [self uploadClientAttributes];
+                break;
+            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerClientOffline:
+                [self setCurrentClientOffline];
+                break;
+            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerEndConversation:
+                [self endCurrentConversation];
                 break;
             default:
                 break;

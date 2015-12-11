@@ -32,9 +32,9 @@
 
 Demo中的文件 | 说明
 ---- | -----
-MeiQiaSDK.framework | 美洽 SDK 的 framework
-MQChatViewController/ | 美洽提供的开源聊天界面 Library，详细介绍请移步 [github](https://github.com/Meiqia/MQChatViewController)
-[MeiqiaSDKInterface]() | 美洽的 SDK 逻辑接口层 与 开源聊天 Library 的中间层，调用美洽 SDK 的接口，完成界面所需的功能
+MeiQiaSDK.framework | 美洽 SDK 的 framework 。
+MQChatViewController/ | 美洽提供的开源聊天界面 Library，详细介绍请移步 [github](https://github.com/Meiqia/MQChatViewController) 。
+[MeiqiaSDKViewInterface]() | 美洽的 SDK 逻辑接口层 与 开源聊天 Library 的中间层，调用美洽 SDK 的接口，完成界面所需的功能。
 
 framework中的文件 | 说明
 ---- | -----

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC03CFA91C19987500603659 /* MQServiceToViewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = CC03CFA81C19987500603659 /* MQServiceToViewInterface.m */; };
 		CCE9D10B1C1812F6004E862E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10A1C1812F6004E862E /* main.m */; };
 		CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10D1C1812F6004E862E /* AppDelegate.m */; };
 		CCE9D1111C1812F6004E862E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1101C1812F6004E862E /* ViewController.m */; };
@@ -23,7 +24,6 @@
 		CCE9D1481C18139E004E862E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1471C18139E004E862E /* MobileCoreServices.framework */; };
 		CCE9D14A1C1813AD004E862E /* MeiQiaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1491C1813AD004E862E /* MeiQiaSDK.framework */; };
 		CCE9D14D1C1813BE004E862E /* DevelopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D14C1C1813BE004E862E /* DevelopViewController.m */; };
-		CCE9D20B1C181418004E862E /* MQServiceToViewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1501C181418004E862E /* MQServiceToViewInterface.m */; };
 		CCE9D20C1C181418004E862E /* MQChatViewAsset.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CCE9D1531C181418004E862E /* MQChatViewAsset.bundle */; };
 		CCE9D20D1C181418004E862E /* MQChatViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1561C181418004E862E /* MQChatViewConfig.m */; };
 		CCE9D20E1C181418004E862E /* MQChatViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1581C181418004E862E /* MQChatViewManager.m */; };
@@ -121,6 +121,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CC03CFA71C19987500603659 /* MQServiceToViewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQServiceToViewInterface.h; sourceTree = "<group>"; };
+		CC03CFA81C19987500603659 /* MQServiceToViewInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQServiceToViewInterface.m; sourceTree = "<group>"; };
 		CCE9D1061C1812F6004E862E /* Meiqia-SDK-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meiqia-SDK-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCE9D10A1C1812F6004E862E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CCE9D10C1C1812F6004E862E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -146,8 +148,6 @@
 		CCE9D1491C1813AD004E862E /* MeiQiaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MeiQiaSDK.framework; sourceTree = "<group>"; };
 		CCE9D14B1C1813BE004E862E /* DevelopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevelopViewController.h; sourceTree = "<group>"; };
 		CCE9D14C1C1813BE004E862E /* DevelopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevelopViewController.m; sourceTree = "<group>"; };
-		CCE9D14F1C181418004E862E /* MQServiceToViewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQServiceToViewInterface.h; sourceTree = "<group>"; };
-		CCE9D1501C181418004E862E /* MQServiceToViewInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQServiceToViewInterface.m; sourceTree = "<group>"; };
 		CCE9D1531C181418004E862E /* MQChatViewAsset.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MQChatViewAsset.bundle; sourceTree = "<group>"; };
 		CCE9D1551C181418004E862E /* MQChatViewConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatViewConfig.h; sourceTree = "<group>"; };
 		CCE9D1561C181418004E862E /* MQChatViewConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatViewConfig.m; sourceTree = "<group>"; };
@@ -342,10 +342,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC03CFA61C19987500603659 /* MeiqiaSDKViewInterface */ = {
+			isa = PBXGroup;
+			children = (
+				CC03CFA71C19987500603659 /* MQServiceToViewInterface.h */,
+				CC03CFA81C19987500603659 /* MQServiceToViewInterface.m */,
+			);
+			path = MeiqiaSDKViewInterface;
+			sourceTree = "<group>";
+		};
 		CCE9D0FD1C1812F6004E862E = {
 			isa = PBXGroup;
 			children = (
-				CCE9D14E1C181418004E862E /* MeiqiaSDKInterface */,
+				CC03CFA61C19987500603659 /* MeiqiaSDKViewInterface */,
 				CCE9D1511C181418004E862E /* MQChatViewController */,
 				CCE9D13C1C181368004E862E /* Frameworks */,
 				CCE9D1081C1812F6004E862E /* Meiqia-SDK-Demo */,
@@ -421,15 +430,6 @@
 				CCE9D13D1C18137D004E862E /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		CCE9D14E1C181418004E862E /* MeiqiaSDKInterface */ = {
-			isa = PBXGroup;
-			children = (
-				CCE9D14F1C181418004E862E /* MQServiceToViewInterface.h */,
-				CCE9D1501C181418004E862E /* MQServiceToViewInterface.m */,
-			);
-			path = MeiqiaSDKInterface;
 			sourceTree = "<group>";
 		};
 		CCE9D1511C181418004E862E /* MQChatViewController */ = {
@@ -1007,7 +1007,6 @@
 				CCE9D2211C181418004E862E /* MQTextMessageCell.m in Sources */,
 				CCE9D2361C181418004E862E /* HPGrowingTextView.m in Sources */,
 				CCE9D2371C181418004E862E /* HPTextViewInternal.m in Sources */,
-				CCE9D20B1C181418004E862E /* MQServiceToViewInterface.m in Sources */,
 				CCE9D2531C181418004E862E /* VoiceConverter.mm in Sources */,
 				CCE9D22B1C181418004E862E /* MQChatRegexUtil.m in Sources */,
 				CCE9D2221C181418004E862E /* MQTipsCell.m in Sources */,
@@ -1016,6 +1015,7 @@
 				CCE9D2181C181418004E862E /* MQImageCellModel.m in Sources */,
 				CCE9D2431C181418004E862E /* SDWebImageCompat.m in Sources */,
 				CCE9D2191C181418004E862E /* MQMessageDateCellModel.m in Sources */,
+				CC03CFA91C19987500603659 /* MQServiceToViewInterface.m in Sources */,
 				CCE9D2421C181418004E862E /* SDImageCache.m in Sources */,
 				CCE9D2461C181418004E862E /* SDWebImageDownloaderOperation.m in Sources */,
 				CCE9D2171C181418004E862E /* MQEventCellModel.m in Sources */,
@@ -1163,6 +1163,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1182,6 +1183,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

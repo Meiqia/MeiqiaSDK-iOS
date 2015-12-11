@@ -23,8 +23,8 @@ static NSString * const MQRequesetErrorDomain = @"com.meiqia.error.resquest.erro
 typedef enum : NSInteger {
     MQErrorCodeParameterUnKown              = -2000,    //未知错误
     MQErrorCodeParameterError               = -2001,    //参数错误
-    MQErrorCodeResultNoCurrentClient        = -2003,    //当前没有顾客，请新建一个顾客后再上线
-    MQErrorCodeResultNoExistedClient        = -2004,    //美洽服务端没有找到对应的client
+    MQErrorCodeCurrentClientNotFound        = -2003,    //当前没有顾客，请新建一个顾客后再上线
+    MQErrorCodeClientNotExisted             = -2004,    //美洽服务端没有找到对应的client
     MQErrorCodePlistConfigurationError      = -2005     //开发者App的info.plist没有增加NSExceptionDomains，请参考https://github.com/Meiqia/Meiqia-SDK-iOS-Demo#info.plist设置
 } MQErrorCode;
 
