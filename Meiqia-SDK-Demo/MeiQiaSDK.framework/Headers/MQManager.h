@@ -253,6 +253,13 @@
 + (void)updateMessage:(NSString *)messageId toReadStatus:(BOOL)isRead;
 
 /**
+ *  将数据库中某个message删除
+ *
+ *  @param messageId 消息id
+ */
++ (void)removeMessageInDatabaseWithId:(NSString *)messageId;
+
+/**
  * 结束当前的对话
  */
 + (void)endCurrentConversationWithCompletion:(void (^)(BOOL success, NSError *error))completion;
