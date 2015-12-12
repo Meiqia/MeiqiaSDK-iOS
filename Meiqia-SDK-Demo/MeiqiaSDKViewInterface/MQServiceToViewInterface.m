@@ -254,6 +254,11 @@
     }];
 }
 
++ (void)removeMessageInDatabaseWithId:(NSString *)messageId
+{
+    [MQManager removeMessageInDatabaseWithId:messageId];
+}
+
 #pragma 实例方法
 - (instancetype)init {
     if (self = [super init]) {
@@ -280,8 +285,8 @@
 }
 
 - (void)setClientOnlineWithClientId:(NSString *)clientId
-                            success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
-             receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
+                              success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+               receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
 {
     self.serviceToViewDelegate = receiveMessageDelegate;
     if (!clientId || clientId.length == 0) {

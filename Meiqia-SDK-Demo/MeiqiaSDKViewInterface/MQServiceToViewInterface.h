@@ -151,8 +151,8 @@
  * @param ;
  */
 - (void)setClientOnlineWithClientId:(NSString *)clientId
-                            success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
-             receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
+                              success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+               receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**
  *  设置指定分配的客服或客服组
@@ -195,5 +195,14 @@
 + (void)downloadMediaWithUrlString:(NSString *)urlString
                           progress:(void (^)(float progress))progressBlock
                         completion:(void (^)(NSData *mediaData, NSError *error))completion;
+
+
+/**
+ *  将数据库中某个message删除
+ *
+ *  @param messageId 消息id
+ */
++ (void)removeMessageInDatabaseWithId:(NSString *)messageId;
+
 
 @end
