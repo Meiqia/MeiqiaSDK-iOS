@@ -25,7 +25,8 @@ typedef enum : NSInteger {
     MQErrorCodeParameterError               = -2001,    //参数错误
     MQErrorCodeCurrentClientNotFound        = -2003,    //当前没有顾客，请新建一个顾客后再上线
     MQErrorCodeClientNotExisted             = -2004,    //美洽服务端没有找到对应的client
-    MQErrorCodePlistConfigurationError      = -2005     //开发者App的info.plist没有增加NSExceptionDomains，请参考https://github.com/Meiqia/Meiqia-SDK-iOS-Demo#info.plist设置
+    MQErrorCodeConversationNotFound         = -2005,    //美洽服务端没有找到该对话
+    MQErrorCodePlistConfigurationError      = -2006     //开发者App的info.plist没有增加NSExceptionDomains，请参考https://github.com/Meiqia/Meiqia-SDK-iOS-Demo#info.plist设置
 } MQErrorCode;
 
 /**
