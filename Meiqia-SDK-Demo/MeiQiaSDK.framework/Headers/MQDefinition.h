@@ -13,6 +13,11 @@
 #define MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION @"MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION"
 
 /**
+ *  收到该通知，即表示美洽的通信接口没有连接成功
+ */
+#define MQ_COMMUNICATION_FAILED_NOTIFICATION @"MQ_COMMUNICATION_FAILED_NOTIFICATION"
+
+/**
  *  美洽的错误码
  */
 static NSString * const MQRequesetErrorDomain = @"com.meiqia.error.resquest.error";

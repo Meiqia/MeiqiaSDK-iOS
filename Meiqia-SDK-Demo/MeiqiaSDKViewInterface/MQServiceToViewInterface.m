@@ -129,6 +129,8 @@
     }
     toMessage.messageId = fromMessage.messageId;
     toMessage.date = fromMessage.createdOn;
+    toMessage.userName = fromMessage.messageUserName;
+    toMessage.userAvatarPath = fromMessage.messageAvatar;
     switch (fromMessage.sendStatus) {
         case MQMessageSendStatusSuccess:
             toMessage.sendStatus = MQChatMessageSendStatusSuccess;
@@ -145,15 +147,11 @@
     switch (fromMessage.fromType) {
         case MQMessageFromTypeAgent:
         {
-            toMessage.userName = fromMessage.agent.nickname;
-            toMessage.userAvatarPath = fromMessage.agent.avatarPath;
             toMessage.fromType = MQChatMessageIncoming;
             break;
         }
         case MQMessageFromTypeClient:
         {
-            toMessage.userName = @"顾客";
-            toMessage.userAvatarPath = nil;
             toMessage.fromType = MQChatMessageOutgoing;
             break;
         }
@@ -259,6 +257,10 @@
     [MQManager removeMessageInDatabaseWithId:messageId];
 }
 
++ (NSDictionary *)getCurrentClientInfo {
+    return [MQManager getCurrentClientInfo];
+}
+
 #pragma 实例方法
 - (instancetype)init {
     if (self = [super init]) {
@@ -314,10 +316,10 @@
     } receiveMessageDelegate:self];
 }
 
-+ (void)setScheduledAgentWithAgentToken:(NSString *)agentToken
-                        agentGroupToken:(NSString *)agentGroupToken
++ (void)setScheduledAgentWithAgentId:(NSString *)agentId
+                        agentGroupId:(NSString *)agentGroupId
 {
-    [MQManager setScheduledAgentWithAgentToken:agentToken agentGroupToken:agentGroupToken];
+    [MQManager setScheduledAgentWithAgentId:agentId agentGroupId:agentGroupId];
 }
 
 #pragma MQManagerDelegate

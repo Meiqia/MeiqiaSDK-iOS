@@ -11,7 +11,6 @@
 #import "MQMessage.h"
 #import "MQDefinition.h"
 #import "MQAgent.h"
-#import "MQEnterprise.h"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -65,12 +64,12 @@
 /**
  * 设置指定分配的客服或客服组。
  *
- * @param agentToken                指定分配的客服id，可为空
- * @param agentGroupToken           指定分配的客服组id，可为空（如果agentToken和agentGroupToken均未空，则随机分配一个客服）
+ * @param agentId                指定分配的客服id，可为空
+ * @param agentGroupId           指定分配的客服组id，可为空（如果agentId和agentGroupId均未空，则随机分配一个客服）
  * @warning 该接口需要在顾客上线前进行设置，设置后指定分配客服将会在顾客上线时生效
  */
-+ (void)setScheduledAgentWithAgentToken:(NSString *)agentToken
-                        agentGroupToken:(NSString *)agentGroupToken;
++ (void)setScheduledAgentWithAgentId:(NSString *)agentId
+                        agentGroupId:(NSString *)agentGroupId;
 
 /**
  * 开发者自定义当前顾客的信息，用于展示给客服。
@@ -134,6 +133,14 @@
  *  
  */
 + (NSString *)getCurrentClientId;
+
+/**
+ *  获取当前顾客的顾客信息
+ *
+ *  @return 当前的顾客的信息
+ *
+ */
++ (NSDictionary *)getCurrentClientInfo;
 
 /**
  * 美洽将重新初始化一个新的顾客，该顾客没有任何历史记录及用户信息。开发者可选择将该id保存并与app的用户绑定。
@@ -220,7 +227,7 @@
  * @param image 图片
  * @param sendedMessage 返回发送后的消息。如果发送成功，message的content为图片的网络地址。消息是否发送成功，需根据message的sendStatus判断。
  * @return 该条图片消息。此时该消息状态为发送中，message的content属性是本地图片路径
- * @warning SDK不会去压缩图片大小，如果开发者需要限制图片大小，需要压缩后，再使用此接口
+ * @warning SDK不会去限制图片大小，如果开发者需要限制图片大小，需要调整图片大小后，再使用此接口
  * @warning 需要在初始化成功后，且顾客是在线状态时调用才有效
  */
 + (MQMessage *)sendImageMessageWithImage:(UIImage *)image

@@ -6,11 +6,11 @@
 	<dict>
 		<key>Info.plist</key>
 		<data>
-		0VDs9RczIrUkffZxVKidRScaME4=
+		wXNtwUBFGOg0jbs7Y9WhNTOq1T8=
 		</data>
 		<key>MQAgent.h</key>
 		<data>
-		toVgI6K/z6D2bMWH6PubfAOxeRM=
+		ahUriySYK5H61889u4LhQb4orGk=
 		</data>
 		<key>MQConversation.h</key>
 		<data>
@@ -18,26 +18,22 @@
 		</data>
 		<key>MQDefinition.h</key>
 		<data>
-		qg3uKIT6a5c1vNvFto6Hg13FONQ=
-		</data>
-		<key>MQEnterprise.h</key>
-		<data>
-		x6b0SJr+q4qGhWTXGIwCISMTwe0=
+		HllUhiS/R4bM846poqvs7ZfGbCQ=
 		</data>
 		<key>MQManager.h</key>
 		<data>
-		GF8hrO7jF/2UE0YS4/xJz9e0Ryg=
+		awHlZyAlTbjqEiw+zd4d4pmnekk=
 		</data>
 		<key>MQMessage.h</key>
 		<data>
-		L8jwFko4YCiePVmDknsnFRVyw4I=
+		5QgvEkBnph+Ss6GcDbqSU9D/q6k=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
 		<key>MQAgent.h</key>
 		<data>
-		toVgI6K/z6D2bMWH6PubfAOxeRM=
+		ahUriySYK5H61889u4LhQb4orGk=
 		</data>
 		<key>MQConversation.h</key>
 		<data>
@@ -45,19 +41,15 @@
 		</data>
 		<key>MQDefinition.h</key>
 		<data>
-		qg3uKIT6a5c1vNvFto6Hg13FONQ=
-		</data>
-		<key>MQEnterprise.h</key>
-		<data>
-		x6b0SJr+q4qGhWTXGIwCISMTwe0=
+		HllUhiS/R4bM846poqvs7ZfGbCQ=
 		</data>
 		<key>MQManager.h</key>
 		<data>
-		GF8hrO7jF/2UE0YS4/xJz9e0Ryg=
+		awHlZyAlTbjqEiw+zd4d4pmnekk=
 		</data>
 		<key>MQMessage.h</key>
 		<data>
-		L8jwFko4YCiePVmDknsnFRVyw4I=
+		5QgvEkBnph+Ss6GcDbqSU9D/q6k=
 		</data>
 	</dict>
 	<key>rules</key>
