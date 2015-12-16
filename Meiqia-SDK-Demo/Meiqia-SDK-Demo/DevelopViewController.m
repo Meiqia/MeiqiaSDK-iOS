@@ -17,8 +17,8 @@
 typedef enum : NSUInteger {
     MQSDKDemoManagerClientId = 0,
     MQSDKDemoManagerCustomizedId,
-    MQSDKDemoManagerAgentToken,
-    MQSDKDemoManagerGroupToken,
+    MQSDKDemoManagerAgentId,
+    MQSDKDemoManagerGroupId,
     MQSDKDemoManagerClientAttrs,
     MQSDKDemoManagerClientOffline,
     MQSDKDemoManagerEndConversation
@@ -46,7 +46,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     
     sectionHeaders = @[
                        @"以下是开发者可能会用到的客服功能，请参考^.^",
-                       @"以下是不同的开源界面的设置"
+                       @"以下是开源界面的不同的设置"
                        ];
     
     sectionTextArray = @[
@@ -141,10 +141,10 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                 [self creatMQClient];
                 break;
             case 5:
-                [self inputScheduledAgentToken];
+                [self inputScheduledAgentId];
                 break;
             case 6:
-                [self inputScheduledGroupToken];
+                [self inputScheduledGroupId];
                 break;
             case 7:
                 [self showSetClientAttributesAlertView];
@@ -317,31 +317,31 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 /**
  *  输入指定分配客服的token
  */
-- (void)inputScheduledAgentToken {
+- (void)inputScheduledAgentId {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入一个客服Token进行指定分配" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerAgentToken;
+    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerAgentId;
     [alertView show];
 }
 
 /**
  *  指定分配到某客服
  *
- *  @param agentToken 客服token
+ *  @param agentId 客服token
  */
-- (void)setClientOnlineWithAgentToken:(NSString *)agentToken {
+- (void)setClientOnlineWithAgentId:(NSString *)agentId {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager setScheduledAgentToken:agentToken];
+    [chatViewManager setScheduledAgentId:agentId];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
 /**
  *  输入指定分配客服组的token
  */
-- (void)inputScheduledGroupToken {
+- (void)inputScheduledGroupId {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入一个客服组Token进行指定分配" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerGroupToken;
+    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerGroupId;
     [alertView show];
 }
 
@@ -350,9 +350,9 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
  *
  *  @param groupToken 客服组token
  */
-- (void)setClientOnlineWithGroupToken:(NSString *)groupToken {
+- (void)setClientOnlineWithGroupId:(NSString *)groupToken {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager setScheduledGroupToken:groupToken];
+    [chatViewManager setScheduledGroupId:groupToken];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -445,11 +445,11 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
             case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerCustomizedId:
                 [self setClientOnlineWithCustomizedId:[alertView textFieldAtIndex:0].text];
                 break;
-            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerAgentToken:
-                [self setClientOnlineWithAgentToken:[alertView textFieldAtIndex:0].text];
+            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerAgentId:
+                [self setClientOnlineWithAgentId:[alertView textFieldAtIndex:0].text];
                 break;
-            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerGroupToken:
-                [self setClientOnlineWithGroupToken:[alertView textFieldAtIndex:0].text];
+            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerGroupId:
+                [self setClientOnlineWithGroupId:[alertView textFieldAtIndex:0].text];
                 break;
             case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerClientAttrs:
                 [self uploadClientAttributes];

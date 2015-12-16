@@ -67,6 +67,12 @@ typedef enum : NSUInteger {
 /** 客服 */
 @property (nonatomic, strong) MQAgent              *agent;
 
+/** 消息发送人头像 */
+@property (nonatomic, copy  ) NSString             *messageAvatar;
+
+/** 消息发送人名字 */
+@property (nonatomic, copy  ) NSString             *messageUserName;
+
 /** 消息创建时间, UTC格式 */
 @property (nonatomic, copy  ) NSDate               *createdOn;
 

@@ -59,8 +59,4 @@ typedef enum : NSUInteger {
 /** 是否在线 */
 @property (nonatomic, assign) BOOL             isOnline;
 
-/** agent token */
-@property (nonatomic, copy  ) NSString         *token;
-
-
 @end

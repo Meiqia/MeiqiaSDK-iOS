@@ -54,7 +54,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self setClientOnline];
         isThereNoAgent = false;
         addedNoAgentTip = false;
-        //监听
 #endif
     }
     return self;
@@ -488,15 +487,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma 顾客上线的逻辑
 - (void)setClientOnline {
+    //上线
     __weak typeof(self) weakSelf = self;
     serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
-    [MQServiceToViewInterface setScheduledAgentWithAgentToken:[MQChatViewConfig sharedConfig].scheduledAgentToken agentGroupToken:[MQChatViewConfig sharedConfig].scheduledGroupToken];
+    [MQServiceToViewInterface setScheduledAgentWithAgentId:[MQChatViewConfig sharedConfig].scheduledAgentId agentGroupId:[MQChatViewConfig sharedConfig].scheduledGroupId];
     if ([MQChatViewConfig sharedConfig].MQClientId.length == 0 && [MQChatViewConfig sharedConfig].customizedId.length > 0) {
         [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
             if (!completion) {
                 //没有分配到客服
                 agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
             }
+            //获取顾客信息
+            [weakSelf getClientInfo];
+            //更新客服聊天界面标题
             [weakSelf updateChatTitleWithAgentName:agentName];
             if (receivedMessages) {
                 [weakSelf saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
@@ -514,6 +517,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             //没有分配到客服
             agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
         }
+        //获取顾客信息
+        [weakSelf getClientInfo];
+        //更新客服聊天界面标题
         [weakSelf updateChatTitleWithAgentName:agentName];
         if (receivedMessages) {
             [weakSelf saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
@@ -524,6 +530,15 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             }
         }
     } receiveMessageDelegate:self];
+}
+
+//获取顾客信息
+- (void)getClientInfo {
+    NSDictionary *clientInfo = [MQServiceToViewInterface getCurrentClientInfo];
+    [MQServiceToViewInterface downloadMediaWithUrlString:[clientInfo objectForKey:@"avatar"] progress:^(float progress) {
+    } completion:^(NSData *mediaData, NSError *error) {
+        [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage = [UIImage imageWithData:mediaData];
+    }];
 }
 
 - (void)updateChatTitleWithAgentName:(NSString *)agentName {
