@@ -540,6 +540,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 - [SDK 初始化失败](#sdk-初始化失败)
 - [Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)](#xcode-warning-was-built-for-newer-ios-version-70-than-being-linked-60)
 - [美洽静态库的文件大小太大](#美洽静态库的文件大小太大)
+- [使用 TabBarController 后，inputBar 高度出现异常](#使用-tabbarcontroller-后inputbar-高度出现异常)
 
 ### SDK 初始化失败
 
@@ -562,3 +563,6 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 ### 美洽静态库的文件大小太大
 因为美洽静态库包含5个平台（armv7、armv7s、arm64、i386、x86_64）+ Bitcode。但这并不代表会严重影响编译后的宿主App大小，实际上，这只会增加宿主App 100kb左右大小。
+
+### 使用 TabBarController 后，inputBar 高度出现异常
+使用了TabBarController的APP，视图结构都各相不同，并且可能存在自定义TabBar的情况，所以美洽SDK无法判断并准确调整，需要开发者自行修改App或SDK代码。自iOS 7系统后，大多数情况下只需修改TabBar的`hidden`和`translucent`属性便可以正常使用。
