@@ -399,9 +399,19 @@ NSString *clientId = [MQManager setClientOffline];
 
 开发者可在合适的地方，监听收到消息的广播，用于提醒顾客有新消息。
 
-**注意**，如果顾客推出聊天界面，开发者没有调用设置顾客离线接口的话，以后该顾客收到新消息，仍能收到`有新消息的广播`。
+开发者可获取广播中的userInfo，来获取收到的消息数组，例如：`[notification.userInfo objectForKey:@"messages"]`
+
+**注意**，如果顾客退出聊天界面，开发者没有调用设置顾客离线接口的话，以后该顾客收到新消息，仍能收到`有新消息的广播`。
 ```objc
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMeiqiaMessage) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
+#pragma 在合适的地方监听有新消息的广播
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMQMessages:) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
+
+#pragma 监听收到美洽聊天消息的广播
+- (void)didReceiveNewMQMessages:(NSNotification *)notification {
+	//广播中的消息数组
+    NSArray *messages = [notification.userInfo objectForKey:@"messages"];
+    NSLog(@"监听到了收到客服消息的广播");
+}
 ```
 
 

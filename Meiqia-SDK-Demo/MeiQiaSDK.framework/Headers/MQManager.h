@@ -80,6 +80,15 @@
            completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**
+ *  设置顾客的头像
+ *
+ *  @param avatarImage 头像Image
+ *  @param completion  设置头像图片的回调
+ */
++ (void)setClientAvatar:(UIImage *)avatarImage
+                completion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
  * 让当前的client上线。请求成功后，该顾客将会出现在客服的对话列表中。
  *
  * @param result 上线结果，可以用作判断是否上线成功
