@@ -261,6 +261,14 @@
     return [MQManager getCurrentClientInfo];
 }
 
++ (void)uploadClientAvatar:(UIImage *)avatarImage
+                completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [MQManager setClientAvatar:avatarImage completion:^(BOOL success, NSError *error) {
+        completion(success, error);
+    }];
+}
+
 #pragma 实例方法
 - (instancetype)init {
     if (self = [super init]) {
