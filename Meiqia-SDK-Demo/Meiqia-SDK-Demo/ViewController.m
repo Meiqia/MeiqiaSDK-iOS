@@ -76,6 +76,7 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     //基本功能 - 在线客服
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableOutgoingAvatar:false];
+    [chatViewManager enableEventDispaly:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
