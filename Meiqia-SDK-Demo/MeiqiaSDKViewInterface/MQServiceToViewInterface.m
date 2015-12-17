@@ -76,29 +76,45 @@
 
 + (MQBaseMessage *)convertToEventMessageWithMessage:(MQMessage *)fromMessage {
     NSString *eventContent = @"";
+    MQChatEventType eventType = MQChatEventTypeInitConversation;
     switch (fromMessage.action) {
         case MQMessageActionInitConversation:
+        {
             eventContent = @"您进入了客服对话";
+            eventType = MQChatEventTypeInitConversation;
             break;
+        }
         case MQMessageActionAgentDidCloseConversation:
+        {
             eventContent = @"客服结束了此条对话";
+            eventType = MQChatEventTypeAgentDidCloseConversation;
             break;
+        }
         case MQMessageActionEndConversationTimeout:
+        {
             eventContent = @"对话超时，系统自动结束了对话";
+            eventType = MQChatEventTypeEndConversationTimeout;
             break;
+        }
         case MQMessageActionRedirect:
+        {
             eventContent = @"您的对话被转接给了其他客服";
+            eventType = MQChatEventTypeRedirect;
             break;
+        }
         case MQMessageActionAgentInputting:
+        {
             eventContent = @"客服正在输入...";
+            eventType = MQChatEventTypeAgentInputting;
             break;
+        }
         default:
             break;
     }
     if (eventContent.length == 0) {
         return nil;
     }
-    MQEventMessage *toMessage = [[MQEventMessage alloc] initWithEventContent:eventContent];
+    MQEventMessage *toMessage = [[MQEventMessage alloc] initWithEventContent:eventContent eventType:eventType];
     toMessage.messageId = fromMessage.messageId;
     toMessage.date = fromMessage.createdOn;
     toMessage.content = eventContent;
