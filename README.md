@@ -565,14 +565,14 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 ### Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)
 
-如果开发者的App最低支持系统是7.0一下，将会出现这种waring。
+如果开发者的 App 最低支持系统是 7.0 一下，将会出现这种 warning。
 
 `ld: warning: object file (/Meiqia-SDK-Demo/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrnb.a(wrapper.o)) was built for newer iOS version (7.0) than being linked (6.0)`
 
-原因是美洽将SDK中使用的开源库 [opencore-amr](http://sourceforge.net/projects/opencore-amr/) 针对支持Bitcode而从新编译了一次，但这并不影响SDK在iOS 6中的使用。如果你介意，并且不会使用Bitcode，可以将美洽SDK中使用`opencore-amr`替换为老版本：[传送门](https://github.com/molon/MLAudioRecorder/tree/master/MLRecorder/MLAudioRecorder/amr_en_de/lib)
+原因是美洽将 SDK 中使用的开源库 [opencore-amr](http://sourceforge.net/projects/opencore-amr/) 针对支持Bitcode而从新编译了一次，但这并不影响SDK在iOS 6中的使用。如果你介意，并且不会使用 Bitcode，可以将美洽SDK中使用 `opencore-amr` 替换为老版本：[传送门](https://github.com/molon/MLAudioRecorder/tree/master/MLRecorder/MLAudioRecorder/amr_en_de/lib)
 
 ### 美洽静态库的文件大小太大
-因为美洽静态库包含5个平台（armv7、armv7s、arm64、i386、x86_64）+ Bitcode。但这并不代表会严重影响编译后的宿主App大小，实际上，这只会增加宿主App 100kb左右大小。
+因为美洽静态库包含5个平台（armv7、armv7s、arm64、i386、x86_64）+ Bitcode。但这并不代表会严重影响编译后的宿主 App 大小，实际上，这只会增加宿主 App 100kb 左右大小。
 
 ### 使用 TabBarController 后，inputBar 高度出现异常
-使用了TabBarController的APP，视图结构都各相不同，并且可能存在自定义TabBar的情况，所以美洽SDK无法判断并准确调整，需要开发者自行修改App或SDK代码。自iOS 7系统后，大多数情况下只需修改TabBar的`hidden`和`translucent`属性便可以正常使用。
+使用了 TabBarController 的 App，视图结构都各相不同，并且可能存在自定义 TabBar 的情况，所以美洽 SDK 无法判断并准确调整，需要开发者自行修改 App 或 SDK 代码。自 iOS 7 系统后，大多数情况下只需修改 TabBar 的 `hidden` 和 `translucent` 属性便可以正常使用。
