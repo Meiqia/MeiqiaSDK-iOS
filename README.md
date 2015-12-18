@@ -32,16 +32,16 @@
 
 Demo中的文件 | 说明
 ---- | -----
-MeiQiaSDK.framework | 美洽 SDK 的 framework 。
-MQChatViewController/ | 美洽提供的开源聊天界面 Library，详细介绍请移步 [github](https://github.com/Meiqia/MQChatViewController) 。
-[MeiqiaSDKViewInterface]() | 美洽的 SDK 逻辑接口层 与 开源聊天 Library 的中间层，调用美洽 SDK 的接口，完成界面所需的功能。
+[MeiQiaSDK.framework](https://github.com/Meiqia/MeiqiaSDK-iOS/tree/master/Meiqia-SDK-Demo/MeiQiaSDK.framework) | 美洽 SDK 的 framework 。
+[MQChatViewController/](https://github.com/Meiqia/MeiqiaSDK-iOS/tree/master/Meiqia-SDK-Demo/MQChatViewController) | 美洽提供的开源聊天界面 Library，详细介绍请移步 [github](https://github.com/Meiqia/MQChatViewController) 。
+[MeiqiaSDKViewInterface](https://github.com/Meiqia/MeiqiaSDK-iOS/tree/master/Meiqia-SDK-Demo/MeiqiaSDKViewInterface) | 美洽的 SDK 逻辑接口层 与 开源聊天 Library 的中间层，调用美洽 SDK 的接口，完成界面所需的功能。
 
 framework中的文件 | 说明
 ---- | -----
-[MQManager.h]() | 美洽 SDK 提供的逻辑 API，开发者可调用其中的逻辑接口，实现自定义在线客服界面
-[MCDefination.h]() | 美洽 SDK 所用的枚举分类
-[MQAgent.h]() | 实体类：客服
-[MQMessage.h]() | 实体类：消息
+[MQManager.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQManager.h) | 美洽 SDK 提供的逻辑 API，开发者可调用其中的逻辑接口，实现自定义在线客服界面
+[MCDefination.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQDefinition.h) | 美洽 SDK 所用的枚举分类
+[MQAgent.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQAgent.h) | 实体类：客服
+[MQMessage.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQMessage.h) | 实体类：消息
 
 
 ### 导入美洽 SDK
@@ -93,7 +93,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 ```
 
 #### info.plist设置
-美洽的图片、语音等静态资源放在了 AWS S3 上，但 `s3.amazonaws.com` 使用了 SHA1 证书，不满足 iOS 9 的 [ATS (App Transport Security)](https://developer.apple.com/library/prerelease/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14) 要求。
+美洽的图片、语音等静态资源放在了 AWS S3 上，但 `s3.amazonaws.com` 使用了 SHA1 证书，不满足 iOS 9 的 [ATS ( App Transport Security )](https://developer.apple.com/library/prerelease/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14) 要求。
 
 所以为了能让聊天界面正确显示图片和语音，开发者需要在 App 的 info.plist 中增加如下设置 (右键点击`info.plist` -> `Open As` -> `Source Code`):
 
@@ -116,7 +116,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 ![info.plist配置](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/f4564c89cef713c1)
 
-关于 S3 证书问题，可参考 stackoverflow 上面的一个[讨论](http://stackoverflow.com/questions/32500655/ios-9-app-download-from-amazon-s3-ssl-error-tls-1-2-support)。
+关于 S3 证书问题，可参考 stackoverflow 上面的一个 [讨论](http://stackoverflow.com/questions/32500655/ios-9-app-download-from-amazon-s3-ssl-error-tls-1-2-support)。
 
 **注意**，为了规避遗漏此项设置，如果开发者没有增加此项配置，SDK 是不会初始化成功的，xcode会打印错误提示。
 
@@ -138,7 +138,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 }];
 ```
 
-如果您不知道 *AppKey* ，请使用美洽管理员帐号登录[美洽](http://www.meiqia.com)，在「设置」 -> 「SDK」 菜单中查看。如下图：
+如果您不知道 *AppKey* ，请使用美洽管理员帐号登录 [美洽](http://www.meiqia.com)，在「设置」 -> 「SDK」 菜单中查看。如下图：
 
 ![美洽 AppKey 查看界面图片](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/5a999b67233e77dc)
 
@@ -152,13 +152,13 @@ App 进入后台后，美洽推送给开发者服务端的消息数据格式中�
 [MQManager registerDeviceToken:deviceToken];
 ```
 
-美洽推送消息给开发者服务端的数据格式，可参考[推送消息数据结构](#推送消息数据结构)。
+美洽推送消息给开发者服务端的数据格式，可参考 [推送消息数据结构](#推送消息数据结构)。
 
 
 ### 添加自定义信息
 功能效果展示：
 
-![美洽工作台顾客自定义信息图片]()
+![美洽工作台顾客自定义信息图片](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/655e72343423c8f7)
 
 为了让客服能更准确帮助用户，开发者可上传不同用户的属性信息。示例如下：
 
@@ -220,7 +220,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 
 ### 调出视图
-美洽开源了一套[聊天界面 Library](https://github.com/Meiqia/MQChatViewController)，完成了一整套 `MQManager` 中的接口。让开发者免去 UI 开发工作。并在 `MQChatViewController` 类中添加其他自定义选项和功能扩展。
+美洽开源了一套 [聊天界面 Library](https://github.com/Meiqia/MQChatViewController)，完成了一整套 `MQManager` 中的接口。让开发者免去 UI 开发工作。并在 `MQChatViewController` 类中添加其他自定义选项和功能扩展。
 
 你只需要在用户需要客服服务的时候，推出美洽 UI。如下所示：
 
@@ -261,7 +261,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 #### 指定分配客服和客服组设置
 
-上文已有介绍，请参考[指定分配客服和客服组](#指定分配客服和客服组)。
+上文已有介绍，请参考 [指定分配客服和客服组](#指定分配客服和客服组)。
 
 
 #### 设置登录客服的开发者自定义 id
@@ -277,7 +277,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 使用该接口，可让美洽绑定开发者的用户系统和美洽的顾客系统。
 
-**注意**，如果开发者的自定义 id 是自增长，美洽建议开发者服务端保存美洽顾客 id，登陆时[设置登录客服的顾客 id](#设置登录客服的顾客-id)，否则非常容易受到中间人攻击。
+**注意**，如果开发者的自定义 id 是自增长，美洽建议开发者服务端保存美洽顾客 id，登陆时 [设置登录客服的顾客 id](#设置登录客服的顾客-id)，否则非常容易受到中间人攻击。
 
 
 #### 设置登录客服的顾客 id
@@ -296,7 +296,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 #### 国际化
 
-请参考[美洽开源聊天界面的国际化说明](https://github.com/Meiqia/MQChatViewController#localization---国际化本地化)。
+请参考 [美洽开源聊天界面的国际化说明](https://github.com/Meiqia/MQChatViewController#localization---国际化本地化)。
 
 更多配置，可参见 [MQChatViewManager.h](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/Config/MQChatViewManager.h) 文件。
 
@@ -304,7 +304,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 **本节主要介绍部分重要的接口。在`MeiqiaSDK.framework`的`MQManager.h`中，所有接口都有详细注释。**
 
-开发者可使用美洽提供的API，自行定制聊天界面。使用以下接口前，别忘了[初始化 SDK](#初始化-sdk)。
+开发者可使用美洽提供的API，自行定制聊天界面。使用以下接口前，别忘了 [初始化 SDK](#初始化-sdk)。
 
 
 ### 接口描述
@@ -330,7 +330,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 #### 关闭美洽推送
 
-详细介绍请见[消息推送](#7-消息推送)。
+详细介绍请见 [消息推送](#7-消息推送)。
 
 
 #### 指定分配客服和客服组接口
@@ -350,7 +350,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 #### 根据美洽的顾客 id，登陆美洽客服系统，并上线该顾客。
 
-开发者可通过[获取当前顾客 id](#获取当前顾客-id) 接口，取得顾客 id ，保存到开发者的服务端，以此来绑定美洽顾客和开发者用户系统。
+开发者可通过 [获取当前顾客 id](#获取当前顾客-id) 接口，取得顾客 id ，保存到开发者的服务端，以此来绑定美洽顾客和开发者用户系统。
 如果开发者保存了美洽的顾客 id，可调用如下接口让其上线。调用此接口后，当前可用的顾客即为开发者传的顾客 id。
 ```objc
 [MQManager setClientOnlineWithClientId:clientId completion:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
@@ -457,7 +457,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 #### 从本地数据库获取历史消息
 
-由于使用[从服务端获取更多消息](#从服务端获取更多消息)接口，会产生数据流量，开发者也可使用此接口来获取 iOS SDK 本地的历史消息。
+由于使用 [从服务端获取更多消息](#从服务端获取更多消息)接口，会产生数据流量，开发者也可使用此接口来获取 iOS SDK 本地的历史消息。
 
 ```objc
 [MQManager getDatabaseHistoryMessagesWithMsgDate:firstMessageDate messagesNumber:messageNumber result:^(NSArray<MQMessage *> *messagesArray) {
@@ -522,7 +522,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 推送消息将会发送至开发者的服务器。
 
-设置服务器地址，请使用美洽管理员帐号登录[美洽](http://www.meiqia.com)，在「设置」 -\> 「SDK」中设置。
+设置服务器地址，请使用美洽管理员帐号登录 [美洽](http://www.meiqia.com)，在「设置」 -\> 「SDK」中设置。
 ![设置推送地址](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/8fbdaa6076d0b9d0)
 
 
@@ -571,7 +571,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 当前SDK是为美洽3.0提供服务，如果你使用的 AppKey 是美洽2.0的，请使用美洽2.0 SDK
 
 #### 2. 没有配置 NSExceptionDomains
-如果没有配置`NSExceptionDomains`，美洽SDK会返回`MQErrorCodePlistConfigurationError`，并且在控制台中打印：`!!!美洽 SDK Error：请开发者在 App 的 info.plist 中增加 NSExceptionDomains，具体操作方法请见「https://github.com/Meiqia/MeiqiaSDK-iOS#info.plist设置」`。如果出现上诉情况，请[配置NSExceptionDomains](#infoplist设置)
+如果没有配置`NSExceptionDomains`，美洽SDK会返回`MQErrorCodePlistConfigurationError`，并且在控制台中打印：`!!!美洽 SDK Error：请开发者在 App 的 info.plist 中增加 NSExceptionDomains，具体操作方法请见「https://github.com/Meiqia/MeiqiaSDK-iOS#info.plist设置」`。如果出现上诉情况，请 [配置NSExceptionDomains](#infoplist设置)
 
 #### 3. 网络异常
 如果上诉情况均不存在，请检查引入美洽SDK的设备的网络是否通畅

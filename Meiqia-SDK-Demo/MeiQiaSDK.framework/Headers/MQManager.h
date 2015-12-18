@@ -92,7 +92,6 @@
  * 让当前的client上线。请求成功后，该顾客将会出现在客服的对话列表中。
  *
  * @param result 上线结果，可以用作判断是否上线成功
- * @param scheduleConversation 上线成功后，被分配的对话实体
  * @param agent 上线成功后，被分配的客服实体
  * @param messages 当前对话的消息
  * @param receiveMessageDelegate 接收消息的委托代理
@@ -107,7 +106,6 @@
  *
  * @param clientId 美洽的顾客id
  * @param result 上线结果，可以用作判断是否上线成功。
- * @param scheduleConversation 上线成功后，被分配的对话实体
  * @param agent 上线成功后，被分配的客服实体
  * @param messages 当前对话的消息
  * @param receiveMessageDelegate 接收消息的委托代理
@@ -123,7 +121,6 @@
  *
  * @param customizedId 开发者自定义的id，服务端查询该企业是否有该自定义id对应的client，如果存在，则用该client上线并分配对话；如果不存在，服务端生成一个新的client上线并分配对话，并将该customizedId与该新生成的client进行绑定；
  * @param result 上线结果，可以用作判断是否上线成功。
- * @param scheduleConversation 上线成功后，被分配的对话实体
  * @param agent 上线成功后，被分配的客服实体
  * @param messages 当前对话的消息
  * @param receiveMessageDelegate 接收消息的委托代理
