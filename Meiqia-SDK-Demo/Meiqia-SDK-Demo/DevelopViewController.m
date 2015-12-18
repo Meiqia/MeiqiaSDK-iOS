@@ -39,6 +39,9 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -56,8 +59,8 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                              @"输入自定义Id进行上线",
                              @"查看当前美洽顾客id",
                              @"建立一个全新美洽顾客id账号",
-                             @"输入一个客服Token进行指定分配",
-                             @"输入一个客服组Token进行指定分配",
+                             @"输入一个客服Id进行指定分配",
+                             @"输入一个客服组Id进行指定分配",
                              @"上传该顾客的自定义信息",
                              @"设置当前顾客为离线状态",
                              @"结束当前对话",
@@ -91,6 +94,9 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
         currentClientId = [MQManager getCurrentClientId];
         [configTableView reloadData];
     });
+    
+    //在聊天界面外，监听是否收到了客服消息
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMQMessages:) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -315,10 +321,10 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 /**
- *  输入指定分配客服的token
+ *  输入指定分配客服的Id
  */
 - (void)inputScheduledAgentId {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入一个客服Token进行指定分配" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入一个客服Id进行指定分配" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerAgentId;
     [alertView show];
@@ -327,7 +333,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 /**
  *  指定分配到某客服
  *
- *  @param agentId 客服token
+ *  @param agentId 客服Id
  */
 - (void)setClientOnlineWithAgentId:(NSString *)agentId {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
@@ -336,10 +342,10 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 /**
- *  输入指定分配客服组的token
+ *  输入指定分配客服组的Id
  */
 - (void)inputScheduledGroupId {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入一个客服组Token进行指定分配" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入一个客服组Id进行指定分配" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerGroupId;
     [alertView show];
@@ -348,11 +354,11 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 /**
  *  指定分配到某客服组
  *
- *  @param groupToken 客服组token
+ *  @param groupId 客服组Id
  */
-- (void)setClientOnlineWithGroupId:(NSString *)groupToken {
+- (void)setClientOnlineWithGroupId:(NSString *)groupId {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager setScheduledGroupId:groupToken];
+    [chatViewManager setScheduledGroupId:groupId];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -552,6 +558,12 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     [chatViewManager setNavRightButton:rightButton];
     [chatViewManager enableMessageImageMask:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+#pragma 监听收到美洽聊天消息的广播
+- (void)didReceiveNewMQMessages:(NSNotification *)notification {
+    NSArray *messages = [notification.userInfo objectForKey:@"messages"];
+    NSLog(@"在聊天界面外，监听到了收到客服消息的广播");
 }
 
 

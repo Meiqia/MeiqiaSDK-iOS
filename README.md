@@ -66,18 +66,31 @@ framework中的文件 | 说明
 
 
 ### 三分钟快速应用 SDK
-如上所述，使用美洽 SDK ，必不可少的一步便是[初始化 SDK](#初始化-sdk)，完成初始化后便可操作 SDK 其他功能和接口，比如推出视图等。美洽提供的 UI 简化了开发流程，使得为 APP 添加客服功能最低仅需2行代码和一个info.plist配置：
+如上所述，使用美洽 SDK ，必不可少的一步便是[初始化 SDK](#初始化-sdk)，完成初始化后便可操作 SDK 其他功能和接口，比如推出视图等。美洽提供的 UI 简化了开发流程，使得为 APP 添加客服功能最低仅需几行代码和一个info.plist配置：
 ```objc
-//建议在AppDelegate.m中系统回调didFinishLaunchingWithOptions中增加
-[MQManager initWithAppkey:@"开发者注册的App的AppKey" completion:^(NSString *clientId, NSError *error) {
-}];
+//在AppDelegate.m增加如下 SDK 设置
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [MQManager initWithAppkey:@"开发者的美洽AppKey" completion:^(NSString *clientId, NSError *error) {
+    }];
+    return YES;
+}
+
+//App 进入后台时，开启美洽推送服务
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    [MQManager openMeiQiaRemotePushService];
+}
+
+//App 进入前台时，关闭美洽推送服务
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    [MQManager closeMeiQiaRemotePushService];
+}
 ```
 
 ```objc
+//在开发者需要调出聊天界面的位置，增加如下代码
 MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 [chatViewManager pushMQChatViewControllerInViewController:self];
 ```
-
 
 #### info.plist设置
 美洽的图片、语音等静态资源放在了 AWS S3 上，但 `s3.amazonaws.com` 使用了 SHA1 证书，不满足 iOS 9 的 [ATS (App Transport Security)](https://developer.apple.com/library/prerelease/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14) 要求。
