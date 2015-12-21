@@ -185,13 +185,13 @@ NSDictionary* clientCustomizedAttrs = @{
 |sex|性别|
 |age|年龄|
 |job|职业|
-|avatar|头像URL|
+|avatar|头像 URL|
 |comment|备注|
 |tel|电话|
 |email|邮箱|
 |address|地址|
 |qq|QQ号|
-|weibo|微博ID|
+|weibo|微博 ID|
 |weixin|微信号|
 
 
