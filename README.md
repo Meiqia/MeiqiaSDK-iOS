@@ -179,21 +179,6 @@ NSDictionary* clientCustomizedAttrs = @{
 
 以下字段是美洽定义好的，开发者可通过上方提到的接口，直接对下方的字段进行设置：
 
-|Key|说明|
-|---|---|
-|name|真实姓名|
-|sex|性别|
-|age|年龄|
-|job|职业|
-|avatar|头像URL|
-|comment|备注|
-|tel|电话|
-|email|邮箱|
-|address|地址|
-|qq|QQ号|
-|weibo|微博ID|
-|weixin|微信号|
-
 
 ### 指定分配客服和客服组
 
