@@ -197,12 +197,12 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 ```objc
 //分配到指定客服，或指定组里面的客服，指定客服优先级高
-[MQManager setScheduledAgentWithAgentToken:agentToken agentGroupToken:agentGroupToken];
+[MQManager setScheduledAgentWithAgentId:agentId agentGroupId:agentGroupId];
 ```
 
 **注意**
 * 该选项需要在用户上线前设置。
-* 客服组 token 和客服 token 可以通过管理员帐号在后台的「设置」中查看。
+* 客服组 ID 和客服 ID 可以通过管理员帐号在后台的「设置」中查看。
 ![查看ID](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/8cde8b54491c203e)
 
 
@@ -551,6 +551,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 - [Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)](#xcode-warning-was-built-for-newer-ios-version-70-than-being-linked-60)
 - [美洽静态库的文件大小太大](#美洽静态库的文件大小太大)
 - [使用 TabBarController 后，inputBar 高度出现异常](#使用-tabbarcontroller-后inputbar-高度出现异常)
+- [如何得到客服id或客服分组id](#如何得到客服id或客服分组id)
 
 ### SDK 初始化失败
 
@@ -576,3 +577,6 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 ### 使用 TabBarController 后，inputBar 高度出现异常
 使用了 TabBarController 的 App，视图结构都各相不同，并且可能存在自定义 TabBar 的情况，所以美洽 SDK 无法判断并准确调整，需要开发者自行修改 App 或 SDK 代码。自 iOS 7 系统后，大多数情况下只需修改 TabBar 的 `hidden` 和 `translucent` 属性便可以正常使用。
+
+### 如何得到客服ID或客服分组ID
+请查看 [指定分配客服和客服组](#指定分配客服和客服组) 中的配图。
