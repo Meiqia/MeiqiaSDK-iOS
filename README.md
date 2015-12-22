@@ -411,7 +411,7 @@ NSString *clientId = [MQManager setClientOffline];
 
 开发者可在合适的地方，监听收到消息的广播，用于提醒顾客有新消息。广播的名字为 `MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION`，定义在 [MQDefinition.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQDefinition.h) 中。
 
-开发者可获取广播中的userInfo，来获取收到的消息数组，例如：`[notification.userInfo objectForKey:@"messages"]`
+开发者可获取广播中的userInfo，来获取收到的消息数组，数组中是美洽消息 [MQMessage](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQMessage.h) 实体，例如：`[notification.userInfo objectForKey:@"messages"]`
 
 **注意**，如果顾客退出聊天界面，开发者没有调用设置顾客离线接口的话，以后该顾客收到新消息，仍能收到`有新消息的广播`。
 ```objc
