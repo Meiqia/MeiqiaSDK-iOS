@@ -54,18 +54,19 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     
     sectionTextArray = @[
                          @[
-                             @"使用当前的顾客Id上线，并同步消息",
-                             @"输入美洽顾客id进行上线",
-                             @"输入自定义Id进行上线",
-                             @"查看当前美洽顾客id",
+                             @"使用当前的顾客 id 上线，并同步消息",
+                             @"输入美洽顾客 id 进行上线",
+                             @"输入自定义 id 进行上线",
+                             @"查看当前美洽顾客 id",
                              @"建立一个全新美洽顾客id账号",
-                             @"输入一个客服Id进行指定分配",
-                             @"输入一个客服组Id进行指定分配",
+                             @"输入一个客服 id 进行指定分配",
+                             @"输入一个客服组 id 进行指定分配",
                              @"上传该顾客的自定义信息",
                              @"设置当前顾客为离线状态",
                              @"结束当前对话",
                              @"删除所有美洽多媒体存储",
-                             @"当前的美洽顾客id为：(点击复制该顾客id)"
+                             @"查看当前 SDK 版本号",
+                             @"当前的美洽顾客 id 为：(点击复制该顾客 id )"
                              ],
                          @[
                              @"chatViewStyle1",
@@ -165,6 +166,9 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                 [self removeMeiqiaMediaData];
                 break;
             case 11:
+                [self getMeiqiaSDKVersion];
+                break;
+            case 12:
                 [self copyCurrentClientIdToPasteboard];
                 break;
             default:
@@ -405,6 +409,13 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"已为您移除多媒体存储，共 %f M", mediaSize] message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
         [alertView show];
     }];
+}
+
+
+- (void)getMeiqiaSDKVersion {
+    NSString *sdkVersion = [MQManager getMeiQiaSDKVersion];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"当前美洽 SDK 版本号为：%@", sdkVersion] message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+    [alertView show];
 }
 
 /**
