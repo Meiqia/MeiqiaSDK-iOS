@@ -66,7 +66,7 @@ framework中的文件 | 说明
 
 
 ### 三分钟快速应用 SDK
-如上所述，使用美洽 SDK ，必不可少的一步便是[初始化 SDK](#初始化-sdk)，完成初始化后便可操作 SDK 其他功能和接口，比如推出视图等。美洽提供的 UI 简化了开发流程，使得为 APP 添加客服功能最低仅需几行代码和一个 `info.plist` 配置：
+如上所述，使用美洽 SDK ，必不可少的一步便是[初始化 SDK](#初始化-sdk)，完成初始化后便可操作 SDK 其他功能和接口，比如退出视图等。美洽提供的 UI 简化了开发流程，使得为 APP 添加客服功能最低仅需几行代码和一个 `info.plist` 配置：
 ```objc
 //在AppDelegate.m增加如下 SDK 设置
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -222,10 +222,10 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 ### 调出视图
 美洽开源了一套 [聊天界面 Library](https://github.com/Meiqia/MQChatViewController)，完成了一整套 `MQManager` 中的接口。让开发者免去 UI 开发工作。并在 `MQChatViewController` 类中添加其他自定义选项和功能扩展。
 
-你只需要在用户需要客服服务的时候，推出美洽 UI。如下所示：
+你只需要在用户需要客服服务的时候，退出美洽 UI。如下所示：
 
 ```objc
-//当用户需要使用客服服务时，创建并推出视图
+//当用户需要使用客服服务时，创建并退出视图
 MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 [chatViewManager pushMQChatViewControllerInViewController:self];
 ```
@@ -405,7 +405,7 @@ NSString *clientId = [MQManager setClientOffline];
 
 如果设置了顾客离线，则客服发送的消息将会发送给开发者的服务端。
 
-`美洽建议`，顾客推出聊天界面时，不设置顾客离线，这样开发者仍能监听到收到消息的广播，以便提醒顾客有新消息。
+`美洽建议`，顾客退出聊天界面时，不设置顾客离线，这样开发者仍能监听到收到消息的广播，以便提醒顾客有新消息。
 
 
 #### 监听收到消息的广播
