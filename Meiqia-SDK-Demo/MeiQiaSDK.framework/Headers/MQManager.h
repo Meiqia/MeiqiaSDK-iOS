@@ -86,7 +86,7 @@
  *  @param completion  设置头像图片的回调
  */
 + (void)setClientAvatar:(UIImage *)avatarImage
-                completion:(void (^)(BOOL success, NSError *error))completion;
+             completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**
  * 让当前的client上线。请求成功后，该顾客将会出现在客服的对话列表中。
@@ -99,7 +99,7 @@
  */
 + (void)setCurrentClientOnlineWithSuccess:(void (^)(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages))success
                                   failure:(void (^)(NSError *error))failure
-                      receiveMessageDelegate:(id<MQManagerDelegate>)receiveMessageDelegate;
+                   receiveMessageDelegate:(id<MQManagerDelegate>)receiveMessageDelegate;
 
 /**
  * 根据美洽的顾客id，登陆美洽客服系统，并上线该顾客。请求成功后，该顾客将会出现在客服的对话列表中。
