@@ -574,6 +574,9 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 #pragma 监听收到美洽聊天消息的广播
 - (void)didReceiveNewMQMessages:(NSNotification *)notification {
     NSArray *messages = [notification.userInfo objectForKey:@"messages"];
+    for (MQMessage *message in messages) {
+        NSLog(@"messge content = %@", message.content);
+    }
     NSLog(@"在聊天界面外，监听到了收到客服消息的广播");
 }
 
