@@ -4,6 +4,10 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>.DS_Store</key>
+		<data>
+		3y++sUAKzaCQmjLBz2v0kvESHgc=
+		</data>
 		<key>Info.plist</key>
 		<data>
 		wXNtwUBFGOg0jbs7Y9WhNTOq1T8=
@@ -14,11 +18,11 @@
 		</data>
 		<key>MQDefinition.h</key>
 		<data>
-		HllUhiS/R4bM846poqvs7ZfGbCQ=
+		ek+NuhIRZoSZ+PJ7E4bQCpi3zO4=
 		</data>
 		<key>MQManager.h</key>
 		<data>
-		Xn0aLHS7wgrIAFRs6fimPPVMnXY=
+		yy1WmF1/lbZg/kSyaBUo3DBMilk=
 		</data>
 		<key>MQMessage.h</key>
 		<data>
@@ -33,11 +37,11 @@
 		</data>
 		<key>MQDefinition.h</key>
 		<data>
-		HllUhiS/R4bM846poqvs7ZfGbCQ=
+		ek+NuhIRZoSZ+PJ7E4bQCpi3zO4=
 		</data>
 		<key>MQManager.h</key>
 		<data>
-		Xn0aLHS7wgrIAFRs6fimPPVMnXY=
+		yy1WmF1/lbZg/kSyaBUo3DBMilk=
 		</data>
 		<key>MQMessage.h</key>
 		<data>
