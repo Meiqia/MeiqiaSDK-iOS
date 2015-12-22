@@ -20,13 +20,9 @@
     // Override point for customization after application launch.
     
     //main
-//#error 请填写您的美洽AppKey
-//    [MQManager initWithAppkey:@"开发者的美洽AppKey" completion:^(NSString *clientId, NSError *error) {
-//    }];
-    
-    //小心测试
-        [MQManager initWithAppkey:@"4946d7cc1fb1cc3c7816e7e9e74ce20b" completion:^(NSString *clientId, NSError *error) {
-        }];
+#error 请填写您的美洽AppKey
+    [MQManager initWithAppkey:@"开发者的美洽AppKey" completion:^(NSString *clientId, NSError *error) {
+    }];
     
     return YES;
 }
