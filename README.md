@@ -298,13 +298,13 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 请参考 [美洽开源聊天界面的国际化说明](https://github.com/Meiqia/MQChatViewController#localization---国际化本地化)。
 
-更多配置，可参见 [MQChatViewManager.h](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/Config/MQChatViewManager.h) 文件。
+开源聊天界面的更多配置，可参见 [MQChatViewManager.h](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/Config/MQChatViewManager.h) 文件。
 
 ## 5. 美洽 API 接口介绍
 
 **本节主要介绍部分重要的接口。在`MeiqiaSDK.framework`的`MQManager.h`中，所有接口都有详细注释。**
 
-开发者可使用美洽提供的API，自行定制聊天界面。使用以下接口前，别忘了 [初始化 SDK](#初始化-sdk)。
+开发者可使用美洽提供的 API，自行定制聊天界面。使用以下接口前，别忘了 [初始化 SDK](#初始化-sdk)。
 
 
 ### 接口描述
@@ -317,7 +317,6 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 [MQManager initWithAppkey:@"开发者注册的App的AppKey" completion:^(NSString *clientId, NSError *error) {
 }];
 ```
-
 
 #### 注册设备的 deviceToken
 
@@ -410,7 +409,7 @@ NSString *clientId = [MQManager setClientOffline];
 
 #### 监听收到消息的广播
 
-开发者可在合适的地方，监听收到消息的广播，用于提醒顾客有新消息。
+开发者可在合适的地方，监听收到消息的广播，用于提醒顾客有新消息。广播的名字为 `MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION`，定义在 [MQDefinition.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQDefinition.h) 中。
 
 开发者可获取广播中的userInfo，来获取收到的消息数组，例如：`[notification.userInfo objectForKey:@"messages"]`
 
@@ -564,7 +563,8 @@ MQAgent *agent = [MQManager getCurrentAgent];
 - [Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)](#xcode-warning-was-built-for-newer-ios-version-70-than-being-linked-60)
 - [美洽静态库的文件大小太大](#美洽静态库的文件大小太大)
 - [使用 TabBarController 后，inputBar 高度出现异常](#使用-tabbarcontroller-后inputbar-高度出现异常)
-- [如何得到客服id或客服分组id](#如何得到客服id或客服分组id)
+- [如何得到客服 id 或客服分组 id](#如何得到客服id或客服分组id)
+- [如何在聊天界面之外监听新消息的通知](#如何在聊天界面之外监听新消息的通知)
 
 ### SDK 初始化失败
 
@@ -593,3 +593,6 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 ### 如何得到客服ID或客服分组ID
 请查看 [指定分配客服和客服组](#指定分配客服和客服组) 中的配图。
+
+### 如何在聊天界面之外监听新消息的通知
+请查看 [如何监听监听收到消息的广播](#监听收到消息的广播)。
