@@ -496,6 +496,8 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     UIImage *keyboardHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleTwo"];
     UIImage *resightKeyboardImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleTwo"];
     UIImage *resightKeyboardHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
+    UIImage *avatar = [UIImage imageNamed:@"ijinmaoAvatar"];
+    [chatViewManager setoutgoingDefaultAvatarImage:avatar];
     [chatViewManager setPhotoSenderImage:photoImage highlightedImage:photoHighlightedImage];
     [chatViewManager setVoiceSenderImage:voiceImage highlightedImage:voiceHighlightedImage];
     [chatViewManager setTextSenderImage:keyboardImage highlightedImage:keyboardHighlightedImage];

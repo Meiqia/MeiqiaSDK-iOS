@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CC03CFA91C19987500603659 /* MQServiceToViewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = CC03CFA81C19987500603659 /* MQServiceToViewInterface.m */; };
+		CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */; };
 		CCE9D10B1C1812F6004E862E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10A1C1812F6004E862E /* main.m */; };
 		CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10D1C1812F6004E862E /* AppDelegate.m */; };
 		CCE9D1111C1812F6004E862E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1101C1812F6004E862E /* ViewController.m */; };
@@ -123,6 +124,7 @@
 /* Begin PBXFileReference section */
 		CC03CFA71C19987500603659 /* MQServiceToViewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQServiceToViewInterface.h; sourceTree = "<group>"; };
 		CC03CFA81C19987500603659 /* MQServiceToViewInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQServiceToViewInterface.m; sourceTree = "<group>"; };
+		CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ijinmaoAvatar.png; sourceTree = "<group>"; };
 		CCE9D1061C1812F6004E862E /* Meiqia-SDK-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meiqia-SDK-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCE9D10A1C1812F6004E862E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CCE9D10C1C1812F6004E862E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 		CCE9D1081C1812F6004E862E /* Meiqia-SDK-Demo */ = {
 			isa = PBXGroup;
 			children = (
+				CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */,
 				CCE9D14B1C1813BE004E862E /* DevelopViewController.h */,
 				CCE9D14C1C1813BE004E862E /* DevelopViewController.m */,
 				CCE9D10C1C1812F6004E862E /* AppDelegate.h */,
@@ -918,6 +921,7 @@
 			files = (
 				CCE9D1191C1812F6004E862E /* LaunchScreen.storyboard in Resources */,
 				CCE9D1161C1812F6004E862E /* Assets.xcassets in Resources */,
+				CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */,
 				CCE9D1141C1812F6004E862E /* Main.storyboard in Resources */,
 				CCE9D20C1C181418004E862E /* MQChatViewAsset.bundle in Resources */,
 			);
