@@ -12,9 +12,7 @@
 
 @interface MQChatViewTableDataSource()
 
-//@property (nonatomic, weak) UITableView *chatTableView;
 @property (nonatomic, weak) MQChatViewService *chatViewService;
-
 
 @end
 

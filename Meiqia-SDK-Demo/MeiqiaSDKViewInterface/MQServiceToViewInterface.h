@@ -202,8 +202,8 @@
  *
  *  @param messageId 消息id
  */
-+ (void)removeMessageInDatabaseWithId:(NSString *)messageId;
-
++ (void)removeMessageInDatabaseWithId:(NSString *)messageId
+                           completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**
  *  获取当前顾客的顾客信息

@@ -269,8 +269,9 @@
 }
 
 + (void)removeMessageInDatabaseWithId:(NSString *)messageId
+                           completion:(void (^)(BOOL success, NSError *error))completion
 {
-    [MQManager removeMessageInDatabaseWithId:messageId];
+    [MQManager removeMessageInDatabaseWithId:messageId completion:completion];
 }
 
 + (NSDictionary *)getCurrentClientInfo {

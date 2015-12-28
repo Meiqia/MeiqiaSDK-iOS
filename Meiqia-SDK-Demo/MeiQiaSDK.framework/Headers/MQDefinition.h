@@ -26,7 +26,7 @@ static NSString * const MQRequesetErrorDomain = @"com.meiqia.error.resquest.erro
  美洽Error的code对应码
  */
 typedef enum : NSInteger {
-    MQErrorCodeParameterUnKown              = -2000,    //未知错误
+    MQErrorCodeParameterUnKnown             = -2000,    //未知错误
     MQErrorCodeParameterError               = -2001,    //参数错误
     MQErrorCodeCurrentClientNotFound        = -2003,    //当前没有顾客，请新建一个顾客后再上线
     MQErrorCodeClientNotExisted             = -2004,    //美洽服务端没有找到对应的client
