@@ -9,6 +9,7 @@
 #import "MQServiceToViewInterface.h"
 #import <MeiQiaSDK/MQManager.h>
 #import <MeiQiaSDK/MQAgent.h>
+#import "MQChatViewConfig.h"
 
 #pragma 该文件的作用是：开源聊天界面调用美洽 SDK 接口的中间层，目的是剥离开源界面中的美洽业务逻辑。这样就能让该聊天界面用于非美洽项目中，开发者只需要实现 `MQServiceToViewInterface` 中的方法，即可将自己项目的业务逻辑和该聊天界面对接。
 
@@ -262,14 +263,18 @@
                         completion:(void (^)(NSData *mediaData, NSError *error))completion
 {
     [MQManager downloadMediaWithUrlString:urlString progress:^(float progress) {
-        progressBlock(progress);
+        if (progressBlock) {
+            progressBlock(progress);
+        }
     } completion:^(NSData *mediaData, NSError *error) {
-        completion(mediaData, error);
+        if (completion) {
+            completion(mediaData, error);
+        }
     }];
 }
 
 + (void)removeMessageInDatabaseWithId:(NSString *)messageId
-                           completion:(void (^)(BOOL success, NSError *error))completion
+                           completion:(void (^)(BOOL, NSError *))completion
 {
     [MQManager removeMessageInDatabaseWithId:messageId completion:completion];
 }
@@ -282,7 +287,11 @@
                 completion:(void (^)(BOOL success, NSError *error))completion
 {
     [MQManager setClientAvatar:avatarImage completion:^(BOOL success, NSError *error) {
-        completion(success, error);
+        [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage = avatarImage;
+        [[NSNotificationCenter defaultCenter] postNotificationName:MQChatTableViewShouldRefresh object:avatarImage];
+        if (completion) {
+            completion(success, error);
+        }
     }];
 }
 
@@ -312,8 +321,8 @@
 }
 
 - (void)setClientOnlineWithClientId:(NSString *)clientId
-                              success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
-               receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
+                            success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+             receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
 {
     self.serviceToViewDelegate = receiveMessageDelegate;
     if (!clientId || clientId.length == 0) {
