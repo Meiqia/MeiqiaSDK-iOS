@@ -25,6 +25,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
+                    美洽3.0 SDK for iOS
                    DESC
 
   s.homepage     = "http://meiqia.com"
@@ -119,7 +120,7 @@ Pod::Spec.new do |s|
   s.vendored_frameworks = "Meiqia-SDK-Demo/MeiQiaSDK.framework"
 
   # s.library   = "iconv"
-  s.libraries = "libsqlite3", "libicucore"
+  s.libraries = "sqlite3", "icucore"
 
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
