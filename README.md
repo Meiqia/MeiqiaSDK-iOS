@@ -184,17 +184,10 @@ NSDictionary* clientCustomizedAttrs = @{
 |Key|说明|
 |---|---|
 |name|真实姓名|
-|sex|性别|
-|age|年龄|
-|job|职业|
 |avatar|头像 URL|
+|tags|标签，数组形式，且必须是企业中已经存在的标签|
+|source|备注|
 |comment|备注|
-|tel|电话|
-|email|邮箱|
-|address|地址|
-|qq|QQ号|
-|weibo|微博 ID|
-|weixin|微信号|
 
 
 ## 指定分配客服和客服组
@@ -593,6 +586,7 @@ request.body 为消息数据，数据结构为：
 |customizedId|开发者传的自定义 id|
 |contentType|消息类型 - text | photo | audio|
 |deviceOS|设备系统|
+|customizedData|开发者上传的自定义的属性|
 
 开发者可以根据请求中的签名，对推送消息进行数据验证，美洽提供了 `Java、Python、Ruby、PHP` 四种语言的计算签名的代码，具体请移步 [美洽 SDK 3.0 推送的数据结构签名算法](https://github.com/Meiqia/MeiqiaSDK-Push-Signature-Example)。
 
