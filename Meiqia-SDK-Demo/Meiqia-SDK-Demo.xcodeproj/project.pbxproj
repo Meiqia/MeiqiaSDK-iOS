@@ -122,6 +122,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B31C71D1C32806A00664EAE /* MQSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQSDK.h; sourceTree = "<group>"; };
 		CC03CFA71C19987500603659 /* MQServiceToViewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQServiceToViewInterface.h; sourceTree = "<group>"; };
 		CC03CFA81C19987500603659 /* MQServiceToViewInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQServiceToViewInterface.m; sourceTree = "<group>"; };
 		CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ijinmaoAvatar.png; sourceTree = "<group>"; };
@@ -391,6 +392,7 @@
 				CCE9D1171C1812F6004E862E /* LaunchScreen.storyboard */,
 				CCE9D11A1C1812F6004E862E /* Info.plist */,
 				CCE9D1091C1812F6004E862E /* Supporting Files */,
+				0B31C71D1C32806A00664EAE /* MQSDK.h */,
 			);
 			path = "Meiqia-SDK-Demo";
 			sourceTree = "<group>";
