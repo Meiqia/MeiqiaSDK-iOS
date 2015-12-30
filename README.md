@@ -642,11 +642,12 @@ request.body 为消息数据，数据结构为：
 
 # 更新日志
 
-**v3.0.1 2016年12月28日**
-* 增加 CocoaPods
-
 **v3.0.2 2016年12月30日**
 * 处理接口参数为 nil 的情况。
 * 增加删除数据库 message 接口 removeMessageInDatabaseWithId 的结果回调。
 * 修复上传自定义头像图片，聊天界面没有更新的问题。
 * 上传 deviceToken 为字符串的形式。
+
+**v3.0.1 2016年12月28日**
+* 增加 CocoaPods
+
