@@ -588,7 +588,7 @@ request.body 为消息数据，数据结构为：
 |---|---|
 |messageId|消息 id|
 |content|消息内容|
-|messageTime|发送人姓名（客服名字）|
+|messageTime|发送时间|
 |deviceToken|发送对象设备的 deviceToken|
 |clientId|发送对象的顾客 id|
 |customizedId|开发者传的自定义 id|
