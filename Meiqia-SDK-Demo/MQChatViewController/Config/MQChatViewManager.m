@@ -31,6 +31,7 @@
     if (viewController.navigationController) {
         chatViewConfig.isPushChatView = true;
         [self updateNavAttributesWithViewController:chatViewController navigationController:viewController.navigationController isPresentModalView:false];
+        viewController.hidesBottomBarWhenPushed = chatViewConfig.hidesBottomBarWhenPushed;
         [viewController.navigationController pushViewController:chatViewController animated:true];
     } else {
         [self presentMQChatViewControllerInViewController:viewController];
@@ -105,6 +106,11 @@
         return ;
     }
     [chatViewController dismissChatViewController];
+}
+
+- (void)hidesBottomBarWhenPushed:(BOOL)hide
+{
+    chatViewConfig.hidesBottomBarWhenPushed = hide;
 }
 
 - (void)enableCustomChatViewFrame:(BOOL)enable {
