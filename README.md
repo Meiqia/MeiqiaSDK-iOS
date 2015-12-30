@@ -53,8 +53,8 @@ framework中的文件 | 说明
 
 美洽 SDK 的实现，依赖了一些系统框架，在开发应用时，要在工程里加入这些框架。开发者首先点击工程右边的工程名,然后在工程名右边依次选择 *TARGETS* -> *BuiLd Phases* -> *Link Binary With Libraries*，展开 *LinkBinary With Libraries* 后点击展开后下面的 *+* 来添加下面的依赖项:
 
-- libsqlite3.dylib (Xcode 7以前) / libsqlite3.tbd (Xcode 7)
-- libicucore.dylib (Xcode 7以前) / libicucore.tbd (Xcode 7)
+- libsqlite3.tbd
+- libicucore.tbd
 - AVFoundation.framework
 - CoreTelephony.framework
 - SystemConfiguration.framework
@@ -184,17 +184,10 @@ NSDictionary* clientCustomizedAttrs = @{
 |Key|说明|
 |---|---|
 |name|真实姓名|
-|sex|性别|
-|age|年龄|
-|job|职业|
 |avatar|头像 URL|
+|tags|标签，数组形式，且必须是企业中已经存在的标签|
+|source|备注|
 |comment|备注|
-|tel|电话|
-|email|邮箱|
-|address|地址|
-|qq|QQ号|
-|weibo|微博 ID|
-|weixin|微信号|
 
 
 ## 指定分配客服和客服组
@@ -593,6 +586,7 @@ request.body 为消息数据，数据结构为：
 |customizedId|开发者传的自定义 id|
 |contentType|消息类型 - text | photo | audio|
 |deviceOS|设备系统|
+|customizedData|开发者上传的自定义的属性|
 
 开发者可以根据请求中的签名，对推送消息进行数据验证，美洽提供了 `Java、Python、Ruby、PHP` 四种语言的计算签名的代码，具体请移步 [美洽 SDK 3.0 推送的数据结构签名算法](https://github.com/Meiqia/MeiqiaSDK-Push-Signature-Example)。
 
@@ -618,7 +612,7 @@ request.body 为消息数据，数据结构为：
 
 ## Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)
 
-如果开发者的 App 最低支持系统是 7.0 一下，将会出现这种 warning。
+如果开发者的 App 最低支持系统是 7.0 以下，将会出现这种 warning。
 
 `ld: warning: object file (/Meiqia-SDK-Demo/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrnb.a(wrapper.o)) was built for newer iOS version (7.0) than being linked (6.0)`
 
