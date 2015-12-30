@@ -53,8 +53,8 @@ framework中的文件 | 说明
 
 美洽 SDK 的实现，依赖了一些系统框架，在开发应用时，要在工程里加入这些框架。开发者首先点击工程右边的工程名,然后在工程名右边依次选择 *TARGETS* -> *BuiLd Phases* -> *Link Binary With Libraries*，展开 *LinkBinary With Libraries* 后点击展开后下面的 *+* 来添加下面的依赖项:
 
-- libsqlite3.dylib (Xcode 7以前) / libsqlite3.tbd (Xcode 7)
-- libicucore.dylib (Xcode 7以前) / libicucore.tbd (Xcode 7)
+- libsqlite3.tbd
+- libicucore.tbd
 - AVFoundation.framework
 - CoreTelephony.framework
 - SystemConfiguration.framework
@@ -612,7 +612,7 @@ request.body 为消息数据，数据结构为：
 
 ## Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)
 
-如果开发者的 App 最低支持系统是 7.0 一下，将会出现这种 warning。
+如果开发者的 App 最低支持系统是 7.0 以下，将会出现这种 warning。
 
 `ld: warning: object file (/Meiqia-SDK-Demo/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrnb.a(wrapper.o)) was built for newer iOS version (7.0) than being linked (6.0)`
 
