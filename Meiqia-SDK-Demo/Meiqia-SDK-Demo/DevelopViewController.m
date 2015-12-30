@@ -85,7 +85,9 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                               @"体重"         :    @"93.0kg",
                               @"效力球队"      :    @"洛杉矶湖人队",
                               @"场上位置"      :    @"得分后卫",
-                              @"球衣号码"      :    @"24号"
+                              @"球衣号码"      :    @"24号",
+                              @"comment"     :     @"这是一个备注",
+                              @"tags"        :     @[@"重要顾客", @"无效标签"]
                               };
     
     [self initNavBar];
