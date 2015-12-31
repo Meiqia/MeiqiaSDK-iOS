@@ -611,7 +611,7 @@ request.body 为消息数据，数据结构为：
 ## SDK 初始化失败
 
 ### 1. 美洽的 AppKey 版本不正确
-当前SDK是为美洽3.0提供服务，如果你使用的 AppKey 是美洽2.0的，请使用美洽2.0 SDK
+当前SDK是为美洽 3.0 提供服务，如果你使用的 AppKey 是美洽 2.0 「经典版」的，请使用美洽 2.0 「经典版」SDK
 
 ### 2. 没有配置 NSExceptionDomains
 如果没有配置`NSExceptionDomains`，美洽SDK会返回`MQErrorCodePlistConfigurationError`，并且在控制台中打印：`!!!美洽 SDK Error：请开发者在 App 的 info.plist 中增加 NSExceptionDomains，具体操作方法请见「https://github.com/Meiqia/MeiqiaSDK-iOS#info.plist设置」`。如果出现上诉情况，请 [配置NSExceptionDomains](#infoplist设置)
