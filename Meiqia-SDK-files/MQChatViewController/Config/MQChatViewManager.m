@@ -8,6 +8,7 @@
 
 #import "MQChatViewManager.h"
 #import "MQImageUtil.h"
+#import "MQServiceToViewInterface.h"
 
 @implementation MQChatViewManager {
     MQChatViewController *chatViewController;
@@ -31,7 +32,7 @@
     if (viewController.navigationController) {
         chatViewConfig.isPushChatView = true;
         [self updateNavAttributesWithViewController:chatViewController navigationController:viewController.navigationController isPresentModalView:false];
-        viewController.hidesBottomBarWhenPushed = chatViewConfig.hidesBottomBarWhenPushed;
+        chatViewController.hidesBottomBarWhenPushed = chatViewConfig.hidesBottomBarWhenPushed;
         [viewController.navigationController pushViewController:chatViewController animated:true];
     } else {
         [self presentMQChatViewControllerInViewController:viewController];

@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "MQChatViewController.h"
 #import "MQChatViewConfig.h"
-#import "MQServiceToViewInterface.h"
 
 /**
  * @brief 客服聊天界面的配置类
