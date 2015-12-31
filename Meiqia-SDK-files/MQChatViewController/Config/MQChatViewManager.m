@@ -8,6 +8,7 @@
 
 #import "MQChatViewManager.h"
 #import "MQImageUtil.h"
+#import "MQServiceToViewInterface.h"
 
 @implementation MQChatViewManager {
     MQChatViewController *chatViewController;
