@@ -84,14 +84,14 @@ framework中的文件 | 说明
     return YES;
 }
 
-//App 进入后台时，开启美洽推送服务
+//App 进入后台时，关闭美洽服务
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [MQManager openMeiQiaRemotePushService];
+    [MQManager closeMeiqiaService];
 }
 
-//App 进入前台时，关闭美洽推送服务
+//App 进入前台时，开启美洽服务
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [MQManager closeMeiQiaRemotePushService];
+    [MQManager openMeiqiaService];
 }
 ```
 
@@ -194,7 +194,7 @@ NSDictionary* clientCustomizedAttrs = @{
 |name|真实姓名|
 |avatar|头像 URL|
 |tags|标签，数组形式，且必须是企业中已经存在的标签|
-|source|备注|
+|source|顾客来源|
 |comment|备注|
 
 
@@ -553,11 +553,11 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 在 App 进入后台时，应该通知美洽服务端，让其将以后的消息推送给开发者提供的服务器地址。
 
-开发者需要在 `AppDelegate.m` 的系统回调 `applicationDidEnterBackground` 调用打开美洽推送的接口，如下代码：
+开发者需要在 `AppDelegate.m` 的系统回调 `applicationDidEnterBackground` 调用关闭美洽服务接口，如下代码：
 
 ```objc
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [MQManager openMeiQiaRemotePushService];
+    [MQManager closeMeiQiaService];
 }
 ```
 
@@ -565,11 +565,11 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 在 App 进入前台时，应该通知美洽服务端，让其将以后的消息发送给SDK，而不再推送给开发者提供的服务端。
 
-开发者需要在 `AppDelegate.m` 的系统回调 `applicationWillEnterForeground` 调用关闭美洽推送的接口，如下代码：
+开发者需要在 `AppDelegate.m` 的系统回调 `applicationWillEnterForeground` 调用开启美洽服务接口，如下代码：
 
 ```objc
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [MQManager closeMeiQiaRemotePushService];
+    [MQManager openMeiQiaService];
 }
 ```
 
@@ -593,7 +593,7 @@ request.body 为消息数据，数据结构为：
 |deviceToken|发送对象设备的 deviceToken，格式为字符串|
 |clientId|发送对象的顾客 id|
 |customizedId|开发者传的自定义 id|
-|contentType|消息类型 - text | photo | audio|
+|contentType|消息类型 - text/photo/audio|
 |deviceOS|设备系统|
 |customizedData|开发者上传的自定义的属性|
 
@@ -612,6 +612,11 @@ request.body 为消息数据，数据结构为：
 
 ### 1. 美洽的 AppKey 版本不正确
 当前SDK是为美洽 3.0 提供服务，如果你使用的 AppKey 是美洽 2.0 「经典版」的，请使用美洽 2.0 「经典版」SDK
+
+传送门：
+
+* [新版注册入口](https://app.meiqia.com/signup)
+* [经典版注册入口](http://meiqia.com/signup)
 
 ### 2. 没有配置 NSExceptionDomains
 如果没有配置`NSExceptionDomains`，美洽SDK会返回`MQErrorCodePlistConfigurationError`，并且在控制台中打印：`!!!美洽 SDK Error：请开发者在 App 的 info.plist 中增加 NSExceptionDomains，具体操作方法请见「https://github.com/Meiqia/MeiqiaSDK-iOS#info.plist设置」`。如果出现上诉情况，请 [配置NSExceptionDomains](#infoplist设置)
@@ -642,15 +647,23 @@ request.body 为消息数据，数据结构为：
 
 # 更新日志
 
-**v3.0.4 2016年12月31日**
+**v3.0.5 2016年1月5日**
+
+* 重命名「开启/关闭美洽推送服务」为「开启/关闭美洽服务」，确保没有歧义
+* 修改顾客自定义信息，以支持获取所有开发者上传的自定义信息
+
+**v3.0.4 2015年12月31日**
+
 * 修复一些手机发送照片卡顿的问题。
 * 复新建 client 情况下没有重新上传 deviceToken 的问题。
 
-**v3.0.2 2016年12月30日**
+**v3.0.2 2015年12月30日**
+
 * 处理接口参数为 nil 的情况。
 * 增加删除数据库 message 接口 removeMessageInDatabaseWithId 的结果回调。
 * 修复上传自定义头像图片，聊天界面没有更新的问题。
 * 上传 deviceToken 为字符串的形式。
 
-**v3.0.1 2016年12月28日**
+**v3.0.1 2015年12月28日**
+
 * 增加 CocoaPods

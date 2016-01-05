@@ -30,18 +30,18 @@
 @interface MQManager : NSObject
 
 /**
- *  关闭美洽推送，即客服发送消息将以即时消息发送，而不走远程推送
+ *  开启美洽服务
  *
- *  @warning App进入前台时，需要关闭美洽推送。开发者需要在AppDelegate.m中的applicationWillEnterForeground方法中，调用此接口，用于关闭美洽远程推送
+ *  @warning App进入前台时，需要开启美洽服务。开发者需要在AppDelegate.m中的applicationWillEnterForeground方法中，调用此接口，用于开启美洽服务
  */
-+ (void)closeMeiQiaRemotePushService;
++ (void)openMeiqiaService;
 
 /**
- *  通知美洽服务端发送消息至开发者的推送服务端，以便客服发送消息能正确发送到开发者的推送服务器
+ *  关闭美洽服务
  *
- *  @warning App退到后台时，需要开启美洽推送。开发者需要在AppDelegate.m中的applicationDidEnterBackground方法中，调用此接口，用于开启美洽远程推送
+ *  @warning App退到后台时，需要关闭美洽服务。开发者需要在AppDelegate.m中的applicationDidEnterBackground方法中，调用此接口，用于关闭美洽服务
  */
-+ (void)openMeiQiaRemotePushService;
++ (void)closeMeiqiaService;
 
 /**
  * 设置用户的设备唯一标识，在AppDelegate.m的didRegisterForRemoteNotificationsWithDeviceToken系统回调中注册deviceToken。
