@@ -49,11 +49,11 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [MQManager openMeiQiaRemotePushService];
+    [MQManager closeMeiqiaService];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [MQManager closeMeiQiaRemotePushService];
+    [MQManager openMeiqiaService];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
