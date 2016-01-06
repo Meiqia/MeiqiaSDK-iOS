@@ -663,7 +663,3 @@ request.body 为消息数据，数据结构为：
 * 增加删除数据库 message 接口 removeMessageInDatabaseWithId 的结果回调。
 * 修复上传自定义头像图片，聊天界面没有更新的问题。
 * 上传 deviceToken 为字符串的形式。
-
-**v3.0.1 2015年12月28日**
-
-* 增加 CocoaPods
