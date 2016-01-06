@@ -72,6 +72,14 @@
                         agentGroupId:(NSString *)agentGroupId;
 
 /**
+ *  指定分配客服/客服组，该客服/客服组不在线，如何转接的接口
+ *
+ *  @param scheduleRule 转接规则
+ *  @warning 默认转接给企业随机一个客服
+ */
++ (void)setScheduleLogicWithRule:(MQScheduleRules)scheduleRule;
+
+/**
  * 开发者自定义当前顾客的信息，用于展示给客服。
  *
  * @param clientInfo 顾客的信息
