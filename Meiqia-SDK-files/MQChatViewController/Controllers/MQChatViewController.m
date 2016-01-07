@@ -451,12 +451,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma UINavigationControllerDelegate
-- (void)navigationController:(UINavigationController *)navigationController
-      willShowViewController:(UIViewController *)viewController
-                    animated:(BOOL)animated
+-(void)navigationController:(UINavigationController *)navigationController
+     willShowViewController:(UIViewController *)viewController
+                   animated:(BOOL)animated
 {
-    [[UIApplication sharedApplication] setStatusBarStyle:[MQChatViewConfig sharedConfig].statusBarStyle];
+    //修改status样式
+    if ([navigationController isKindOfClass:[UIImagePickerController class]]) {
+        [UIApplication sharedApplication].statusBarStyle = currentStatusBarStyle;
+    }
 }
 
 #pragma MQChatCellDelegate
@@ -575,15 +577,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 
 #endif
-
-#pragma UINavigationControllerDelegate
--(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    //修改status样式
-    if ([viewController isKindOfClass:[self class]]) {
-            [UIApplication sharedApplication].statusBarStyle = currentStatusBarStyle;
-    }
-}
 
 
 @end
