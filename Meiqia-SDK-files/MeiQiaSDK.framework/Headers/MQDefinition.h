@@ -42,3 +42,12 @@ typedef enum : NSUInteger {
     MQClientOnlineResultParameterError,     //上线参数错误
     MQClientOnlineResultNotScheduledAgent   //没有可接待的客服
 } MQClientOnlineResult;
+
+/**
+ 指定分配客服，该客服不在线后转接的逻辑
+ */
+typedef enum : NSUInteger {
+    MQScheduleRulesNone         = 1,            //不转接给任何人
+    MQScheduleRulesGroup        = 2,            //转接给组内的人
+    MQScheduleRulesEnterprise   = 3             //转接给企业其他随机一个人
+} MQScheduleRules;

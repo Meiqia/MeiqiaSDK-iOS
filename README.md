@@ -79,19 +79,19 @@ framework中的文件 | 说明
 ```objc
 //在AppDelegate.m增加如下 SDK 设置
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [MQManager initWithAppkey:@"开发者的美洽AppKey" completion:^(NSString *clientId, NSError *error) {
-    }];
-    return YES;
+[MQManager initWithAppkey:@"开发者的美洽AppKey" completion:^(NSString *clientId, NSError *error) {
+}];
+return YES;
 }
 
 //App 进入后台时，关闭美洽服务
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [MQManager closeMeiqiaService];
+[MQManager closeMeiqiaService];
 }
 
 //App 进入前台时，开启美洽服务
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [MQManager openMeiqiaService];
+[MQManager openMeiqiaService];
 }
 ```
 
@@ -109,16 +109,16 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 ```xml
 <key>NSAppTransportSecurity</key>
 <dict>
-    <key>NSAllowsArbitraryLoads</key>
-    <true/>
-    <key>NSExceptionDomains</key>
-    <dict>
-        <key>s3.cn-north-1.amazonaws.com.cn</key>
-            <dict>
-            <key>NSExceptionRequiresForwardSecrecy</key>
-            <false/>
-        </dict>
-    </dict>
+<key>NSAllowsArbitraryLoads</key>
+<true/>
+<key>NSExceptionDomains</key>
+<dict>
+<key>s3.cn-north-1.amazonaws.com.cn</key>
+<dict>
+<key>NSExceptionRequiresForwardSecrecy</key>
+<false/>
+</dict>
+</dict>
 </dict>
 ```
 添加完成后，info.plist显示效果如图：
@@ -175,13 +175,13 @@ App 进入后台后，美洽推送给开发者服务端的消息数据格式中�
 ```objc
 //创建自定义信息
 NSDictionary* clientCustomizedAttrs = @{
-    @"name"        : @"Kobe Bryant",
-    @"avatar"      : @"http://meiqia.com/avatar.png",
-    @"身高"         : @"1.98m",
-    @"体重"         : @"93.0kg",
-    @"效力球队"      : @"洛杉矶湖人队",
-    @"场上位置"      : @"得分后卫",
-    @"球衣号码"      : @"24号"
+@"name"        : @"Kobe Bryant",
+@"avatar"      : @"http://meiqia.com/avatar.png",
+@"身高"         : @"1.98m",
+@"体重"         : @"93.0kg",
+@"效力球队"      : @"洛杉矶湖人队",
+@"场上位置"      : @"得分后卫",
+@"球衣号码"      : @"24号"
 };
 [MQManager setClientInfo:clientCustomizedAttrs completion:^(BOOL success) {
 }];
@@ -436,9 +436,9 @@ NSString *clientId = [MQManager setClientOffline];
 
 #pragma 监听收到美洽聊天消息的广播
 - (void)didReceiveNewMQMessages:(NSNotification *)notification {
-    //广播中的消息数组
-    NSArray *messages = [notification.userInfo objectForKey:@"messages"];
-    NSLog(@"监听到了收到客服消息的广播");
+//广播中的消息数组
+NSArray *messages = [notification.userInfo objectForKey:@"messages"];
+NSLog(@"监听到了收到客服消息的广播");
 }
 
 ```
@@ -557,7 +557,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 ```objc
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [MQManager closeMeiQiaService];
+[MQManager closeMeiQiaService];
 }
 ```
 
@@ -569,7 +569,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 ```objc
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [MQManager openMeiQiaService];
+[MQManager openMeiQiaService];
 }
 ```
 
@@ -602,11 +602,13 @@ request.body 为消息数据，数据结构为：
 # 常见问题
 
 - [SDK 初始化失败](#sdk-初始化失败)
+- [没有显示 导航栏栏/UINavgationBar](#没有显示-导航栏栏uinavgationbar)
 - [Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)](#xcode-warning-was-built-for-newer-ios-version-70-than-being-linked-60)
 - [美洽静态库的文件大小太大](#美洽静态库的文件大小太大)
 - [使用 TabBarController 后，inputBar 高度出现异常](#使用-tabbarcontroller-后inputbar-高度出现异常)
 - [如何得到客服 id 或客服分组 id](#如何得到客服id或客服分组id)
 - [如何在聊天界面之外监听新消息的通知](#如何在聊天界面之外监听新消息的通知)
+- [指定分配客服/客服组失效](#指定分配客服/客服组失效)
 
 ## SDK 初始化失败
 
@@ -624,13 +626,22 @@ request.body 为消息数据，数据结构为：
 ### 3. 网络异常
 如果上诉情况均不存在，请检查引入美洽SDK的设备的网络是否通畅
 
+## 没有显示 导航栏/UINavgationBar
+美洽开源的聊天界面用的是系统的 `UINavgationController`，所以没有显示导航栏的原因有3种可能：
+
+* 如果使用的是`Push`方式弹出视图，那么可能是传入 `viewController` 没有基于 `UINavigationController`。
+* 如果使用的是`Push`方式弹出视图，那么可能是 `UINavgationBar` 被隐藏或者是透明的。
+* App中使用了 `Category`，对 `UINavgationBar` 做了修改，造成无法显示。
+
+其中1、2种情况，除了修改代码，还可以直接使用 `present` 方式弹出视图解决。
+
 ## Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)
 
 如果开发者的 App 最低支持系统是 7.0 以下，将会出现这种 warning。
 
 `ld: warning: object file (/Meiqia-SDK-Demo/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrnb.a(wrapper.o)) was built for newer iOS version (7.0) than being linked (6.0)`
 
-原因是美洽将 SDK 中使用的开源库 [opencore-amr](http://sourceforge.net/projects/opencore-amr/) 针对支持Bitcode而从新编译了一次，但这并不影响SDK在iOS 6中的使用。如果你介意，并且不会使用 Bitcode，可以将美洽SDK中使用 `opencore-amr` 替换为老版本：[传送门](https://github.com/molon/MLAudioRecorder/tree/master/MLRecorder/MLAudioRecorder/amr_en_de/lib)
+原因是美洽将 SDK 中使用的开源库 [opencore-amr](http://sourceforge.net/projects/opencore-amr/) 针对支持Bitcode而重新编译了一次，但这并不影响SDK在iOS 6中的使用。如果你介意，并且不会使用 Bitcode，可以将美洽SDK中使用 `opencore-amr` 替换为老版本：[传送门](https://github.com/molon/MLAudioRecorder/tree/master/MLRecorder/MLAudioRecorder/amr_en_de/lib)
 
 ## 美洽静态库的文件大小太大
 因为美洽静态库包含5个平台（armv7、armv7s、arm64、i386、x86_64）+ Bitcode。但这并不代表会严重影响编译后的宿主 App 大小，实际上，这只会增加宿主 App 100kb 左右大小。
@@ -644,8 +655,15 @@ request.body 为消息数据，数据结构为：
 ## 如何在聊天界面之外监听新消息的通知
 请查看 [如何监听监听收到消息的广播](#监听收到消息的广播)。
 
+## 指定分配客服/客服组失效
+请查看指定的客服的服务顾客的上限是否被设置成了0，或服务顾客的数量是否已经超过服务上限。查看位置为：`工作台 - 设置 - 客服与分组 - 点击某客服`
 
 # 更新日志
+
+**v3.0.6 2016年1月6日**
+	
+* 修复开发者的导航栏不透明导致的黑边问题。
+* 增加指定分配客服、客服组接口的转接规则，即若指定分配的客服不在线时，如何转接。
 
 **v3.0.5 2016年1月5日**
 
@@ -663,7 +681,3 @@ request.body 为消息数据，数据结构为：
 * 增加删除数据库 message 接口 removeMessageInDatabaseWithId 的结果回调。
 * 修复上传自定义头像图片，聊天界面没有更新的问题。
 * 上传 deviceToken 为字符串的形式。
-
-**v3.0.1 2015年12月28日**
-
-* 增加 CocoaPods
