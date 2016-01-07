@@ -22,9 +22,9 @@
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate, MQServiceToViewInterfaceErrorDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate>
 #else
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate,UINavigationControllerDelegate>
 #endif
 
 @end
@@ -38,6 +38,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     CGSize viewSize;
     BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
     BOOL perviousNavTranslusent;   //当前navigationBar.translucent的状态
+    UIStatusBarStyle currentStatusBarStyle;//当前statusBar样式
 }
 
 - (void)dealloc {
@@ -57,10 +58,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     self.automaticallyAdjustsScrollViewInsets = true;
     perviousNavTranslusent = self.navigationController.navigationBar.translucent;
     self.navigationController.navigationBar.translucent = true;
+    currentStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
+    self.navigationController.delegate  = self;
     self.view.backgroundColor = [UIColor whiteColor];
     viewSize = [UIScreen mainScreen].bounds.size;
     [self setNavBar];
@@ -573,6 +575,15 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 
 #endif
+
+#pragma UINavigationControllerDelegate
+-(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    //修改status样式
+    if ([viewController isKindOfClass:[self class]]) {
+            [UIApplication sharedApplication].statusBarStyle = currentStatusBarStyle;
+    }
+}
 
 
 @end
