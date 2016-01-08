@@ -353,7 +353,7 @@
                         agentGroupId:(NSString *)agentGroupId
                         scheduleRule:(MQChatScheduleRules)scheduleRule
 {
-    MQScheduleRules rule = MQScheduleRulesRedirectEnterprise;
+    MQScheduleRules rule = nil;
     switch (scheduleRule) {
         case MQChatScheduleRulesRedirectNone:
             rule = MQScheduleRulesRedirectNone;
