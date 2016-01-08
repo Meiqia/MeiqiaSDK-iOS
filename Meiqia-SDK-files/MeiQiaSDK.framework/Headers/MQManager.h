@@ -66,18 +66,12 @@
  *
  * @param agentId                指定分配的客服id，可为空
  * @param agentGroupId           指定分配的客服组id，可为空（如果agentId和agentGroupId均未空，则随机分配一个客服）
+ * @param scheduleRule           指定分配客服/客服组，该客服/客服组不在线，如何转接的接口，默认转接给企业随机一个客服
  * @warning 该接口需要在顾客上线前进行设置，设置后指定分配客服将会在顾客上线时生效
  */
 + (void)setScheduledAgentWithAgentId:(NSString *)agentId
-                        agentGroupId:(NSString *)agentGroupId;
-
-/**
- *  指定分配客服/客服组，该客服/客服组不在线，如何转接的接口
- *
- *  @param scheduleRule 转接规则
- *  @warning 默认转接给企业随机一个客服
- */
-+ (void)setScheduleLogicWithRule:(MQScheduleRules)scheduleRule;
+                        agentGroupId:(NSString *)agentGroupId
+                        scheduleRule:(MQScheduleRules)scheduleRule;
 
 /**
  * 开发者自定义当前顾客的信息，用于展示给客服。
