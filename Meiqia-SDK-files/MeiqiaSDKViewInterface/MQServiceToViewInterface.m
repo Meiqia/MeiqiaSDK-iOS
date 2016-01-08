@@ -294,24 +294,6 @@
     }];
 }
 
-+ (void)setScheduleLogicWithRule:(MQChatScheduleRules)chatScheduleRule {
-    MQScheduleRules rule;
-    switch (chatScheduleRule) {
-        case MQChatScheduleRulesNone:
-            rule = MQScheduleRulesNone;
-            break;
-        case MQScheduleRulesGroup:
-            rule = MQScheduleRulesGroup;
-            break;
-        case MQScheduleRulesEnterprise:
-            rule = MQScheduleRulesEnterprise;
-            break;
-        default:
-            break;
-    }
-    [MQManager setScheduleLogicWithRule:rule];
-}
-
 #pragma 实例方法
 - (instancetype)init {
     if (self = [super init]) {
@@ -369,8 +351,23 @@
 
 + (void)setScheduledAgentWithAgentId:(NSString *)agentId
                         agentGroupId:(NSString *)agentGroupId
+                        scheduleRule:(MQChatScheduleRules)scheduleRule
 {
-    [MQManager setScheduledAgentWithAgentId:agentId agentGroupId:agentGroupId];
+    MQScheduleRules rule = MQScheduleRulesRedirectEnterprise;
+    switch (scheduleRule) {
+        case MQChatScheduleRulesRedirectNone:
+            rule = MQScheduleRulesRedirectNone;
+            break;
+        case MQChatScheduleRulesRedirectGroup:
+            rule = MQScheduleRulesRedirectGroup;
+            break;
+        case MQChatScheduleRulesRedirectEnterprise:
+            rule = MQScheduleRulesRedirectEnterprise;
+            break;
+        default:
+            break;
+    }
+    [MQManager setScheduledAgentWithAgentId:agentId agentGroupId:agentGroupId scheduleRule:rule];
 }
 
 #pragma MQManagerDelegate
