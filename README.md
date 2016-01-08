@@ -212,8 +212,8 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 如果您自定义 UI，可直接使用如下美洽 SDK 逻辑接口：
 
 ```objc
-//分配到指定客服，或指定组里面的客服，指定客服优先级高
-[MQManager setScheduledAgentWithAgentId:agentId agentGroupId:agentGroupId];
+//分配到指定客服，或指定组里面的客服，指定客服优先级高，并可选择分配失败后的转接规则
+[MQManager setScheduledAgentWithAgentId:agentId agentGroupId:agentGroupId scheduleRule:rule];
 ```
 
 **注意**
