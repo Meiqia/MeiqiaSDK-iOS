@@ -174,7 +174,7 @@
 + (MQAgent *)getCurrentAgent;
 
 /**
- * 从服务端获取历史消息
+ * 从服务端获取某日期之前的历史消息
  *
  * @param msgDate        获取该日期之前的历史消息，注：该日期是UTC格式的;
  * @param messagesNumber 获取消息的数量
