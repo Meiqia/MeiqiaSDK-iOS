@@ -605,7 +605,8 @@ request.body 为消息数据，数据结构为：
 - [没有显示 导航栏栏/UINavgationBar](#没有显示-导航栏栏uinavgationbar)
 - [Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)](#xcode-warning-was-built-for-newer-ios-version-70-than-being-linked-60)
 - [美洽静态库的文件大小太大](#美洽静态库的文件大小太大)
-- [使用 TabBarController 后，inputBar 高度出现异常](#使用-tabbarcontroller-后inputbar-高度出现异常)
+- [使用 TabBarController 后，输入框高度出现异常](#使用-tabbarcontroller-后inputbar-高度出现异常)
+- [键盘弹起后输入框和键盘之间有偏移](#键盘弹起后输入框和键盘之间有偏移)
 - [如何得到客服 id 或客服分组 id](#如何得到客服id或客服分组id)
 - [如何在聊天界面之外监听新消息的通知](#如何在聊天界面之外监听新消息的通知)
 - [指定分配客服/客服组失效](#指定分配客服/客服组失效)
@@ -646,6 +647,14 @@ request.body 为消息数据，数据结构为：
 ## 美洽静态库的文件大小太大
 因为美洽静态库包含5个平台（armv7、armv7s、arm64、i386、x86_64）+ Bitcode。但这并不代表会严重影响编译后的宿主 App 大小，实际上，这只会增加宿主 App 100kb 左右大小。
 
+## 键盘弹起后输入框和键盘之间有偏移
+请检查是否使用了第三方开源库[IQKeyboardManager](https://github.com/hackiftekhar/IQKeyboardManager)，该开源库会和判断输入框的逻辑冲突。
+
+解决办法：（感谢 []() 向我们提供该问题的原因和解决方案）
+
+* 在MQChatViewController的viewWillAppear里加入 `[[IQKeyboardManager sharedManager] setEnable:NO];`，作用是在当前页面禁止IQKeyboardManager
+* 在MQChatViewController的viewWillDisappear里加入 `[[IQKeyboardManager sharedManager] setEnable:YES];`，作用是在离开当前页面之前重新启用IQKeyboardManager
+
 ## 使用 TabBarController 后，inputBar 高度出现异常
 使用了 TabBarController 的 App，视图结构都各相不同，并且可能存在自定义 TabBar 的情况，所以美洽 SDK 无法判断并准确调整，需要开发者自行修改 App 或 SDK 代码。自 iOS 7 系统后，大多数情况下只需修改 TabBar 的 `hidden` 和 `translucent` 属性便可以正常使用。
 
@@ -663,6 +672,8 @@ request.body 为消息数据，数据结构为：
 **v3.0.7 2016年1月11日**
 
 * 修复「断网重连，没有同步消息」的问题
+* 修复使用新的自定义 id 上线，没有上报设备信息的问题
+* 修复飞行模式下，发送失败的消息界面卡顿的问题
 
 **v3.0.6 2016年1月6日**
 	
