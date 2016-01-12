@@ -77,6 +77,8 @@
  * 开发者自定义当前顾客的信息，用于展示给客服。
  *
  * @param clientInfo 顾客的信息
+ * @warning 需要顾客先上线，再上传顾客信息
+ * @warning 如果开发者使用「开源聊天界面」的接口来上线，则需要监听「顾客成功上线」的广播（见 MQDefinition.h），再调用此接口
  */
 + (void)setClientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
            completion:(void (^)(BOOL success, NSError *error))completion;
@@ -98,6 +100,7 @@
  * @param messages 当前对话的消息
  * @param receiveMessageDelegate 接收消息的委托代理
  * @warning 需要初始化后才能调用；
+ * @warning 建议在顾客点击「在线客服」按钮时，再调用该接口；不建议在 App 启动时调用该接口，这样会产生大量无效对话；
  */
 + (void)setCurrentClientOnlineWithSuccess:(void (^)(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages))success
                                   failure:(void (^)(NSError *error))failure
@@ -112,6 +115,7 @@
  * @param messages 当前对话的消息
  * @param receiveMessageDelegate 接收消息的委托代理
  * @warning 需要初始化后才能调用；
+ * @warning 建议在顾客点击「在线客服」按钮时，再调用该接口；不建议在 App 启动时调用该接口，这样会产生大量无效对话；
  */
 + (void)setClientOnlineWithClientId:(NSString *)clientId
                             success:(void (^)(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages))success
@@ -128,6 +132,7 @@
  * @param receiveMessageDelegate 接收消息的委托代理
  * @warning 需要初始化后才能调
  * @warning customizedId不能为自增长，否则有安全隐患，建议开发者使用setClientOnlineWithClientId接口进行登录
+ * @warning 建议在顾客点击「在线客服」按钮时，再调用该接口；不建议在 App 启动时调用该接口，这样会产生大量无效对话；
  */
 + (void)setClientOnlineWithCustomizedId:(NSString *)customizedId
                                 success:(void (^)(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages))success

@@ -18,6 +18,11 @@
 #define MQ_COMMUNICATION_FAILED_NOTIFICATION @"MQ_COMMUNICATION_FAILED_NOTIFICATION"
 
 /**
+ *  收到该通知，即表示顾客成功上线美洽系统
+ */
+#define MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION @"MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION"
+
+/**
  *  美洽的错误码
  */
 static NSString * const MQRequesetErrorDomain = @"com.meiqia.error.resquest.error";
