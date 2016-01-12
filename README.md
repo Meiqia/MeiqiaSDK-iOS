@@ -383,6 +383,9 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 } receiveMessageDelegate:self];
 ```
 
+### 监听顾客上线成功后的广播
+
+开发者可监听顾客上线成功的广播，在上线成功后，可上传该顾客的自定义信息等操作。广播的名字为 `MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION`，定义在 [MQDefinition.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQDefinition.h) 中。
 
 ### 获取当前顾客 id
 
