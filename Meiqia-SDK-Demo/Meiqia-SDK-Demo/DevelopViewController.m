@@ -80,7 +80,8 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     
     clientCustomizedAttrs = @{
                               @"name"       :   @"Kobe Bryant",
-                              @"avatar"     :   @"",
+                              @"avatar"     :   @"https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/07eaa42f339963e9",
+                              @"sex"        :   @"男",
                               @"身高"         :    @"1.98m",
                               @"体重"         :    @"93.0kg",
                               @"效力球队"      :    @"洛杉矶湖人队",
