@@ -436,7 +436,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if (![type isEqualToString:@"public.image"]) {
         return;
     }
-    UIImage *image          = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    UIImage *image          =  [MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]];
     [picker dismissViewControllerAnimated:YES completion:^{
         [chatViewService sendImageMessageWithImage:image];
         [self chatTableViewScrollToBottomWithAnimated:true];
