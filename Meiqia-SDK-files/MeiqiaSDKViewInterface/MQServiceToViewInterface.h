@@ -153,8 +153,8 @@
  * @param ;
  */
 - (void)setClientOnlineWithClientId:(NSString *)clientId
-                              success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
-               receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
+                            success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+             receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**
  *  设置指定分配的客服或客服组
@@ -225,6 +225,15 @@
  */
 + (void)uploadClientAvatar:(UIImage *)avatarImage
                 completion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
+ *  对当前的对话做出评价
+ *
+ *  @param level 服务评级
+ *  @param comment    评价留言
+ */
++ (void)setEvaluationLevel:(NSInteger)level
+                   comment:(NSString *)comment;
 
 
 @end

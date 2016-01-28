@@ -19,12 +19,15 @@
 #import "MQBundleUtil.h"
 #import "MQImageUtil.h"
 #import <MeiQiaSDK/MQDefinition.h>
+#import "MQEvaluationView.h"
+#import "MQAssetUtil.h"
+#import "MQStringSizeUtil.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate>
 #else
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate,UINavigationControllerDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate>
 #endif
 
 @end
@@ -35,6 +38,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQChatViewService *chatViewService;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
+    MQEvaluationView *evaluationView;
     CGSize viewSize;
     BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
     UIStatusBarStyle currentStatusBarStyle;//当前statusBar样式
@@ -64,6 +68,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self setNavBar];
     [self initChatTableView];
     [self initchatViewService];
+    [self initEvaluationView];
     [self initInputBar];
     [self initTableViewDataSource];
     chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
@@ -130,6 +135,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     self.chatTableView.delegate = nil;
     chatInputBar.delegate = nil;
     recordView.recordViewDelegate = nil;
+    self.navigationController.delegate = nil;
 #ifdef INCLUDE_MEIQIA_SDK
     chatViewService.errorDelegate = nil;
 #endif
@@ -188,6 +194,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     self.inputBarTextView = chatInputBar.textView.internalTextView;
 }
 
+/**
+ * 初始化评价的 alertView
+ */
+- (void)initEvaluationView {
+    evaluationView = [[MQEvaluationView alloc] init];
+    evaluationView.delegate = self;
+}
+
 #pragma 添加消息通知的observer
 - (void)setNotificationObserver {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resignKeyboardFirstResponder:) name:MQChatViewKeyboardResignFirstResponderNotification object:nil];
@@ -235,6 +249,18 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     loadMessageBtn.backgroundColor = [UIColor clearColor];
     [loadMessageBtn addTarget:self action:@selector(tapLoadMessageBtn:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loadMessageBtn];
+#else
+    UIButton *rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    NSString *btnText = [MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"];
+    UIFont *btnTextFont = [UIFont systemFontOfSize:14.0];
+    CGFloat btnTextHeight = [MQStringSizeUtil getHeightForText:btnText withFont:btnTextFont andWidth:200];
+    CGFloat btnTextWidth = [MQStringSizeUtil getWidthForText:btnText withFont:btnTextFont andHeight:btnTextHeight];
+    rightNavButton.frame = CGRectMake(0, 0, btnTextWidth, btnTextHeight);
+    rightNavButton.titleLabel.font = btnTextFont;
+    [rightNavButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    [rightNavButton setTitle:btnText forState:UIControlStateNormal];
+    [rightNavButton addTarget:self action:@selector(tapNavigationRightBtn:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightNavButton];
 #endif
 }
 
@@ -242,6 +268,12 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)tapLoadMessageBtn:(id)sender {
     [chatViewService loadLastMessage];
     [self chatTableViewScrollToBottomWithAnimated:true];
+    //显示评价
+    [evaluationView showEvaluationAlertView];
+}
+#else
+- (void)tapNavigationRightBtn:(id)sender {
+    [self showEvaluationAlertView];
 }
 #endif
 
@@ -290,6 +322,15 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self chatTableViewScrollToBottomWithAnimated:false];
 }
 
+- (void)showEvaluationAlertView {
+    [chatInputBar.textView resignFirstResponder];
+    [evaluationView showEvaluationAlertView];
+}
+
+- (BOOL)isChatRecording {
+    return [recordView isRecording];
+}
+
 #ifdef INCLUDE_MEIQIA_SDK
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle {
     [self updateNavBarTitle:viewTitle];
@@ -322,7 +363,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     return YES;
 }
 
--(void)sendImageWithSourceType:(UIImagePickerControllerSourceType *)sourceType {
+-(void)sendImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
     NSString *mediaPermission = [MQChatDeviceUtil isDeviceSupportImageSourceType:(int)sourceType];
     if (!mediaPermission) {
         return;
@@ -447,6 +488,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma UINavigationControllerDelegate 设置当前 statusBarStyle
 -(void)navigationController:(UINavigationController *)navigationController
      willShowViewController:(UIViewController *)viewController
                    animated:(BOOL)animated
@@ -476,6 +518,12 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)didTapMessageInCell:(UITableViewCell *)cell {
     NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
     [chatViewService didTapMessageCellAtIndex:indexPath.row];
+}
+
+#pragma MQEvaluationViewDelegate
+- (void)didSelectLevel:(NSInteger)level comment:(NSString *)comment {
+    NSLog(@"评价 level = %d\n评价内容 = %@", (int)level, comment);
+    [chatViewService sendEvaluationLevel:level comment:comment];
 }
 
 #pragma ios7以下系统的横屏的事件

@@ -65,6 +65,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                              @"设置当前顾客为离线状态",
                              @"结束当前对话",
                              @"删除所有美洽多媒体存储",
+                             @"删除本地数据库中的消息",
                              @"查看当前 SDK 版本号",
                              @"当前的美洽顾客 id 为：(点击复制该顾客 id )"
                              ],
@@ -81,7 +82,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     clientCustomizedAttrs = @{
                               @"name"       :   @"Kobe Bryant",
                               @"avatar"     :   @"https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/07eaa42f339963e9",
-                              @"sex"        :   @"男",
+                              @"gender"     :   @"男",
                               @"身高"         :    @"1.98m",
                               @"体重"         :    @"93.0kg",
                               @"效力球队"      :    @"洛杉矶湖人队",
@@ -169,9 +170,12 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                 [self removeMeiqiaMediaData];
                 break;
             case 11:
-                [self getMeiqiaSDKVersion];
+                [self removeAllMesagesFromDatabase];
                 break;
             case 12:
+                [self getMeiqiaSDKVersion];
+                break;
+            case 13:
                 [self copyCurrentClientIdToPasteboard];
                 break;
             default:
@@ -414,6 +418,20 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     }];
 }
 
+/**
+ *  删除本地数据库中的消息
+ */
+- (void)removeAllMesagesFromDatabase {
+    [MQManager removeAllMessageFromDatabaseWithCompletion:^(BOOL success, NSError *error) {
+        if (success) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"已删除本地数据库中的消息" message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+            [alertView show];
+        } else {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"抱歉，删除本地数据库消息失败了>.<" message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+            [alertView show];
+        }
+    }];
+}
 
 - (void)getMeiqiaSDKVersion {
     NSString *sdkVersion = [MQManager getMeiQiaSDKVersion];
@@ -491,14 +509,14 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
  */
 - (void)chatViewStyle1 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    UIImage *photoImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleTwo"];
-    UIImage *photoHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleTwo"];
-    UIImage *voiceImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleTwo"];
-    UIImage *voiceHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleTwo"];
-    UIImage *keyboardImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputImageNormalStyleTwo"];
-    UIImage *keyboardHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleTwo"];
-    UIImage *resightKeyboardImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleTwo"];
-    UIImage *resightKeyboardHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
+    UIImage *photoImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleTwo"];
+    UIImage *photoHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleTwo"];
+    UIImage *voiceImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleTwo"];
+    UIImage *voiceHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleTwo"];
+    UIImage *keyboardImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputImageNormalStyleTwo"];
+    UIImage *keyboardHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleTwo"];
+    UIImage *resightKeyboardImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleTwo"];
+    UIImage *resightKeyboardHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
     UIImage *avatar = [UIImage imageNamed:@"ijinmaoAvatar"];
     [chatViewManager setoutgoingDefaultAvatarImage:avatar];
     [chatViewManager setPhotoSenderImage:photoImage highlightedImage:photoHighlightedImage];
@@ -518,8 +536,8 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
  */
 - (void)chatViewStyle2 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    UIImage *incomingBubbleImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubbleIncomingStyleTwo"];
-    UIImage *outgoingBubbleImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubbleOutgoingStyleTwo"];
+    UIImage *incomingBubbleImage = [MQAssetUtil imageFromBundleWithName:@"MQBubbleIncomingStyleTwo"];
+    UIImage *outgoingBubbleImage = [MQAssetUtil imageFromBundleWithName:@"MQBubbleOutgoingStyleTwo"];
     CGPoint stretchPoint = CGPointMake(incomingBubbleImage.size.width / 2.0f - 4.0, incomingBubbleImage.size.height / 2.0f);
     [chatViewManager enableSendVoiceMessage:false];
     [chatViewManager enableOutgoingAvatar:false];

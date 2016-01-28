@@ -108,6 +108,18 @@
             eventType = MQChatEventTypeAgentInputting;
             break;
         }
+        case MQMessageActionInviteEvaluation:
+        {
+            eventContent = @"客服邀请您评价刚才的服务";
+            eventType = MQChatEventTypeInviteEvaluation;
+            break;
+        }
+        case MQMessageActionClientEvaluation:
+        {
+            eventContent = @"顾客评价结果";
+            eventType = MQChatEventTypeClientEvaluation;
+            break;
+        }
         default:
             break;
     }
@@ -368,6 +380,27 @@
             break;
     }
     [MQManager setScheduledAgentWithAgentId:agentId agentGroupId:agentGroupId scheduleRule:rule];
+}
+
++ (void)setEvaluationLevel:(NSInteger)level
+                   comment:(NSString *)comment
+{
+    MQConversationEvaluation evaluation = MQConversationEvaluationPositive;
+    switch (level) {
+        case 0:
+            evaluation = MQConversationEvaluationNegative;
+            break;
+        case 1:
+            evaluation = MQConversationEvaluationModerate;
+            break;
+        case 2:
+            evaluation = MQConversationEvaluationPositive;
+            break;
+        default:
+            break;
+    }
+    [MQManager evaluateCurrentConversationWithEvaluation:evaluation comment:comment completion:^(BOOL success, NSError *error) {
+    }];
 }
 
 #pragma MQManagerDelegate

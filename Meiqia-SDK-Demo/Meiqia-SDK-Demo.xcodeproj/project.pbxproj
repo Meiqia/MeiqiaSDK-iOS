@@ -87,6 +87,9 @@
 		CC3310E01C33F7EA0088E648 /* MQRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3310901C33F7EA0088E648 /* MQRecordView.m */; };
 		CC3310E11C33F7EA0088E648 /* MQToast.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3310931C33F7EA0088E648 /* MQToast.m */; };
 		CC3310E31C33F7FB0088E648 /* MeiQiaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3310E21C33F7FB0088E648 /* MeiQiaSDK.framework */; };
+		CCD145091C4F41B0007CA0DC /* CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD145081C4F41B0007CA0DC /* CustomIOSAlertView.m */; };
+		CCD1450D1C4F41C1007CA0DC /* MQEvaluationView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD1450C1C4F41C1007CA0DC /* MQEvaluationView.m */; };
+		CCD145101C4F41DE007CA0DC /* MQEvaluationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD1450F1C4F41DE007CA0DC /* MQEvaluationCell.m */; };
 		CCE9D10B1C1812F6004E862E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10A1C1812F6004E862E /* main.m */; };
 		CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10D1C1812F6004E862E /* AppDelegate.m */; };
 		CCE9D1111C1812F6004E862E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1101C1812F6004E862E /* ViewController.m */; };
@@ -284,6 +287,12 @@
 		CC3310921C33F7EA0088E648 /* MQToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQToast.h; sourceTree = "<group>"; };
 		CC3310931C33F7EA0088E648 /* MQToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQToast.m; sourceTree = "<group>"; };
 		CC3310E21C33F7FB0088E648 /* MeiQiaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MeiQiaSDK.framework; path = "../Meiqia-SDK-files/MeiQiaSDK.framework"; sourceTree = "<group>"; };
+		CCD145071C4F41B0007CA0DC /* CustomIOSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOSAlertView.h; sourceTree = "<group>"; };
+		CCD145081C4F41B0007CA0DC /* CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOSAlertView.m; sourceTree = "<group>"; };
+		CCD1450B1C4F41C1007CA0DC /* MQEvaluationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQEvaluationView.h; sourceTree = "<group>"; };
+		CCD1450C1C4F41C1007CA0DC /* MQEvaluationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQEvaluationView.m; sourceTree = "<group>"; };
+		CCD1450E1C4F41DE007CA0DC /* MQEvaluationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQEvaluationCell.h; sourceTree = "<group>"; };
+		CCD1450F1C4F41DE007CA0DC /* MQEvaluationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQEvaluationCell.m; sourceTree = "<group>"; };
 		CCE9D1061C1812F6004E862E /* Meiqia-SDK-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meiqia-SDK-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCE9D10A1C1812F6004E862E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CCE9D10C1C1812F6004E862E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -451,6 +460,8 @@
 		CC3310031C33F7EA0088E648 /* CellView */ = {
 			isa = PBXGroup;
 			children = (
+				CCD1450E1C4F41DE007CA0DC /* MQEvaluationCell.h */,
+				CCD1450F1C4F41DE007CA0DC /* MQEvaluationCell.m */,
 				CC3310041C33F7EA0088E648 /* MQChatBaseCell.h */,
 				CC3310051C33F7EA0088E648 /* MQChatBaseCell.m */,
 				CC3310061C33F7EA0088E648 /* MQEventMessageCell.h */,
@@ -501,6 +512,7 @@
 		CC3310291C33F7EA0088E648 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				CCD145061C4F41B0007CA0DC /* CustomIOSAlertView */,
 				CC33102A1C33F7EA0088E648 /* FBDigitalFont */,
 				CC3310391C33F7EA0088E648 /* HPTextView */,
 				CC33103E1C33F7EA0088E648 /* MHFacebookImageViewer */,
@@ -692,6 +704,7 @@
 			children = (
 				CC3310861C33F7EA0088E648 /* MQChatTableView.h */,
 				CC3310871C33F7EA0088E648 /* MQChatTableView.m */,
+				CCD1450A1C4F41C1007CA0DC /* MQEvaluationView */,
 				CC3310881C33F7EA0088E648 /* MQInputBar */,
 				CC33108B1C33F7EA0088E648 /* MQPullRefreshView */,
 				CC33108E1C33F7EA0088E648 /* MQRecordView */,
@@ -734,6 +747,24 @@
 				CC3310931C33F7EA0088E648 /* MQToast.m */,
 			);
 			path = MQToast;
+			sourceTree = "<group>";
+		};
+		CCD145061C4F41B0007CA0DC /* CustomIOSAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				CCD145071C4F41B0007CA0DC /* CustomIOSAlertView.h */,
+				CCD145081C4F41B0007CA0DC /* CustomIOSAlertView.m */,
+			);
+			path = CustomIOSAlertView;
+			sourceTree = "<group>";
+		};
+		CCD1450A1C4F41C1007CA0DC /* MQEvaluationView */ = {
+			isa = PBXGroup;
+			children = (
+				CCD1450B1C4F41C1007CA0DC /* MQEvaluationView.h */,
+				CCD1450C1C4F41C1007CA0DC /* MQEvaluationView.m */,
+			);
+			path = MQEvaluationView;
 			sourceTree = "<group>";
 		};
 		CCE9D0FD1C1812F6004E862E = {
@@ -885,6 +916,7 @@
 				TargetAttributes = {
 					CCE9D1051C1812F6004E862E = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = H22N8T6DAX;
 					};
 					CCE9D11E1C1812F6004E862E = {
 						CreatedOnToolsVersion = 7.1;
@@ -965,6 +997,7 @@
 				CC3310AD1C33F7EA0088E648 /* MQAssetUtil.m in Sources */,
 				CC3310AC1C33F7EA0088E648 /* MQVoiceMessageCell.m in Sources */,
 				CC33109D1C33F7EA0088E648 /* MQImageMessage.m in Sources */,
+				CCD1450D1C4F41C1007CA0DC /* MQEvaluationView.m in Sources */,
 				CC3310D31C33F7EA0088E648 /* UIImage+GIF.m in Sources */,
 				CC3310A81C33F7EA0088E648 /* MQImageMessageCell.m in Sources */,
 				CC33109E1C33F7EA0088E648 /* MQTextMessage.m in Sources */,
@@ -974,6 +1007,7 @@
 				CC3310A91C33F7EA0088E648 /* MQMessageDateCell.m in Sources */,
 				CC3310C71C33F7EA0088E648 /* MLAudioMeterObserver.m in Sources */,
 				CC3310CA1C33F7EA0088E648 /* NSData+ImageContentType.m in Sources */,
+				CCD145091C4F41B0007CA0DC /* CustomIOSAlertView.m in Sources */,
 				CC33109A1C33F7EA0088E648 /* MQChatViewTableDataSource.m in Sources */,
 				CC3310E11C33F7EA0088E648 /* MQToast.m in Sources */,
 				CC3310DD1C33F7EA0088E648 /* MQChatTableView.m in Sources */,
@@ -1001,6 +1035,7 @@
 				CC3310D91C33F7EA0088E648 /* TTTAttributedLabel.m in Sources */,
 				CC3310D71C33F7EA0088E648 /* UIImageView+WebCache.m in Sources */,
 				CC3310BA1C33F7EA0088E648 /* FBFontSymbol.m in Sources */,
+				CCD145101C4F41DE007CA0DC /* MQEvaluationCell.m in Sources */,
 				CC3310D51C33F7EA0088E648 /* UIImage+WebP.m in Sources */,
 				CC3310DB1C33F7EA0088E648 /* wav.mm in Sources */,
 				CC3310DF1C33F7EA0088E648 /* MQPullRefreshView.m in Sources */,
@@ -1170,6 +1205,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(SRCROOT)/../Meiqia-SDK-files",
@@ -1183,6 +1219,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ijinmao.Meiqia-SDK-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -1191,6 +1228,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(SRCROOT)/../Meiqia-SDK-files",
@@ -1204,6 +1242,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ijinmao.Meiqia-SDK-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

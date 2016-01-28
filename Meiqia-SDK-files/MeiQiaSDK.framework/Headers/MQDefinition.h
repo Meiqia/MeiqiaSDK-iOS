@@ -56,3 +56,12 @@ typedef enum : NSUInteger {
     MQScheduleRulesRedirectGroup        = 2,            //转接给组内的人
     MQScheduleRulesRedirectEnterprise   = 3             //转接给企业其他随机一个人
 } MQScheduleRules;
+
+/**
+ 顾客对客服的某次对话的评价
+ */
+typedef enum : NSUInteger {
+    MQConversationEvaluationNegative    = 0,            //差评
+    MQConversationEvaluationModerate    = 1,            //中评
+    MQConversationEvaluationPositive    = 2             //好评
+} MQConversationEvaluation;
