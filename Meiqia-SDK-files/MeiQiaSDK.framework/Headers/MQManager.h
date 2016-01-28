@@ -12,6 +12,8 @@
 #import "MQDefinition.h"
 #import "MQAgent.h"
 
+#define MQSDKVersion @"3.1.0"
+
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -270,7 +272,8 @@
  * @param messageId 被修改的消息id
  * @param isRead   该消息是否已读
  */
-+ (void)updateMessage:(NSString *)messageId toReadStatus:(BOOL)isRead;
++ (void)updateMessage:(NSString *)messageId
+         toReadStatus:(BOOL)isRead;
 
 /**
  *  将数据库中某个message删除
@@ -281,6 +284,11 @@
                            completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**
+ *  将 SDK 本地数据库中的消息都删除
+ */
++ (void)removeAllMessageFromDatabaseWithCompletion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
  *  结束当前的对话
  *
  *  @param completion 结束对话后的回调
@@ -289,6 +297,17 @@
  *  @warning 如果开发者担心系统超时结束对话的时间很慢，开发者可以建立一个 Timer，在顾客退出聊天界面后开始计时，并在顾客重新进入客服聊天界面或监听到 SDK 收到客服消息时，重置 Timer；如果 Timer 超过开发者设置的时间阈值，则可以调用结束当前对话。
  */
 + (void)endCurrentConversationWithCompletion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
+ *  顾客给当前的对话进行评价
+ *
+ *  @param evaluation 服务级别
+ *  @param comment    评价留言
+ *  @param completion 结果回调
+ */
++ (void)evaluateCurrentConversationWithEvaluation:(MQConversationEvaluation)evaluation
+                                          comment:(NSString *)comment
+                                       completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**
  * 获得当前美洽SDK的版本号

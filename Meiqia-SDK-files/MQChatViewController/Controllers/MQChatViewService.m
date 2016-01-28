@@ -331,8 +331,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQImageCellModel *imageCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:imageMessage cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:imageCellModel];
     //tip message
-    //    MQTipsCellModel *tipCellModel = [[MQTipsCellModel alloc] initCellModelWithTips:@"主人，您的客服离线啦~" cellWidth:self.chatViewWidth];
-    //    [self.cellModels addObject:tipCellModel];
+//        MQTipsCellModel *tipCellModel = [[MQTipsCellModel alloc] initCellModelWithTips:@"主人，您的客服离线啦~" cellWidth:self.cellWidth enableLinesDisplay:true];
+//        [self.cellModels addObject:tipCellModel];
     //voice message
     MQVoiceMessage *voiceMessage = [[MQVoiceMessage alloc] initWithVoicePath:@"http://7xiy8i.com1.z0.glb.clouddn.com/test.amr"];
     voiceMessage.fromType = MQChatMessageIncoming;
@@ -342,6 +342,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self reloadChatTableView];
     [self playReceivedMessageSound];
 }
+
 #endif
 
 #pragma MQCellModelDelegate
@@ -458,17 +459,31 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:(MQImageMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQVoiceMessage class]]) {
             cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:(MQVoiceMessage *)message cellWidth:self.chatViewWidth delegate:self];
-        } else if ([MQChatViewConfig sharedConfig].enableEventDispaly && [message isKindOfClass:[MQEventMessage class]]) {
-            //判断该event是否是用户正在输入
+        } else if ([message isKindOfClass:[MQEventMessage class]]) {
             MQEventMessage *eventMessage = (MQEventMessage *)message;
-            if (eventMessage.eventType == MQChatEventTypeAgentInputting) {
-                if (self.delegate) {
-                    if ([self.delegate respondsToSelector:@selector(showToastViewWithContent:)]) {
-                        [self.delegate showToastViewWithContent:@"客服正在输入..."];
+            if (eventMessage.eventType == MQChatEventTypeInviteEvaluation) {
+                if (!isInsertAtFirstIndex) {
+                    //如果收到新评价消息，且当前不是正在录音状态，则显示评价 alertView
+                    if (self.delegate) {
+                        if ([self.delegate respondsToSelector:@selector(showEvaluationAlertView)] && [self.delegate respondsToSelector:@selector(isChatRecording)]) {
+                            if (![self.delegate isChatRecording]) {
+                                [self.delegate showEvaluationAlertView];
+                            }
+                        }
                     }
                 }
-            } else {
-                cellModel = [[MQEventCellModel alloc] initCellModelWithMessage:eventMessage cellWidth:self.chatViewWidth];
+            } else if (eventMessage.eventType == MQChatEventTypeClientEvaluation) {
+
+            } else if ([MQChatViewConfig sharedConfig].enableEventDispaly) {
+                if (eventMessage.eventType == MQChatEventTypeAgentInputting) {
+                    if (self.delegate) {
+                        if ([self.delegate respondsToSelector:@selector(showToastViewWithContent:)]) {
+                            [self.delegate showToastViewWithContent:@"客服正在输入..."];
+                        }
+                    }
+                } else {
+                    cellModel = [[MQEventCellModel alloc] initCellModelWithMessage:eventMessage cellWidth:self.chatViewWidth];
+                }
             }
         }
         if (cellModel) {
@@ -493,12 +508,67 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     return cellNumber;
 }
 
+/**
+ *  发送用户评价
+ */
+- (void)sendEvaluationLevel:(NSInteger)level comment:(NSString *)comment {
+    //生成评价结果的 cell
+    NSString *levelText = @"好评";
+    UIColor *levelColor = [UIColor colorWithRed:0.0/255.0 green:206.0/255.0 blue:125.0/255.0 alpha:1];
+    switch (level) {
+        case 0:
+            levelText = @"差评";
+            levelColor = [UIColor colorWithRed:255.0/255.0 green:92.0/255.0 blue:94.0/255.0 alpha:1];
+            break;
+        case 1:
+            levelText = @"中评";
+            levelColor = [UIColor colorWithRed:255.0/255.0 green:182.0/255.0 blue:82.0/255.0 alpha:1];
+            break;
+        case 2:
+            levelText = @"好评";
+            levelColor = [UIColor colorWithRed:0.0/255.0 green:206.0/255.0 blue:125.0/255.0 alpha:1];
+            break;
+        default:
+            break;
+    }
+    [self showEvaluationCellWithText:levelText color:levelColor];
+#ifdef INCLUDE_MEIQIA_SDK
+    [MQServiceToViewInterface setEvaluationLevel:level comment:comment];
+#endif
+}
+
+//显示用户评价的 cell
+- (void)showEvaluationCellWithText:(NSString *)levelText color:(UIColor *)levelColor{
+    NSRange attribuitedRange = NSMakeRange(5, levelText.length);
+    levelText = [NSString stringWithFormat:@"你给出了 %@", levelText];
+    NSDictionary<NSString *, id> *tipExtraAttributes = @{
+                                                         NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
+                                                         NSForegroundColorAttributeName : levelColor
+                                                         };
+    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:levelText cellWidth:self.chatViewWidth enableLinesDisplay:false];
+    cellModel.tipExtraAttributesRange = attribuitedRange;
+    cellModel.tipExtraAttributes = tipExtraAttributes;
+    [self.cellModels addObject:cellModel];
+    [self reloadChatTableView];
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
+            [self.delegate scrollTableViewToBottom];
+        }
+    }
+}
+
+- (void)addTipCellModelWithTips:(NSString *)tips enableLinesDisplay:(BOOL)enableLinesDisplay {
+    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tips cellWidth:self.chatViewWidth enableLinesDisplay:enableLinesDisplay];
+    [self.cellModels addObject:cellModel];
+    [self reloadChatTableView];
+}
+
 #ifdef INCLUDE_MEIQIA_SDK
 
 #pragma 顾客上线的逻辑
 - (void)setClientOnline {
     //上线
-    __weak typeof(self) weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
     [MQServiceToViewInterface setScheduledAgentWithAgentId:[MQChatViewConfig sharedConfig].scheduledAgentId agentGroupId:[MQChatViewConfig sharedConfig].scheduledGroupId scheduleRule:[MQChatViewConfig sharedConfig].scheduleRule];
     if ([MQChatViewConfig sharedConfig].MQClientId.length == 0 && [MQChatViewConfig sharedConfig].customizedId.length > 0) {
@@ -570,7 +640,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     isThereNoAgent = false;
     if (!addedNoAgentTip) {
         addedNoAgentTip = true;
-        [self addTipCellModelWithTips:[MQBundleUtil localizedStringForKey:@"no_agent_tips"]];
+        [self addTipCellModelWithTips:[MQBundleUtil localizedStringForKey:@"no_agent_tips"] enableLinesDisplay:true];
     }
 }
 
@@ -625,7 +695,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)didReceiveTipsContent:(NSString *)tipsContent {
-    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tipsContent cellWidth:self.chatViewWidth];
+    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tipsContent cellWidth:self.chatViewWidth enableLinesDisplay:true];
     [self addCellModelAfterReceivedWithCellModel:cellModel];
 }
 
@@ -680,12 +750,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self updateCellWithIndex:index];
     });
-}
-
-- (void)addTipCellModelWithTips:(NSString *)tips {
-    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tips cellWidth:self.chatViewWidth];
-    [self.cellModels addObject:cellModel];
-    [self reloadChatTableView];
 }
 
 /**

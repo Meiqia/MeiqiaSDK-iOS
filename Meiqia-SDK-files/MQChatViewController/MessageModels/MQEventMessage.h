@@ -10,11 +10,13 @@
 #import "MQBaseMessage.h"
 
 typedef enum : NSUInteger {
-    MQChatEventTypeInitConversation          = 0,//初始化对话 (init_conv)
-    MQChatEventTypeAgentDidCloseConversation = 1,//客服结束对话 (end_conv_agent)
-    MQChatEventTypeEndConversationTimeout    = 2,//对话超时，系统自动结束对话 (end_conv_timeout)
-    MQChatEventTypeRedirect                  = 3,//顾客被转接 (agent_redirect)
-    MQChatEventTypeAgentInputting            = 4 //客服正在输入 (agent_inputting)
+    MQChatEventTypeInitConversation          = 0,   //初始化对话 (init_conv)
+    MQChatEventTypeAgentDidCloseConversation = 1,   //客服结束对话 (end_conv_agent)
+    MQChatEventTypeEndConversationTimeout    = 2,   //对话超时，系统自动结束对话 (end_conv_timeout)
+    MQChatEventTypeRedirect                  = 3,   //顾客被转接 (agent_redirect)
+    MQChatEventTypeAgentInputting            = 4,   //客服正在输入 (agent_inputting)
+    MQChatEventTypeInviteEvaluation          = 5,    //收到客服邀请评价 (invite_evaluation)
+    MQChatEventTypeClientEvaluation          = 6    //顾客评价的结果
 } MQChatEventType;
 
 @interface MQEventMessage : MQBaseMessage

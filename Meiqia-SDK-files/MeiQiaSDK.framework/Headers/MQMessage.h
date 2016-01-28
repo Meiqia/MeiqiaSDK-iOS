@@ -10,12 +10,14 @@
 #import "MQAgent.h"
 
 typedef enum : NSUInteger {
-    MQMessageActionMessage                   = 0,//普通消息 (message)
-    MQMessageActionInitConversation          = 1,//初始化对话 (init_conv)
-    MQMessageActionAgentDidCloseConversation = 2,//客服结束对话 (end_conv_agent)
-    MQMessageActionEndConversationTimeout    = 3,//对话超时，系统自动结束对话 (end_conv_timeout)
-    MQMessageActionRedirect                  = 4,//顾客被转接 (agent_redirect)
-    MQMessageActionAgentInputting            = 5 //客服正在输入 (agent_inputting)
+    MQMessageActionMessage                      = 0,   //普通消息 (message)
+    MQMessageActionInitConversation             = 1,   //初始化对话 (init_conv)
+    MQMessageActionAgentDidCloseConversation    = 2,   //客服结束对话 (end_conv_agent)
+    MQMessageActionEndConversationTimeout       = 3,   //对话超时，系统自动结束对话 (end_conv_timeout)
+    MQMessageActionRedirect                     = 4,   //顾客被转接 (agent_redirect)
+    MQMessageActionAgentInputting               = 5,   //客服正在输入 (agent_inputting)
+    MQMessageActionInviteEvaluation             = 6,   //收到客服邀请评价 (invite_evaluation)
+    MQMessageActionClientEvaluation             = 7    //顾客评价的结果 (client_evaluation)
 } MQMessageAction;
 
 typedef enum : NSUInteger {

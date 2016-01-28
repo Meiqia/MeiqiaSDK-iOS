@@ -54,7 +54,7 @@ framework中的文件 | 说明
 
 ## 导入美洽 SDK
 
-把美洽 SDK 文件夹中的`MeiQiaSDK.framework`和`MQChatViewController/`文件夹（选做）拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者将这两个个文件拖入 XCode 工程目录结构中。
+把美洽 SDK 文件夹中的 `MeiQiaSDK.framework` 、 `MQChatViewController/` 和 `MeiqiaSDKViewInterface/` 文件夹（选做）拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者将这两个个文件拖入 XCode 工程目录结构中。
 
 
 ## 引入依赖库
@@ -613,6 +613,7 @@ request.body 为消息数据，数据结构为：
 - [如何得到客服 id 或客服分组 id](#如何得到客服id或客服分组id)
 - [如何在聊天界面之外监听新消息的通知](#如何在聊天界面之外监听新消息的通知)
 - [指定分配客服/客服组失效](#指定分配客服/客服组失效)
+- [第三方库冲突](#第三方库冲突)
 
 ## SDK 初始化失败
 
@@ -626,6 +627,8 @@ request.body 为消息数据，数据结构为：
 
 ### 2. 没有配置 NSExceptionDomains
 如果没有配置`NSExceptionDomains`，美洽SDK会返回`MQErrorCodePlistConfigurationError`，并且在控制台中打印：`!!!美洽 SDK Error：请开发者在 App 的 info.plist 中增加 NSExceptionDomains，具体操作方法请见「https://github.com/Meiqia/MeiqiaSDK-iOS#info.plist设置」`。如果出现上诉情况，请 [配置NSExceptionDomains](#infoplist设置)
+
+**注意**，如果发现添加配置后，仍然打印配置错误，请开发者检查是否错误地将配置加进了项目 Tests 的 info.plist 中去。
 
 ### 3. 网络异常
 如果上诉情况均不存在，请检查引入美洽SDK的设备的网络是否通畅
@@ -670,11 +673,21 @@ request.body 为消息数据，数据结构为：
 ## 指定分配客服/客服组失效
 请查看指定的客服的服务顾客的上限是否被设置成了0，或服务顾客的数量是否已经超过服务上限。查看位置为：`工作台 - 设置 - 客服与分组 - 点击某客服`
 
+## 第三方库冲突
+由于「聊天界面」的项目中用到了几个开源库，如果开发者使用相同的库，会产生命名空间冲突的问题。遇到此类问题，开发者可以选择删除「聊天界面 - Vendors」中的相应第三方代码。
+
+**注意**，美洽对几个第三方库进行了自定义修改，如果开发者删除了美洽中的 Vendors，聊天界面将会缺少我们自定义的效果，详细请移步 Github [美洽开源聊天界面](https://github.com/Meiqia/MQChatViewController#vendors---用到的第三方开源库)。
+
 # 更新日志
+
+**v3.1.0 2016年01月28日**
+
+* 增加客服评价功能。
 
 **v3.0.9 2016年01月14日**
 
 * 聊天界面输入框的文字是多行时，保持输入框两侧按钮的位置在键盘上方。
+* 重置 message 实体类中的 agentId 的值
 
 **v3.0.8 2016年01月13日**
 
