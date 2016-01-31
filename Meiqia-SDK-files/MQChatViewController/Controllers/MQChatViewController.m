@@ -62,7 +62,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Do any additional setup after loading the view.
     self.automaticallyAdjustsScrollViewInsets = true;
     currentStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
-    self.navigationController.delegate  = self;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        self.navigationController.delegate  = self;
+    }
     self.view.backgroundColor = [UIColor whiteColor];
     viewSize = [UIScreen mainScreen].bounds.size;
     [self setNavBar];
