@@ -62,9 +62,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Do any additional setup after loading the view.
     self.automaticallyAdjustsScrollViewInsets = true;
     currentStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
-        self.navigationController.delegate  = self;
-    }
     self.view.backgroundColor = [UIColor whiteColor];
     viewSize = [UIScreen mainScreen].bounds.size;
     [self setNavBar];
@@ -137,7 +134,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     self.chatTableView.delegate = nil;
     chatInputBar.delegate = nil;
     recordView.recordViewDelegate = nil;
-    self.navigationController.delegate = nil;
 #ifdef INCLUDE_MEIQIA_SDK
     chatViewService.errorDelegate = nil;
 #endif
@@ -374,6 +370,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         [MQToast showToast:[MQBundleUtil localizedStringForKey:mediaPermission] duration:2 window:self.view];
         return;
     }
+    
+    self.navigationController.delegate = self;
     //兼容ipad打不开相册问题，使用队列延迟
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
@@ -499,6 +497,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if ([navigationController isKindOfClass:[UIImagePickerController class]]) {
         [UIApplication sharedApplication].statusBarStyle = currentStatusBarStyle;
     }
+    self.navigationController.delegate = nil;
 }
 
 #pragma MQChatCellDelegate
