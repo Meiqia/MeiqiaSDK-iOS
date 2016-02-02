@@ -250,15 +250,17 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #else
     UIButton *rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
     NSString *btnText = [MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"];
-    UIFont *btnTextFont = [UIFont systemFontOfSize:14.0];
+    UIFont *btnTextFont = [UIFont systemFontOfSize:[UIFont buttonFontSize]];
     CGFloat btnTextHeight = [MQStringSizeUtil getHeightForText:btnText withFont:btnTextFont andWidth:200];
     CGFloat btnTextWidth = [MQStringSizeUtil getWidthForText:btnText withFont:btnTextFont andHeight:btnTextHeight];
     rightNavButton.frame = CGRectMake(0, 0, btnTextWidth, btnTextHeight);
     rightNavButton.titleLabel.font = btnTextFont;
-    [rightNavButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    [rightNavButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+    [rightNavButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateDisabled];
     [rightNavButton setTitle:btnText forState:UIControlStateNormal];
     [rightNavButton addTarget:self action:@selector(tapNavigationRightBtn:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightNavButton];
+    self.navigationItem.rightBarButtonItem.customView.hidden = YES;
 #endif
 }
 
@@ -286,6 +288,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma UIScrollViewDelegate
+- (void)hideRightBarButtonItem:(BOOL)enabled
+{
+    self.navigationItem.rightBarButtonItem.customView.hidden = enabled;
+}
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     [self.chatTableView scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
 }
