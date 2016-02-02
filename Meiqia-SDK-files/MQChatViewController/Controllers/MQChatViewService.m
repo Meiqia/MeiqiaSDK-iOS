@@ -596,6 +596,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if (!completion) {
             //没有分配到客服
             agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
+            [weakSelf.delegate hideRightBarButtonItem:YES];
+        }else{
+            [weakSelf.delegate hideRightBarButtonItem:NO];
         }
         //获取顾客信息
         [weakSelf getClientInfo];
@@ -734,8 +737,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         isThereNoAgent = true;
     }
     if (isThereNoAgent) {
+        [self.delegate hideRightBarButtonItem:YES];
         [self addSystemTips];
         [self updateChatTitleWithAgentName:[MQBundleUtil localizedStringForKey:@"no_agent_title"]];
+    }else{
+        //显示评价按钮
+        [self.delegate hideRightBarButtonItem:NO];
     }
     NSInteger index = [self getIndexOfCellWithMessageId:oldMessageId];
     if (index < 0) {
