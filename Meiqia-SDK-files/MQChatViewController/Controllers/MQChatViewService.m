@@ -618,7 +618,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 //获取顾客信息
 - (void)getClientInfo {
     NSDictionary *clientInfo = [MQServiceToViewInterface getCurrentClientInfo];
-    if (![clientInfo objectForKey:@"avatar"]) {
+    if ([[clientInfo objectForKey:@"avatar"] length] == 0) {
         return ;
     }
     [MQServiceToViewInterface downloadMediaWithUrlString:[clientInfo objectForKey:@"avatar"] progress:^(float progress) {

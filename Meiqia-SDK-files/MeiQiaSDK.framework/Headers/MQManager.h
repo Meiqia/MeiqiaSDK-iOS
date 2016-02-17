@@ -12,7 +12,7 @@
 #import "MQDefinition.h"
 #import "MQAgent.h"
 
-#define MQSDKVersion @"3.1.0"
+#define MQSDKVersion @"3.1.1"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -92,7 +92,7 @@
  *  @param completion  设置头像图片的回调
  */
 + (void)setClientAvatar:(UIImage *)avatarImage
-             completion:(void (^)(BOOL success, NSError *error))completion;
+             completion:(void (^)(NSString *avatarUrl, NSError *error))completion;
 
 /**
  * 让当前的client上线。请求成功后，该顾客将会出现在客服的对话列表中。
