@@ -18,10 +18,10 @@
 #import "VoiceConverter.h"
 #import "MQBundleUtil.h"
 #import "MQImageUtil.h"
-#import <MeiQiaSDK/MQDefinition.h>
 #import "MQEvaluationView.h"
 #import "MQAssetUtil.h"
 #import "MQStringSizeUtil.h"
+#import <MeiQiaSDK/MQDefinition.h>
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -288,11 +288,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma UIScrollViewDelegate
-- (void)hideRightBarButtonItem:(BOOL)enabled
-{
-    self.navigationItem.rightBarButtonItem.customView.hidden = enabled;
-}
-
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     [self.chatTableView scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
 }
@@ -310,6 +305,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma MQChatViewServiceDelegate
+- (void)hideRightBarButtonItem:(BOOL)enabled
+{
+    self.navigationItem.rightBarButtonItem.customView.hidden = enabled;
+}
+
 - (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver{
     [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:cellNumber isLoadOver:isLoadOver];
     [self.chatTableView reloadData];

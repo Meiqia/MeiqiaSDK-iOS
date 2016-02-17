@@ -295,13 +295,13 @@
 }
 
 + (void)uploadClientAvatar:(UIImage *)avatarImage
-                completion:(void (^)(BOOL success, NSError *error))completion
+                completion:(void (^)(NSString *avatarUrl, NSError *error))completion
 {
-    [MQManager setClientAvatar:avatarImage completion:^(BOOL success, NSError *error) {
+    [MQManager setClientAvatar:avatarImage completion:^(NSString *avatarUrl, NSError *error) {
         [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage = avatarImage;
         [[NSNotificationCenter defaultCenter] postNotificationName:MQChatTableViewShouldRefresh object:avatarImage];
         if (completion) {
-            completion(success, error);
+            completion(avatarUrl, error);
         }
     }];
 }
