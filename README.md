@@ -102,6 +102,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 ```
 
 ### info.plist设置
+
 美洽的图片、语音等静态资源放在了 AWS S3 上，但 `s3.amazonaws.com` 使用了 SHA1 证书，不满足 iOS 9 的 [ATS ( App Transport Security )](https://developer.apple.com/library/prerelease/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14) 要求。
 
 所以为了能让聊天界面正确显示图片和语音，开发者需要在 App 的 info.plist 中增加如下设置 (右键点击`info.plist` -> `Open As` -> `Source Code`):
@@ -126,8 +127,6 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 ![info.plist配置](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/f4564c89cef713c1)
 
 关于 S3 证书问题，可参考 stackoverflow 上面的一个 [讨论](http://stackoverflow.com/questions/32500655/ios-9-app-download-from-amazon-s3-ssl-error-tls-1-2-support)。
-
-**注意**，为了规避遗漏此项设置，如果开发者没有增加此项配置，SDK 是不会初始化成功的，xcode会打印错误提示。
 
 至此，你已经为你的 APP 添加美洽提供的客服服务。而美洽 SDK 还提供其他强大的功能，可以帮助提高服务效率，提升用户使用体验。接下来为你详细介绍如何使用其他功能。
 
@@ -683,6 +682,7 @@ request.body 为消息数据，数据结构为：
 **v3.1.0 2016年01月28日**
 
 * 增加客服评价功能。
+* 修复iOS7中crash的问题
 
 **v3.0.9 2016年01月14日**
 
@@ -705,7 +705,7 @@ request.body 为消息数据，数据结构为：
 * 修复飞行模式下，发送失败的消息界面卡顿的问题
 
 **v3.0.6 2016年01月6日**
-	
+
 * 修复由于导航栏不透明导致的输入框下方有黑边问题。
 * 增加指定分配客服、客服组接口的转接规则，即若指定分配的客服不在线时，如何转接。
 
