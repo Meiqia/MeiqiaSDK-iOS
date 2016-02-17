@@ -505,7 +505,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 /**
- *  开发者可这样配置：底部按钮、修改气泡颜色、文字颜色、使头像设为圆形
+ *  开发者这样配置可：底部按钮、修改气泡颜色、文字颜色、使头像设为圆形
  */
 - (void)chatViewStyle1 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
@@ -532,7 +532,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 /**
- *  开发者可这样配置：是否支持发送语音、是否显示本机头像、修改气泡的样式
+ *  开发者这样配置可：是否支持发送语音、是否显示本机头像、修改气泡的样式
  */
 - (void)chatViewStyle2 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
@@ -549,7 +549,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 /**
- *  开发者可这样配置：增加可点击链接的正则表达式( Library 本身已支持多种格式链接，如未满足需求可增加)、增加欢迎语、是否开启消息声音、修改接受消息的铃声
+ *  开发者这样配置可：增加可点击链接的正则表达式( Library 本身已支持多种格式链接，如未满足需求可增加)、增加欢迎语、是否开启消息声音、修改接受消息的铃声
  */
 - (void)chatViewStyle3 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
@@ -562,7 +562,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 /**
- *  如果 tableView 没有在底部，开发者可这样打开消息的提示
+ *  如果 tableView 没有在底部，开发者这样可打开消息的提示
  */
 - (void)chatViewStyle4 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
@@ -571,7 +571,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 /**
- *  开发者可这样配置：是否支持下拉刷新、修改下拉刷新颜色、增加导航栏标题
+ *  开发者这样配置可：是否支持下拉刷新、修改下拉刷新颜色、增加导航栏标题
  */
 - (void)chatViewStyle5 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
@@ -581,7 +581,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 /**
- *  开发者可这样修改导航栏颜色、导航栏左右键、取消图片消息的mask效果
+ *  开发者这样可修改导航栏颜色、导航栏左右键、取消图片消息的mask效果
  */
 - (void)chatViewStyle6 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
