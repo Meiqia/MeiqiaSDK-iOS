@@ -590,6 +590,11 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     rightButton.frame = CGRectMake(10, 10, 20, 20);
     [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
     [chatViewManager setNavRightButton:rightButton];
+    UIButton *lertButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    lertButton.backgroundColor = [UIColor blueColor];
+    lertButton.frame = CGRectMake(10, 10, 20, 20);
+    [chatViewManager setNavLeftButton:lertButton];
+    [chatViewManager setNavTitleText:@"我是标题哦^.^"];
     [chatViewManager enableMessageImageMask:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
