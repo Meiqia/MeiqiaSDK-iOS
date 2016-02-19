@@ -54,7 +54,7 @@ framework中的文件 | 说明
 
 ## 导入美洽 SDK
 
-把美洽 SDK 文件夹中的 `MeiQiaSDK.framework` 、 `MQChatViewController/` 和 `MeiqiaSDKViewInterface/` 文件夹（选做）拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者将这两个个文件拖入 XCode 工程目录结构中。
+把美洽 SDK 文件夹中的 `MeiQiaSDK.framework` 、 `MQChatViewController/` 和 `MeiqiaSDKViewInterface/` 文件夹（选做）拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者将这两个个文件拖入 Xcode 工程目录结构中。
 
 
 ## 引入依赖库
