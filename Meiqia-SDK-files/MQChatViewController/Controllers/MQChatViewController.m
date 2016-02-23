@@ -448,6 +448,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma UINavigationControllerDelegate 设置当前 statusBarStyle
 -(void)navigationController:(UINavigationController *)navigationController
      willShowViewController:(UIViewController *)viewController
                    animated:(BOOL)animated
