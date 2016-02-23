@@ -124,6 +124,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)removeDelegateAndObserver {
+    self.navigationController.delegate  = nil;
     chatViewService.delegate = nil;
     tableDataSource.chatCellDelegate = nil;
     self.chatTableView.chatTableViewDelegate = nil;
@@ -447,6 +448,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma UINavigationControllerDelegate 设置当前 statusBarStyle
 -(void)navigationController:(UINavigationController *)navigationController
      willShowViewController:(UIViewController *)viewController
                    animated:(BOOL)animated
@@ -455,6 +457,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if ([navigationController isKindOfClass:[UIImagePickerController class]]) {
         [UIApplication sharedApplication].statusBarStyle = currentStatusBarStyle;
     }
+    self.navigationController.delegate  = nil;
 }
 
 #pragma MQChatCellDelegate
