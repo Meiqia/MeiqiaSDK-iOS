@@ -15,7 +15,6 @@
 #ifndef INCLUDE_MEIQIA_SDK
 #import "UIImageView+WebCache.h"
 #endif
-
 @interface MQImageCellModel()
 
 /**
