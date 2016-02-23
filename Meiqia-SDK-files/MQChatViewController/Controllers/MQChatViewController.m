@@ -124,6 +124,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)removeDelegateAndObserver {
+    self.navigationController.delegate  = nil;
     chatViewService.delegate = nil;
     tableDataSource.chatCellDelegate = nil;
     self.chatTableView.chatTableViewDelegate = nil;
@@ -455,6 +456,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if ([navigationController isKindOfClass:[UIImagePickerController class]]) {
         [UIApplication sharedApplication].statusBarStyle = currentStatusBarStyle;
     }
+    self.navigationController.delegate  = nil;
 }
 
 #pragma MQChatCellDelegate
