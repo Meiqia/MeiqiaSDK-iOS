@@ -17,8 +17,8 @@
 @protocol MQManagerDelegate <NSObject>
 
 /**
- *  收到了客服消息
- *  @param message 客服消息
+ *  收到了消息
+ *  @param message 消息
  */
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)message;
 

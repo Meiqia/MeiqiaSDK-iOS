@@ -62,7 +62,7 @@
     NSMutableArray *toMessages = [[NSMutableArray alloc] init];
     for (MQMessage *fromMessage in messagesArray) {
         MQBaseMessage *toMessage;
-        if (fromMessage.action == MQMessageActionMessage) {
+        if (fromMessage.action == MQMessageActionMessage || fromMessage.action == MQMessageActionTicketReply) {
             toMessage = [self convertToSendMessageWithMessage:fromMessage];
         } else {
             toMessage = [self convertToEventMessageWithMessage:fromMessage];
@@ -338,11 +338,14 @@
     self.serviceToViewDelegate = receiveMessageDelegate;
     if (!clientId || clientId.length == 0) {
         [MQManager setCurrentClientOnlineWithSuccess:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
+            NSArray *toMessages = nil;
+            if (messages.count > 0) {
+                toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
+            }
             if (result == MQClientOnlineResultSuccess) {
-                NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
                 success(true, agent.nickname, toMessages);
             } else if(result == MQClientOnlineResultNotScheduledAgent) {
-                success(false, @"", nil);
+                success(false, @"", toMessages);
             }
         } failure:^(NSError *error) {
             success(false, @"初始化失败，请重新打开", nil);
