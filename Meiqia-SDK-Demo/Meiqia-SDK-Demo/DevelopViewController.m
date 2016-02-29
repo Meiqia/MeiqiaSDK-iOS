@@ -299,9 +299,14 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
  *  @param customizedId 自定义id
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId {
-    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager setLoginCustomizedId:customizedId];
-    [chatViewManager pushMQChatViewControllerInViewController:self];
+    [MQManager initWithAppkey:@"44e9a76b103e840a310a6e326c404f80" completion:^(NSString *clientId, NSError *error) {
+        if (!error) {
+            MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+            [chatViewManager setLoginCustomizedId:customizedId];
+            [chatViewManager setScheduledAgentId:@"b51d1028f8fdfc0a708076e504d10c2f"];
+            [chatViewManager pushMQChatViewControllerInViewController:self];
+        }
+    }];
 }
 
 /**

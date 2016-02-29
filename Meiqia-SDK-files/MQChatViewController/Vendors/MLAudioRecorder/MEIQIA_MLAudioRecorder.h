@@ -12,7 +12,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "Debug.h"
+#import "MEIQIA_AMR_Debug.h"
 
 //录音停止事件的block回调，作用参考MLAudioRecorderDelegate的recordStopped和recordError:
 typedef void (^MLAudioRecorderReceiveStoppedBlock)();

@@ -15,7 +15,6 @@
 #import "MQInputBar.h"
 #import "MQToast.h"
 #import "MQRecordView.h"
-#import "VoiceConverter.h"
 #import "MQBundleUtil.h"
 #import "MQImageUtil.h"
 #import <MeiQiaSDK/MQDefinition.h>
@@ -48,6 +47,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     NSLog(@"清除chatViewController");
     [self removeDelegateAndObserver];
     [chatViewConfig setConfigToDefault];
+#ifdef INCLUDE_MEIQIA_SDK
+    [self closeMeiqiaChatView];
+#endif
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -245,6 +247,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [loadMessageBtn addTarget:self action:@selector(tapNavigationRightBtn:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loadMessageBtn];
 #else
+    if ([MQChatViewConfig sharedConfig].hideEvaluationButton) {
+        return;
+    }
     UIButton *rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
     NSString *btnText = [MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"];
     UIFont *btnTextFont = [UIFont systemFontOfSize:[UIFont buttonFontSize]];
@@ -632,6 +637,12 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)didReceiveRefreshOutgoingAvatarNotification:(NSNotification *)notification {
     if ([notification.object isKindOfClass:[UIImage class]]) {
         [chatViewService refreshOutgoingAvatarWithImage:notification.object];
+    }
+}
+
+- (void)closeMeiqiaChatView {
+    if ([self.navigationItem.title isEqualToString:[MQBundleUtil localizedStringForKey:@"no_agent_title"]]) {
+        [chatViewService dismissingChatViewController];
     }
 }
 

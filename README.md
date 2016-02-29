@@ -191,6 +191,7 @@ NSDictionary* clientCustomizedAttrs = @{
 |Key|说明|
 |---|---|
 |name|真实姓名|
+|gender|性别|
 |avatar|头像 URL|
 |tags|标签，数组形式，且必须是企业中已经存在的标签|
 |source|顾客来源|
