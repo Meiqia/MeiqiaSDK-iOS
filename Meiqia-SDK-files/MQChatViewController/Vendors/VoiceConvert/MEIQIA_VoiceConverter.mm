@@ -6,18 +6,18 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "VoiceConverter.h"
-#import "wav.h"
+#import "MEIQIA_VoiceConverter.h"
+#import "MEIQIA_wav.h"
 #import "interf_dec.h"
 #import "dec_if.h"
 #import "interf_enc.h"
-#import "amrFileCodec.h"
+#import "MEIQIA_amrFileCodec.h"
 
-@implementation VoiceConverter
+@implementation MEIQIA_VoiceConverter
 
 + (int)amrToWav:(NSString*)_amrPath wavSavePath:(NSString*)_savePath{
     
-    if (! DecodeAMRFileToWAVEFile([_amrPath cStringUsingEncoding:NSASCIIStringEncoding], [_savePath cStringUsingEncoding:NSASCIIStringEncoding]))
+    if (! MEIQIA_DecodeAMRFileToWAVEFile([_amrPath cStringUsingEncoding:NSASCIIStringEncoding], [_savePath cStringUsingEncoding:NSASCIIStringEncoding]))
         return 0;
     
     return 1;
@@ -25,7 +25,7 @@
 
 + (int)wavToAmr:(NSString*)_wavPath amrSavePath:(NSString*)_savePath{
     
-    if (EncodeWAVEFileToAMRFile([_wavPath cStringUsingEncoding:NSASCIIStringEncoding], [_savePath cStringUsingEncoding:NSASCIIStringEncoding], 1, 16))
+    if (MEIQIA_EncodeWAVEFileToAMRFile([_wavPath cStringUsingEncoding:NSASCIIStringEncoding], [_savePath cStringUsingEncoding:NSASCIIStringEncoding], 1, 16))
         return 0;
     
     return 1;

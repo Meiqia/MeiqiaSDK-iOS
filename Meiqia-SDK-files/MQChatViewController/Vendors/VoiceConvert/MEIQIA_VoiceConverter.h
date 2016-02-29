@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VoiceConverter : NSObject
+@interface MEIQIA_VoiceConverter : NSObject
 
 + (int)amrToWav:(NSString*)_amrPath wavSavePath:(NSString*)_savePath;
 

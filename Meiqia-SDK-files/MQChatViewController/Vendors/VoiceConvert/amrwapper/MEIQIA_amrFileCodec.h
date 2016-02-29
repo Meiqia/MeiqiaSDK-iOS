@@ -67,9 +67,9 @@ typedef struct
 // bps决定样本(sample)大小
 // bps = 8 --> 8位 unsigned char
 //       16 --> 16位 unsigned short
-int EncodeWAVEFileToAMRFile(const char* pchWAVEFilename, const char* pchAMRFileName, int nChannels, int nBitsPerSample);
+int MEIQIA_EncodeWAVEFileToAMRFile(const char* pchWAVEFilename, const char* pchAMRFileName, int nChannels, int nBitsPerSample);
 
 // 将AMR文件解码成WAVE文件
-int DecodeAMRFileToWAVEFile(const char* pchAMRFileName, const char* pchWAVEFilename);
+int MEIQIA_DecodeAMRFileToWAVEFile(const char* pchAMRFileName, const char* pchWAVEFilename);
 
 #endif

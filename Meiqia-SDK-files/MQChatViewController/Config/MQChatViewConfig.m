@@ -71,6 +71,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.enableTopAutoRefresh      = true;
     self.isPushChatView            = true;
     self.enableShowNewMessageAlert = true;
+    self.hideEvaluationButton      = false;
     
     self.incomingMsgTextColor   = [UIColor darkTextColor];
     self.outgoingMsgTextColor   = [UIColor darkTextColor];

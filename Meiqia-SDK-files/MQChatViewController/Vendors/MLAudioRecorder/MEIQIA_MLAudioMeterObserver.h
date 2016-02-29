@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "Debug.h"
+#import "MEIQIA_AMR_Debug.h"
 
 @class MEIQIA_MLAudioMeterObserver;
 

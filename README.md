@@ -191,6 +191,7 @@ NSDictionary* clientCustomizedAttrs = @{
 |Key|说明|
 |---|---|
 |name|真实姓名|
+|gender|性别|
 |avatar|头像 URL|
 |tags|标签，数组形式，且必须是企业中已经存在的标签|
 |source|顾客来源|
@@ -678,6 +679,11 @@ request.body 为消息数据，数据结构为：
 **注意**，美洽对几个第三方库进行了自定义修改，如果开发者删除了美洽中的 Vendors，聊天界面将会缺少我们自定义的效果，详细请移步 Github [美洽开源聊天界面](https://github.com/Meiqia/MQChatViewController#vendors---用到的第三方开源库)。
 
 # 更新日志
+
+**v3.1.3 2016年02月25日**
+
+* 增加显示客服留言回复的功能。
+* 修复使用自定义 Id 上线后，第二次上线前获取不到数据库本地消息的问题。
 
 **v3.1.2 2016年02月22日**
 

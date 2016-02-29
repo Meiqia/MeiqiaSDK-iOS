@@ -11,7 +11,7 @@
 #import "MQChatFileUtil.h"
 #import "MQChatViewConfig.h"
 #import "MQChatAudioPlayer.h"
-#import "VoiceConverter.h"
+#import "MEIQIA_VoiceConverter.h"
 #import "MQAssetUtil.h"
 
 @interface MQVoiceMessageCell()<MQChatAudioPlayerDelegate>
@@ -263,7 +263,7 @@
             //将wav文件转换成amr文件
             NSString *amrPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             amrPath = [amrPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.amr", (int)[NSDate date].timeIntervalSince1970]];
-            [VoiceConverter wavToAmr:wavPath amrSavePath:amrPath];
+            [MEIQIA_VoiceConverter wavToAmr:wavPath amrSavePath:amrPath];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.chatCellDelegate resendMessageInCell:self resendData:@{@"voice" : amrPath}];
             });

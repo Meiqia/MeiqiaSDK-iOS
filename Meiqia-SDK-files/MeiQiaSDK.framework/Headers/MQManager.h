@@ -12,13 +12,13 @@
 #import "MQDefinition.h"
 #import "MQAgent.h"
 
-#define MQSDKVersion @"3.1.2"
+#define MQSDKVersion @"3.1.3"
 
 @protocol MQManagerDelegate <NSObject>
 
 /**
- *  收到了客服消息
- *  @param message 客服消息
+ *  收到了消息
+ *  @param message 消息
  */
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)message;
 
@@ -80,7 +80,7 @@
  *
  * @param clientInfo 顾客的信息
  * @warning 需要顾客先上线，再上传顾客信息
- * @warning 如果开发者使用「开源聊天界面」的接口来上线，则需要监听「顾客成功上线」的广播（见 MQDefinition.h），再调用此接口
+ * @warning 如果开发者使用「开源聊天界面」的接口来上线，则需要监听 MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION「顾客成功上线」的广播（见 MQDefinition.h），再调用此接口
  */
 + (void)setClientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
            completion:(void (^)(BOOL success, NSError *error))completion;
@@ -90,6 +90,7 @@
  *
  *  @param avatarImage 头像Image
  *  @param completion  设置头像图片的回调
+ *  @warning 需要顾客上线之后，再调用此接口，具体请监听 MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION「顾客成功上线」的广播，具体见 MQDefinition.h
  */
 + (void)setClientAvatar:(UIImage *)avatarImage
              completion:(void (^)(NSString *avatarUrl, NSError *error))completion;
@@ -313,5 +314,7 @@
  * 获得当前美洽SDK的版本号
  */
 + (NSString *)getMeiQiaSDKVersion;
+
+
 
 @end
