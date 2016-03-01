@@ -384,6 +384,12 @@
  */
 - (void) setHideEvaluationButton:(BOOL)hide;
 
+/**
+ * 设置客户信息；
+ * @param clientInfo 客户信息
+ */
+- (void)setClientInfo:(NSDictionary *)clientInfo;
+
 #endif
 
 

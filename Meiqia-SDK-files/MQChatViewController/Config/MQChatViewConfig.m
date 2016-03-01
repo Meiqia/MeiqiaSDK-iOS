@@ -106,6 +106,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.maxVoiceDuration               = 60;
     
     self.scheduleRule                   = nil;
+    self.clientInfo         = nil;
 }
 
 @end

@@ -424,6 +424,14 @@
     chatViewConfig.hideEvaluationButton = hide;
 }
 
+- (void)setClientInfo:(NSDictionary *)clientInfo
+{
+    if (!clientInfo) {
+        return;
+    }
+    chatViewConfig.clientInfo = clientInfo;
+}
+
 #endif
 
 @end
