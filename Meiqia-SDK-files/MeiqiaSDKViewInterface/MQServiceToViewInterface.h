@@ -218,6 +218,14 @@
 + (NSDictionary *)getCurrentClientInfo;
 
 /**
+ *  设置当前顾客的顾客信息
+ *
+ *  @param 当前的顾客的信息
+ *
+ */
++ (void)setCurrentClientInfo;
+
+/**
  *  上传顾客的头像
  *
  *  @param avatarImage 头像image

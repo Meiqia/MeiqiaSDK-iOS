@@ -294,6 +294,11 @@
     return [MQManager getCurrentClientInfo];
 }
 
++ (void)setCurrentClientInfo {
+    [MQManager setClientInfo: [MQChatViewConfig sharedConfig].clientInfo
+                  completion: nil];
+}
+
 + (void)uploadClientAvatar:(UIImage *)avatarImage
                 completion:(void (^)(NSString *avatarUrl, NSError *error))completion
 {

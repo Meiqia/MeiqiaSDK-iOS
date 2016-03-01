@@ -577,6 +577,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 //没有分配到客服
                 agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
             }
+            else
+            {
+                [MQServiceToViewInterface setCurrentClientInfo];
+            }
             //获取顾客信息
             [weakSelf getClientInfo];
             //更新客服聊天界面标题
@@ -599,6 +603,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [weakSelf.delegate hideRightBarButtonItem:YES];
         }else{
             [weakSelf.delegate hideRightBarButtonItem:NO];
+            [MQServiceToViewInterface setCurrentClientInfo];
         }
         //获取顾客信息
         [weakSelf getClientInfo];
