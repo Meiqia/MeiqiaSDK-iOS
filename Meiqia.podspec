@@ -21,24 +21,24 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '6.0'
   s.requires_arc = true
 
-  # s.source_files = 'Meiqia-SDK-files/MeiqiaSDKViewInterface/*.{h,m}', 'Meiqia-SDK-files/MQChatViewController/**/*.{h,m,mm,cpp}'
-
   s.resource_bundles = {
     'MeiqiaSDK' => ['Meiqia-SDK-files/MQChatViewController/Assets/MQChatViewAsset.bundle']
   }
+  # s.source_files = 'Meiqia-SDK-files/MeiqiaSDKViewInterface/*.{h,m}', 'Meiqia-SDK-files/MQChatViewController/**/*.{h,m,mm,cpp}'
+  # s.vendored_frameworks = 'Meiqia-SDK-files/MeiQiaSDK.framework'
+  s.subspec 'MeiqiaSDK' do |ss|
+    ss.frameworks =  'AVFoundation', 'CoreTelephony', 'SystemConfiguration', 'MobileCoreServices'
+    ss.libraries  =  'sqlite3', 'icucore'
+    ss.vendored_frameworks = 'Meiqia-SDK-files/MeiQiaSDK.framework'
+  end
   s.subspec 'MQChatViewController' do |ss|
-    ss.dependency = 'Meiqia/MeiqiaSDKViewInterface'
-    ss.source_files  = 'Meiqia-SDK-files/MQChatViewController/**/*.{h,m,mm,cpp}'
+    ss.dependency 'Meiqia/MeiqiaSDK'
+    ss.source_files = 'Meiqia-SDK-files/MeiqiaSDKViewInterface/*.{h,m}', 'Meiqia-SDK-files/MQChatViewController/**/*.{h,m,mm,cpp}'
+    ss.vendored_libraries = 'Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrnb.a', 'Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrwb.a'
+    ss.preserve_path = '**/libopencore-amrnb.a', '**/libopencore-amrwb.a'
+    ss.xcconfig = { "LIBRARY_SEARCH_PATHS" => "\"$(PODS_ROOT)/**\"" }
   end
-  s.subspec 'MeiqiaSDKViewInterface' do |ss|
-    ss.dependency = 'Meiqia/MQChatViewController'
-    ss.source_files  = 'Meiqia-SDK-files/MeiqiaSDKViewInterface/*.{h,m}'
-  end
-  s.vendored_frameworks = 'Meiqia-SDK-files/MeiQiaSDK.framework'
-  s.frameworks =  'AVFoundation', 'CoreTelephony', 'SystemConfiguration', 'MobileCoreServices'
-  s.libraries  =  'sqlite3', 'icucore'
-  s.vendored_libraries = 'Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrnb.a', 'Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrwb.a'
-  s.preserve_path = '**/libopencore-amrnb.a', '**/libopencore-amrwb.a'
-  s.xcconfig = { "LIBRARY_SEARCH_PATHS" => "\"$(PODS_ROOT)/**\"" }
+  
+  
 
 end
