@@ -7,7 +7,7 @@
 //
 
 #import "MQChatBaseCell.h"
-#import "MQTipsCellModel.h"
+
 /**
  * MQTipsCell定义了客服聊天界面的一些提示的cell
  */

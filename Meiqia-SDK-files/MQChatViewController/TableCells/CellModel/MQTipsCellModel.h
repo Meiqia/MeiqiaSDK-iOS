@@ -33,7 +33,7 @@ extern CGFloat const kMQMessageTipsFontSize;
 @property (nonatomic, copy) NSDictionary<NSString *, id> *tipExtraAttributes;
 
 /**
- * @brief 提示文字的额外属性的range
+ * @brief 提示文字的额外属性的 range
  */
 @property (nonatomic, assign) NSRange tipExtraAttributesRange;
 

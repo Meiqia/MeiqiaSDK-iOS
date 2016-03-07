@@ -7,7 +7,7 @@
 //
 
 #import "MQChatBaseCell.h"
-#import "MQMessageDateCellModel.h"
+
 /**
  * MQMessageDateCell定义了客服聊天界面的消息时间cell
  */

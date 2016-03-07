@@ -7,7 +7,6 @@
 //
 
 #import "MQChatBaseCell.h"
-#import "MQVoiceCellModel.h"
 
 /**
  * MQVoiceMessageCell定义了客服聊天界面的语音消息cell

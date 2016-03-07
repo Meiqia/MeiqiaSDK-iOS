@@ -218,14 +218,6 @@
 + (NSDictionary *)getCurrentClientInfo;
 
 /**
- *  设置当前顾客的顾客信息
- *
- *  @param 当前的顾客的信息
- *
- */
-+ (void)setCurrentClientInfo;
-
-/**
  *  上传顾客的头像
  *
  *  @param avatarImage 头像image
@@ -243,5 +235,12 @@
 + (void)setEvaluationLevel:(NSInteger)level
                    comment:(NSString *)comment;
 
+/**
+ *  上传顾客信息
+ *
+ *  @param clientInfo 顾客信息
+ */
++ (void)setClientInfoWithDictionary:(NSDictionary *)clientInfo
+                         completion:(void (^)(BOOL success, NSError *error))completion;
 
 @end

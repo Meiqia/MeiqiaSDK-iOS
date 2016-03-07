@@ -11,7 +11,8 @@ edition: m2016
 
 ## 目录
 * [SDK 工作流程](#sdk-工作流程)
-* [导入美洽 SDK](#导入美洽-sdk)
+* [手动导入美洽 SDK](#导入美洽-sdk)
+* [CocoaPods 导入](#CocoaPods-导入)
 * [快速集成 SDK](#快速集成-sdk)
 * [美洽开源聊天界面集成客服功能](#使用美洽开源聊天界面集成客服功能)
 * [美洽 API 接口介绍](#美洽-api-接口介绍)
@@ -32,7 +33,7 @@ edition: m2016
 ![设置推送地址](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/8fbdaa6076d0b9d0)
 
 
-# 导入美洽 SDK
+# 手动导入美洽 SDK
 
 ## 文件介绍
 
@@ -68,12 +69,27 @@ framework中的文件 | 说明
 - SystemConfiguration.framework
 - MobileCoreServices.framework
 
+# CocoaPods 导入
+
+在 Podfile 中加入：
+
+```
+pod 'Meiqia', '~> 3.1.3'
+```
+
+接着安装美洽 pod 即可：
+
+```
+$ pod install
+```
 
 # 快速集成 SDK
+
 美洽开源了一套[聊天界面 Library](https://github.com/Meiqia/MQChatViewController)，帮助开发者快速生成聊天视图，并提供自定义接口，满足一定定制需求。
 
 
 ## 三分钟快速应用 SDK
+
 如上所述，使用美洽 SDK ，必不可少的一步便是[初始化 SDK](#初始化-sdk)，完成初始化后便可操作 SDK 其他功能和接口，比如退出视图等。美洽提供的 UI 简化了开发流程，使得为 APP 添加客服功能最低仅需几行代码和一个 `info.plist` 配置：
 
 ```objc
@@ -596,9 +612,10 @@ request.body 为消息数据，数据结构为：
 |deviceToken|发送对象设备的 deviceToken，格式为字符串|
 |clientId|发送对象的顾客 id|
 |customizedId|开发者传的自定义 id|
-|contentType|消息类型 - text/photo/audio|
+|contentType|消息内容类型 - text/photo/audio|
 |deviceOS|设备系统|
 |customizedData|开发者上传的自定义的属性|
+|type|消息类型 - mesage 普通消息 / welcome 欢迎消息 / ending 结束消息 / remark 评价消息 / 留言消息|
 
 开发者可以根据请求中的签名，对推送消息进行数据验证，美洽提供了 `Java、Python、Ruby、JavaScript、PHP` 5种语言的计算签名的代码，具体请移步 [美洽 SDK 3.0 推送的数据结构签名算法](https://github.com/Meiqia/MeiqiaSDK-Push-Signature-Example)。
 
@@ -614,6 +631,8 @@ request.body 为消息数据，数据结构为：
 - [如何在聊天界面之外监听新消息的通知](#如何在聊天界面之外监听新消息的通知)
 - [指定分配客服/客服组失效](#指定分配客服/客服组失效)
 - [第三方库冲突](#第三方库冲突)
+- [工作台顾客信息显示应用的名称不正确](#工作台顾客信息显示应用的名称不正确)
+- [编译中出现 undefined symbols](#编译中出现-undefined-symbols)
 
 ## SDK 初始化失败
 
@@ -662,29 +681,49 @@ request.body 为消息数据，数据结构为：
 * 在MQChatViewController的viewWillDisappear里加入 `[[IQKeyboardManager sharedManager] setEnable:YES];`，作用是在离开当前页面之前重新启用IQKeyboardManager
 
 ## 使用 TabBarController 后，inputBar 高度出现异常
+
 使用了 TabBarController 的 App，视图结构都各相不同，并且可能存在自定义 TabBar 的情况，所以美洽 SDK 无法判断并准确调整，需要开发者自行修改 App 或 SDK 代码。自 iOS 7 系统后，大多数情况下只需修改 TabBar 的 `hidden` 和 `translucent` 属性便可以正常使用。
 
 ## 如何得到客服ID或客服分组ID
+
 请查看 [指定分配客服和客服组](#指定分配客服和客服组) 中的配图。
 
 ## 如何在聊天界面之外监听新消息的通知
+
 请查看 [如何监听监听收到消息的广播](#监听收到消息的广播)。
 
 ## 指定分配客服/客服组失效
+
 请查看指定的客服的服务顾客的上限是否被设置成了0，或服务顾客的数量是否已经超过服务上限。查看位置为：`工作台 - 设置 - 客服与分组 - 点击某客服`
 
 ## 第三方库冲突
+
 由于「聊天界面」的项目中用到了几个开源库，如果开发者使用相同的库，会产生命名空间冲突的问题。遇到此类问题，开发者可以选择删除「聊天界面 - Vendors」中的相应第三方代码。
 
 **注意**，美洽对几个第三方库进行了自定义修改，如果开发者删除了美洽中的 Vendors，聊天界面将会缺少我们自定义的效果，详细请移步 Github [美洽开源聊天界面](https://github.com/Meiqia/MQChatViewController#vendors---用到的第三方开源库)。
 
+## 工作台顾客信息显示应用的名称不正确
+
+如果工作台的某对话中的顾客信息 - 访问信息中的「应用」显示的是 App 的 Bundle Name 或显示的是「SDK 无法获取 App 的名字」，则可能是您的 App 的 info.plist 中没有设置 CFBundleDisplayName 这个 Property，导致 SDK 获取不到 App 的名字。
+
+## 编译中出现 undefined symbols
+
+请开发者检查 App Target - Build Settings - Search Path - Framework Search Path 或 Library Search Path 当中是否没有美洽的项目。
+
 # 更新日志
+
+**v3.1.4 2016年03月02日**
+
+* 开源界面增加上传顾客自定义信息的接口，感谢 [dayuch](https://github.com/dayuch) 提交的 PR 。
+* 更换提交客服评价后的表现形式。
+* 增加录音模糊界面的开关接口。
+* 更换新的发送/接收消息的提示音。
 
 **v3.1.3 2016年02月25日**
 
 * 支持 Cocoapods. 感谢 [ttgb](https://github.com/ttgb) 的支持。
 * 增加显示客服留言回复的功能。
-* 修复使用自定义 Id 上线后，第二次上线前获取不到数据库本地消息的问题。
+* 修复使用自定义 id 上线后，第二次上线前获取不到数据库本地消息的问题。
 
 **v3.1.2 2016年02月22日**
 

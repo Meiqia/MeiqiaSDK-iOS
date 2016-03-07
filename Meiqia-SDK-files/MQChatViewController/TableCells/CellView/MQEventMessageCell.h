@@ -7,7 +7,7 @@
 //
 
 #import "MQChatBaseCell.h"
-#import "MQEventCellModel.h"
+
 /**
  * MQEventMessageCell定义了客服聊天界面的事件消息cell
  */
