@@ -15,10 +15,11 @@
 #import "MQImageCellModel.h"
 #import "MQVoiceCellModel.h"
 #import "MQTipsCellModel.h"
+#import "MQEvaluationResultCellModel.h"
 #import "MQMessageDateCellModel.h"
 #import <UIKit/UIKit.h>
 #import "MQToast.h"
-#import "MEIQIA_VoiceConverter.h"
+#import "VoiceConverter.h"
 #import "MQEventCellModel.h"
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
@@ -44,6 +45,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQServiceToViewInterface *serviceToViewInterface;
     BOOL isThereNoAgent;   //用来判断当前是否没有客服
     BOOL addedNoAgentTip;  //是否已经说明了没有客服标记
+    //当前界面上显示的 message
+    NSMutableSet *currentViewMessageIdSet;
 #endif
 }
 
@@ -54,6 +57,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self setClientOnline];
         isThereNoAgent = false;
         addedNoAgentTip = false;
+        currentViewMessageIdSet = [NSMutableSet new];
 #endif
     }
     return self;
@@ -110,6 +114,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         cellModel.sendStatus = MQChatMessageSendStatusSuccess;
+        [self playSendedMessageSound];
         [self reloadChatTableView];
     });
 #endif
@@ -129,6 +134,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         cellModel.sendStatus = MQChatMessageSendStatusSuccess;
+        [self playSendedMessageSound];
         [self reloadChatTableView];
     });
 #endif
@@ -161,6 +167,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         cellModel.sendStatus = MQChatMessageSendStatusSuccess;
+        [self playSendedMessageSound];
         [self reloadChatTableView];
     });
 #endif
@@ -338,7 +345,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     voiceMessage.fromType = MQChatMessageIncoming;
     MQVoiceCellModel *voiceCellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:voiceMessage cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:voiceCellModel];
-    
+        
     [self reloadChatTableView];
     [self playReceivedMessageSound];
 }
@@ -380,7 +387,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (NSData *)convertToWAVDataWithAMRFilePath:(NSString *)amrFilePath {
     NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     tempPath = [tempPath stringByAppendingPathComponent:@"record.wav"];
-    [MEIQIA_VoiceConverter amrToWav:amrFilePath wavSavePath:tempPath];
+    [VoiceConverter amrToWav:amrFilePath wavSavePath:tempPath];
     NSData *wavData = [NSData dataWithContentsOfFile:tempPath];
     [[NSFileManager defaultManager] removeItemAtPath:tempPath error:nil];
     return wavData;
@@ -426,22 +433,37 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma 播放声音
 - (void)playReceivedMessageSound {
-    if (![MQChatViewConfig sharedConfig].enableMessageSound) {
+    if (![MQChatViewConfig sharedConfig].enableMessageSound || [MQChatViewConfig sharedConfig].incomingMsgSoundFileName.length == 0) {
         return;
     }
     [MQChatFileUtil playSoundWithSoundFile:[MQAssetUtil resourceWithName:[MQChatViewConfig sharedConfig].incomingMsgSoundFileName]];
+}
+
+- (void)playSendedMessageSound {
+    if (![MQChatViewConfig sharedConfig].enableMessageSound || [MQChatViewConfig sharedConfig].outgoingMsgSoundFileName.length == 0) {
+        return;
+    }
+    [MQChatFileUtil playSoundWithSoundFile:[MQAssetUtil resourceWithName:[MQChatViewConfig sharedConfig].outgoingMsgSoundFileName]];
 }
 
 #pragma 开发者可将自定义的message添加到此方法中
 /**
  *  将消息数组中的消息转换成cellModel，并添加到cellModels中去;
  *
- *  @param messages             消息实体array
+ *  @param newMessages             消息实体array
  *  @param isInsertAtFirstIndex 是否将messages插入到顶部
  *
  *  @return 返回转换为cell的个数
  */
-- (NSInteger)saveToCellModelsWithMessages:(NSArray *)messages isInsertAtFirstIndex:(BOOL)isInsertAtFirstIndex{
+- (NSInteger)saveToCellModelsWithMessages:(NSArray *)newMessages isInsertAtFirstIndex:(BOOL)isInsertAtFirstIndex{
+    //去重
+    NSMutableArray *messages = [NSMutableArray new];
+    for (MQBaseMessage *message in newMessages) {
+        if (![currentViewMessageIdSet containsObject:message.messageId]) {
+            [messages addObject:message];
+            [currentViewMessageIdSet addObject:message.messageId];
+        }
+    }
     NSInteger cellNumber = 0;
     NSMutableArray *historyMessages = [[NSMutableArray alloc] initWithArray:messages];
     if (isInsertAtFirstIndex) {
@@ -504,6 +526,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             }
         }
     }
+    //如果没有更多消息，则在顶部增加 date cell
+    if (isInsertAtFirstIndex && messages.count < kMQChatGetHistoryMessageNumber) {
+        MQBaseMessage *firstMessage = [messages firstObject];
+        MQMessageDateCellModel *cellModel = [[MQMessageDateCellModel alloc] initCellModelWithDate:firstMessage.date cellWidth:self.chatViewWidth];
+        [self.cellModels insertObject:cellModel atIndex:0];
+        cellNumber ++;
+    }
     [self reloadChatTableView];
     return cellNumber;
 }
@@ -513,41 +542,38 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  */
 - (void)sendEvaluationLevel:(NSInteger)level comment:(NSString *)comment {
     //生成评价结果的 cell
-    NSString *levelText = @"好评";
-    UIColor *levelColor = [UIColor colorWithRed:0.0/255.0 green:206.0/255.0 blue:125.0/255.0 alpha:1];
+    MQEvaluationType levelType = MQEvaluationTypePositive;
     switch (level) {
         case 0:
-            levelText = @"差评";
-            levelColor = [UIColor colorWithRed:255.0/255.0 green:92.0/255.0 blue:94.0/255.0 alpha:1];
+            levelType = MQEvaluationTypeNegative;
             break;
         case 1:
-            levelText = @"中评";
-            levelColor = [UIColor colorWithRed:255.0/255.0 green:182.0/255.0 blue:82.0/255.0 alpha:1];
+            levelType = MQEvaluationTypeModerate;
             break;
         case 2:
-            levelText = @"好评";
-            levelColor = [UIColor colorWithRed:0.0/255.0 green:206.0/255.0 blue:125.0/255.0 alpha:1];
+            levelType = MQEvaluationTypePositive;
             break;
         default:
             break;
     }
-    [self showEvaluationCellWithText:levelText color:levelColor];
+    [self showEvaluationCellWithLevel:levelType comment:comment];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface setEvaluationLevel:level comment:comment];
 #endif
 }
 
 //显示用户评价的 cell
-- (void)showEvaluationCellWithText:(NSString *)levelText color:(UIColor *)levelColor{
-    NSRange attribuitedRange = NSMakeRange(5, levelText.length);
-    levelText = [NSString stringWithFormat:@"你给出了 %@", levelText];
-    NSDictionary<NSString *, id> *tipExtraAttributes = @{
-                                                         NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
-                                                         NSForegroundColorAttributeName : levelColor
-                                                         };
-    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:levelText cellWidth:self.chatViewWidth enableLinesDisplay:false];
-    cellModel.tipExtraAttributesRange = attribuitedRange;
-    cellModel.tipExtraAttributes = tipExtraAttributes;
+- (void)showEvaluationCellWithLevel:(MQEvaluationType)level comment:(NSString *)comment{
+//    NSRange attribuitedRange = NSMakeRange(5, levelText.length);
+//    levelText = [NSString stringWithFormat:@"你给出了 %@\n%@", levelText, comment];
+//    NSDictionary<NSString *, id> *tipExtraAttributes = @{
+//                                                         NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
+//                                                         NSForegroundColorAttributeName : levelColor
+//                                                         };
+    MQEvaluationResultCellModel *cellModel = [[MQEvaluationResultCellModel alloc] initCellModelWithEvaluation:level comment:comment cellWidth:self.chatViewWidth];
+//    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:levelText cellWidth:self.chatViewWidth enableLinesDisplay:false];
+//    cellModel.tipExtraAttributesRange = attribuitedRange;
+//    cellModel.tipExtraAttributes = tipExtraAttributes;
     [self.cellModels addObject:cellModel];
     [self reloadChatTableView];
     if (self.delegate) {
@@ -577,12 +603,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 //没有分配到客服
                 agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
             }
-            else
-            {
-                [MQServiceToViewInterface setCurrentClientInfo];
-            }
-            //获取顾客信息
-            [weakSelf getClientInfo];
+            //上传顾客信息
+            [weakSelf setCurrentClientInfoWithCompletion:^(BOOL success) {
+                //获取顾客信息
+                [weakSelf getClientInfo];
+            }];
             //更新客服聊天界面标题
             [weakSelf updateChatTitleWithAgentName:agentName];
             if (receivedMessages) {
@@ -603,10 +628,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [weakSelf.delegate hideRightBarButtonItem:YES];
         }else{
             [weakSelf.delegate hideRightBarButtonItem:NO];
-            [MQServiceToViewInterface setCurrentClientInfo];
         }
-        //获取顾客信息
-        [weakSelf getClientInfo];
+        //上传顾客信息
+        [weakSelf setCurrentClientInfoWithCompletion:^(BOOL success) {
+            //获取顾客信息
+            [weakSelf getClientInfo];
+        }];
         //更新客服聊天界面标题
         [weakSelf updateChatTitleWithAgentName:agentName];
         if (receivedMessages) {
@@ -632,8 +659,20 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }];
 }
 
+//上传顾客信息
+- (void)setCurrentClientInfoWithCompletion:(void (^)(BOOL success))completion
+{
+    if ([MQChatViewConfig sharedConfig].clientInfo) {
+        [MQServiceToViewInterface setClientInfoWithDictionary:[MQChatViewConfig sharedConfig].clientInfo completion:^(BOOL success, NSError *error) {
+            completion(success);
+        }];
+    } else {
+        completion(true);
+    }
+}
+
 - (void)updateChatTitleWithAgentName:(NSString *)agentName {
-    NSString *viewTitle = agentName;
+    NSString *viewTitle = agentName.length == 0 ? [MQBundleUtil localizedStringForKey:@"no_agent_title"] : agentName;
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didScheduleClientWithViewTitle:)]) {
             [self.delegate didScheduleClientWithViewTitle:viewTitle];
@@ -654,6 +693,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma MQServiceToViewInterfaceDelegate
 - (void)didReceiveHistoryMessages:(NSArray *)messages {
+    if (messages.count == 0) {
+        return;
+    }
     NSInteger cellNumber = 0;
     NSInteger messageNumber = 0;
     if (messages.count > 0) {
@@ -731,6 +773,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                         newMessageDate:(NSDate *)newMessageDate
                             sendStatus:(MQChatMessageSendStatus)sendStatus
 {
+    [self playSendedMessageSound];
     //如果新的messageId和旧的messageId不同，且是发送成功状态，则表明肯定是分配成功的
     if (![newMessageId isEqualToString:oldMessageId] && sendStatus == MQChatMessageSendStatusSuccess) {
         NSString *agentName = [MQServiceToViewInterface getCurrentAgentName];
@@ -780,6 +823,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)dismissingChatViewController {
     [MQServiceToViewInterface setClientOffline];
 }
+
 
 #endif
 

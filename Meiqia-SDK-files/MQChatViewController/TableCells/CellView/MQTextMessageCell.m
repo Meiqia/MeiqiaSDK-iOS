@@ -7,10 +7,11 @@
 //
 
 #import "MQTextMessageCell.h"
-#import "MQTextCellModel.h"
 #import "MQChatFileUtil.h"
 #import "MQChatViewConfig.h"
 #import "MQBundleUtil.h"
+#import "MQTextCellModel.h"
+#import "MEIQIA_TTTAttributedLabel.h"
 
 static const NSInteger kMQTextCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;

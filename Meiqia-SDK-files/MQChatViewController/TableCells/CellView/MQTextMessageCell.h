@@ -7,8 +7,6 @@
 //
 
 #import "MQChatBaseCell.h"
-#import "MQTextCellModel.h"
-#import "MEIQIA_TTTAttributedLabel.h"
 
 /**
  * MQTextCell定义了客服聊天界面的文字消息cell

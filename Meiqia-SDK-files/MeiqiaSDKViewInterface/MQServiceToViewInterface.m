@@ -262,7 +262,7 @@
 
 + (NSString *)getCurrentAgentName {
     NSString *agentName = [MQManager getCurrentAgent].nickname;
-    return agentName.length == 0 ? @"在线客服" : agentName;
+    return agentName.length == 0 ? @"" : agentName;
 }
 
 + (BOOL)isThereAgent {
@@ -292,11 +292,6 @@
 
 + (NSDictionary *)getCurrentClientInfo {
     return [MQManager getCurrentClientInfo];
-}
-
-+ (void)setCurrentClientInfo {
-    [MQManager setClientInfo: [MQChatViewConfig sharedConfig].clientInfo
-                  completion: nil];
 }
 
 + (void)uploadClientAvatar:(UIImage *)avatarImage
@@ -408,6 +403,18 @@
             break;
     }
     [MQManager evaluateCurrentConversationWithEvaluation:evaluation comment:comment completion:^(BOOL success, NSError *error) {
+    }];
+}
+
++ (void)setClientInfoWithDictionary:(NSDictionary *)clientInfo
+                         completion:(void (^)(BOOL success, NSError *error))completion
+{
+    if (!clientInfo) {
+        NSLog(@"美洽 SDK：上传自定义信息不能为空。");
+        completion(false, nil);
+    }
+    [MQManager setClientInfo:clientInfo completion:^(BOOL success, NSError *error) {
+        completion(success, error);
     }];
 }
 

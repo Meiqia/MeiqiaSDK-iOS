@@ -94,18 +94,6 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
 };
 
 /**
- *  cell的发送状态
- *  MQChatCellSending       - 正在发消息
- *  MQChatCellSended        - 消息已发送
- *  MQChatCellSentFailure   - 消息发送失败
- */
-//typedef NS_ENUM(NSUInteger, MQChatMessageSendStatus) {
-//    MQChatCellSending,
-//    MQChatCellSended,
-//    MQChatCellSentFailure
-//};
-
-/**
  * MQCellModelProtocol协议定义了ChatCell的view需要满足的方法，开发者也可根据自身需要，增加协议方法
  *
  */
