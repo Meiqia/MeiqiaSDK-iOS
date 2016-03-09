@@ -22,8 +22,8 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   # s.resource_bundles = {
-    'MQChatViewAsset' => ['Meiqia-SDK-files/MQChatViewController/Assets/MQChatViewAsset.bundle']
-  }
+  #   'MQChatViewAsset' => ['Meiqia-SDK-files/MQChatViewController/Assets/MQChatViewAsset.bundle']
+  # }
   # s.source_files = 'Meiqia-SDK-files/MeiqiaSDKViewInterface/*.{h,m}', 'Meiqia-SDK-files/MQChatViewController/**/*.{h,m,mm,cpp}'
   # s.vendored_frameworks = 'Meiqia-SDK-files/MeiQiaSDK.framework'
   s.subspec 'MeiqiaSDK' do |ss|
