@@ -306,8 +306,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma MQChatViewServiceDelegate
-- (void)hideRightBarButtonItem:(BOOL)enabled
-{
+- (void)hideRightBarButtonItem:(BOOL)enabled {
+    //如果开发者自定义了导航栏右键，则不隐藏
+    if ([MQChatViewConfig sharedConfig].navBarRightButton) {
+        return;
+    }
     self.navigationItem.rightBarButtonItem.customView.hidden = enabled;
 }
 
@@ -338,8 +341,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
-- (void)didScheduleClientWithViewTitle:(NSString *)viewTitle {
-    [self updateNavBarTitle:viewTitle];
+- (void)didScheduleClientWithViewTitle:(NSString *)viewTitle agentStatus:(MQChatAgentStatus)agentStatus{
+    [self updateNavTitleWithAgentName:viewTitle agentStatus:agentStatus];
 }
 #endif
 
@@ -610,9 +613,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 /**
- *  根据是否正在分配客服，更新导航栏title
- *
- *  @param isScheduling 是否正在分配客服
+ *  更新导航栏title
  */
 - (void)updateNavBarTitle:(NSString *)title {
     //如果开发者设定了 title ，则不更新 title
@@ -620,6 +621,43 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         return;
     }
     self.navigationItem.title = title;
+}
+
+/**
+ *  根据是否正在分配客服，更新导航栏title
+ */
+- (void)updateNavTitleWithAgentName:(NSString *)agentName agentStatus:(MQChatAgentStatus)agentStatus {
+    //如果开发者设定了 title ，则不更新 title
+    if ([MQChatViewConfig sharedConfig].navTitleText) {
+        return;
+    }
+    UIView *titleView = [UIView new];
+    UILabel *titleLabel = [UILabel new];
+    titleLabel.text = agentName;
+    titleLabel.font = [UIFont systemFontOfSize:16.0];
+    titleLabel.textColor = [MQChatViewConfig sharedConfig].navBarTintColor;
+    CGFloat titleHeight = [MQStringSizeUtil getHeightForText:agentName withFont:titleLabel.font andWidth:self.view.frame.size.width];
+    CGFloat titleWidth = [MQStringSizeUtil getWidthForText:agentName withFont:titleLabel.font andHeight:titleHeight];
+    UIImageView *statusImageView = [UIImageView new];
+    switch (agentStatus) {
+        case MQChatAgentStatusOnDuty:
+            statusImageView.image = [MQAssetUtil agentOnDutyImage];
+            break;
+        case MQChatAgentStatusOffDuty:
+            statusImageView.image = [MQAssetUtil agentOffDutyImage];
+            break;
+        case MQChatAgentStatusOffLine:
+            statusImageView.image = [MQAssetUtil agentOfflineImage];
+            break;
+        default:
+            break;
+    }
+    statusImageView.frame = CGRectMake(0, titleHeight/2 - statusImageView.image.size.height/2, statusImageView.image.size.width, statusImageView.image.size.height);
+    titleLabel.frame = CGRectMake(statusImageView.frame.size.width + 8, 0, titleWidth, titleHeight);
+    titleView.frame = CGRectMake(0, 0, titleLabel.frame.origin.x + titleLabel.frame.size.width, titleHeight);
+    [titleView addSubview:statusImageView];
+    [titleView addSubview:titleLabel];
+    self.navigationItem.titleView = titleView;
 }
 
 /**

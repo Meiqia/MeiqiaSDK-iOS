@@ -18,7 +18,8 @@ typedef enum : NSUInteger {
     MQMessageActionAgentInputting               = 5,   //客服正在输入 (agent_inputting)
     MQMessageActionInviteEvaluation             = 6,   //收到客服邀请评价 (invite_evaluation)
     MQMessageActionClientEvaluation             = 7,   //顾客评价的结果 (client_evaluation)
-    MQMessageActionTicketReply                  = 8    //客服留言回复的消息
+    MQMessageActionTicketReply                  = 8,   //客服留言回复的消息
+    MQMessageActionAgentUpdate                  = 9    //客服的状态发生了改变
 } MQMessageAction;
 
 typedef enum : NSUInteger {

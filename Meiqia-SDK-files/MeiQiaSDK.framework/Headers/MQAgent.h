@@ -10,12 +10,12 @@
 
 typedef enum : NSUInteger {
     MQAgentStatusOnline   = 0,  //客服在线
-    MQAgentStatusHide     = 1,  //客服隐身
+    MQAgentStatusHide     = 1   //客服隐身
 } MQAgentStatus;
 
 typedef enum : NSUInteger {
     MQAgentPrivilegeAdmin = 0,  //管理员
-    MQAgentPrivilegeAgent = 1,  //客服
+    MQAgentPrivilegeAgent = 1   //客服
 } MQAgentPrivilege;
 
 @interface MQAgent : NSObject <NSCopying>
