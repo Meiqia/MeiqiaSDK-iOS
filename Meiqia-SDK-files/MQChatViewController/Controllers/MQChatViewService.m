@@ -45,6 +45,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQServiceToViewInterface *serviceToViewInterface;
     BOOL isThereNoAgent;   //用来判断当前是否没有客服
     BOOL addedNoAgentTip;  //是否已经说明了没有客服标记
+    BOOL didSetOnline;     //用来判断顾客是否尝试登陆了
     //当前界面上显示的 message
     NSMutableSet *currentViewMessageIdSet;
 #endif
@@ -55,8 +56,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         self.cellModels = [[NSMutableArray alloc] init];
 #ifdef INCLUDE_MEIQIA_SDK
         [self setClientOnline];
-        isThereNoAgent = false;
+        isThereNoAgent  = false;
         addedNoAgentTip = false;
+        didSetOnline    = false;
         currentViewMessageIdSet = [NSMutableSet new];
 #endif
     }
@@ -462,7 +464,23 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if (![currentViewMessageIdSet containsObject:message.messageId]) {
             [messages addObject:message];
             [currentViewMessageIdSet addObject:message.messageId];
+        } else {
+            //判断是否重新刷新重复的消息
+            if (messages.count == 0) {
+                continue;
+            }
+            for (NSInteger index=0; index<self.cellModels.count; index++) {
+                id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+                if ([message.messageId isEqualToString:[cellModel getCellMessageId]]) {
+                    //找到重复的消息 cell 并删除
+                    [self.cellModels removeObjectAtIndex:index];
+                    break;
+                }
+            }
         }
+    }
+    if (messages.count == 0) {
+        return 0;
     }
     NSInteger cellNumber = 0;
     NSMutableArray *historyMessages = [[NSMutableArray alloc] initWithArray:messages];
@@ -599,6 +617,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [MQServiceToViewInterface setScheduledAgentWithAgentId:[MQChatViewConfig sharedConfig].scheduledAgentId agentGroupId:[MQChatViewConfig sharedConfig].scheduledGroupId scheduleRule:[MQChatViewConfig sharedConfig].scheduleRule];
     if ([MQChatViewConfig sharedConfig].MQClientId.length == 0 && [MQChatViewConfig sharedConfig].customizedId.length > 0) {
         [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
+            didSetOnline = true;
             if (!completion) {
                 //没有分配到客服
                 agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
@@ -622,6 +641,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         return;
     }
     [serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
+        didSetOnline = true;
         if (!completion) {
             //没有分配到客服
             agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
@@ -693,7 +713,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma MQServiceToViewInterfaceDelegate
 - (void)didReceiveHistoryMessages:(NSArray *)messages {
-    if (messages.count == 0) {
+    if (messages.count == 0 || !didSetOnline) {
         return;
     }
     NSInteger cellNumber = 0;
@@ -711,11 +731,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)didReceiveNewMessages:(NSArray *)messages {
-    if (messages.count == 0) {
+    //转换message to cellModel，并缓存
+    if (messages.count == 0 || [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:false] == 0 || !didSetOnline) {
         return;
     }
-    //转换message to cellModel，并缓存
-    [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:false];
     //eventMessage不响铃声
     if (messages.count > 1 || ![[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
         [self playReceivedMessageSound];
