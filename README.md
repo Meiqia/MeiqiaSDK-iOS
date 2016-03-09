@@ -74,7 +74,7 @@ framework中的文件 | 说明
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.1.3'
+pod 'Meiqia', '~> 3.1.5'
 ```
 
 接着安装美洽 pod 即可：
@@ -711,6 +711,11 @@ request.body 为消息数据，数据结构为：
 请开发者检查 App Target - Build Settings - Search Path - Framework Search Path 或 Library Search Path 当中是否没有美洽的项目。
 
 # 更新日志
+
+**v3.1.5 2016年03月09日**
+
+* 修改开源界面获取 Bundle 的方式，以支持 CocoaPods。
+* 增加客服在线/隐身/离线状态
 
 **v3.1.4 2016年03月02日**
 

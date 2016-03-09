@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Meiqia"
-  s.version          = "3.1.4"
+  s.version          = "3.1.5"
   s.summary          = "美洽官方 SDK for iOS"
   s.description      = "美洽官方的 iOS SDK"
 
@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '6.0'
   s.requires_arc = true
 
-  s.resource_bundles = {
+  # s.resource_bundles = {
     'MQChatViewAsset' => ['Meiqia-SDK-files/MQChatViewController/Assets/MQChatViewAsset.bundle']
   }
   # s.source_files = 'Meiqia-SDK-files/MeiqiaSDKViewInterface/*.{h,m}', 'Meiqia-SDK-files/MQChatViewController/**/*.{h,m,mm,cpp}'
@@ -37,6 +37,7 @@ Pod::Spec.new do |s|
     ss.vendored_libraries = 'Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrnb.a', 'Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrwb.a'
     ss.preserve_path = '**/libopencore-amrnb.a', '**/libopencore-amrwb.a'
     ss.xcconfig = { "LIBRARY_SEARCH_PATHS" => "\"$(PODS_ROOT)/**\"" }
+    ss.resources = 'Meiqia-SDK-files/MQChatViewController/Assets/MQChatViewAsset.bundle'
   end
   
   

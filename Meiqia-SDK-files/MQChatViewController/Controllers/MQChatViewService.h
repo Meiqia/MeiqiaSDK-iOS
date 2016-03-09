@@ -74,7 +74,7 @@
  *
  *  @param viewTitle 客服名字
  */
-- (void)didScheduleClientWithViewTitle:(NSString *)viewTitle;
+- (void)didScheduleClientWithViewTitle:(NSString *)viewTitle agentStatus:(MQChatAgentStatus)agentStatus;
 
 #endif
 

@@ -183,6 +183,13 @@
 + (NSString *)getCurrentAgentName;
 
 /**
+ *  获取当前客服状态
+ *
+ *  @return onDuty - 在线  offDuty - 隐身  offLine - 离线
+ */
++ (MQChatAgentStatus)getCurrentAgentStatus;
+
+/**
  *  当前是否有客服
  *
  */

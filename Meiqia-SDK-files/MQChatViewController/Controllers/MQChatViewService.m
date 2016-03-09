@@ -46,9 +46,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     BOOL isThereNoAgent;   //用来判断当前是否没有客服
     BOOL addedNoAgentTip;  //是否已经说明了没有客服标记
     BOOL didSetOnline;     //用来判断顾客是否尝试登陆了
+#endif
     //当前界面上显示的 message
     NSMutableSet *currentViewMessageIdSet;
-#endif
 }
 
 - (instancetype)init {
@@ -59,8 +59,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         isThereNoAgent  = false;
         addedNoAgentTip = false;
         didSetOnline    = false;
-        currentViewMessageIdSet = [NSMutableSet new];
 #endif
+        currentViewMessageIdSet = [NSMutableSet new];
     }
     return self;
 }
@@ -474,9 +474,22 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 if ([message.messageId isEqualToString:[cellModel getCellMessageId]]) {
                     //找到重复的消息 cell 并删除
                     [self.cellModels removeObjectAtIndex:index];
+                    //判断被删除的 cell 上下是否都是 时间戳 cell
+                    if (self.cellModels.count > index) {
+                        id<MQCellModelProtocol> lastCellModel = [self.cellModels objectAtIndex:index];
+                        if (self.cellModels.count == index + 1 && [lastCellModel isKindOfClass:[MQMessageDateCellModel class]]) {
+                            [self.cellModels removeObjectAtIndex:index];
+                        } else if (self.cellModels.count > index + 1) {
+                            id<MQCellModelProtocol> nextCellModel = [self.cellModels objectAtIndex:index + 1];
+                            if ([lastCellModel isKindOfClass:[MQMessageDateCellModel class]] && [nextCellModel isKindOfClass:[MQMessageDateCellModel class]]) {
+                                [self.cellModels removeObjectAtIndex:index];
+                            }
+                        }
+                    }
                     break;
                 }
             }
+            [messages addObject:message];
         }
     }
     if (messages.count == 0) {
@@ -514,6 +527,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 }
             } else if (eventMessage.eventType == MQChatEventTypeClientEvaluation) {
 
+            } else if (eventMessage.eventType == MQChatEventTypeAgentUpdate) {
+#ifdef INCLUDE_MEIQIA_SDK
+                //客服状态发生改变
+                [self updateChatTitleWithAgentName:[MQServiceToViewInterface getCurrentAgentName] agentStatus:[MQServiceToViewInterface getCurrentAgentStatus]];
+#endif
             } else if ([MQChatViewConfig sharedConfig].enableEventDispaly) {
                 if (eventMessage.eventType == MQChatEventTypeAgentInputting) {
                     if (self.delegate) {
@@ -618,9 +636,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if ([MQChatViewConfig sharedConfig].MQClientId.length == 0 && [MQChatViewConfig sharedConfig].customizedId.length > 0) {
         [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
             didSetOnline = true;
+            MQChatAgentStatus agentStatus = MQChatAgentStatusOnDuty;
             if (!completion) {
                 //没有分配到客服
                 agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
+                agentStatus = MQChatAgentStatusOffLine;
             }
             //上传顾客信息
             [weakSelf setCurrentClientInfoWithCompletion:^(BOOL success) {
@@ -628,7 +648,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [weakSelf getClientInfo];
             }];
             //更新客服聊天界面标题
-            [weakSelf updateChatTitleWithAgentName:agentName];
+            [weakSelf updateChatTitleWithAgentName:agentName agentStatus:agentStatus];
             if (receivedMessages) {
                 [weakSelf saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
                 if (weakSelf.delegate) {
@@ -642,10 +662,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
     [serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         didSetOnline = true;
+        MQChatAgentStatus agentStatus = MQChatAgentStatusOnDuty;
         if (!completion) {
             //没有分配到客服
             agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
             [weakSelf.delegate hideRightBarButtonItem:YES];
+            agentStatus = MQChatAgentStatusOffLine;
         }else{
             [weakSelf.delegate hideRightBarButtonItem:NO];
         }
@@ -655,7 +677,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [weakSelf getClientInfo];
         }];
         //更新客服聊天界面标题
-        [weakSelf updateChatTitleWithAgentName:agentName];
+        [weakSelf updateChatTitleWithAgentName:agentName agentStatus:agentStatus];
         if (receivedMessages) {
             [weakSelf saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
             if (weakSelf.delegate) {
@@ -691,11 +713,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
 }
 
-- (void)updateChatTitleWithAgentName:(NSString *)agentName {
+- (void)updateChatTitleWithAgentName:(NSString *)agentName agentStatus:(MQChatAgentStatus)agentStatus {
     NSString *viewTitle = agentName.length == 0 ? [MQBundleUtil localizedStringForKey:@"no_agent_title"] : agentName;
     if (self.delegate) {
-        if ([self.delegate respondsToSelector:@selector(didScheduleClientWithViewTitle:)]) {
-            [self.delegate didScheduleClientWithViewTitle:viewTitle];
+        if ([self.delegate respondsToSelector:@selector(didScheduleClientWithViewTitle:agentStatus:)]) {
+            [self.delegate didScheduleClientWithViewTitle:viewTitle agentStatus:agentStatus];
         }
     }
 }
@@ -713,7 +735,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma MQServiceToViewInterfaceDelegate
 - (void)didReceiveHistoryMessages:(NSArray *)messages {
-    if (messages.count == 0 || !didSetOnline) {
+    if (!didSetOnline) {
         return;
     }
     NSInteger cellNumber = 0;
@@ -732,7 +754,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)didReceiveNewMessages:(NSArray *)messages {
     //转换message to cellModel，并缓存
-    if (messages.count == 0 || [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:false] == 0 || !didSetOnline) {
+    if (messages.count == 0 || !didSetOnline) {
+        return;
+    } else if ([self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:false] == 0) {
         return;
     }
     //eventMessage不响铃声
@@ -740,7 +764,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self playReceivedMessageSound];
     }
     //更新界面title
-    [self updateChatTitleWithAgentName:[MQServiceToViewInterface getCurrentAgentName]];
+    [self updateChatTitleWithAgentName:[MQServiceToViewInterface getCurrentAgentName] agentStatus:[MQServiceToViewInterface getCurrentAgentStatus]];
     //通知界面收到了消息
     BOOL isRefreshView = true;
     if (![MQChatViewConfig sharedConfig].enableEventDispaly && [[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
@@ -784,7 +808,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)didRedirectWithAgentName:(NSString *)agentName {
-    [self updateChatTitleWithAgentName:agentName];
+    [self updateChatTitleWithAgentName:agentName agentStatus:[MQServiceToViewInterface getCurrentAgentStatus]];
 }
 
 - (void)didSendMessageWithNewMessageId:(NSString *)newMessageId
@@ -798,7 +822,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         NSString *agentName = [MQServiceToViewInterface getCurrentAgentName];
         isThereNoAgent = ![MQServiceToViewInterface isThereAgent];
         if (agentName.length > 0) {
-            [self updateChatTitleWithAgentName:agentName];
+            [self updateChatTitleWithAgentName:agentName agentStatus:[MQServiceToViewInterface getCurrentAgentStatus]];
         }
     } else {
         isThereNoAgent = true;
@@ -806,7 +830,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (isThereNoAgent) {
         [self.delegate hideRightBarButtonItem:YES];
         [self addSystemTips];
-        [self updateChatTitleWithAgentName:[MQBundleUtil localizedStringForKey:@"no_agent_title"]];
+        [self updateChatTitleWithAgentName:[MQBundleUtil localizedStringForKey:@"no_agent_title"] agentStatus:MQChatAgentStatusOffLine];
     }else{
         //显示评价按钮
         [self.delegate hideRightBarButtonItem:NO];

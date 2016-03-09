@@ -120,6 +120,12 @@
             eventType = MQChatEventTypeClientEvaluation;
             break;
         }
+        case MQMessageActionAgentUpdate:
+        {
+            eventContent = @"客服状态发生改变";
+            eventType = MQChatEventTypeAgentUpdate;
+            break;
+        }
         default:
             break;
     }
@@ -263,6 +269,25 @@
 + (NSString *)getCurrentAgentName {
     NSString *agentName = [MQManager getCurrentAgent].nickname;
     return agentName.length == 0 ? @"" : agentName;
+}
+
++ (MQChatAgentStatus)getCurrentAgentStatus {
+    MQAgent *agent = [MQManager getCurrentAgent];
+    if (!agent.isOnline) {
+        return MQChatAgentStatusOffLine;
+    }
+    switch (agent.status) {
+        case MQAgentStatusHide:
+            return MQChatAgentStatusOffDuty;
+            break;
+        case MQAgentStatusOnline:
+            return MQChatAgentStatusOnDuty;
+            break;
+        default:
+            return MQChatAgentStatusOnDuty;
+            break;
+    }
+    
 }
 
 + (BOOL)isThereAgent {
