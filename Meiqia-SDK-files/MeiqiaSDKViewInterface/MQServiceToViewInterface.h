@@ -250,4 +250,18 @@
 + (void)setClientInfoWithDictionary:(NSDictionary *)clientInfo
                          completion:(void (^)(BOOL success, NSError *error))completion;
 
+/**
+ *  缓存当前的输入文字
+ *
+ *  @param inputtingText 输入文字
+ */
++ (void)setCurrentInputtingText:(NSString *)inputtingText;
+
+/**
+ *  获取缓存的输入文字
+ *
+ *  @return 输入文字
+ */
++ (NSString *)getPreviousInputtingText;
+
 @end

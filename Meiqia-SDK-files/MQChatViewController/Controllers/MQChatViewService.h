@@ -169,6 +169,16 @@
  */
 - (void)dismissingChatViewController;
 
+/**
+ *  获取之前的输入文字
+ */
+- (NSString *)getPreviousInputtingText;
+
+/**
+ *  设置当前输入的文字
+ */
+- (void)setCurrentInputtingText:(NSString *)inputtingText;
+
 
 #ifndef INCLUDE_MEIQIA_SDK
 /**

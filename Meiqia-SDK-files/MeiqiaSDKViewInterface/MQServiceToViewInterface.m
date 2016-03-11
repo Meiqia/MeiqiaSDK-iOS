@@ -443,6 +443,15 @@
     }];
 }
 
++ (void)setCurrentInputtingText:(NSString *)inputtingText {
+    [MQManager setCurrentInputtingText:inputtingText];
+}
+
++ (NSString *)getPreviousInputtingText {
+    return [MQManager getPreviousInputtingText];
+}
+
+
 #pragma MQManagerDelegate
 //webSocket收到消息的代理方法
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)messages {

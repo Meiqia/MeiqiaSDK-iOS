@@ -850,6 +850,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     });
 }
 
+
+#endif
+
 /**
  *  刷新所有的本机用户的头像
  */
@@ -864,10 +867,24 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)dismissingChatViewController {
+#ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface setClientOffline];
+#endif
 }
 
-
+- (NSString *)getPreviousInputtingText {
+#ifdef INCLUDE_MEIQIA_SDK
+    return [MQServiceToViewInterface getPreviousInputtingText];
+#else
+    return @"";
 #endif
+}
+
+- (void)setCurrentInputtingText:(NSString *)inputtingText {
+#ifdef INCLUDE_MEIQIA_SDK
+    [MQServiceToViewInterface setCurrentInputtingText:inputtingText];
+#endif
+}
+
 
 @end
