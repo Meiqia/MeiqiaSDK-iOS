@@ -40,13 +40,16 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQEvaluationView *evaluationView;
     CGSize viewSize;
     BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
-    UIStatusBarStyle currentStatusBarStyle;//当前statusBar样式
+    UIStatusBarStyle previousStatusBarStyle;//当前statusBar样式
+    BOOL previousStatusBarHidden;   //调出聊天视图界面前是否隐藏 statusBar
+    BOOL previousStatusBarTranslucent; //调出聊天视图前的导航栏是否是半透明
 }
 
 - (void)dealloc {
     NSLog(@"清除chatViewController");
     [self removeDelegateAndObserver];
     [chatViewConfig setConfigToDefault];
+    [chatViewService setCurrentInputtingText:chatInputBar.textView.text];
 #ifdef INCLUDE_MEIQIA_SDK
     [self closeMeiqiaChatView];
 #endif
@@ -63,7 +66,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.automaticallyAdjustsScrollViewInsets = true;
-    currentStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
+    previousStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
+    previousStatusBarHidden = [UIApplication sharedApplication].statusBarHidden;
+    previousStatusBarTranslucent = self.navigationController.navigationBar.translucent;
+    [[UIApplication sharedApplication] setStatusBarHidden:false];
+    self.navigationController.navigationBar.translucent = true;
     self.view.backgroundColor = [UIColor whiteColor];
     viewSize = [UIScreen mainScreen].bounds.size;
     [self setNavBar];
@@ -85,6 +92,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
+    //当横屏时，恢复原来的 statusBar 是否 hidden
+    if (viewSize.height < viewSize.width) {
+        [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
+    }
+    //恢复原来的导航栏透明模式
+    self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
+    //恢复原来的导航栏时间条
+    [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -187,6 +202,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
                       resignKeyboardHighlightedImage:[MQChatViewConfig sharedConfig].resignKeyboardHighlightedImage];
     chatInputBar.delegate = self;
     [self.view addSubview:chatInputBar];
+    chatInputBar.textView.text = [chatViewService getPreviousInputtingText];
     self.inputBarView = chatInputBar;
     self.inputBarTextView = chatInputBar.textView.internalTextView;
 }
@@ -234,6 +250,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 #pragma 编辑导航栏 - Demo用到的收取消息按钮
 - (void)setNavBar {
+    if ([MQChatViewConfig sharedConfig].didSetStatusBarStyle) {
+        [UIApplication sharedApplication].statusBarStyle = [MQChatViewConfig sharedConfig].statusBarStyle;
+    }
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         return;
     }
@@ -257,7 +276,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     CGFloat btnTextWidth = [MQStringSizeUtil getWidthForText:btnText withFont:btnTextFont andHeight:btnTextHeight];
     rightNavButton.frame = CGRectMake(0, 0, btnTextWidth, btnTextHeight);
     rightNavButton.titleLabel.font = btnTextFont;
-    [rightNavButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+    UIColor *btnColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+    if ([MQChatViewConfig sharedConfig].navBarTintColor) {
+        btnColor = [MQChatViewConfig sharedConfig].navBarTintColor;
+    }
+    [rightNavButton setTitleColor:btnColor forState:UIControlStateNormal];
     [rightNavButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateDisabled];
     [rightNavButton setTitle:btnText forState:UIControlStateNormal];
     [rightNavButton addTarget:self action:@selector(tapNavigationRightBtn:) forControlEvents:UIControlEventTouchUpInside];
@@ -277,6 +300,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #endif
 }
 
+- (void)didSelectNavigationRightButton {
+    NSLog(@"点击了自定义导航栏右键，开发者可在这里增加功能。");
+}
 
 #pragma UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -402,7 +428,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if (lastCellIndex == 0) {
         return;
     }
-    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
 -(void)beginRecord:(CGPoint)point {
@@ -506,7 +532,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 {
     //修改status样式
     if ([navigationController isKindOfClass:[UIImagePickerController class]]) {
-        [UIApplication sharedApplication].statusBarStyle = currentStatusBarStyle;
+        [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
     }
     self.navigationController.delegate = nil;
 }
@@ -555,8 +581,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-         [[UIApplication sharedApplication] setStatusBarHidden:NO];
-         
      } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
          [self updateContentViewsFrame];
@@ -568,10 +592,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)updateContentViewsFrame {
     //更新view
     CGFloat delta = 0;
-    if (!self.navigationController.navigationBar.translucent) {
-        //如果导航栏不透明，则view的起始位置应该是导航栏下方
-        delta = self.navigationController.navigationBar.frame.size.height + 20;
-    }
+//    if (!self.navigationController.navigationBar.translucent) {
+//        //如果导航栏不透明，则view的起始位置应该是导航栏下方
+//        delta = self.navigationController.navigationBar.frame.size.height;
+//        if (![UIApplication sharedApplication].statusBarHidden) {
+//            delta += 20;
+//        }
+//    }
     self.view.frame = CGRectMake([MQChatViewConfig sharedConfig].chatViewControllerPoint.x, [MQChatViewConfig sharedConfig].chatViewControllerPoint.y + delta, viewSize.width, viewSize.height);
     //更新tableView的frame
     [self setChatTableViewFrame];
@@ -598,11 +625,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     } else {
         //开发者如果自定义了TableView的frame，在这里重新处理横屏后的tableView的frame
     }
-}
-
-#pragma 横屏后，仍然显示statusBar
-- (BOOL)prefersStatusBarHidden {
-    return NO;
 }
 
 #ifdef INCLUDE_MEIQIA_SDK

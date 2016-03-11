@@ -76,6 +76,7 @@
 		CC868F9C1C7AFFF200BFA68D /* MEIQIA_TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC868F711C7AFFF200BFA68D /* MEIQIA_TTTAttributedLabel.m */; };
 		CCD1450D1C4F41C1007CA0DC /* MQEvaluationView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD1450C1C4F41C1007CA0DC /* MQEvaluationView.m */; };
 		CCD145101C4F41DE007CA0DC /* MQEvaluationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD1450F1C4F41DE007CA0DC /* MQEvaluationCell.m */; };
+		CCE209CD1C91452A00A7615A /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D13D1C18137D004E862E /* libsqlite3.tbd */; };
 		CCE9D10B1C1812F6004E862E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10A1C1812F6004E862E /* main.m */; };
 		CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10D1C1812F6004E862E /* AppDelegate.m */; };
 		CCE9D1111C1812F6004E862E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1101C1812F6004E862E /* ViewController.m */; };
@@ -84,7 +85,6 @@
 		CCE9D1191C1812F6004E862E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCE9D1171C1812F6004E862E /* LaunchScreen.storyboard */; };
 		CCE9D1241C1812F6004E862E /* Meiqia_SDK_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D1231C1812F6004E862E /* Meiqia_SDK_DemoTests.m */; };
 		CCE9D12F1C1812F6004E862E /* Meiqia_SDK_DemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D12E1C1812F6004E862E /* Meiqia_SDK_DemoUITests.m */; };
-		CCE9D13E1C18137D004E862E /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D13D1C18137D004E862E /* libsqlite3.tbd */; };
 		CCE9D1401C181385004E862E /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D13F1C181385004E862E /* libicucore.tbd */; };
 		CCE9D1421C18138C004E862E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1411C18138C004E862E /* AVFoundation.framework */; };
 		CCE9D1441C181393004E862E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1431C181393004E862E /* CoreTelephony.framework */; };
@@ -251,6 +251,7 @@
 		CCD1450C1C4F41C1007CA0DC /* MQEvaluationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQEvaluationView.m; sourceTree = "<group>"; };
 		CCD1450E1C4F41DE007CA0DC /* MQEvaluationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQEvaluationCell.h; sourceTree = "<group>"; };
 		CCD1450F1C4F41DE007CA0DC /* MQEvaluationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQEvaluationCell.m; sourceTree = "<group>"; };
+		CCE209CB1C91451B00A7615A /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		CCE9D1061C1812F6004E862E /* Meiqia-SDK-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meiqia-SDK-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCE9D10A1C1812F6004E862E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CCE9D10C1C1812F6004E862E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -282,6 +283,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCE209CD1C91452A00A7615A /* libsqlite3.tbd in Frameworks */,
 				CCE9D1481C18139E004E862E /* MobileCoreServices.framework in Frameworks */,
 				CC868F861C7AFFF200BFA68D /* libopencore-amrnb.a in Frameworks */,
 				CCE9D1461C181399004E862E /* SystemConfiguration.framework in Frameworks */,
@@ -289,7 +291,6 @@
 				CC868F871C7AFFF200BFA68D /* libopencore-amrwb.a in Frameworks */,
 				CCE9D1421C18138C004E862E /* AVFoundation.framework in Frameworks */,
 				CCE9D1401C181385004E862E /* libicucore.tbd in Frameworks */,
-				CCE9D13E1C18137D004E862E /* libsqlite3.tbd in Frameworks */,
 				CC3310E31C33F7FB0088E648 /* MeiQiaSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -760,6 +761,7 @@
 		CCE9D13C1C181368004E862E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CCE209CB1C91451B00A7615A /* libsqlite3.0.tbd */,
 				CC3310E21C33F7FB0088E648 /* MeiQiaSDK.framework */,
 				CCE9D1471C18139E004E862E /* MobileCoreServices.framework */,
 				CCE9D1451C181399004E862E /* SystemConfiguration.framework */,
