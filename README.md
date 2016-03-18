@@ -648,6 +648,7 @@ request.body 为消息数据，数据结构为：
 - [第三方库冲突](#第三方库冲突)
 - [工作台顾客信息显示应用的名称不正确](#工作台顾客信息显示应用的名称不正确)
 - [编译中出现 undefined symbols](#编译中出现-undefined-symbols)
+- [仅支持横屏的应用打开相机时崩溃](#仅支持横屏的应用打开相机时崩溃)
 
 ## SDK 初始化失败
 
@@ -725,7 +726,27 @@ request.body 为消息数据，数据结构为：
 
 请开发者检查 App Target - Build Settings - Search Path - Framework Search Path 或 Library Search Path 当中是否没有美洽的项目。
 
+## 仅支持横屏的应用打开相机时崩溃
+
+若开发者的 App 是游戏等只支持横屏，打开客服聊天界面的相册或相机，出现如下崩溃：
+
+```
+Terminating app due to uncaught exception 'UIApplicationInvalidInterfaceOrientation', reason: 'Supported orientations has no common orientation with the application, and [SomeViewController shouldAutorotate] is returning YES'
+```
+
+这个原因是 iOS 系统的相册和相机仅支持竖屏，所以需要在开发者的 AppDelegate.m 中增加如下系统方法即可：
+
+```objc
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    return UIInterfaceOrientationMaskAll;
+}
+```
+
 # 更新日志
+
+**v3.1.7 2016 年 03 月 16 日
+
+* 解决单语言的项目获取不到 App 的基本信息的问题。
 
 **v3.1.6 2016 年 03 月 11 日
 

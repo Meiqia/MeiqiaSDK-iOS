@@ -466,6 +466,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
  *  上传顾客的属性
  */
 - (void)uploadClientAttributes {
+    //注意这个接口是将顾客信息上传到当前的顾客上。
     [MQManager setClientInfo:clientCustomizedAttrs completion:^(BOOL success, NSError *error) {
         NSString *alertString = @"上传顾客自定义信息成功~";
         NSString *message = @"您可前往美洽工作台，查看该顾客的信息是否有修改";
