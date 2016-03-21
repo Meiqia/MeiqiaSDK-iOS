@@ -21,6 +21,7 @@
 #import "MQEvaluationView.h"
 #import "MQAssetUtil.h"
 #import "MQStringSizeUtil.h"
+#import "MQTransitioningAnimation.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -126,8 +127,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)dismissChatViewController {
-    if ([MQChatViewConfig sharedConfig].isPushChatView) {
-        [self.navigationController popViewControllerAnimated:true];
+    if ([MQChatViewConfig sharedConfig].presentingAnimation != TransiteAnimationTypeDefault) {
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            [self.view.window.layer addAnimation:[[MQTransitioningAnimation sharedInstance] createDismissingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
+            [self dismissViewControllerAnimated:NO completion:nil];
+        }
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
@@ -257,35 +263,15 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         return;
     }
 #ifndef INCLUDE_MEIQIA_SDK
-    UIButton *loadMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    loadMessageBtn.frame = CGRectMake(0, 0, 62, 22);
-    [loadMessageBtn setTitle:@"收取消息" forState:UIControlStateNormal];
-    [loadMessageBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    loadMessageBtn.titleLabel.font = [UIFont systemFontOfSize:12.0];
-    loadMessageBtn.backgroundColor = [UIColor clearColor];
-    [loadMessageBtn addTarget:self action:@selector(tapNavigationRightBtn:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loadMessageBtn];
+    UIBarButtonItem *loadMessageButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"收取消息" style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
+    self.navigationItem.rightBarButtonItem = loadMessageButtonItem;
 #else
     if (![MQChatViewConfig sharedConfig].enableEvaluationButton) {
         return;
     }
-    UIButton *rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    NSString *btnText = [MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"];
-    UIFont *btnTextFont = [UIFont systemFontOfSize:[UIFont buttonFontSize]];
-    CGFloat btnTextHeight = [MQStringSizeUtil getHeightForText:btnText withFont:btnTextFont andWidth:200];
-    CGFloat btnTextWidth = [MQStringSizeUtil getWidthForText:btnText withFont:btnTextFont andHeight:btnTextHeight];
-    rightNavButton.frame = CGRectMake(0, 0, btnTextWidth, btnTextHeight);
-    rightNavButton.titleLabel.font = btnTextFont;
-    UIColor *btnColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
-    if ([MQChatViewConfig sharedConfig].navBarTintColor) {
-        btnColor = [MQChatViewConfig sharedConfig].navBarTintColor;
-    }
-    [rightNavButton setTitleColor:btnColor forState:UIControlStateNormal];
-    [rightNavButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateDisabled];
-    [rightNavButton setTitle:btnText forState:UIControlStateNormal];
-    [rightNavButton addTarget:self action:@selector(tapNavigationRightBtn:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightNavButton];
-    self.navigationItem.rightBarButtonItem.customView.hidden = YES;
+    
+    UIBarButtonItem *rightNavButtonItem = [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
+    self.navigationItem.rightBarButtonItem = rightNavButtonItem;
 #endif
 }
 
@@ -592,13 +578,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)updateContentViewsFrame {
     //更新view
     CGFloat delta = 0;
-//    if (!self.navigationController.navigationBar.translucent) {
-//        //如果导航栏不透明，则view的起始位置应该是导航栏下方
-//        delta = self.navigationController.navigationBar.frame.size.height;
-//        if (![UIApplication sharedApplication].statusBarHidden) {
-//            delta += 20;
-//        }
-//    }
+    //    if (!self.navigationController.navigationBar.translucent) {
+    //        //如果导航栏不透明，则view的起始位置应该是导航栏下方
+    //        delta = self.navigationController.navigationBar.frame.size.height;
+    //        if (![UIApplication sharedApplication].statusBarHidden) {
+    //            delta += 20;
+    //        }
+    //    }
     self.view.frame = CGRectMake([MQChatViewConfig sharedConfig].chatViewControllerPoint.x, [MQChatViewConfig sharedConfig].chatViewControllerPoint.y + delta, viewSize.width, viewSize.height);
     //更新tableView的frame
     [self setChatTableViewFrame];
