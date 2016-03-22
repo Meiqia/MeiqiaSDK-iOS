@@ -14,7 +14,12 @@
 
 + (UIImage *)imageFromBundleWithName:(NSString *)name
 {
-    return [UIImage imageNamed:[MQAssetUtil resourceWithName:name]];
+    id image = [UIImage imageWithContentsOfFile:[MQAssetUtil resourceWithName:name]];
+    if (image) {
+        return image;
+    } else {
+        return [UIImage imageWithContentsOfFile:[[MQAssetUtil resourceWithName:name] stringByAppendingString:@".png"]];
+    }
 }
 
 + (NSString*)resourceWithName:(NSString*)fileName

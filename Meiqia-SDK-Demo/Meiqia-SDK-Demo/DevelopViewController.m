@@ -25,6 +25,8 @@ typedef enum : NSUInteger {
 } MQSDKDemoManager;
 
 static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
+static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount";
+
 
 @interface DevelopViewController ()<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
 
@@ -67,8 +69,8 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                              @"删除所有美洽多媒体存储",
                              @"删除本地数据库中的消息",
                              @"查看当前 SDK 版本号",
-                             @"当前的美洽顾客 id 为：(点击复制该顾客 id )"
-                             ],
+                             @"当前的美洽顾客 id 为：(点击复制该顾客 id )",
+                             @"点击显示当前未读的消息数"],
                          @[
                              @"chatViewStyle1",
                              @"chatViewStyle2",
@@ -178,6 +180,8 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
             case 13:
                 [self copyCurrentClientIdToPasteboard];
                 break;
+            case 14:
+                [self showUnreadMessageCount:[tableView cellForRowAtIndexPath:indexPath]];
             default:
                 break;
         }
@@ -234,7 +238,10 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[textArray objectAtIndex:indexPath.row]];
         }
     }
-    if (indexPath.row + 1 == [textArray count] && indexPath.section == 0) {
+    
+    cell.accessoryView = nil;
+    cell.detailTextLabel.text = nil;
+    if (indexPath.row + 2 == [textArray count] && indexPath.section == 0) {
         cell.detailTextLabel.text = currentClientId;
         cell.detailTextLabel.textColor = [UIColor redColor];
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -453,6 +460,35 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 /**
+ *  显示用户退出应用后收到的未读消息数的开关
+ */
+- (void)switchShowUnreadMessageCount {
+    [[NSUserDefaults standardUserDefaults]setObject:@(![self.class shouldShowUnreadMessageCount]) forKey:kSwitchShowUnreadMessageCount];
+    [configTableView reloadData];
+}
+
++ (BOOL)shouldShowUnreadMessageCount {
+    return [[[NSUserDefaults standardUserDefaults]objectForKey:kSwitchShowUnreadMessageCount] boolValue];
+}
+
+- (void)showUnreadMessageCount:(UITableViewCell *)cell {
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    [cell setAccessoryView:indicator];
+    
+    [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+        [indicator stopAnimating];
+        cell.accessoryView = nil;
+        UIAlertView *alert = [UIAlertView new];
+        alert.title = @"未读消息";
+        alert.message = [NSString stringWithFormat:@"未读消息数为: %d",(int)messages.count];
+        [alert addButtonWithTitle:@"OK"];
+        [alert show];
+    }];
+}
+
+/**
  *  显示顾客的属性
  */
 - (void)showSetClientAttributesAlertView {
@@ -572,6 +608,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 - (void)chatViewStyle4 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableShowNewMessageAlert:true];
+    [chatViewManager setStatusBarStyle:UIStatusBarStyleLightContent];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -605,6 +642,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     lertButton.frame = CGRectMake(10, 10, 20, 20);
     [chatViewManager setNavLeftButton:lertButton];
     [chatViewManager setNavTitleText:@"我是标题哦^.^"];
+    [chatViewManager setStatusBarStyle:UIStatusBarStyleLightContent];
     [chatViewManager enableMessageImageMask:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }

@@ -451,6 +451,13 @@
     return [MQManager getPreviousInputtingText];
 }
 
++ (void)getUnreadMessagesWithCompletion:(void (^)(NSArray *messages, NSError *error))completion {
+    return [MQManager getUnreadMessagesWithCompletion:completion];
+}
+
++ (void)updateReadMessageToken {
+    return [MQManager updateReadMessageToken];
+}
 
 #pragma MQManagerDelegate
 //webSocket收到消息的代理方法
