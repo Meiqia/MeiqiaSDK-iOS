@@ -95,6 +95,7 @@
 		E4A533E51C9F90DD0053BC88 /* MQAnimatorPush.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E01C9F90DD0053BC88 /* MQAnimatorPush.m */; };
 		E4A533E61C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E21C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m */; };
 		E4A533E71C9F90DD0053BC88 /* MQTransitioningAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E41C9F90DD0053BC88 /* MQTransitioningAnimation.m */; };
+		E4A533EA1C9FE6670053BC88 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E91C9FE6670053BC88 /* UIViewController+BackButtonHandler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -288,6 +289,8 @@
 		E4A533E21C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQShareTransitioningDelegateImpl.m; sourceTree = "<group>"; };
 		E4A533E31C9F90DD0053BC88 /* MQTransitioningAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTransitioningAnimation.h; sourceTree = "<group>"; };
 		E4A533E41C9F90DD0053BC88 /* MQTransitioningAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTransitioningAnimation.m; sourceTree = "<group>"; };
+		E4A533E81C9FE6670053BC88 /* UIViewController+BackButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BackButtonHandler.h"; sourceTree = "<group>"; };
+		E4A533E91C9FE6670053BC88 /* UIViewController+BackButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackButtonHandler.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -792,6 +795,8 @@
 			children = (
 				E49C7BBD1C96A8D3003027E8 /* UIViewController+OrientationFix.h */,
 				E49C7BBE1C96A8D3003027E8 /* UIViewController+OrientationFix.m */,
+				E4A533E81C9FE6670053BC88 /* UIViewController+BackButtonHandler.h */,
+				E4A533E91C9FE6670053BC88 /* UIViewController+BackButtonHandler.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -987,6 +992,7 @@
 				CC3310B21C33F7EA0088E648 /* MQChatEmojize.m in Sources */,
 				CC3310981C33F7EA0088E648 /* MQChatViewController.m in Sources */,
 				CCD145101C4F41DE007CA0DC /* MQEvaluationCell.m in Sources */,
+				E4A533EA1C9FE6670053BC88 /* UIViewController+BackButtonHandler.m in Sources */,
 				CC868F7B1C7AFFF200BFA68D /* MEIQIA_FBBitmapFont.m in Sources */,
 				CC868F801C7AFFF200BFA68D /* MEIQIA_FBSquareFont.m in Sources */,
 				CC6873711C895EF7000A1E63 /* MQEvaluationResultCell.m in Sources */,

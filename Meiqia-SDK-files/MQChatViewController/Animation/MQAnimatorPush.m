@@ -18,8 +18,12 @@
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     CGRect finalFrame = [transitionContext finalFrameForViewController:toViewController];
+    if (CGRectIsEmpty(finalFrame)) {
+        finalFrame = [[UIScreen mainScreen] bounds];
+    }
     
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    
     if (self.isPresenting) {
         toViewController.view.frame = CGRectMake(screenSize.width, 0, screenSize.width, screenSize.height);
         [[transitionContext containerView] addSubview:toViewController.view];

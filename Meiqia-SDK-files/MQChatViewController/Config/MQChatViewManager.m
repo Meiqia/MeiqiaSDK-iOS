@@ -51,22 +51,37 @@
 - (void)presentOnViewController:(UIViewController *)rootViewController transiteAnimation:(TransiteAnimationType)animation {
     chatViewConfig.presentingAnimation = animation;
     
-    UIViewController *viewController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
-    [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
-    
+    UIViewController *viewController = nil;
     if (animation != TransiteAnimationTypeDefault) {
-        
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+            viewController = [self createNavigationControllerWithDummyRootViewControllerWithRealRootViewController:chatViewController presentedViewController:rootViewController];
+            [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
             [viewController setTransitioningDelegate:[MQTransitioningAnimation sharedInstance].transitioningDelegateImpl];
             [viewController setModalPresentationStyle:UIModalPresentationCustom];
             [rootViewController presentViewController:viewController animated:YES completion:nil];
         } else {
+            viewController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
+            [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
             [rootViewController.view.window.layer addAnimation:[[MQTransitioningAnimation sharedInstance] createPresentingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
             [rootViewController presentViewController:viewController animated:NO completion:nil];
         }
     } else {
         [rootViewController presentViewController:viewController animated:YES completion:nil];
     }
+}
+
+///模仿系统的返回按钮，创造一个viewController
+- (UINavigationController *)createNavigationControllerWithDummyRootViewControllerWithRealRootViewController:(UIViewController *)rootViewController presentedViewController:(UIViewController *)presentedViewController{
+    UIViewController *dummyViewController = [UIViewController new];
+//    NSString *title = [[[presentedViewController.navigationController navigationBar]items] lastObject].title;
+    dummyViewController.title = @" ";
+
+    UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:dummyViewController];
+    //关闭这个navigation controller的返回交互手势
+    if ([navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }    [navigationController pushViewController:rootViewController animated:NO];
+    return navigationController;
 }
 
 //修改导航栏属性
@@ -99,7 +114,9 @@
     }
     
     //导航栏左键
-    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
+    if ([MQChatViewConfig sharedConfig].presentingAnimation == TransiteAnimationTypeDefault) {
+        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
+    }
     
     //导航栏右键
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
