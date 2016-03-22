@@ -16,7 +16,9 @@ static CGFloat const kMQButtonVerticalSpacing   = 16.0;
 static CGFloat const kMQButtonHeight            = 42.0;
 static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 
-@interface ViewController () 
+@interface ViewController ()
+
+@property (nonatomic, strong) NSNumber *unreadMessagesCount;
 
 @end
 
@@ -38,6 +40,23 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 
     [self initAppIcon];
     [self initFunctionButtons];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateIndicator) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)updateIndicator {
+    if ([DevelopViewController shouldShowUnreadMessageCount]) {
+        [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+            self.unreadMessagesCount = @(messages.count);
+            
+            if (self.unreadMessagesCount.intValue > 0) {
+                [self showIndicatorWithNumber:self.unreadMessagesCount onView:basicFunctionBtn];
+            } else {
+                [self removeIndecatorForView:basicFunctionBtn];
+            }
+        }];
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -70,6 +89,28 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     
     [devFunctionBtn addTarget:self action:@selector(didTapDevFunctionBtn:) forControlEvents:UIControlEventTouchUpInside];
     [basicFunctionBtn addTarget:self action:@selector(didTapBasicFunctionBtn:) forControlEvents:UIControlEventTouchUpInside];
+    
+}
+
+static int indicator_tag = 10;
+- (void)showIndicatorWithNumber:(NSNumber *)number onView:(UIView *)view {
+    UILabel *indicator = [[UILabel alloc] initWithFrame:CGRectMake(view.bounds.size.width - 10, -10, 20, 20)];
+    indicator.tag = indicator_tag;
+    indicator.backgroundColor = [UIColor redColor];
+    indicator.layer.cornerRadius = 10;
+    indicator.font = [UIFont systemFontOfSize:9];
+    indicator.textAlignment = NSTextAlignmentCenter;
+    indicator.layer.masksToBounds = YES;
+    indicator.text = number.stringValue;
+    indicator.textColor = [UIColor whiteColor];
+    [view addSubview:indicator];
+}
+
+- (void)removeIndecatorForView:(UIView *)view {
+    UIView *v = [view viewWithTag:indicator_tag];
+    if (v) {
+        [v removeFromSuperview];
+    }
 }
 
 #pragma 最基本功能
@@ -78,6 +119,7 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableOutgoingAvatar:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
+    [self removeIndecatorForView:basicFunctionBtn];
 }
 
 #pragma 开发者的高级功能，其中有调用美洽SDK的API接口

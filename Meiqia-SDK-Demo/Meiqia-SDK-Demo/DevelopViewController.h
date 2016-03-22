@@ -10,4 +10,6 @@
 
 @interface DevelopViewController : UIViewController
 
++ (BOOL)shouldShowUnreadMessageCount;
+
 @end

@@ -12,7 +12,7 @@
 #import "MQDefinition.h"
 #import "MQAgent.h"
 
-#define MQSDKVersion @"3.1.5"
+#define MQSDKVersion @"3.1.7"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -329,6 +329,17 @@
  */
 + (NSString *)getMeiQiaSDKVersion;
 
+
+/**
+ * 获得本地未读消息
+ */
++ (void)getUnreadMessagesWithCompletion:(void (^)(NSArray *messages, NSError *error))completion;
+
+
+/**
+ * 重置用户已读消息的时间点，该接口目前在用户离开聊天窗口的时候调用，如果用户离开聊天界面，在这段时间内收取到的消息都被作为未读消息
+ */
++ (void)updateReadMessageToken;
 
 
 @end
