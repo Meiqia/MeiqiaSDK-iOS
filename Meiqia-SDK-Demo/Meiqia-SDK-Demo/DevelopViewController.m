@@ -70,7 +70,7 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
                              @"删除本地数据库中的消息",
                              @"查看当前 SDK 版本号",
                              @"当前的美洽顾客 id 为：(点击复制该顾客 id )",
-                             @"点击显示当前未读的消息数"],
+                             @"显示当前未读的消息数"],
                          @[
                              @"chatViewStyle1",
                              @"chatViewStyle2",

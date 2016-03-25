@@ -636,7 +636,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if ([MQChatViewConfig sharedConfig].MQClientId.length == 0 && [MQChatViewConfig sharedConfig].customizedId.length > 0) {
         [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
             didSetOnline = true;
-            MQChatAgentStatus agentStatus = MQChatAgentStatusOnDuty;
+            MQChatAgentStatus agentStatus = [MQServiceToViewInterface getCurrentAgentStatus];
             if (!completion) {
                 //没有分配到客服
                 agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
@@ -662,7 +662,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
     [serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         didSetOnline = true;
-        MQChatAgentStatus agentStatus = MQChatAgentStatusOnDuty;
+        MQChatAgentStatus agentStatus = [MQServiceToViewInterface getCurrentAgentStatus];
         if (!completion) {
             //没有分配到客服
             agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
