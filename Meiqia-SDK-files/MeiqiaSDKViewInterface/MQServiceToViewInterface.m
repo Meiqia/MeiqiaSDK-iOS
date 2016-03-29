@@ -154,7 +154,7 @@
         }
         case MQMessageContentTypeVoice: {
             MQVoiceMessage *voiceMessage = [[MQVoiceMessage alloc] initWithVoicePath:fromMessage.content];
-            voiceMessage.isPlayed = false;
+            voiceMessage.isPlayed = fromMessage.isRead;
             toMessage = voiceMessage;
             break;
         }
