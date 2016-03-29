@@ -29,9 +29,18 @@ static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 /** 一次获取历史消息数的个数 */
 static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
+///TODO: 稍后用这个状态替换目前的本地状态变量
+typedef NS_ENUM(NSUInteger, MQClientStatus) {
+    MQClientStatusOffLine = 0,
+    MQClientStatusOnlining,
+    MQClientStatusOnline,
+};
+
 
 #ifdef INCLUDE_MEIQIA_SDK
 @interface MQChatViewService() <MQServiceToViewInterfaceDelegate, MQCellModelDelegate>
+
+@property (nonatomic, assign) MQClientStatus clientStatus;
 
 @end
 #else
@@ -59,10 +68,22 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         isThereNoAgent  = false;
         addedNoAgentTip = false;
         didSetOnline    = false;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketStatusChanged:) name:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE object:nil];
 #endif
         currentViewMessageIdSet = [NSMutableSet new];
     }
     return self;
+}
+
+- (void)socketStatusChanged:(NSNotification *)notification {
+    static BOOL shouldHandleSocketConnectNotification = NO; //当第一次进入的时候，会受到 socket 连上的消息，但是这个时候并不应该执行重新上线的逻辑，重新上线的逻辑必须是 socket 断开之后才有必要去执行的，这个标志的作用就是在 socket 有过断开的情况才去执行。
+    if ([[notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE] isEqualToString:SOCKET_STATUS_CONNECTED] && shouldHandleSocketConnectNotification) {
+        [self setClientOnline];
+        shouldHandleSocketConnectNotification = NO;
+    } else {
+        shouldHandleSocketConnectNotification = YES;
+    }
 }
 
 #pragma 增加cellModel并刷新tableView
@@ -630,13 +651,25 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #pragma 顾客上线的逻辑
 - (void)setClientOnline {
     //上线
+
+    if (self.clientStatus == MQClientStatusOnlining) {
+        return;
+    }
+    
+    self.clientStatus = MQClientStatusOnlining;
+    
     __weak __typeof(self) weakSelf = self;
     serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
     [MQServiceToViewInterface setScheduledAgentWithAgentId:[MQChatViewConfig sharedConfig].scheduledAgentId agentGroupId:[MQChatViewConfig sharedConfig].scheduledGroupId scheduleRule:[MQChatViewConfig sharedConfig].scheduleRule];
     if ([MQChatViewConfig sharedConfig].MQClientId.length == 0 && [MQChatViewConfig sharedConfig].customizedId.length > 0) {
         [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
+            
+            __strong typeof (weakSelf) strongSelf = weakSelf;
+            
             didSetOnline = true;
-            MQChatAgentStatus agentStatus = MQChatAgentStatusOnDuty;
+            strongSelf.clientStatus = MQClientStatusOnline;
+            
+            MQChatAgentStatus agentStatus = [MQServiceToViewInterface getCurrentAgentStatus];
             if (!completion) {
                 //没有分配到客服
                 agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
@@ -661,8 +694,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         return;
     }
     [serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
+        
+        __strong typeof (weakSelf) strongSelf = weakSelf;
+        
         didSetOnline = true;
-        MQChatAgentStatus agentStatus = MQChatAgentStatusOnDuty;
+        strongSelf.clientStatus = MQClientStatusOnline;
+        
+        MQChatAgentStatus agentStatus = [MQServiceToViewInterface getCurrentAgentStatus];
         if (!completion) {
             //没有分配到客服
             agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];

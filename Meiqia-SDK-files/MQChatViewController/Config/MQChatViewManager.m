@@ -66,6 +66,8 @@
             [rootViewController presentViewController:viewController animated:NO completion:nil];
         }
     } else {
+        viewController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
+        [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
         [rootViewController presentViewController:viewController animated:YES completion:nil];
     }
 }

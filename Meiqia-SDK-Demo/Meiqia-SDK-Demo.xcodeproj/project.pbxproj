@@ -91,6 +91,7 @@
 		CCE9D1461C181399004E862E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1451C181399004E862E /* SystemConfiguration.framework */; };
 		CCE9D1481C18139E004E862E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1471C18139E004E862E /* MobileCoreServices.framework */; };
 		CCE9D14D1C1813BE004E862E /* DevelopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D14C1C1813BE004E862E /* DevelopViewController.m */; };
+		E488BF7F1CA2608800753736 /* UIView+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = E488BF7E1CA2608800753736 /* UIView+Layout.m */; };
 		E49C7BBF1C96A8D3003027E8 /* UIViewController+OrientationFix.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C7BBE1C96A8D3003027E8 /* UIViewController+OrientationFix.m */; };
 		E4A533E51C9F90DD0053BC88 /* MQAnimatorPush.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E01C9F90DD0053BC88 /* MQAnimatorPush.m */; };
 		E4A533E61C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E21C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m */; };
@@ -281,6 +282,8 @@
 		CCE9D1471C18139E004E862E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		CCE9D14B1C1813BE004E862E /* DevelopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevelopViewController.h; sourceTree = "<group>"; };
 		CCE9D14C1C1813BE004E862E /* DevelopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevelopViewController.m; sourceTree = "<group>"; };
+		E488BF7D1CA2608800753736 /* UIView+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Layout.h"; sourceTree = "<group>"; };
+		E488BF7E1CA2608800753736 /* UIView+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Layout.m"; sourceTree = "<group>"; };
 		E49C7BBD1C96A8D3003027E8 /* UIViewController+OrientationFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+OrientationFix.h"; sourceTree = "<group>"; };
 		E49C7BBE1C96A8D3003027E8 /* UIViewController+OrientationFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+OrientationFix.m"; sourceTree = "<group>"; };
 		E4A533DF1C9F90DD0053BC88 /* MQAnimatorPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQAnimatorPush.h; sourceTree = "<group>"; };
@@ -797,6 +800,8 @@
 				E49C7BBE1C96A8D3003027E8 /* UIViewController+OrientationFix.m */,
 				E4A533E81C9FE6670053BC88 /* UIViewController+BackButtonHandler.h */,
 				E4A533E91C9FE6670053BC88 /* UIViewController+BackButtonHandler.m */,
+				E488BF7D1CA2608800753736 /* UIView+Layout.h */,
+				E488BF7E1CA2608800753736 /* UIView+Layout.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -881,7 +886,7 @@
 				TargetAttributes = {
 					CCE9D1051C1812F6004E862E = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = H22N8T6DAX;
+						DevelopmentTeam = T9YSHM8D7E;
 					};
 					CCE9D11E1C1812F6004E862E = {
 						CreatedOnToolsVersion = 7.1;
@@ -959,6 +964,7 @@
 				CC3310961C33F7EA0088E648 /* MQChatViewConfig.m in Sources */,
 				CC3310AD1C33F7EA0088E648 /* MQAssetUtil.m in Sources */,
 				CC3310AC1C33F7EA0088E648 /* MQVoiceMessageCell.m in Sources */,
+				E488BF7F1CA2608800753736 /* UIView+Layout.m in Sources */,
 				CC33109D1C33F7EA0088E648 /* MQImageMessage.m in Sources */,
 				CCD1450D1C4F41C1007CA0DC /* MQEvaluationView.m in Sources */,
 				CC3310A81C33F7EA0088E648 /* MQImageMessageCell.m in Sources */,
@@ -1174,9 +1180,10 @@
 					"$(inherited)",
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ijinmao.Meiqia-SDK-Demo";
+				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.ecoboost.sdk.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7s armv7 arm64";
 			};
 			name = Debug;
 		};
@@ -1198,9 +1205,10 @@
 					"$(inherited)",
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ijinmao.Meiqia-SDK-Demo";
+				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.ecoboost.sdk.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7s armv7 arm64";
 			};
 			name = Release;
 		};
