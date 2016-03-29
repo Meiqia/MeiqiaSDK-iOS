@@ -118,7 +118,6 @@ static int indicator_tag = 10;
     //基本功能 - 在线客服
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableOutgoingAvatar:false];
-    [chatViewManager setScheduledAgentId:@"108abc7502d2cae2a4d297856ec231fe"];
     [chatViewManager pushMQChatViewControllerInViewController:self];
     [self removeIndecatorForView:basicFunctionBtn];
 }

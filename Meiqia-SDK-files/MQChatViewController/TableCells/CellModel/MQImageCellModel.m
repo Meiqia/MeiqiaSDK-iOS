@@ -165,7 +165,11 @@
         self.image = message.image;
         if (!message.image) {
             if (message.imagePath.length > 0) {
-                [self setModelsWithContentImage:[MQChatViewConfig sharedConfig].incomingBubbleImage cellFromType:message.fromType cellWidth:cellWidth];
+                
+                //默认cell高度为图片显示的最大高度
+                self.cellHeight = cellWidth / 2;
+                
+//                [self setModelsWithContentImage:[MQChatViewConfig sharedConfig].incomingBubbleImage cellFromType:message.fromType cellWidth:cellWidth];
                 
                 //这里使用美洽接口下载多媒体消息的图片，开发者也可以替换成自己的图片缓存策略
 #ifdef INCLUDE_MEIQIA_SDK
