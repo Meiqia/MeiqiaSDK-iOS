@@ -44,6 +44,14 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateIndicator) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
 - (void)updateIndicator {
     if ([DevelopViewController shouldShowUnreadMessageCount]) {
         [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
@@ -117,8 +125,9 @@ static int indicator_tag = 10;
 - (void)didTapBasicFunctionBtn:(UIButton *)button {
     //基本功能 - 在线客服
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager enableOutgoingAvatar:false];
+    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
+//    [chatViewManager presentMQChatViewControllerInViewController:self];
     [self removeIndecatorForView:basicFunctionBtn];
 }
 

@@ -72,12 +72,15 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
                              @"当前的美洽顾客 id 为：(点击复制该顾客 id )",
                              @"显示当前未读的消息数"],
                          @[
-                             @"chatViewStyle1",
-                             @"chatViewStyle2",
-                             @"chatViewStyle3",
-                             @"chatViewStyle4",
-                             @"chatViewStyle5",
-                             @"chatViewStyle6"
+                             @"自定义主题 1",
+                             @"自定义主题 2",
+                             @"自定义主题 3",
+                             @"自定义主题 4",
+                             @"自定义主题 5",
+                             @"自定义主题 6",
+                             @"系统主题 MQChatViewStyleTypeBlue",
+                             @"系统主题 MQChatViewStyleTypeGreen",
+                             @"系统主题 MQChatViewStyleTypeDark",
                              ]
                          ];
     
@@ -206,6 +209,15 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
         case 5:
             [self chatViewStyle6];
             break;
+        case 6:
+            [self systemStyleBlue];
+            break;
+        case 7:
+            [self systemStyleGreen];
+            break;
+        case 8:
+            [self systemStyleDark];
+            break;
         default:
             break;
     }
@@ -264,7 +276,7 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     //开启同步消息
     [chatViewManager enableSyncServerMessage:true];
-    [chatViewManager enableOutgoingAvatar:false];
+    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -286,7 +298,7 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
 - (void)setClientOnlineWithClientId:(NSString *)clientId {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager setLoginMQClientId:clientId];
-    [chatViewManager enableOutgoingAvatar:false];
+    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager presentMQChatViewControllerInViewController:self];
 }
 
@@ -559,16 +571,24 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     UIImage *resightKeyboardImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleTwo"];
     UIImage *resightKeyboardHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
     UIImage *avatar = [UIImage imageNamed:@"ijinmaoAvatar"];
-    [chatViewManager setoutgoingDefaultAvatarImage:avatar];
-    [chatViewManager setPhotoSenderImage:photoImage highlightedImage:photoHighlightedImage];
-    [chatViewManager setVoiceSenderImage:voiceImage highlightedImage:voiceHighlightedImage];
-    [chatViewManager setTextSenderImage:keyboardImage highlightedImage:keyboardHighlightedImage];
-    [chatViewManager setResignKeyboardImage:resightKeyboardImage highlightedImage:resightKeyboardHighlightedImage];
-    [chatViewManager setIncomingBubbleColor:[UIColor redColor]];
-    [chatViewManager setIncomingMessageTextColor:[UIColor whiteColor]];
-    [chatViewManager setOutgoingBubbleColor:[UIColor yellowColor]];
-    [chatViewManager setOutgoingMessageTextColor:[UIColor darkTextColor]];
-    [chatViewManager enableRoundAvatar:true];
+    
+    MQChatViewStyle *chatViewStyle = [chatViewManager chatViewStyle];
+    
+    [chatViewStyle setOutgoingDefaultAvatarImage:avatar];
+    [chatViewStyle setPhotoSenderImage:photoImage];
+    [chatViewStyle setPhotoSenderHighlightedImage:photoHighlightedImage];
+    [chatViewStyle setVoiceSenderImage:voiceImage];
+    [chatViewStyle setVoiceSenderHighlightedImage:voiceHighlightedImage];
+    [chatViewStyle setKeyboardSenderImage:keyboardImage];
+    [chatViewStyle setKeyboardSenderHighlightedImage:keyboardHighlightedImage];
+    [chatViewStyle setResignKeyboardImage:resightKeyboardImage];
+    [chatViewStyle setResignKeyboardHighlightedImage:resightKeyboardHighlightedImage];
+    [chatViewStyle setIncomingBubbleColor:[UIColor redColor]];
+    [chatViewStyle setIncomingMsgTextColor:[UIColor whiteColor]];
+    [chatViewStyle setOutgoingBubbleColor:[UIColor yellowColor]];
+    [chatViewStyle setOutgoingMsgTextColor:[UIColor darkTextColor]];
+    [chatViewStyle setEnableRoundAvatar:true];
+    
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -581,11 +601,15 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     UIImage *outgoingBubbleImage = [MQAssetUtil imageFromBundleWithName:@"MQBubbleOutgoingStyleTwo"];
     CGPoint stretchPoint = CGPointMake(incomingBubbleImage.size.width / 2.0f - 4.0, incomingBubbleImage.size.height / 2.0f);
     [chatViewManager enableSendVoiceMessage:false];
-    [chatViewManager enableOutgoingAvatar:false];
-    [chatViewManager setIncomingBubbleImage:incomingBubbleImage];
-    [chatViewManager setOutgoingBubbleImage:outgoingBubbleImage];
-    [chatViewManager setIncomingBubbleColor:[UIColor yellowColor]];
-    [chatViewManager setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
+    
+    MQChatViewStyle *chatViewStyle = [chatViewManager chatViewStyle];
+    
+    [chatViewStyle setIncomingMsgSoundFileName:@""];
+    [chatViewStyle setEnableOutgoingAvatar:false];
+    [chatViewStyle setIncomingBubbleImage:incomingBubbleImage];
+    [chatViewStyle setOutgoingBubbleImage:outgoingBubbleImage];
+    [chatViewStyle setIncomingBubbleColor:[UIColor yellowColor]];
+    [chatViewStyle setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -597,9 +621,10 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     [chatViewManager setMessageLinkRegex:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"];
     [chatViewManager enableChatWelcome:true];
     [chatViewManager setChatWelcomeText:@"你好，请问有什么可以帮助到您？"];
-    [chatViewManager setIncomingMessageSoundFileName:@"MQNewMessageRingStyleTwo.wav"];
     [chatViewManager enableMessageSound:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
+    
+    [chatViewManager.chatViewStyle setIncomingMsgSoundFileName:@"MQNewMessageRingStyleTwo.wav"];
 }
 
 /**
@@ -608,7 +633,7 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
 - (void)chatViewStyle4 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableShowNewMessageAlert:true];
-    [chatViewManager setStatusBarStyle:UIStatusBarStyleLightContent];
+
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -618,12 +643,13 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
 - (void)chatViewStyle5 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableTopPullRefresh:true];
-    [chatViewManager setPullRefreshColor:[UIColor redColor]];
+    [chatViewManager.chatViewStyle setPullRefreshColor:[UIColor redColor]];
+    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor blueColor]];
+    
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.backgroundColor = [UIColor redColor];
     rightButton.frame = CGRectMake(10, 10, 20, 20);
-    [chatViewManager setNavigationBarTintColor:[UIColor blueColor]];
-    [chatViewManager setNavRightButton:rightButton];
+    [chatViewManager.chatViewStyle setNavBarRightButton:rightButton];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -635,15 +661,46 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.backgroundColor = [UIColor redColor];
     rightButton.frame = CGRectMake(10, 10, 20, 20);
-    [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
-    [chatViewManager setNavRightButton:rightButton];
+    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor redColor]];
+    [chatViewManager.chatViewStyle setNavBarRightButton:rightButton];
     UIButton *lertButton = [UIButton buttonWithType:UIButtonTypeCustom];
     lertButton.backgroundColor = [UIColor blueColor];
     lertButton.frame = CGRectMake(10, 10, 20, 20);
-    [chatViewManager setNavLeftButton:lertButton];
+    [chatViewManager.chatViewStyle setNavBarLeftButton:lertButton];
+    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
+    
     [chatViewManager setNavTitleText:@"我是标题哦^.^"];
-    [chatViewManager setStatusBarStyle:UIStatusBarStyleLightContent];
-    [chatViewManager enableMessageImageMask:false];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+    
+}
+
+- (void)systemStyleBlue {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    [chatViewManager setChatViewStyle:[MQChatViewStyle createWithStyle:MQChatViewStyleTypeBlue]];
+    
+    [chatViewManager enableShowNewMessageAlert:true];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+- (void)systemStyleGreen {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    [chatViewManager setChatViewStyle:[MQChatViewStyle createWithStyle:MQChatViewStyleTypeGreen]];
+    
+    [chatViewManager enableShowNewMessageAlert:true];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+- (void)systemStyleDark {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    [chatViewManager setChatViewStyle:[MQChatViewStyle createWithStyle:MQChatViewStyleTypeDark]];
+    
+    [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 

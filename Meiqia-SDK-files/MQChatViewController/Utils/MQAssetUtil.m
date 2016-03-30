@@ -22,6 +22,10 @@
     }
 }
 
++ (UIImage *)templateImageFromBundleWithName:(NSString *)name {
+    return [[self.class imageFromBundleWithName:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+}
+
 + (NSString*)resourceWithName:(NSString*)fileName
 {
 //        return [NSString stringWithFormat:@"MQChatViewAsset.bundle/%@",fileName];

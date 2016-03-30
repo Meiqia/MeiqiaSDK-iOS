@@ -74,7 +74,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 //    previousStatusBarTranslucent = self.navigationController.navigationBar.translucent;
     [[UIApplication sharedApplication] setStatusBarHidden:false];
     self.navigationController.navigationBar.translucent = true;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [MQChatViewConfig sharedConfig].chatViewStyle.backgroundColor ?: [UIColor colorWithWhite:0.95 alpha:1];
     viewSize = [UIScreen mainScreen].bounds.size;
     [self setNavBar];
     [self initChatTableView];
@@ -614,12 +614,12 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)setChatTableViewFrame {
     //更新tableView的frame
-    if (!chatViewConfig.isCustomizedChatViewFrame) {
+//    if (!chatViewConfig.isCustomizedChatViewFrame) {
         chatViewConfig.chatViewFrame = CGRectMake(0, 0, viewSize.width, viewSize.height - kMQChatViewInputBarHeight);
         [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];
-    } else {
-        //开发者如果自定义了TableView的frame，在这里重新处理横屏后的tableView的frame
-    }
+//    } else {
+//        //开发者如果自定义了TableView的frame，在这里重新处理横屏后的tableView的frame
+//    }
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
@@ -652,7 +652,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     UILabel *titleLabel = [UILabel new];
     titleLabel.text = agentName;
     titleLabel.font = [UIFont systemFontOfSize:16.0];
-    titleLabel.textColor = [MQChatViewConfig sharedConfig].navBarTintColor;
+    titleLabel.textColor = [MQChatViewConfig sharedConfig].navTitleColor;
     CGFloat titleHeight = [MQStringSizeUtil getHeightForText:agentName withFont:titleLabel.font andWidth:self.view.frame.size.width];
     CGFloat titleWidth = [MQStringSizeUtil getWidthForText:agentName withFont:titleLabel.font andHeight:titleHeight];
     UIImageView *statusImageView = [UIImageView new];

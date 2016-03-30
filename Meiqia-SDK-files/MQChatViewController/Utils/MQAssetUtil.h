@@ -13,6 +13,8 @@
 
 + (UIImage *)imageFromBundleWithName:(NSString *)name;
 
++ (UIImage *)templateImageFromBundleWithName:(NSString *)name;
+
 + (NSString*)resourceWithName:(NSString*)fileName;
 
 + (UIImage *)incomingDefaultAvatarImage;

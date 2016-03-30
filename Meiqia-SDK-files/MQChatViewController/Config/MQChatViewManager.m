@@ -148,9 +148,9 @@
     chatViewConfig.hidesBottomBarWhenPushed = hide;
 }
 
-- (void)enableCustomChatViewFrame:(BOOL)enable {
-    chatViewConfig.isCustomizedChatViewFrame = enable;
-}
+//- (void)enableCustomChatViewFrame:(BOOL)enable {
+//    chatViewConfig.isCustomizedChatViewFrame = enable;
+//}
 
 - (void)setChatViewFrame:(CGRect)viewFrame {
     chatViewConfig.chatViewFrame = viewFrame;
@@ -437,6 +437,14 @@
 - (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle {
     chatViewConfig.statusBarStyle = statusBarStyle;
     chatViewConfig.didSetStatusBarStyle = true;
+}
+
+- (void)setChatViewStyle:(MQChatViewStyle *)chatViewStyle {
+    chatViewConfig.chatViewStyle = chatViewStyle;
+}
+
+- (MQChatViewStyle *)chatViewStyle {
+    return chatViewConfig.chatViewStyle;
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
