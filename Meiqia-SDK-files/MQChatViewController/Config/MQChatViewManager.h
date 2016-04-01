@@ -280,13 +280,13 @@
  * 设置客服的缺省头像图片；
  * @param image 头像image
  */
-- (void)setincomingDefaultAvatarImage:(UIImage *)image style_deprecated;
+- (void)setincomingDefaultAvatarImage:(UIImage *)image;
 
 /**
  * 设置顾客的头像图片；
  * @param image 头像image
  */
-- (void)setoutgoingDefaultAvatarImage:(UIImage *)image style_deprecated;
+- (void)setoutgoingDefaultAvatarImage:(UIImage *)image;
 
 /**
  *  设置底部自定义发送图片的按钮图片；

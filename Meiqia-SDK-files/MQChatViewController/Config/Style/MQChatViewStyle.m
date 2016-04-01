@@ -50,16 +50,14 @@
         self.incomingBubbleColor    = nil;
         self.outgoingBubbleColor    = nil;
         
-        self.incomingDefaultAvatarImage     = [MQAssetUtil incomingDefaultAvatarImage];
-        self.outgoingDefaultAvatarImage     = [MQAssetUtil outgoingDefaultAvatarImage];
         self.photoSenderImage               = [MQAssetUtil messageCameraInputImage];
-        self.photoSenderHighlightedImage    = [MQAssetUtil messageCameraInputHighlightedImage];
+        self.photoSenderHighlightedImage    = nil;
         self.keyboardSenderImage            = [MQAssetUtil messageTextInputImage];
-        self.keyboardSenderHighlightedImage = [MQAssetUtil messageTextInputHighlightedImage];
+        self.keyboardSenderHighlightedImage = nil;
         self.voiceSenderImage               = [MQAssetUtil messageVoiceInputImage];
-        self.voiceSenderHighlightedImage    = [MQAssetUtil messageVoiceInputHighlightedImage];
+        self.voiceSenderHighlightedImage    = nil;
         self.resignKeyboardImage            = [MQAssetUtil messageResignKeyboardImage];
-        self.resignKeyboardHighlightedImage = [MQAssetUtil messageResignKeyboardHighlightedImage];
+        self.resignKeyboardHighlightedImage = nil;
         self.incomingBubbleImage            = [MQAssetUtil bubbleIncomingImage];
         self.outgoingBubbleImage            = [MQAssetUtil bubbleOutgoingImage];
         self.messageSendFailureImage        = [MQAssetUtil messageWarningImage];
@@ -76,6 +74,7 @@
     }
     return self;
 }
+
 
 - (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle {
     _statusBarStyle = statusBarStyle;

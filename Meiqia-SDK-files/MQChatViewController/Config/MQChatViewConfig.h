@@ -86,6 +86,10 @@ typedef NS_ENUM(NSUInteger, TransiteAnimationType) {
 @property (nonatomic, assign) BOOL enableEvaluationButton;
 @property (nonatomic, assign) BOOL enableVoiceRecordBlurView;
 
+@property (nonatomic, strong) UIImage *incomingDefaultAvatarImage;
+@property (nonatomic, strong) UIImage *outgoingDefaultAvatarImage;
+@property (nonatomic, assign) BOOL shouldUploadOutgoingAvartar;
+
 
 @property (nonatomic, assign) NSTimeInterval maxVoiceDuration;
 
@@ -97,6 +101,7 @@ typedef NS_ENUM(NSUInteger, TransiteAnimationType) {
 
 @property (nonatomic, strong) NSDictionary *clientInfo;
 @property (nonatomic, assign) MQChatScheduleRules scheduleRule;
+
 
 #endif
 

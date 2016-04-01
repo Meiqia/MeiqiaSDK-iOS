@@ -124,19 +124,6 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
  */
 @property (nonatomic, copy) UIColor *pullRefreshColor;
 
-/**
- * 设置客服的缺省头像图片；
- * @param image 头像image
- */
-@property (nonatomic, strong) UIImage *incomingDefaultAvatarImage;
-
-/**
- * 设置顾客的头像图片；
- * @param image 头像image
- */
-@property (nonatomic, strong) UIImage *outgoingDefaultAvatarImage;
-
-
 @property (nonatomic, strong) UIImage *messageSendFailureImage;
 
 /**
@@ -249,7 +236,6 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
  * @param backgroundColor
  */
 @property (nonatomic, strong) UIColor *backgroundColor;
-
 
 
 + (instancetype)createWithStyle:(MQChatViewStyleType)type;

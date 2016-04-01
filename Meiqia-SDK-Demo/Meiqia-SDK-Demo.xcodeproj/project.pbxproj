@@ -1221,7 +1221,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.ecoboost.sdk.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "armv7s armv7 arm64";
+				VALID_ARCHS = "armv7 arm64";
 			};
 			name = Debug;
 		};
@@ -1246,7 +1246,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.ecoboost.sdk.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "armv7s armv7 arm64";
+				VALID_ARCHS = "armv7 arm64";
 			};
 			name = Release;
 		};

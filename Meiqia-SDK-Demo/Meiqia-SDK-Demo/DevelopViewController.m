@@ -562,19 +562,18 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
  */
 - (void)chatViewStyle1 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    UIImage *photoImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleTwo"];
-    UIImage *photoHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleTwo"];
-    UIImage *voiceImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleTwo"];
-    UIImage *voiceHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleTwo"];
-    UIImage *keyboardImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputImageNormalStyleTwo"];
-    UIImage *keyboardHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleTwo"];
-    UIImage *resightKeyboardImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleTwo"];
-    UIImage *resightKeyboardHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
+    UIImage *photoImage = [UIImage imageNamed:@"MQMessageCameraInputImageNormalStyleTwo"];
+    UIImage *photoHighlightedImage = [UIImage imageNamed:@"MQMessageCameraInputHighlightedImageStyleTwo"];
+    UIImage *voiceImage = [UIImage imageNamed:@"MQMessageVoiceInputImageNormalStyleTwo"];
+    UIImage *voiceHighlightedImage = [UIImage imageNamed:@"MQMessageVoiceInputHighlightedImageStyleTwo"];
+    UIImage *keyboardImage = [UIImage imageNamed:@"MQMessageTextInputImageNormalStyleTwo"];
+    UIImage *keyboardHighlightedImage = [UIImage imageNamed:@"MQMessageTextInputHighlightedImageStyleTwo"];
+    UIImage *resightKeyboardImage = [UIImage imageNamed:@"MQMessageKeyboardDownImageNormalStyleTwo"];
+    UIImage *resightKeyboardHighlightedImage = [UIImage imageNamed:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
     UIImage *avatar = [UIImage imageNamed:@"ijinmaoAvatar"];
     
     MQChatViewStyle *chatViewStyle = [chatViewManager chatViewStyle];
     
-    [chatViewStyle setOutgoingDefaultAvatarImage:avatar];
     [chatViewStyle setPhotoSenderImage:photoImage];
     [chatViewStyle setPhotoSenderHighlightedImage:photoHighlightedImage];
     [chatViewStyle setVoiceSenderImage:voiceImage];
@@ -589,6 +588,7 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     [chatViewStyle setOutgoingMsgTextColor:[UIColor darkTextColor]];
     [chatViewStyle setEnableRoundAvatar:true];
     
+    [chatViewManager setoutgoingDefaultAvatarImage:avatar];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -597,8 +597,8 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
  */
 - (void)chatViewStyle2 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    UIImage *incomingBubbleImage = [MQAssetUtil imageFromBundleWithName:@"MQBubbleIncomingStyleTwo"];
-    UIImage *outgoingBubbleImage = [MQAssetUtil imageFromBundleWithName:@"MQBubbleOutgoingStyleTwo"];
+    UIImage *incomingBubbleImage = [UIImage imageNamed:@"MQBubbleIncomingStyleTwo"];
+    UIImage *outgoingBubbleImage = [UIImage imageNamed:@"MQBubbleOutgoingStyleTwo"];
     CGPoint stretchPoint = CGPointMake(incomingBubbleImage.size.width / 2.0f - 4.0, incomingBubbleImage.size.height / 2.0f);
     [chatViewManager enableSendVoiceMessage:false];
     

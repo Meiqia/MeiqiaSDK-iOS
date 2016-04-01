@@ -53,7 +53,7 @@
 
 + (UIImage *)messageCameraInputHighlightedImage
 {
-    return [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageTextInputImage
@@ -63,7 +63,7 @@
 
 + (UIImage *)messageTextInputHighlightedImage
 {
-    return [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageVoiceInputImage
@@ -73,7 +73,7 @@
 
 + (UIImage *)messageVoiceInputHighlightedImage
 {
-    return [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageResignKeyboardImage
@@ -83,7 +83,7 @@
 
 + (UIImage *)messageResignKeyboardHighlightedImage
 {
-    return [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleOne"];
 }
 
 + (UIImage *)bubbleIncomingImage

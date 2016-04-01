@@ -393,7 +393,7 @@
                         agentGroupId:(NSString *)agentGroupId
                         scheduleRule:(MQChatScheduleRules)scheduleRule
 {
-    MQScheduleRules rule = nil;
+    MQScheduleRules rule = 0;
     switch (scheduleRule) {
         case MQChatScheduleRulesRedirectNone:
             rule = MQScheduleRulesRedirectNone;

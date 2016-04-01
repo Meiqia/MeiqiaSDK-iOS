@@ -54,6 +54,9 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.scheduledGroupId       = nil;
     self.customizedId           = @"";
     self.navTitleText           = nil;
+    
+    self.incomingDefaultAvatarImage     = [MQAssetUtil incomingDefaultAvatarImage];
+    _outgoingDefaultAvatarImage     = [MQAssetUtil outgoingDefaultAvatarImage]; //用户可以指定头像，如果指定了头像，在用户上线之后，将头像指定给上线后的用户
 
     self.enableEventDispaly      = false;
     self.enableSendVoiceMessage  = true;
@@ -82,6 +85,12 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     
 #endif
 }
+
+- (void)setOutgoingDefaultAvatarImage:(UIImage *)outgoingDefaultAvatarImage {
+    _outgoingDefaultAvatarImage = outgoingDefaultAvatarImage;
+    self.shouldUploadOutgoingAvartar = YES;//如果用户修改了默认头像，标记用户上线之后去更新当前用户头像
+}
+
 
 @end
 
