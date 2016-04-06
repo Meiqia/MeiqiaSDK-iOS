@@ -180,19 +180,6 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
  */
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 
-/**
- * 设置收到消息的声音；
- * @param soundFileName 声音文件；如果要自定义声音，请将声音文件放在 MQChatViewAsset.bundle 中
- * @warning 若文件名设置为空，则代表不播放声音
- */
-@property (nonatomic, copy  ) NSString *incomingMsgSoundFileName;
-
-/**
- * 设置发送的声音；
- * @param soundFileName 声音文件；如果要自定义声音，请将声音文件放在 MQChatViewAsset.bundle 中
- * @warning 若文件名设置为空，则代表不播放声音
- */
-@property (nonatomic, copy  ) NSString *outgoingMsgSoundFileName;
 
 @property (nonatomic, assign, readonly) BOOL didSetStatusBarStyle;
 

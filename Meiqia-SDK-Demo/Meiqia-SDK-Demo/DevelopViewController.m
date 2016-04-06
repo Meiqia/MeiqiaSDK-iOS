@@ -601,10 +601,10 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     UIImage *outgoingBubbleImage = [UIImage imageNamed:@"MQBubbleOutgoingStyleTwo"];
     CGPoint stretchPoint = CGPointMake(incomingBubbleImage.size.width / 2.0f - 4.0, incomingBubbleImage.size.height / 2.0f);
     [chatViewManager enableSendVoiceMessage:false];
+    [chatViewManager setIncomingMessageSoundFileName:@""];
     
     MQChatViewStyle *chatViewStyle = [chatViewManager chatViewStyle];
     
-    [chatViewStyle setIncomingMsgSoundFileName:@""];
     [chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewStyle setIncomingBubbleImage:incomingBubbleImage];
     [chatViewStyle setOutgoingBubbleImage:outgoingBubbleImage];
@@ -618,13 +618,13 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
  */
 - (void)chatViewStyle3 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager setIncomingMessageSoundFileName:@"MQNewMessageRingStyleTwo.wav"];
     [chatViewManager setMessageLinkRegex:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"];
     [chatViewManager enableChatWelcome:true];
     [chatViewManager setChatWelcomeText:@"你好，请问有什么可以帮助到您？"];
     [chatViewManager enableMessageSound:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
     
-    [chatViewManager.chatViewStyle setIncomingMsgSoundFileName:@"MQNewMessageRingStyleTwo.wav"];
 }
 
 /**

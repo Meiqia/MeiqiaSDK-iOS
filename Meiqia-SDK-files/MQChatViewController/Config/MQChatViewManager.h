@@ -112,14 +112,14 @@
  * @warning 若文件名设置为空，则代表不播放声音
  */
 
-- (void)setIncomingMessageSoundFileName:(NSString *)soundFileName style_deprecated;
+- (void)setIncomingMessageSoundFileName:(NSString *)soundFileName;
 
 /**
  * 设置发送的声音；
  * @param soundFileName 声音文件；如果要自定义声音，请将声音文件放在 MQChatViewAsset.bundle 中
  * @warning 若文件名设置为空，则代表不播放声音
  */
-- (void)setOutgoingMessageSoundFileName:(NSString *)soundFileName style_deprecated;
+- (void)setOutgoingMessageSoundFileName:(NSString *)soundFileName;
 
 /**
  * 是否支持发送语音消息；默认支持
