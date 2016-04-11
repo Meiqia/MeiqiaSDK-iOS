@@ -15,6 +15,7 @@
 /**
  *  收到该通知，即表示美洽的通信接口出错，通信连接断开
  */
+
 #define MQ_COMMUNICATION_FAILED_NOTIFICATION @"MQ_COMMUNICATION_FAILED_NOTIFICATION"
 
 /**

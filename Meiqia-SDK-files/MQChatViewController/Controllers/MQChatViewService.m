@@ -23,6 +23,7 @@
 #import "MQEventCellModel.h"
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
+#import "MQFileDownloadCellModel.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -535,6 +536,8 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
             cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:(MQImageMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQVoiceMessage class]]) {
             cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:(MQVoiceMessage *)message cellWidth:self.chatViewWidth delegate:self];
+        } else if ([message isKindOfClass:[MQFileDownloadMessage class]]) {
+            cellModel = [[MQFileDownloadCellModel alloc] initCellModelWithMessage:(MQFileDownloadMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQEventMessage class]]) {
             MQEventMessage *eventMessage = (MQEventMessage *)message;
             if (eventMessage.eventType == MQChatEventTypeInviteEvaluation) {

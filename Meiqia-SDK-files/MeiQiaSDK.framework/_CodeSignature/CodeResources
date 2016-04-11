@@ -6,7 +6,11 @@
 	<dict>
 		<key>Info.plist</key>
 		<data>
-		uMjmGYnjlguuZHpziK/2st9Bx6E=
+		00oZGK82zXT4gNqUs69qyjtsFLo=
+		</data>
+		<key>JSONHelper.h</key>
+		<data>
+		VD2DS4zL5PIfgpvLYzQW1q0rMkI=
 		</data>
 		<key>MQAgent.h</key>
 		<data>
@@ -14,35 +18,89 @@
 		</data>
 		<key>MQDefinition.h</key>
 		<data>
-		N4wvu+ksZRdig16cCz34XZutlTs=
+		EWlz3T62FqJlgdMc6acWF3YuYT0=
 		</data>
 		<key>MQManager.h</key>
 		<data>
-		D0IKWHlTuC1H6qSPkRXYIXUx5OA=
+		bl9tHqGjI8JIqiD75+kZ1tx7sLE=
 		</data>
 		<key>MQMessage.h</key>
 		<data>
-		vr7WGmQ7VWya3zqQ6mH1XJgB3ts=
+		Yfwf6bFx/FoSp/W/CKBLV/++tYc=
+		</data>
+		<key>MeiqiaSDK.h</key>
+		<data>
+		OzcG+C6Xkvwbju3HBVarQafWVkE=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>JSONHelper.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			VD2DS4zL5PIfgpvLYzQW1q0rMkI=
+			</data>
+			<key>hash2</key>
+			<data>
+			QsuALAnEwhrbgmdLbxcr1qWD3wbHYweoKjxoOkWUMCM=
+			</data>
+		</dict>
 		<key>MQAgent.h</key>
-		<data>
-		gsY8y5rLzBaNIHhc55UQZmVcR0U=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			gsY8y5rLzBaNIHhc55UQZmVcR0U=
+			</data>
+			<key>hash2</key>
+			<data>
+			czfScZOFe5Hf2EsHrjF4+wKc4vXs299M3TWlDTyrIZA=
+			</data>
+		</dict>
 		<key>MQDefinition.h</key>
-		<data>
-		N4wvu+ksZRdig16cCz34XZutlTs=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			EWlz3T62FqJlgdMc6acWF3YuYT0=
+			</data>
+			<key>hash2</key>
+			<data>
+			i7P/DOsCSYALSeaV9FbxkMf0c5oMLag0RwCzsWvTZmE=
+			</data>
+		</dict>
 		<key>MQManager.h</key>
-		<data>
-		D0IKWHlTuC1H6qSPkRXYIXUx5OA=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			bl9tHqGjI8JIqiD75+kZ1tx7sLE=
+			</data>
+			<key>hash2</key>
+			<data>
+			ya9XTh6R1G9yhyq4qazRW0BahOqxXJhuSlbfufXnmq8=
+			</data>
+		</dict>
 		<key>MQMessage.h</key>
-		<data>
-		vr7WGmQ7VWya3zqQ6mH1XJgB3ts=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			Yfwf6bFx/FoSp/W/CKBLV/++tYc=
+			</data>
+			<key>hash2</key>
+			<data>
+			979Kq/L2zY09EreOeTANjRnV8XKdYoS9XWdrItwP8HA=
+			</data>
+		</dict>
+		<key>MeiqiaSDK.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			OzcG+C6Xkvwbju3HBVarQafWVkE=
+			</data>
+			<key>hash2</key>
+			<data>
+			N2ljys8aofssbRw5FSiGzKQzFyUooPlLhTeN+Qm4GEw=
+			</data>
+		</dict>
 	</dict>
 	<key>rules</key>
 	<dict>

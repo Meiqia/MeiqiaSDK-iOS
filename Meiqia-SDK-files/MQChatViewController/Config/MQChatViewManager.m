@@ -10,6 +10,7 @@
 #import "MQImageUtil.h"
 #import "MQServiceToViewInterface.h"
 #import "MQTransitioningAnimation.h"
+#import "MQAssetUtil.h"
 
 @implementation MQChatViewManager  {
     MQChatViewController *chatViewController;
@@ -52,19 +53,10 @@
     chatViewConfig.presentingAnimation = animation;
     
     UIViewController *viewController = nil;
-    if (animation != TransiteAnimationTypeDefault) {
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
-            viewController = [self createNavigationControllerWithDummyRootViewControllerWithRealRootViewController:chatViewController presentedViewController:rootViewController];
-            [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
-            [viewController setTransitioningDelegate:[MQTransitioningAnimation sharedInstance].transitioningDelegateImpl];
-            [viewController setModalPresentationStyle:UIModalPresentationCustom];
-            [rootViewController presentViewController:viewController animated:YES completion:nil];
-        } else {
-            viewController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
-            [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
-            [rootViewController.view.window.layer addAnimation:[[MQTransitioningAnimation sharedInstance] createPresentingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
-            [rootViewController presentViewController:viewController animated:NO completion:nil];
-        }
+    if (animation == TransiteAnimationTypePush) {
+        viewController = [self createNavigationControllerWithWithAnimationSupport:chatViewController presentedViewController:rootViewController];
+        BOOL shouldUseUIKitAnimation = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7;
+        [rootViewController presentViewController:viewController animated:shouldUseUIKitAnimation completion:nil];
     } else {
         viewController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
         [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
@@ -73,16 +65,16 @@
 }
 
 ///模仿系统的返回按钮，创造一个viewController
-- (UINavigationController *)createNavigationControllerWithDummyRootViewControllerWithRealRootViewController:(UIViewController *)rootViewController presentedViewController:(UIViewController *)presentedViewController{
-    UIViewController *dummyViewController = [UIViewController new];
-//    NSString *title = [[[presentedViewController.navigationController navigationBar]items] lastObject].title;
-    dummyViewController.title = @" ";
-
-    UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:dummyViewController];
-    //关闭这个navigation controller的返回交互手势
-    if ([navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
-        navigationController.interactivePopGestureRecognizer.enabled = NO;
-    }    [navigationController pushViewController:rootViewController animated:NO];
+- (UINavigationController *)createNavigationControllerWithWithAnimationSupport:(MQChatViewController *)rootViewController presentedViewController:(UIViewController *)presentedViewController{
+    UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+        [self updateNavAttributesWithViewController:rootViewController navigationController:(UINavigationController *)navigationController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
+        [navigationController setTransitioningDelegate:[MQTransitioningAnimation sharedInstance].transitioningDelegateImpl];
+        [navigationController setModalPresentationStyle:UIModalPresentationCustom];
+    } else {
+        [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)navigationController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
+        [rootViewController.view.window.layer addAnimation:[[MQTransitioningAnimation sharedInstance] createPresentingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
+    }
     return navigationController;
 }
 
@@ -118,6 +110,8 @@
     //导航栏左键
     if ([MQChatViewConfig sharedConfig].presentingAnimation == TransiteAnimationTypeDefault) {
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
+    } else {
+        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
     }
     
     //导航栏右键
@@ -242,6 +236,10 @@
         return;
     }
     chatViewConfig.navBarTintColor = [tintColor copy];
+}
+
+- (void)setNavigationBarTitleColor:(UIColor *)tintColor {
+    chatViewConfig.navTitleColor = tintColor;
 }
 
 - (void)setNavigationBarColor:(UIColor *)barColor {

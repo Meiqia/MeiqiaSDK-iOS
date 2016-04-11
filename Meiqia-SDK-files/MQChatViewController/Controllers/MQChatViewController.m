@@ -130,7 +130,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)navigationShouldPopOnBackButton {
+- (void)dismissChatViewController {
     if ([MQChatViewConfig sharedConfig].presentingAnimation == TransiteAnimationTypePush) {
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -138,14 +138,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
             [self.view.window.layer addAnimation:[[MQTransitioningAnimation sharedInstance] createDismissingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
             [self dismissViewControllerAnimated:NO completion:nil];
         }
-        return NO;
     } else {
-        return YES;
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-}
-
-- (void)dismissChatViewController {
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)addObserver {

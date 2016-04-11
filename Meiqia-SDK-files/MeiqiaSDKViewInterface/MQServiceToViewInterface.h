@@ -17,6 +17,7 @@
 #import "MQEventMessage.h"
 #import "MQChatViewConfig.h"
 #import <MeiQiaSDK/MQDefinition.h>
+#import "MQFileDownloadMessage.h"
 
 /**
  *  该协议是UI层获取数据的委托方法

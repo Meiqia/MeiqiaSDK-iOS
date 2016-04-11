@@ -218,6 +218,14 @@
                           progress:(void (^)(float progress))progressBlock
                         completion:(void (^)(NSData *mediaData, NSError *error))completion;
 
+
+/**
+ *  取消下载
+ *
+ *  @param urlString     url
+ */
++ (void)cancelDownloadForUrl:(NSString *)urlString;
+
 /**
  *  清除所有美洽的多媒体缓存
  *
@@ -340,6 +348,14 @@
  * 重置用户已读消息的时间点，该接口目前在用户离开聊天窗口的时候调用，如果用户离开聊天界面，在这段时间内收取到的消息都被作为未读消息
  */
 + (void)updateReadMessageToken;
+
+
+/**
+ * 请求文件的下载地址
+ */
++ (void)clientDownloadFileWithMessageId:(NSString *)messageId
+                                      conversatioId:(NSString *)conversationId
+                                      andCompletion:(void(^)(NSString *url, NSError *error))action;
 
 
 @end

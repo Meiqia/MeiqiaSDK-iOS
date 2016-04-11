@@ -243,6 +243,12 @@
 - (void)setNavigationBarTintColor:(UIColor *)tintColor style_deprecated;
 
 /**
+ * 设置导航栏标题颜色；
+ * @param tintColor 导航栏标题颜色
+ */
+- (void)setNavigationBarTitleColor:(UIColor *)tintColor style_deprecated;
+
+/**
  * 设置导航栏的背景色；
  * @param barColor 导航栏背景颜色
  */
