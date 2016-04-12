@@ -22,8 +22,8 @@
 #import "MQAssetUtil.h"
 #import "MQStringSizeUtil.h"
 #import "MQTransitioningAnimation.h"
-#import "UIViewController+BackButtonHandler.h"
 #import <MeiQiaSDK/MQManager.h>
+#import "UIView+Layout.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -41,11 +41,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
     MQEvaluationView *evaluationView;
-    CGSize viewSize;
     BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
     UIStatusBarStyle previousStatusBarStyle;//当前statusBar样式
     BOOL previousStatusBarHidden;   //调出聊天视图界面前是否隐藏 statusBar
-//    BOOL previousStatusBarTranslucent; //调出聊天视图前的导航栏是否是半透明
 }
 
 - (void)dealloc {
@@ -68,14 +66,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.automaticallyAdjustsScrollViewInsets = true;
     previousStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
     previousStatusBarHidden = [UIApplication sharedApplication].statusBarHidden;
-//    previousStatusBarTranslucent = self.navigationController.navigationBar.translucent;
     [[UIApplication sharedApplication] setStatusBarHidden:false];
-    self.navigationController.navigationBar.translucent = true;
     self.view.backgroundColor = [MQChatViewConfig sharedConfig].chatViewStyle.backgroundColor ?: [UIColor colorWithWhite:0.95 alpha:1];
-    viewSize = [UIScreen mainScreen].bounds.size;
     [self setNavBar];
     [self initChatTableView];
     [self initchatViewService];
@@ -96,9 +90,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
 //    //当横屏时，恢复原来的 statusBar 是否 hidden
-    if (viewSize.height < viewSize.width) {
-        [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
-    }
+//    if (viewSize.height < viewSize.width) {
+//        [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
+//    }
 //    //恢复原来的导航栏透明模式
 //    self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
 //    //恢复原来的导航栏时间条
@@ -110,7 +104,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     //更新view frame
-    viewSize = self.view.frame.size;
     [self updateContentViewsFrame];
 }
 
@@ -187,6 +180,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)initChatTableView {
     [self setChatTableViewFrame];
     self.chatTableView = [[MQChatTableView alloc] initWithFrame:chatViewConfig.chatViewFrame style:UITableViewStylePlain];
+    self.chatTableView.contentInset = UIEdgeInsetsMake(0, 0, kMQChatViewInputBarHeight, 0);
     self.chatTableView.chatTableViewDelegate = self;
     self.chatTableView.delegate = self;
     [self.view addSubview:self.chatTableView];
@@ -456,7 +450,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0,
                                                                     0,
                                                                     self.chatTableView.frame.size.width,
-                                                                    viewSize.height - chatInputBar.frame.size.height)
+                                                                    /*viewSize.height*/[UIScreen mainScreen].bounds.size.height - chatInputBar.frame.size.height)
                                        maxRecordDuration:[MQChatViewConfig sharedConfig].maxVoiceDuration];
         recordView.recordViewDelegate = self;
         [self.view addSubview:recordView];
@@ -555,15 +549,16 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma ios7以下系统的横屏的事件
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    NSLog(@"willAnimateRotationToInterfaceOrientation");
-    viewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
-}
+//- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+//{
+//    NSLog(@"willAnimateRotationToInterfaceOrientation");
+//    viewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
+//}
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [self updateContentViewsFrame];
+    [self.view endEditing:YES];
 }
 
 #pragma ios8以上系统的横屏的事件
@@ -575,21 +570,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
      {
          [self updateContentViewsFrame];
      }];
-    viewSize = size;
+    [self.view endEditing:YES];
 }
 
 //更新viewConroller中所有的view的frame
 - (void)updateContentViewsFrame {
-    //更新view
-    CGFloat delta = 0;
-    //    if (!self.navigationController.navigationBar.translucent) {
-    //        //如果导航栏不透明，则view的起始位置应该是导航栏下方
-    //        delta = self.navigationController.navigationBar.frame.size.height;
-    //        if (![UIApplication sharedApplication].statusBarHidden) {
-    //            delta += 20;
-    //        }
-    //    }
-    self.view.frame = CGRectMake([MQChatViewConfig sharedConfig].chatViewControllerPoint.x, [MQChatViewConfig sharedConfig].chatViewControllerPoint.y + delta, viewSize.width, viewSize.height);
     //更新tableView的frame
     [self setChatTableViewFrame];
     //更新cellModel的frame
@@ -597,24 +582,20 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [chatViewService updateCellModelsFrame];
     [self.chatTableView reloadData];
     //更新inputBar的frame
-    CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
+    CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height - kMQChatViewInputBarHeight, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
     [chatInputBar updateFrame:inputBarFrame];
     //更新recordView的frame
     CGRect recordViewFrame = CGRectMake(0,
                                         0,
                                         self.chatTableView.frame.size.width,
-                                        viewSize.height - chatInputBar.frame.size.height);
+                                        self.view.viewHeight);
     [recordView updateFrame:recordViewFrame];
 }
 
 - (void)setChatTableViewFrame {
     //更新tableView的frame
-//    if (!chatViewConfig.isCustomizedChatViewFrame) {
-        chatViewConfig.chatViewFrame = CGRectMake(0, 0, viewSize.width, viewSize.height - kMQChatViewInputBarHeight);
+    chatViewConfig.chatViewFrame = self.view.bounds;
         [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];
-//    } else {
-//        //开发者如果自定义了TableView的frame，在这里重新处理横屏后的tableView的frame
-//    }
 }
 
 #ifdef INCLUDE_MEIQIA_SDK

@@ -41,6 +41,10 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     [self initAppIcon];
     [self initFunctionButtons];
     
+//    self.navigationController.navigationBar.translucent = NO;
+    
+    [[UINavigationBar appearance] setTranslucent:NO];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateIndicator) name:UIApplicationDidBecomeActiveNotification object:nil];
     
 }
@@ -128,8 +132,6 @@ static int indicator_tag = 10;
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
-//    [chatViewManager presentMQChatViewControllerInViewController:self];
-//    [self.navigationController pushViewController:[chatViewManager pushMQChatViewControllerInViewController:self] animated:YES];
     [self removeIndecatorForView:basicFunctionBtn];
 }
 

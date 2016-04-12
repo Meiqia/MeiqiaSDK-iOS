@@ -64,7 +64,6 @@
     }
 }
 
-///模仿系统的返回按钮，创造一个viewController
 - (UINavigationController *)createNavigationControllerWithWithAnimationSupport:(MQChatViewController *)rootViewController presentedViewController:(UIViewController *)presentedViewController{
     UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
