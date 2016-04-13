@@ -345,11 +345,11 @@
 {
     self.serviceToViewDelegate = receiveMessageDelegate;
     [MQManager setClientOnlineWithCustomizedId:customizedId success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
+        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
         if (result == MQClientOnlineResultSuccess) {
-            NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
             success(true, agent.nickname, toMessages);
         } else if(result == MQClientOnlineResultNotScheduledAgent) {
-            success(false, @"", nil);
+            success(false, @"", toMessages);
         }
     } failure:^(NSError *error) {
         success(false, @"", nil);
