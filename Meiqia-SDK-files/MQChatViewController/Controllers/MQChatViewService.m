@@ -648,6 +648,12 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tips cellWidth:self.chatViewWidth enableLinesDisplay:enableLinesDisplay];
     [self.cellModels addObject:cellModel];
     [self reloadChatTableView];
+    
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
+            [self.delegate scrollTableViewToBottom];
+        }
+    }
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
