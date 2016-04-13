@@ -80,6 +80,8 @@ framework中的文件 | 说明
 在 Podfile 中加入：
 
 ```
+use_frameworks!
+
 pod 'Meiqia'
 ```
 
