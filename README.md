@@ -487,6 +487,14 @@ NSLog(@"监听到了收到客服消息的广播");
 MQAgent *agent = [MQManager getCurrentAgent];
 ```
 
+### 获取未读消息数
+获取未读消息数分为两个场景
+
+- 应用中
+  通过监听通知 `MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION` 来维护未读消息的数量。
+- 应用外
+  使用接口 `[MQManager getUnreadMessagesWithCompletion:completion]` 来获取离开聊天界面之后，包括关闭应用之后收到的消息。
+
 
 ### 添加自定义信息
 
