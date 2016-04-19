@@ -12,6 +12,8 @@
 #import "MQChatFileUtil.h"
 #import "MQFileDownloadCell.h"
 #import "MQServiceToViewInterface.h"
+#import "MQBundleUtil.h"
+#import "MQToast.h"
 
 @interface MQFileDownloadCellModel()<UIDocumentInteractionControllerDelegate>
 
@@ -30,11 +32,14 @@
             self.fileDownloadStatus = FileDownloadStatusDownloadComplete;
         }
         self.fileName = message.fileName;
-        self.fileSize = [NSString stringWithFormat:@"%.1lu MB", message.fileSize / 1024 / 1024];
-        if (self.fileSize.floatValue == 0) {
-            self.fileSize = [NSString stringWithFormat:@"%.1lu KB", message.fileSize / 1024];
+        self.fileSize = [self fileSizeStringWithFileSize:(CGFloat)message.fileSize];
+        if (message.expireDate.timeIntervalSinceReferenceDate > [NSDate new].timeIntervalSinceReferenceDate) {
+            self.timeBeforeExpire = [NSString stringWithFormat:@"%.1f",(message.expireDate.timeIntervalSinceReferenceDate - [NSDate new].timeIntervalSinceReferenceDate) / 3600];
+            self.isExpired = NO;
+        } else {
+            self.timeBeforeExpire = @"";
+            self.isExpired = YES;
         }
-        self.timeBeforeExpire = [NSString stringWithFormat:@"%.1f 小时后",(message.expireDate.timeIntervalSinceReferenceDate - [NSDate new].timeIntervalSinceReferenceDate) / 3600];
         
         __weak typeof(self)wself = self;
         [MQServiceToViewInterface downloadMediaWithUrlString:message.userAvatarPath progress:nil completion:^(NSData *mediaData, NSError *error) {
@@ -50,8 +55,21 @@
     return self;
 }
 
+- (NSString *)fileSizeStringWithFileSize:(CGFloat)fileSize {
+    NSString *fileSizeString = [NSString stringWithFormat:@"%.1f MB", fileSize / 1024 / 1024];
+    
+    if (fileSizeString.floatValue < 1) {
+        fileSizeString = [NSString stringWithFormat:@"%.1f KB", fileSize / 1024];
+    }
+    
+    if (fileSizeString.floatValue < 1) {
+        fileSizeString = [NSString stringWithFormat:@"%.0f B", fileSize];
+    }
+    
+    return fileSizeString;
+}
+
 - (void)requestForFileURLComplete:(void(^)(NSString *url))action {
-    NSLog(@"requesting file url..");
     BOOL isURLReady = NO;
     if ([self.message.filePath length] > 0) {
         isURLReady = YES;
@@ -69,7 +87,15 @@
 }
 
 - (void)startDownloadWitchProcess:(void(^)(CGFloat process))block {
-    NSLog(@"start download file..");
+    
+    if (!block) {
+        return;
+    }
+    
+    if (self.isExpired) {
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_download_file_is_expired"] duration:2 window:[UIApplication sharedApplication].keyWindow];
+        return;
+    }
     
     self.fileDownloadStatus = FileDownloadStatusDownloading;
     if (self.needsToUpdateUI) {
@@ -90,7 +116,7 @@
                [self saveFile:mediaData];
                block(100);
            } else {
-               NSLog(@"download fail:%@",error);
+               [MQToast showToast:[NSString stringWithFormat:@"%@ %@",[MQBundleUtil localizedStringForKey:@"file_download_failed"],error.localizedDescription] duration:2 window:[UIApplication sharedApplication].keyWindow];
                self.fileDownloadStatus = FileDownloadStatusNotDownloaded;
                block(-1);
            }
@@ -99,7 +125,7 @@
 }
 
 - (void)cancelDownload {
-    NSLog(@"cancel download file..");
+    [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_download_canceld"] duration:2 window:[UIApplication sharedApplication].keyWindow];
     [MQManager cancelDownloadForUrl:self.downloadingURL];
     self.downloadingURL = nil;
     self.fileDownloadStatus = FileDownloadStatusNotDownloaded;

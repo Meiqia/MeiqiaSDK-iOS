@@ -42,7 +42,8 @@ typedef enum : NSInteger {
     MQErrorCodeCurrentClientNotFound        = -2003,    //当前没有顾客，请新建一个顾客后再上线
     MQErrorCodeClientNotExisted             = -2004,    //美洽服务端没有找到对应的client
     MQErrorCodeConversationNotFound         = -2005,    //美洽服务端没有找到该对话
-    MQErrorCodePlistConfigurationError      = -2006     //开发者App的info.plist没有增加NSExceptionDomains，请参考https://github.com/Meiqia/Meiqia-SDK-iOS-Demo#info.plist设置
+    MQErrorCodePlistConfigurationError      = -2006,    //开发者App的info.plist没有增加NSExceptionDomains，请参考https://github.com/Meiqia/Meiqia-SDK-iOS-Demo#info.plist设置
+    MQErrorCodeBlacklisted                  = -2007,    //被加入黑名单，发消息和分配对话都会失败
 } MQErrorCode;
 
 /**
@@ -51,7 +52,8 @@ typedef enum : NSInteger {
 typedef enum : NSUInteger {
     MQClientOnlineResultSuccess = 0,        //上线成功
     MQClientOnlineResultParameterError,     //上线参数错误
-    MQClientOnlineResultNotScheduledAgent   //没有可接待的客服
+    MQClientOnlineResultNotScheduledAgent,   //没有可接待的客服
+    MQClientOnlineResultBlacklisted,
 } MQClientOnlineResult;
 
 /**

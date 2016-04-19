@@ -35,7 +35,7 @@
     return self;
 }
 
-- (CATransition *)createPresentingTransiteAnimation:(TransiteAnimationType)animation {
++ (CATransition *)createPresentingTransiteAnimation:(TransiteAnimationType)animation {
     CATransition *transition = [CATransition animation];
     transition.duration = 0.5;
     [transition setFillMode:kCAFillModeBoth];
@@ -52,8 +52,7 @@
     }
     return transition;
 }
-
-- (CATransition *)createDismissingTransiteAnimation:(TransiteAnimationType)animation {
++ (CATransition *)createDismissingTransiteAnimation:(TransiteAnimationType)animation {
     CATransition *transition = [CATransition animation];
     transition.duration = 0.5;
     [transition setFillMode:kCAFillModeBoth];

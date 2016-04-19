@@ -7,6 +7,7 @@
 //
 
 #import "MQFileDownloadMessage.h"
+#import <MeiqiaSDK/MeiqiaSDK.h>
 
 @implementation MQFileDownloadMessage
 
@@ -20,9 +21,7 @@
         self.conversationId = [dictionary objectForKey:@"conversation_id"];
         self.filePath = [dictionary objectForKey:@"media_url"];
         
-        NSDateFormatter *dateFormatter = [NSDateFormatter new];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
-        self.expireDate = [dateFormatter dateFromString:[dictionary objectForKey:@"expire_at"]];
+        self.expireDate = [MQDateUtil convertToUtcDateFromUTCDateString:[dictionary objectForKey:@"expire_at"]];
     }
     return self;
 }

@@ -13,6 +13,7 @@
 #import "MQImageUtil.h"
 #import "MQChatViewConfig.h"
 #import "MQAssetUtil.h"
+#import "MQBundleUtil.h"
 
 @interface MQFileDownloadCell()
 
@@ -92,18 +93,22 @@
     switch (status) {
         case FileDownloadStatusNotDownloaded: {
             [self.actionButton setImage:[MQAssetUtil fileDonwload] forState:UIControlStateNormal];
-            [self.fileDetailLabel setText:[NSString stringWithFormat:@"%@ ∙ %@过期",self.viewModel.fileSize, self.viewModel.timeBeforeExpire]];
+            if (self.viewModel.isExpired) {
+                [self.fileDetailLabel setText:[NSString stringWithFormat:@"%@ ∙ %@",self.viewModel.fileSize, [MQBundleUtil localizedStringForKey:@"file_download_file_is_expired"]]];
+            } else {
+                [self.fileDetailLabel setText:[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"file_download_ %@ ∙ %@overdue"], self.viewModel.fileSize, self.viewModel.timeBeforeExpire]];
+            }
         }
         break;
         case FileDownloadStatusDownloading: {
             [self.actionButton setImage:[MQAssetUtil fileCancel] forState:UIControlStateNormal];
             self.downloadProgressBar.progress = 0;//表示开始下载
-            [self.fileDetailLabel setText:@"下载中..."];
+            [self.fileDetailLabel setText:[MQBundleUtil localizedStringForKey:@"file_download_downloading"]];
         }
         break;
         case FileDownloadStatusDownloadComplete: {
             [self.actionButton setImage:nil forState:UIControlStateNormal];
-            [self.fileDetailLabel setText:@"下载完成"];
+            [self.fileDetailLabel setText:[MQBundleUtil localizedStringForKey:@"file_download_complete"]];
             rightEdgeSpace = kMQCellBubbleToTextHorizontalLargerSpacing;
         }
         break;

@@ -29,6 +29,7 @@ typedef NS_ENUM(NSUInteger, FileDownloadStatus) {
 @property (nonatomic, copy) void(^needsToUpdateUI)(void);
 @property (nonatomic, copy) void(^avatarLoaded)(UIImage *);
 @property (nonatomic, copy) CGFloat(^cellHeight)(void);
+@property (nonatomic, assign) BOOL isExpired;
 
 - (id)initCellModelWithMessage:(MQFileDownloadMessage *)message cellWidth:(CGFloat)cellWidth delegate:(id<MQCellModelDelegate>)delegator;
 

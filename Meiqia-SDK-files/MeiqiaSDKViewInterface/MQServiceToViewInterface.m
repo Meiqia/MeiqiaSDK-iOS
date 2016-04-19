@@ -8,6 +8,8 @@
 
 #import "MQServiceToViewInterface.h"
 #import <MeiQiaSDK/MeiQiaSDK.h>
+#import "MQBundleUtil.h"
+#import "MQChatFileUtil.h"
 
 #pragma 该文件的作用是：开源聊天界面调用美洽 SDK 接口的中间层，目的是剥离开源界面中的美洽业务逻辑。这样就能让该聊天界面用于非美洽项目中，开发者只需要实现 `MQServiceToViewInterface` 中的方法，即可将自己项目的业务逻辑和该聊天界面对接。
 
@@ -374,7 +376,7 @@
             }
             if (result == MQClientOnlineResultSuccess) {
                 success(true, agent.nickname, toMessages);
-            } else if(result == MQClientOnlineResultNotScheduledAgent) {
+            } else if((result == MQClientOnlineResultNotScheduledAgent) || (result == MQClientOnlineResultBlacklisted)) {
                 success(false, @"", toMessages);
             }
         } failure:^(NSError *error) {
@@ -386,7 +388,7 @@
         if (result == MQClientOnlineResultSuccess) {
             NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
             success(true, agent.nickname, toMessages);
-        } else if(result == MQClientOnlineResultNotScheduledAgent) {
+        } else if((result == MQClientOnlineResultNotScheduledAgent) || (result == MQClientOnlineResultBlacklisted))  {
             success(false, @"", nil);
         }
     } failure:^(NSError *error) {
@@ -464,13 +466,30 @@
     return [MQManager updateReadMessageToken];
 }
 
++ (BOOL)isBlacklisted {
+    return [MQManager isBlacklisted];
+}
+
++ (void)clearReceivedFiles {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL isDir = YES;
+    if ([fileManager fileExistsAtPath:DIR_RECEIVED_FILE isDirectory:&isDir]) {
+        NSError *error;
+        [fileManager removeItemAtPath:DIR_RECEIVED_FILE error:&error];
+        if (error) {
+            NSLog(@"Fail to clear received files: %@",error.localizedDescription);
+        }
+    }
+}
+
 #pragma MQManagerDelegate
 //webSocket收到消息的代理方法
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)messages {
     if (!self.serviceToViewDelegate) {
         return;
     }
-    if (messages.count == 1 && [messages firstObject].action == MQMessageActionRedirect) {
+    
+    if ([self handleRedirectMessage:messages]) {
         MQMessage *message = [messages firstObject];
         //客服被转接，给界面生成tipMessage
         NSString *agentName = message.agent.nickname ? message.agent.nickname : @"其他客服";
@@ -478,8 +497,16 @@
         if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
             [self.serviceToViewDelegate didReceiveTipsContent:tipsContent];
         }
-        if ([self.serviceToViewDelegate respondsToSelector:@selector(didRedirectWithAgentName:)]) {
-            [self.serviceToViewDelegate didRedirectWithAgentName:message.agent.nickname];
+    } else if ([self handleBlacklistMessage:messages]) {
+        //给界面生成tipMessage
+        NSString *action = messages.firstObject.accessoryData[@"action"];
+        NSString *tipsContent = [MQBundleUtil localizedStringForKey:@"message_tips_send_message_fail_listed_in_black_list"];
+        if ([action isEqualToString:@"online"]) {
+            tipsContent = [MQBundleUtil localizedStringForKey:@"message_tips_online_failed_listed_in_black_list"];
+        }
+        
+        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
+            [self.serviceToViewDelegate didReceiveTipsContent:tipsContent showLines:NO];
         }
     } else {
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
@@ -490,6 +517,21 @@
     
 }
 
+- (BOOL)handleBlacklistMessage:(NSArray<MQMessage *> *)messages {
+    if (messages.count == 1 && [messages firstObject].action == MQMessageActionListedInBlackList) {
+        return YES;
+    }
+    return NO;
+}
 
+- (BOOL)handleRedirectMessage:(NSArray<MQMessage *> *)messages {
+    if (messages.count == 1 && [messages firstObject].action == MQMessageActionRedirect) {
+        if ([self.serviceToViewDelegate respondsToSelector:@selector(didRedirectWithAgentName:)]) {
+            [self.serviceToViewDelegate didRedirectWithAgentName:messages.firstObject.agent.nickname];
+        }
+        return YES;
+    }
+    return NO;
+}
 
 @end

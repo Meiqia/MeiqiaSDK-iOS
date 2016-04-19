@@ -72,7 +72,7 @@
         [navigationController setModalPresentationStyle:UIModalPresentationCustom];
     } else {
         [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)navigationController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
-        [rootViewController.view.window.layer addAnimation:[[MQTransitioningAnimation sharedInstance] createPresentingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
+        [rootViewController.view.window.layer addAnimation:[MQTransitioningAnimation createPresentingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
     }
     return navigationController;
 }

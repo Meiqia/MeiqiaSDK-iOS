@@ -17,8 +17,8 @@
 
 + (instancetype)sharedInstance;
 
-- (CATransition *)createPresentingTransiteAnimation:(TransiteAnimationType)animation;
++ (CATransition *)createPresentingTransiteAnimation:(TransiteAnimationType)animation;
 
-- (CATransition *)createDismissingTransiteAnimation:(TransiteAnimationType)animation;
++ (CATransition *)createDismissingTransiteAnimation:(TransiteAnimationType)animation;
 
 @end

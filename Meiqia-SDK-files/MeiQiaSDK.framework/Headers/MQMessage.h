@@ -20,6 +20,7 @@ typedef enum : NSUInteger {
     MQMessageActionClientEvaluation             = 7,   //顾客评价的结果 (client_evaluation)
     MQMessageActionTicketReply                  = 8,   //客服留言回复的消息
     MQMessageActionAgentUpdate                  = 9,    //客服的状态发生了改变
+    MQMessageActionListedInBlackList            = 10,  //被客户加入到黑名单
 } MQMessageAction;
 
 typedef enum : NSUInteger {
@@ -99,6 +100,8 @@ typedef enum : NSUInteger {
 /** 不同的 message 类型会携带不同数据，也可能为空, 以JSON格式保存到数据库 */
 @property (nonatomic, copy) id accessoryData;
 
-- (id)initMessageWithData:(NSDictionary *)data;
++ (instancetype)createBlacklistMessage;
+
+//- (id)initMessageWithData:(NSDictionary *)data;
 
 @end

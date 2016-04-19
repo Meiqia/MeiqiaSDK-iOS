@@ -349,6 +349,11 @@
  */
 + (void)updateReadMessageToken;
 
+/**
+ * 当前用户是否被加入黑名单
+ */
++ (BOOL)isBlacklisted;
+
 
 /**
  * 请求文件的下载地址

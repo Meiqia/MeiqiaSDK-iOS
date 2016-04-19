@@ -10,7 +10,7 @@
 #import "MQChatViewManager.h"
 #import "MQChatDeviceUtil.h"
 #import "DevelopViewController.h"
-#import <MeiQiaSDK/MQManager.h>
+//#import <MeiQiaSDK/MQManager.h>
 
 static CGFloat const kMQButtonVerticalSpacing   = 16.0;
 static CGFloat const kMQButtonHeight            = 42.0;
@@ -129,10 +129,13 @@ static int indicator_tag = 10;
 #pragma 最基本功能
 - (void)didTapBasicFunctionBtn:(UIButton *)button {
     //基本功能 - 在线客服
+    
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
+    [chatViewManager setLoginMQClientId:@""];
     [chatViewManager pushMQChatViewControllerInViewController:self];
     [self removeIndecatorForView:basicFunctionBtn];
+    
 }
 
 #pragma 开发者的高级功能，其中有调用美洽SDK的API接口
