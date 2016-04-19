@@ -136,6 +136,9 @@ static int indicator_tag = 10;
     [chatViewManager pushMQChatViewControllerInViewController:self];
     [self removeIndecatorForView:basicFunctionBtn];
     
+    [chatViewManager setRecordMode:MQRecordModeDuckOther];
+    [chatViewManager setPlayMode:MQPlayModeMixWithOther];
+    
 }
 
 #pragma 开发者的高级功能，其中有调用美洽SDK的API接口

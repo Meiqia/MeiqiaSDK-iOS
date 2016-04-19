@@ -23,6 +23,27 @@
 ///chatViewStyle 预设的聊天界面样式
 @property (nonatomic, strong) MQChatViewStyle *chatViewStyle;
 
+///如果应用中有其他地方正在播放声音，比如游戏，需要将此设置为 YES，防止其他声音在录音播放完之后无法继续播放
+@property (nonatomic, assign) BOOL keepAudioSessionActive;
+
+/**
+ typedef NS_ENUM(NSUInteger, MQRecordMode) {
+ MQRecordModePauseOther = 0, //暂停其他音频
+ MQRecordModeMixWithOther = AVAudioSessionCategoryOptionMixWithOthers, //和其他音频同时播放
+ MQRecordModeDuckOther = AVAudioSessionCategoryOptionDuckOthers //降低其他音频的声音
+ };
+*/
+@property (nonatomic, assign) MQRecordMode recordMode;
+
+/**
+ typedef NS_ENUM(NSUInteger, MQPlayMode) {
+ MQPlayModePauseOther = 0, //暂停其他音频
+ MQPlayModeMixWithOther = AVAudioSessionCategoryOptionMixWithOthers, //和其他音频同时播放
+ MQPlayModeDuckOther = AVAudioSessionCategoryOptionDuckOthers //降低其他音频的声音
+ };
+*/
+@property (nonatomic, assign) MQPlayMode playMode;
+
 /**
  * 在一个ViewController中Push出一个客服聊天界面
  * @param viewController 在这个viewController中push出客服聊天界面

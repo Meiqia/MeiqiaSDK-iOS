@@ -471,6 +471,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
                                                                     self.chatTableView.frame.size.width,
                                                                     /*viewSize.height*/[UIScreen mainScreen].bounds.size.height - chatInputBar.frame.size.height)
                                        maxRecordDuration:[MQChatViewConfig sharedConfig].maxVoiceDuration];
+        recordView.recordMode = [MQChatViewConfig sharedConfig].recordMode;
+        recordView.keepSessionActive = [MQChatViewConfig sharedConfig].keepAudioSessionActive;
         recordView.recordViewDelegate = self;
         [self.view addSubview:recordView];
     }

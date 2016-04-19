@@ -12,9 +12,19 @@
 #import "MQTransitioningAnimation.h"
 #import "MQAssetUtil.h"
 
+
 @implementation MQChatViewManager  {
     MQChatViewController *chatViewController;
     MQChatViewConfig *chatViewConfig;
+}
+
+@dynamic keepAudioSessionActive;
+@dynamic playMode;
+@dynamic recordMode;
+@dynamic chatViewStyle;
+
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+    return chatViewConfig;
 }
 
 - (instancetype)init {
@@ -151,6 +161,14 @@
 
 - (void)setViewControllerPoint:(CGPoint)viewPoint {
     chatViewConfig.chatViewControllerPoint = viewPoint;
+}
+
+- (void)setPlayMode:(MQPlayMode)playMode {
+    chatViewConfig.playMode = playMode;
+}
+
+- (MQPlayMode)playMode {
+    return chatViewConfig.playMode;
 }
 
 - (void)setMessageNumberRegex:(NSString *)numberRegex {
@@ -434,14 +452,6 @@
 - (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle {
     chatViewConfig.statusBarStyle = statusBarStyle;
     chatViewConfig.didSetStatusBarStyle = true;
-}
-
-- (void)setChatViewStyle:(MQChatViewStyle *)chatViewStyle {
-    chatViewConfig.chatViewStyle = chatViewStyle;
-}
-
-- (MQChatViewStyle *)chatViewStyle {
-    return chatViewConfig.chatViewStyle;
 }
 
 #ifdef INCLUDE_MEIQIA_SDK

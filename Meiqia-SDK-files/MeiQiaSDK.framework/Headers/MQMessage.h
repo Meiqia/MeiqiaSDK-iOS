@@ -100,7 +100,7 @@ typedef enum : NSUInteger {
 /** 不同的 message 类型会携带不同数据，也可能为空, 以JSON格式保存到数据库 */
 @property (nonatomic, copy) id accessoryData;
 
-+ (instancetype)createBlacklistMessage;
++ (instancetype)createBlacklistMessageWithAction:(NSString *)action;
 
 //- (id)initMessageWithData:(NSDictionary *)data;
 
