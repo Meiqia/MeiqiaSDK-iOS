@@ -77,14 +77,15 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     return self;
 }
 
-//观察soket的状态，如果在断开之后重新连上，这个时候需要重新执行一次上线操作，以免遗漏了信息
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)socketStatusChanged:(NSNotification *)notification {
-    static BOOL shouldHandleSocketConnectNotification = NO; //当第一次进入的时候，会受到 socket 连上的消息，但是这个时候并不应该执行重新上线的逻辑，重新上线的逻辑必须是 socket 断开之后才有必要去执行的，这个标志的作用就是在 socket 有过断开的情况才去执行。
-    if ([[notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE] isEqualToString:SOCKET_STATUS_CONNECTED]) {
-        if (shouldHandleSocketConnectNotification) {
-            [self setClientOnline];
-            shouldHandleSocketConnectNotification = NO;
-        }
+    static BOOL shouldHandleSocketConnectNotification = NO; //当第一次进入的时候，会收到 socket 连上的消息，但是这个时候并不应该执行重新上线的逻辑，重新上线的逻辑必须是 socket 断开之后才有必要去执行的，这个标志的作用就是在 socket 有过断开的情况才去执行。
+    if ([[notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE] isEqualToString:SOCKET_STATUS_CONNECTED] && shouldHandleSocketConnectNotification) {
+        [self setClientOnline];
+        shouldHandleSocketConnectNotification = NO;
     } else {
         shouldHandleSocketConnectNotification = YES;
     }
@@ -652,6 +653,12 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tips cellWidth:self.chatViewWidth enableLinesDisplay:enableLinesDisplay];
     [self.cellModels addObject:cellModel];
     [self reloadChatTableView];
+    
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
+            [self.delegate scrollTableViewToBottom];
+        }
+    }
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
