@@ -132,7 +132,6 @@ static int indicator_tag = 10;
     
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
-    [chatViewManager setLoginMQClientId:@""];
     [chatViewManager pushMQChatViewControllerInViewController:self];
     [self removeIndecatorForView:basicFunctionBtn];
     

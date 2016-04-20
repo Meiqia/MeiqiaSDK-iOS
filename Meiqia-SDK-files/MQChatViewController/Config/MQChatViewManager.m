@@ -18,10 +18,12 @@
     MQChatViewConfig *chatViewConfig;
 }
 
+//一下属性将直接转发给 MQChatViewConfig 来管理
 @dynamic keepAudioSessionActive;
 @dynamic playMode;
 @dynamic recordMode;
 @dynamic chatViewStyle;
+@dynamic preSendMessages;
 
 - (id)forwardingTargetForSelector:(SEL)aSelector {
     return chatViewConfig;

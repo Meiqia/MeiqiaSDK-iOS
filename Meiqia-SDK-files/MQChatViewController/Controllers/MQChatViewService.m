@@ -698,6 +698,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 
 - (void)handleClientOnlineWithAgentName:(NSString *)agentName receivedMessages:(NSArray *)receivedMessages completeStatus:(BOOL)completion {
     didSetOnline = true;
+    
     self.clientStatus = MQClientStatusOnline;
     
     MQChatAgentStatus agentStatus = [MQServiceToViewInterface getCurrentAgentStatus];
@@ -709,6 +710,9 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         [self.delegate hideRightBarButtonItem:NO];
     }
     
+    dispatch_group_t clientOnlineGroup = dispatch_group_create();
+    dispatch_group_enter(clientOnlineGroup);
+    
     //更新客服聊天界面标题
     [self updateChatTitleWithAgentName:agentName agentStatus:agentStatus];
     if (receivedMessages) {
@@ -717,6 +721,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
             if ([self.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //确保 tableView 的 contentInsect 生效，tableView 能够正确滑动到底部
                     [self.delegate scrollTableViewToBottom];
+                    dispatch_group_leave(clientOnlineGroup);
                 });
             }
         }
@@ -729,6 +734,25 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
         [strongSelf getClientInfo];
     }];
+    
+    dispatch_group_notify(clientOnlineGroup, dispatch_get_main_queue(), ^{
+        __strong typeof (weakSelf) strongSelf = weakSelf;
+        [strongSelf afterClientOnline];
+    });
+}
+
+- (void)afterClientOnline {
+    [self sendPreSendMessages];
+}
+
+- (void)sendPreSendMessages {
+    for (id messageContent in [MQChatViewConfig sharedConfig].preSendMessages) {
+        if ([messageContent isKindOfClass:NSString.class]) {
+            [self sendTextMessageWithContent:messageContent];
+        } else if ([messageContent isKindOfClass:UIImage.class]) {
+            [self sendImageMessageWithImage:messageContent];
+        }
+    }
 }
 
 //获取顾客信息

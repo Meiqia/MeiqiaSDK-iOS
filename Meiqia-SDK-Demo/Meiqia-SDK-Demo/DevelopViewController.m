@@ -394,6 +394,7 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
 - (void)setClientOnlineWithGroupId:(NSString *)groupId {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager setScheduledGroupId:groupId];
+//    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 

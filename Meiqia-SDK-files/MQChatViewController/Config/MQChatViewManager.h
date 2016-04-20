@@ -45,6 +45,11 @@
 @property (nonatomic, assign) MQPlayMode playMode;
 
 /**
+ 设置显示聊天界面的时候，自动发送给客服的消息, 可以包括图片和文字
+ */
+@property (nonatomic, strong) NSArray *preSendMessages;
+
+/**
  * 在一个ViewController中Push出一个客服聊天界面
  * @param viewController 在这个viewController中push出客服聊天界面
  */

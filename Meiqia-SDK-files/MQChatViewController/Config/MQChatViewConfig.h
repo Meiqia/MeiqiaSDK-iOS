@@ -99,6 +99,8 @@ typedef NS_ENUM(NSUInteger, TransiteAnimationType) {
 @property (nonatomic, assign) MQRecordMode recordMode;
 @property (nonatomic, assign) MQPlayMode playMode;
 
+@property (nonatomic, strong) NSArray *preSendMessages;
+
 
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK
