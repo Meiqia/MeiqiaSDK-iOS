@@ -37,7 +37,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
 
 - (void)setConfigToDefault {
     
-    self.chatViewStyle = [MQChatViewStyle createWithStyle:MQChatViewStyleTypeDefault];
+    self.chatViewStyle = [MQChatViewStyle defaultStyle];
     
     self.hidesBottomBarWhenPushed   = true;
 //    self.isCustomizedChatViewFrame  = false;

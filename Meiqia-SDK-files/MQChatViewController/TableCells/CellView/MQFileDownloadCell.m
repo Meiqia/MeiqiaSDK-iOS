@@ -83,15 +83,15 @@
 #pragma mark -
 
 - (void)updateUI {
-    FileDownloadStatus status = self.viewModel.fileDownloadStatus;
+    MQFileDownloadStatus status = self.viewModel.fileDownloadStatus;
     
-    self.actionButton.hidden = (status == FileDownloadStatusDownloadComplete);
-    self.downloadProgressBar.hidden = (status != FileDownloadStatusDownloading);
+    self.actionButton.hidden = (status == MQFileDownloadStatusDownloadComplete);
+    self.downloadProgressBar.hidden = (status != MQFileDownloadStatusDownloading);
     
     CGFloat rightEdgeSpace = 5; //由于图片边界的原因，调整一下有图片和没有图片右边的距离，这样看起来协调一点.
     
     switch (status) {
-        case FileDownloadStatusNotDownloaded: {
+        case MQFileDownloadStatusNotDownloaded: {
             [self.actionButton setImage:[MQAssetUtil fileDonwload] forState:UIControlStateNormal];
             if (self.viewModel.isExpired) {
                 [self.fileDetailLabel setText:[NSString stringWithFormat:@"%@ ∙ %@",self.viewModel.fileSize, [MQBundleUtil localizedStringForKey:@"file_download_file_is_expired"]]];
@@ -100,13 +100,13 @@
             }
         }
         break;
-        case FileDownloadStatusDownloading: {
+        case MQFileDownloadStatusDownloading: {
             [self.actionButton setImage:[MQAssetUtil fileCancel] forState:UIControlStateNormal];
             self.downloadProgressBar.progress = 0;//表示开始下载
             [self.fileDetailLabel setText:[MQBundleUtil localizedStringForKey:@"file_download_downloading"]];
         }
         break;
-        case FileDownloadStatusDownloadComplete: {
+        case MQFileDownloadStatusDownloadComplete: {
             [self.actionButton setImage:nil forState:UIControlStateNormal];
             [self.fileDetailLabel setText:[MQBundleUtil localizedStringForKey:@"file_download_complete"]];
             rightEdgeSpace = kMQCellBubbleToTextHorizontalLargerSpacing;
@@ -152,7 +152,7 @@
 
 - (void)actionForActionButton:(id)sender {
     switch (self.viewModel.fileDownloadStatus) {
-        case FileDownloadStatusNotDownloaded: {
+        case MQFileDownloadStatusNotDownloaded: {
             __weak typeof (self)wself = self;
             [self.viewModel startDownloadWitchProcess:^(CGFloat process) {
                 __strong typeof (wself)sself = wself;
@@ -167,13 +167,13 @@
             }];
         }
         break;
-        case FileDownloadStatusDownloading: {
+        case MQFileDownloadStatusDownloading: {
             if ([sender isKindOfClass:[UIButton class]]) {
                 [self.viewModel cancelDownload];
             }
         }
         break;
-        case FileDownloadStatusDownloadComplete: {
+        case MQFileDownloadStatusDownloadComplete: {
             [self.viewModel openFile:self];
         }
         break;

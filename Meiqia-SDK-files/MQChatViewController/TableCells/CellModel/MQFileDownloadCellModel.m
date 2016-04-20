@@ -29,7 +29,7 @@
     if (self = [super init]) {
         self.message = message;
         if ([MQChatFileUtil fileExistsAtPath:[self savedFilePath] isDirectory:NO]) {
-            self.fileDownloadStatus = FileDownloadStatusDownloadComplete;
+            self.fileDownloadStatus = MQFileDownloadStatusDownloadComplete;
         }
         self.fileName = message.fileName;
         self.fileSize = [self fileSizeStringWithFileSize:(CGFloat)message.fileSize];
@@ -76,14 +76,12 @@
         action(self.message.filePath);
     }
     
-    {
-        //用于统计
-        [MQManager clientDownloadFileWithMessageId:self.message.messageId conversatioId:self.message.conversationId andCompletion:^(NSString *url, NSError *error) {
-            if (!isURLReady) {
-                action(url);
-            }
-        }];
-    }
+    //用于统计
+    [MQManager clientDownloadFileWithMessageId:self.message.messageId conversatioId:self.message.conversationId andCompletion:^(NSString *url, NSError *error) {
+        if (!isURLReady) {
+            action(url);
+        }
+    }];
 }
 
 - (void)startDownloadWitchProcess:(void(^)(CGFloat process))block {
@@ -97,7 +95,7 @@
         return;
     }
     
-    self.fileDownloadStatus = FileDownloadStatusDownloading;
+    self.fileDownloadStatus = MQFileDownloadStatusDownloading;
     if (self.needsToUpdateUI) {
         self.needsToUpdateUI();
     }
@@ -106,18 +104,18 @@
     [self requestForFileURLComplete:^(NSString *url) {
         self.downloadingURL = url;
        [MQManager downloadMediaWithUrlString:url progress:^(float progress) {
-           self.fileDownloadStatus = FileDownloadStatusDownloading;
+           self.fileDownloadStatus = MQFileDownloadStatusDownloading;
            block(progress);
        } completion:^(NSData *mediaData, NSError *error) {
            self.downloadingURL = nil;
            if (!error) {
-               self.fileDownloadStatus = FileDownloadStatusDownloadComplete;
+               self.fileDownloadStatus = MQFileDownloadStatusDownloadComplete;
                self.file = mediaData;
                [self saveFile:mediaData];
                block(100);
            } else {
                [MQToast showToast:[NSString stringWithFormat:@"%@ %@",[MQBundleUtil localizedStringForKey:@"file_download_failed"],error.localizedDescription] duration:2 window:[UIApplication sharedApplication].keyWindow];
-               self.fileDownloadStatus = FileDownloadStatusNotDownloaded;
+               self.fileDownloadStatus = MQFileDownloadStatusNotDownloaded;
                block(-1);
            }
        }];
@@ -128,7 +126,7 @@
     [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_download_canceld"] duration:2 window:[UIApplication sharedApplication].keyWindow];
     [MQManager cancelDownloadForUrl:self.downloadingURL];
     self.downloadingURL = nil;
-    self.fileDownloadStatus = FileDownloadStatusNotDownloaded;
+    self.fileDownloadStatus = MQFileDownloadStatusNotDownloaded;
     if (self.needsToUpdateUI) {
         self.needsToUpdateUI();
     }

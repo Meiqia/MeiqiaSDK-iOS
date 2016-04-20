@@ -33,6 +33,22 @@
     }
 }
 
++ (instancetype)defaultStyle {
+    return [self createWithStyle:(MQChatViewStyleTypeDefault)];
+}
+
++ (instancetype)blueStyle {
+    return [self createWithStyle:(MQChatViewStyleTypeBlue)];
+}
+
++ (instancetype)darkStyle {
+    return [self createWithStyle:(MQChatViewStyleTypeDark)];
+}
+
++ (instancetype)greenStyle {
+    return [self createWithStyle:(MQChatViewStyleTypeGreen)];
+}
+
 - (instancetype)init {
     if (self = [super init]) {
         
@@ -40,15 +56,17 @@
         self.enableIncomingAvatar    = true;
         self.enableOutgoingAvatar    = true;
 
+        self.backgroundColor = [UIColor whiteColor];
         self.incomingMsgTextColor   = [UIColor darkTextColor];
-        self.outgoingMsgTextColor   = [UIColor darkTextColor];
+        self.outgoingMsgTextColor   = [UIColor whiteColor];
         self.eventTextColor         = [UIColor grayColor];
         self.pullRefreshColor       = [UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
         self.redirectAgentNameColor = [UIColor blueColor];
-        self.navBarColor            = nil;
-        self.navBarTintColor        = nil;
-        self.incomingBubbleColor    = nil;
-        self.outgoingBubbleColor    = nil;
+        self.navBarColor            = [UIColor colorWithHexString:MQBlueColor];
+        self.navBarTintColor        = [UIColor whiteColor];
+        self.incomingBubbleColor    = nil;//[UIColor colorWithHexString:MQSilverColor];
+        self.outgoingBubbleColor    = [UIColor colorWithHexString:MQBlueColor];
+        self.navTitleColor          = [UIColor whiteColor];
         
         self.photoSenderImage               = [MQAssetUtil messageCameraInputImage];
         self.photoSenderHighlightedImage    = nil;
@@ -66,7 +84,7 @@
         CGPoint stretchPoint                = CGPointMake(self.incomingBubbleImage.size.width / 4.0f, self.incomingBubbleImage.size.height * 3.0f / 4.0f);
         self.bubbleImageStretchInsets       = UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, self.incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x);
                 
-        self.statusBarStyle                 = UIStatusBarStyleDefault;
+        self.statusBarStyle                 = UIStatusBarStyleLightContent;
         self.didSetStatusBarStyle = false;
     }
     return self;

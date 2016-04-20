@@ -668,7 +668,7 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     lertButton.backgroundColor = [UIColor blueColor];
     lertButton.frame = CGRectMake(10, 10, 20, 20);
     [chatViewManager.chatViewStyle setNavBarLeftButton:lertButton];
-    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
+    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleDefault];
     
     [chatViewManager setNavTitleText:@"我是标题哦^.^"];
     [chatViewManager pushMQChatViewControllerInViewController:self];
@@ -679,7 +679,7 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    [chatViewManager setChatViewStyle:[MQChatViewStyle createWithStyle:MQChatViewStyleTypeBlue]];
+    [chatViewManager setChatViewStyle:[MQChatViewStyle blueStyle]];
     
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
@@ -689,7 +689,7 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    [chatViewManager setChatViewStyle:[MQChatViewStyle createWithStyle:MQChatViewStyleTypeGreen]];
+    [chatViewManager setChatViewStyle:[MQChatViewStyle greenStyle]];
     
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
@@ -699,7 +699,7 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    [chatViewManager setChatViewStyle:[MQChatViewStyle createWithStyle:MQChatViewStyleTypeDark]];
+    [chatViewManager setChatViewStyle:[MQChatViewStyle darkStyle]];
     
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];

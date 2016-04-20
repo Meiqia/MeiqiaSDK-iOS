@@ -52,6 +52,10 @@ static NSString *const asbestos = @"7F8C8D";
 static NSString *const pumice = @"D2D7D3";
 static NSString *const lynch = @"6C7A89";
 
+
+static NSString *const MQBlueColor = @"17c7d1";
+static NSString *const MQSilverColor = @"c6cbd0";
+
 typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
     MQChatViewStyleTypeDefault,
     MQChatViewStyleTypeBlue,
@@ -224,7 +228,12 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
  */
 @property (nonatomic, strong) UIColor *backgroundColor;
 
++ (instancetype)defaultStyle;
 
-+ (instancetype)createWithStyle:(MQChatViewStyleType)type;
++ (instancetype)blueStyle;
+
++ (instancetype)darkStyle;
+
++ (instancetype)greenStyle;
 
 @end

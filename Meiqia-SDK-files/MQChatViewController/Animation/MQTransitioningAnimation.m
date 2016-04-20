@@ -10,7 +10,7 @@
 
 @interface MQTransitioningAnimation()
 
-@property (nonatomic, strong) MQShareTransitioningDelegateImpl *transitioningDelegateImpl;
+@property (nonatomic, strong) id<UIViewControllerTransitioningDelegate> transitioningDelegateImpl;
 
 @end
 
@@ -18,7 +18,7 @@
 @implementation MQTransitioningAnimation
 
 + (instancetype)sharedInstance {
-    static id instance = nil;
+    static MQTransitioningAnimation *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [MQTransitioningAnimation new];
@@ -35,35 +35,39 @@
     return self;
 }
 
-+ (CATransition *)createPresentingTransiteAnimation:(TransiteAnimationType)animation {
++ (id <UIViewControllerTransitioningDelegate>)transitioningDelegateImpl {
+    return [[self sharedInstance] transitioningDelegateImpl];
+}
+
++ (CATransition *)createPresentingTransiteAnimation:(MQTransiteAnimationType)animation {
     CATransition *transition = [CATransition animation];
     transition.duration = 0.5;
     [transition setFillMode:kCAFillModeBoth];
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     
     switch (animation) {
-        case TransiteAnimationTypePush:
+        case MQTransiteAnimationTypePush:
             transition.type = kCATransitionMoveIn;
             transition.subtype = kCATransitionFromRight;
             break;
-        case TransiteAnimationTypeDefault:
+        case MQTransiteAnimationTypeDefault:
         default:
             break;
     }
     return transition;
 }
-+ (CATransition *)createDismissingTransiteAnimation:(TransiteAnimationType)animation {
++ (CATransition *)createDismissingTransiteAnimation:(MQTransiteAnimationType)animation {
     CATransition *transition = [CATransition animation];
     transition.duration = 0.5;
     [transition setFillMode:kCAFillModeBoth];
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     
     switch (animation) {
-        case TransiteAnimationTypePush:
+        case MQTransiteAnimationTypePush:
             transition.type = kCATransitionMoveIn;
             transition.subtype = kCATransitionFromLeft;
             break;
-        case TransiteAnimationTypeDefault:
+        case MQTransiteAnimationTypeDefault:
         default:
             break;
     }

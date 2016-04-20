@@ -75,6 +75,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     previousStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
     previousStatusBarHidden = [UIApplication sharedApplication].statusBarHidden;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarStyle:[MQChatViewConfig sharedConfig].chatViewStyle.statusBarStyle];
+    [self setNeedsStatusBarAppearanceUpdate];
+    
     self.view.backgroundColor = [MQChatViewConfig sharedConfig].chatViewStyle.backgroundColor ?: [UIColor colorWithWhite:0.95 alpha:1];
     [self setNavBar];
     [self initChatTableView];
@@ -130,7 +133,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)dismissChatViewController {
-    if ([MQChatViewConfig sharedConfig].presentingAnimation == TransiteAnimationTypePush) {
+    if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypePush) {
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
             [self dismissViewControllerAnimated:YES completion:nil];
         } else {

@@ -18,7 +18,7 @@
     MQChatViewConfig *chatViewConfig;
 }
 
-//一下属性将直接转发给 MQChatViewConfig 来管理
+//以下属性将直接转发给 MQChatViewConfig 来管理
 @dynamic keepAudioSessionActive;
 @dynamic playMode;
 @dynamic recordMode;
@@ -44,7 +44,7 @@
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
     
-    [self presentOnViewController:viewController transiteAnimation:TransiteAnimationTypePush];
+    [self presentOnViewController:viewController transiteAnimation:MQTransiteAnimationTypePush];
     return chatViewController;
 }
 
@@ -57,15 +57,15 @@
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
     
-    [self presentOnViewController:viewController transiteAnimation:TransiteAnimationTypeDefault];
+    [self presentOnViewController:viewController transiteAnimation:MQTransiteAnimationTypeDefault];
     return chatViewController;
 }
 
-- (void)presentOnViewController:(UIViewController *)rootViewController transiteAnimation:(TransiteAnimationType)animation {
+- (void)presentOnViewController:(UIViewController *)rootViewController transiteAnimation:(MQTransiteAnimationType)animation {
     chatViewConfig.presentingAnimation = animation;
     
     UIViewController *viewController = nil;
-    if (animation == TransiteAnimationTypePush) {
+    if (animation == MQTransiteAnimationTypePush) {
         viewController = [self createNavigationControllerWithWithAnimationSupport:chatViewController presentedViewController:rootViewController];
         BOOL shouldUseUIKitAnimation = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7;
         [rootViewController presentViewController:viewController animated:shouldUseUIKitAnimation completion:nil];
@@ -80,7 +80,7 @@
     UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
         [self updateNavAttributesWithViewController:rootViewController navigationController:(UINavigationController *)navigationController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
-        [navigationController setTransitioningDelegate:[MQTransitioningAnimation sharedInstance].transitioningDelegateImpl];
+        [navigationController setTransitioningDelegate:[MQTransitioningAnimation transitioningDelegateImpl]];
         [navigationController setModalPresentationStyle:UIModalPresentationCustom];
     } else {
         [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)navigationController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
@@ -119,7 +119,7 @@
     }
     
     //导航栏左键
-    if ([MQChatViewConfig sharedConfig].presentingAnimation == TransiteAnimationTypeDefault) {
+    if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypeDefault) {
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
     } else {
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
