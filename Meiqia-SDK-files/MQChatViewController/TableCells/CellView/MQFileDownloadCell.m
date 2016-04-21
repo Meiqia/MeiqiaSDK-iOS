@@ -85,6 +85,8 @@
 - (void)updateUI {
     MQFileDownloadStatus status = self.viewModel.fileDownloadStatus;
     
+    //update UI contents according to status
+    
     self.actionButton.hidden = (status == MQFileDownloadStatusDownloadComplete);
     self.downloadProgressBar.hidden = (status != MQFileDownloadStatusDownloading);
     
@@ -118,6 +120,8 @@
     [self.fileNameLabel sizeToFit];
     [self.fileDetailLabel sizeToFit];
     
+    //layout
+    
     [self.avatarImageView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarToHorizontalEdgeSpacing)];
     [self.itemsView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.avatarImageView.viewRightEdge + kMQCellAvatarToBubbleSpacing, self.avatarImageView.viewY)];
     
@@ -150,6 +154,7 @@
     self.viewHeight = self.contentView.viewHeight;
 }
 
+///点击状态按钮和整个cell都会触发此方法
 - (void)actionForActionButton:(id)sender {
     switch (self.viewModel.fileDownloadStatus) {
         case MQFileDownloadStatusNotDownloaded: {
@@ -168,7 +173,7 @@
         }
         break;
         case MQFileDownloadStatusDownloading: {
-            if ([sender isKindOfClass:[UIButton class]]) {
+            if ([sender isKindOfClass:[UIButton class]]) { //取消操作只有在点击取消按钮时响应
                 [self.viewModel cancelDownload];
             }
         }

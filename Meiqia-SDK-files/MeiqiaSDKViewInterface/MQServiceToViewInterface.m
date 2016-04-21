@@ -10,6 +10,7 @@
 #import <MeiQiaSDK/MeiQiaSDK.h>
 #import "MQBundleUtil.h"
 #import "MQChatFileUtil.h"
+#import "NSArray+MQFunctional.h"
 
 #pragma 该文件的作用是：开源聊天界面调用美洽 SDK 接口的中间层，目的是剥离开源界面中的美洽业务逻辑。这样就能让该聊天界面用于非美洽项目中，开发者只需要实现 `MQServiceToViewInterface` 中的方法，即可将自己项目的业务逻辑和该聊天界面对接。
 
@@ -156,7 +157,7 @@
         }
         case MQMessageContentTypeVoice: {
             MQVoiceMessage *voiceMessage = [[MQVoiceMessage alloc] initWithVoicePath:fromMessage.content];
-            voiceMessage.isPlayed = fromMessage.isRead;
+            [voiceMessage handleAccessoryData:fromMessage.accessoryData];
             toMessage = voiceMessage;
             break;
         }
@@ -269,9 +270,9 @@
     [MQManager setClientOffline];
 }
 
-+ (void)didTapMessageWithMessageId:(NSString *)messageId {
-    [MQManager updateMessage:messageId toReadStatus:YES];
-}
+//+ (void)didTapMessageWithMessageId:(NSString *)messageId {
+////    [MQManager updateMessage:messageId toReadStatus:YES];
+//}
 
 + (NSString *)getCurrentAgentName {
     NSString *agentName = [MQManager getCurrentAgent].nickname;
@@ -482,6 +483,14 @@
     }
 }
 
++ (void)updateMessageWithId:(NSString *)messageId forAccessoryData:(NSDictionary *)accessoryData {
+    [MQManager updateMessageWithId:messageId forAccessoryData:accessoryData];
+}
+
++ (void)updateMessageIds:(NSArray *)messageIds toReadStatus:(BOOL)isRead {
+    [MQManager updateMessageIds:messageIds toReadStatus:isRead];
+}
+
 #pragma MQManagerDelegate
 //webSocket收到消息的代理方法
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)messages {
@@ -510,6 +519,7 @@
         }
     } else {
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
+        
         if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
             [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }

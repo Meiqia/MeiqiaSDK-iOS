@@ -17,6 +17,7 @@
 
 @implementation MQTransitioningAnimation
 
+///使用 singleton 的原因是使用这个 transition 的对象并没有维护这个 transition 对象，如果被释放 transition 则会失效，为了减少自定义 transition 对使用者的侵入，只好使用 singleton 来保持该对象
 + (instancetype)sharedInstance {
     static MQTransitioningAnimation *instance = nil;
     static dispatch_once_t onceToken;

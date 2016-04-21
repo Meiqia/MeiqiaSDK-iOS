@@ -24,6 +24,7 @@
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
 #import "MQFileDownloadCellModel.h"
+#import "NSArray+MQFunctional.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -122,7 +123,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
             [cellModel isKindOfClass:[MQImageCellModel class]] ||
             [cellModel isKindOfClass:[MQVoiceCellModel class]] ||
             [cellModel isKindOfClass:[MQEventCellModel class]] ||
-            [cellModel isKindOfClass:[MQFileDownloadMessage class]])
+            [cellModel isKindOfClass:[MQFileDownloadCellModel class]])
         {
             return [cellModel getCellDate];
         }
@@ -454,10 +455,10 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
     if ([cellModel isKindOfClass:[MQVoiceCellModel class]]) {
         MQVoiceCellModel *voiceCellModel = (MQVoiceCellModel *)cellModel;
-        voiceCellModel.isPlayed = true;
-#ifdef INCLUDE_MEIQIA_SDK
-        [MQServiceToViewInterface didTapMessageWithMessageId:[cellModel getCellMessageId]];
-#endif
+        [voiceCellModel setVoiceHasPlayed];
+//        #ifdef INCLUDE_MEIQIA_SDK
+//        [MQServiceToViewInterface didTapMessageWithMessageId:[cellModel getCellMessageId]];
+//#endif
     }
 }
 
@@ -531,7 +532,10 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         for (MQBaseMessage *message in messages) {
             [historyMessages insertObject:message atIndex:0];
         }
+    } else {
+        [MQServiceToViewInterface updateMessageIds:[historyMessages valueForKey:@"messageId"] toReadStatus:YES];
     }
+    
     for (MQBaseMessage *message in historyMessages) {
         id<MQCellModelProtocol> cellModel;
         if ([message isKindOfClass:[MQTextMessage class]]) {

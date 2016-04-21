@@ -278,10 +278,10 @@
 
 /**
  * 是否修改某条消息为未读
- * @param messageId 被修改的消息id
+ * @param messageIds 被修改的消息id数组
  * @param isRead   该消息是否已读
  */
-+ (void)updateMessage:(NSString *)messageId
++ (void)updateMessageIds:(NSArray *)messageIds
          toReadStatus:(BOOL)isRead;
 
 /**
@@ -361,6 +361,13 @@
 + (void)clientDownloadFileWithMessageId:(NSString *)messageId
                                       conversatioId:(NSString *)conversationId
                                       andCompletion:(void(^)(NSString *url, NSError *error))action;
+
+/**
+ 修改或增加已保存的消息中的 accessory data 中的数据
+ 
+ @param accessoryData 字典中的数据必须是基本数据和字符串
+ */
++ (void)updateMessageWithId:(NSString *)messageId forAccessoryData:(NSDictionary *)accessoryData;
 
 
 @end
