@@ -105,9 +105,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 //    //恢复原来的导航栏透明模式
 //    self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
 //    //恢复原来的导航栏时间条
-    [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
-    
-    [MQServiceToViewInterface updateReadMessageToken];
+    [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;    
 }
 
 - (void)viewDidAppear:(BOOL)animated {

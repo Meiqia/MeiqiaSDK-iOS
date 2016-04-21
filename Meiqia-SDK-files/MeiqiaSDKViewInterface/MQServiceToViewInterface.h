@@ -268,16 +268,18 @@
 + (NSString *)getPreviousInputtingText;
 
 /**
- * 获得本地未读消息
+ * 获得服务端未读消息
  
  * @return 输入文字
  */
 + (void)getUnreadMessagesWithCompletion:(void (^)(NSArray *messages, NSError *error))completion;
 
 /**
- * 重置用户已读消息的时间点，该接口目前在用户离开聊天窗口的时候调用，如果用户离开聊天界面，在这段时间内收取到的消息都被作为未读消息
+ * 获得本地未读消息
+ 
+ * @return 输入文字
  */
-+ (void)updateReadMessageToken;
++ (NSArray *)getLocalUnreadMessages;
 
 /**
  * 判断是否被加入了黑名单

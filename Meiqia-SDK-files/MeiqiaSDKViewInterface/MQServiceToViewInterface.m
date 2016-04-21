@@ -463,8 +463,8 @@
     return [MQManager getUnreadMessagesWithCompletion:completion];
 }
 
-+ (void)updateReadMessageToken {
-    return [MQManager updateReadMessageToken];
++ (NSArray *)getLocalUnreadMessages {
+    return [MQManager getLocalUnreadeMessages];
 }
 
 + (BOOL)isBlacklisted {

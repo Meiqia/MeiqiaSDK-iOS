@@ -47,6 +47,8 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateIndicator) name:UIApplicationDidBecomeActiveNotification object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -70,6 +72,10 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
         }];
     }
 
+}
+
+- (void)updateUnreadMessageCount {
+    NSLog(@"unreade message count: %d",(int)[[MQServiceToViewInterface getLocalUnreadMessages] count]);
 }
 
 - (void)didReceiveMemoryWarning {

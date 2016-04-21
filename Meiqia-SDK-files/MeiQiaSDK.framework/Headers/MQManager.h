@@ -339,15 +339,20 @@
 
 
 /**
- * 获得本地未读消息
+ * 获得所有未读消息，包括本地和服务端的
  */
 + (void)getUnreadMessagesWithCompletion:(void (^)(NSArray *messages, NSError *error))completion;
 
-
 /**
- * 重置用户已读消息的时间点，该接口目前在用户离开聊天窗口的时候调用，如果用户离开聊天界面，在这段时间内收取到的消息都被作为未读消息
  */
-+ (void)updateReadMessageToken;
+
++ (NSArray *)getLocalUnreadeMessages;
+
+
+///**
+// * 重置用户已读消息的时间点，该接口目前在用户离开聊天窗口的时候调用，如果用户离开聊天界面，在这段时间内收取到的消息都被作为未读消息
+// */
+//+ (void)updateReadMessageToken;
 
 /**
  * 当前用户是否被加入黑名单
