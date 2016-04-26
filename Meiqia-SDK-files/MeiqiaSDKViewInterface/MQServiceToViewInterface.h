@@ -17,6 +17,7 @@
 #import "MQEventMessage.h"
 #import "MQChatViewConfig.h"
 #import <MeiQiaSDK/MQDefinition.h>
+#import "MQFileDownloadMessage.h"
 
 /**
  *  该协议是UI层获取数据的委托方法
@@ -43,6 +44,8 @@
  *  @param tipsContent 辅助信息
  */
 - (void)didReceiveTipsContent:(NSString *)tipsContent;
+
+- (void)didReceiveTipsContent:(NSString *)tipsContent showLines:(BOOL)show;
 
 /**
  * 发送文字消息结果
@@ -265,15 +268,36 @@
 + (NSString *)getPreviousInputtingText;
 
 /**
- * 获得本地未读消息
+ * 获得服务端未读消息
  
  * @return 输入文字
  */
 + (void)getUnreadMessagesWithCompletion:(void (^)(NSArray *messages, NSError *error))completion;
 
 /**
- * 重置用户已读消息的时间点，该接口目前在用户离开聊天窗口的时候调用，如果用户离开聊天界面，在这段时间内收取到的消息都被作为未读消息
+ * 获得本地未读消息
+ 
+ * @return 输入文字
  */
-+ (void)updateReadMessageToken;
++ (NSArray *)getLocalUnreadMessages;
+
+/**
+ * 判断是否被加入了黑名单
+ */
++ (BOOL)isBlacklisted;
+
+/**
+ * 清除已下载的文件
+ */
++ (void)clearReceivedFiles;
+
+/**
+ 修改或增加已保存的消息中的 accessory data 中的数据
+ 
+ @param accessoryData 字典中的数据必须是基本数据和字符串
+ */
++ (void)updateMessageWithId:(NSString *)messageId forAccessoryData:(NSDictionary *)accessoryData;
+
++ (void)updateMessageIds:(NSArray *)messageIds toReadStatus:(BOOL)isRead;
 
 @end

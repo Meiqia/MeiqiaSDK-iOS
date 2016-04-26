@@ -22,6 +22,10 @@
     }
 }
 
++ (UIImage *)templateImageFromBundleWithName:(NSString *)name {
+    return [[self.class imageFromBundleWithName:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+}
+
 + (NSString*)resourceWithName:(NSString*)fileName
 {
 //        return [NSString stringWithFormat:@"MQChatViewAsset.bundle/%@",fileName];
@@ -49,7 +53,7 @@
 
 + (UIImage *)messageCameraInputHighlightedImage
 {
-    return [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageTextInputImage
@@ -59,7 +63,7 @@
 
 + (UIImage *)messageTextInputHighlightedImage
 {
-    return [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageVoiceInputImage
@@ -69,7 +73,7 @@
 
 + (UIImage *)messageVoiceInputHighlightedImage
 {
-    return [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageResignKeyboardImage
@@ -79,7 +83,7 @@
 
 + (UIImage *)messageResignKeyboardHighlightedImage
 {
-    return [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleOne"];
 }
 
 + (UIImage *)bubbleIncomingImage
@@ -222,4 +226,19 @@
     return [MQAssetUtil imageFromBundleWithName:@"MQAgentStatusOffline"];
 }
 
++ (UIImage *)fileIcon {
+    return [MQAssetUtil imageFromBundleWithName:@"fileIcon"];
+}
+
++ (UIImage *)fileCancel {
+    return [MQAssetUtil imageFromBundleWithName:@"MQFileCancel"];
+}
+
++ (UIImage *)fileDonwload {
+    return [MQAssetUtil imageFromBundleWithName:@"MQFileDownload"];
+}
+
++ (UIImage *)backArrow {
+    return [[MQAssetUtil imageFromBundleWithName:@"backArrow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+}
 @end

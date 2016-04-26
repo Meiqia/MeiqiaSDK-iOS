@@ -19,13 +19,16 @@ typedef enum : NSUInteger {
     MQMessageActionInviteEvaluation             = 6,   //收到客服邀请评价 (invite_evaluation)
     MQMessageActionClientEvaluation             = 7,   //顾客评价的结果 (client_evaluation)
     MQMessageActionTicketReply                  = 8,   //客服留言回复的消息
-    MQMessageActionAgentUpdate                  = 9    //客服的状态发生了改变
+    MQMessageActionAgentUpdate                  = 9,    //客服的状态发生了改变
+    MQMessageActionListedInBlackList            = 10,  //被客户加入到黑名单
+    MQMessageActionRemovedFromBlackList         = 11,  //被客户从黑名单中移除
 } MQMessageAction;
 
 typedef enum : NSUInteger {
     MQMessageContentTypeText                 = 0,//文字
     MQMessageContentTypeImage                = 1,//图片
-    MQMessageContentTypeVoice                = 2 //语音
+    MQMessageContentTypeVoice                = 2, //语音
+    MQMessageContentTypeFile                 = 3, //文件传输
 } MQMessageContentType;
 
 typedef enum : NSUInteger {
@@ -94,5 +97,12 @@ typedef enum : NSUInteger {
 
 /** 消息是否已读 */
 @property (nonatomic, assign) BOOL                 isRead;
+
+/** 不同的 message 类型会携带不同数据，也可能为空, 以JSON格式保存到数据库 */
+@property (nonatomic, copy) id accessoryData;
+
++ (instancetype)createBlacklistMessageWithAction:(NSString *)action;
+
+//- (id)initMessageWithData:(NSDictionary *)data;
 
 @end

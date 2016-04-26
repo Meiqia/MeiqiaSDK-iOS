@@ -40,7 +40,7 @@
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {
-            NSLog(@"eror:%@",error);
+            NSLog(@"error:%@",error);
         }
     }];
     

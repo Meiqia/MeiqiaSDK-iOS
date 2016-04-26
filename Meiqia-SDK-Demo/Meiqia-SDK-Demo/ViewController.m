@@ -10,7 +10,7 @@
 #import "MQChatViewManager.h"
 #import "MQChatDeviceUtil.h"
 #import "DevelopViewController.h"
-#import <MeiQiaSDK/MQManager.h>
+//#import <MeiQiaSDK/MQManager.h>
 
 static CGFloat const kMQButtonVerticalSpacing   = 16.0;
 static CGFloat const kMQButtonHeight            = 42.0;
@@ -41,7 +41,22 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     [self initAppIcon];
     [self initFunctionButtons];
     
+//    self.navigationController.navigationBar.translucent = NO;
+    
+    [[UINavigationBar appearance] setTranslucent:NO];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateIndicator) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 - (void)updateIndicator {
@@ -57,6 +72,10 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
         }];
     }
 
+}
+
+- (void)updateUnreadMessageCount {
+    NSLog(@"unreade message count: %d",(int)[[MQServiceToViewInterface getLocalUnreadMessages] count]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -116,10 +135,15 @@ static int indicator_tag = 10;
 #pragma 最基本功能
 - (void)didTapBasicFunctionBtn:(UIButton *)button {
     //基本功能 - 在线客服
+    
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager enableOutgoingAvatar:false];
+    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
     [self removeIndecatorForView:basicFunctionBtn];
+    
+    [chatViewManager setRecordMode:MQRecordModeDuckOther];
+    [chatViewManager setPlayMode:MQPlayModeMixWithOther];
+    
 }
 
 #pragma 开发者的高级功能，其中有调用美洽SDK的API接口

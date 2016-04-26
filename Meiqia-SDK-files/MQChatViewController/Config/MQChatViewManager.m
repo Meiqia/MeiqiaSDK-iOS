@@ -10,10 +10,23 @@
 #import "MQImageUtil.h"
 #import "MQServiceToViewInterface.h"
 #import "MQTransitioningAnimation.h"
+#import "MQAssetUtil.h"
+
 
 @implementation MQChatViewManager  {
     MQChatViewController *chatViewController;
     MQChatViewConfig *chatViewConfig;
+}
+
+//以下属性将直接转发给 MQChatViewConfig 来管理
+@dynamic keepAudioSessionActive;
+@dynamic playMode;
+@dynamic recordMode;
+@dynamic chatViewStyle;
+@dynamic preSendMessages;
+
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+    return chatViewConfig;
 }
 
 - (instancetype)init {
@@ -31,7 +44,7 @@
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
     
-    [self presentOnViewController:viewController transiteAnimation:TransiteAnimationTypePush];
+    [self presentOnViewController:viewController transiteAnimation:MQTransiteAnimationTypePush];
     return chatViewController;
 }
 
@@ -44,27 +57,18 @@
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
     
-    [self presentOnViewController:viewController transiteAnimation:TransiteAnimationTypeDefault];
+    [self presentOnViewController:viewController transiteAnimation:MQTransiteAnimationTypeDefault];
     return chatViewController;
 }
 
-- (void)presentOnViewController:(UIViewController *)rootViewController transiteAnimation:(TransiteAnimationType)animation {
+- (void)presentOnViewController:(UIViewController *)rootViewController transiteAnimation:(MQTransiteAnimationType)animation {
     chatViewConfig.presentingAnimation = animation;
     
     UIViewController *viewController = nil;
-    if (animation != TransiteAnimationTypeDefault) {
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
-            viewController = [self createNavigationControllerWithDummyRootViewControllerWithRealRootViewController:chatViewController presentedViewController:rootViewController];
-            [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
-            [viewController setTransitioningDelegate:[MQTransitioningAnimation sharedInstance].transitioningDelegateImpl];
-            [viewController setModalPresentationStyle:UIModalPresentationCustom];
-            [rootViewController presentViewController:viewController animated:YES completion:nil];
-        } else {
-            viewController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
-            [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
-            [rootViewController.view.window.layer addAnimation:[[MQTransitioningAnimation sharedInstance] createPresentingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
-            [rootViewController presentViewController:viewController animated:NO completion:nil];
-        }
+    if (animation == MQTransiteAnimationTypePush) {
+        viewController = [self createNavigationControllerWithWithAnimationSupport:chatViewController presentedViewController:rootViewController];
+        BOOL shouldUseUIKitAnimation = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7;
+        [rootViewController presentViewController:viewController animated:shouldUseUIKitAnimation completion:nil];
     } else {
         viewController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
         [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
@@ -72,17 +76,16 @@
     }
 }
 
-///模仿系统的返回按钮，创造一个viewController
-- (UINavigationController *)createNavigationControllerWithDummyRootViewControllerWithRealRootViewController:(UIViewController *)rootViewController presentedViewController:(UIViewController *)presentedViewController{
-    UIViewController *dummyViewController = [UIViewController new];
-//    NSString *title = [[[presentedViewController.navigationController navigationBar]items] lastObject].title;
-    dummyViewController.title = @" ";
-
-    UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:dummyViewController];
-    //关闭这个navigation controller的返回交互手势
-    if ([navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
-        navigationController.interactivePopGestureRecognizer.enabled = NO;
-    }    [navigationController pushViewController:rootViewController animated:NO];
+- (UINavigationController *)createNavigationControllerWithWithAnimationSupport:(MQChatViewController *)rootViewController presentedViewController:(UIViewController *)presentedViewController{
+    UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:rootViewController];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+        [self updateNavAttributesWithViewController:rootViewController navigationController:(UINavigationController *)navigationController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
+        [navigationController setTransitioningDelegate:[MQTransitioningAnimation transitioningDelegateImpl]];
+        [navigationController setModalPresentationStyle:UIModalPresentationCustom];
+    } else {
+        [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)navigationController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
+        [rootViewController.view.window.layer addAnimation:[MQTransitioningAnimation createPresentingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
+    }
     return navigationController;
 }
 
@@ -116,8 +119,10 @@
     }
     
     //导航栏左键
-    if ([MQChatViewConfig sharedConfig].presentingAnimation == TransiteAnimationTypeDefault) {
+    if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypeDefault) {
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
+    } else {
+        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
     }
     
     //导航栏右键
@@ -148,9 +153,9 @@
     chatViewConfig.hidesBottomBarWhenPushed = hide;
 }
 
-- (void)enableCustomChatViewFrame:(BOOL)enable {
-    chatViewConfig.isCustomizedChatViewFrame = enable;
-}
+//- (void)enableCustomChatViewFrame:(BOOL)enable {
+//    chatViewConfig.isCustomizedChatViewFrame = enable;
+//}
 
 - (void)setChatViewFrame:(CGRect)viewFrame {
     chatViewConfig.chatViewFrame = viewFrame;
@@ -158,6 +163,14 @@
 
 - (void)setViewControllerPoint:(CGPoint)viewPoint {
     chatViewConfig.chatViewControllerPoint = viewPoint;
+}
+
+- (void)setPlayMode:(MQPlayMode)playMode {
+    chatViewConfig.playMode = playMode;
+}
+
+- (MQPlayMode)playMode {
+    return chatViewConfig.playMode;
 }
 
 - (void)setMessageNumberRegex:(NSString *)numberRegex {
@@ -244,6 +257,10 @@
     chatViewConfig.navBarTintColor = [tintColor copy];
 }
 
+- (void)setNavigationBarTitleColor:(UIColor *)tintColor {
+    chatViewConfig.navTitleColor = tintColor;
+}
+
 - (void)setNavigationBarColor:(UIColor *)barColor {
     if (!barColor) {
         return;
@@ -299,10 +316,10 @@
         return;
     }
     chatViewConfig.outgoingDefaultAvatarImage = image;
-#ifdef INCLUDE_MEIQIA_SDK
-    [MQServiceToViewInterface uploadClientAvatar:image completion:^(NSString *avatarUrl, NSError *error) {
-    }];
-#endif
+//#ifdef INCLUDE_MEIQIA_SDK
+//    [MQServiceToViewInterface uploadClientAvatar:image completion:^(NSString *avatarUrl, NSError *error) {
+//    }];
+//#endif
 }
 
 - (void)setPhotoSenderImage:(UIImage *)image

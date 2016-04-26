@@ -7,8 +7,10 @@
 //
 
 #import "MQServiceToViewInterface.h"
-#import <MeiQiaSDK/MQManager.h>
-#import <MeiQiaSDK/MQAgent.h>
+#import <MeiQiaSDK/MeiQiaSDK.h>
+#import "MQBundleUtil.h"
+#import "MQChatFileUtil.h"
+#import "NSArray+MQFunctional.h"
 
 #pragma 该文件的作用是：开源聊天界面调用美洽 SDK 接口的中间层，目的是剥离开源界面中的美洽业务逻辑。这样就能让该聊天界面用于非美洽项目中，开发者只需要实现 `MQServiceToViewInterface` 中的方法，即可将自己项目的业务逻辑和该聊天界面对接。
 
@@ -71,6 +73,7 @@
             [toMessages addObject:toMessage];
         }
     }
+    
     return toMessages;
 }
 
@@ -126,6 +129,12 @@
             eventType = MQChatEventTypeAgentUpdate;
             break;
         }
+        case MQMessageActionListedInBlackList:
+        {
+            eventContent = [MQBundleUtil localizedStringForKey:@"message_tips_online_failed_listed_in_black_list"];
+            eventType = MQChatEventTypeAgentUpdate;
+            break;
+        }
         default:
             break;
     }
@@ -154,8 +163,13 @@
         }
         case MQMessageContentTypeVoice: {
             MQVoiceMessage *voiceMessage = [[MQVoiceMessage alloc] initWithVoicePath:fromMessage.content];
-            voiceMessage.isPlayed = fromMessage.isRead;
+            [voiceMessage handleAccessoryData:fromMessage.accessoryData];
             toMessage = voiceMessage;
+            break;
+        }
+        case MQMessageContentTypeFile: {
+            MQFileDownloadMessage *fileDownloadMessage = [[MQFileDownloadMessage alloc] initWithDictionary:fromMessage.accessoryData];
+            toMessage = fileDownloadMessage;
             break;
         }
         default:
@@ -262,9 +276,9 @@
     [MQManager setClientOffline];
 }
 
-+ (void)didTapMessageWithMessageId:(NSString *)messageId {
-    [MQManager updateMessage:messageId toReadStatus:YES];
-}
+//+ (void)didTapMessageWithMessageId:(NSString *)messageId {
+////    [MQManager updateMessage:messageId toReadStatus:YES];
+//}
 
 + (NSString *)getCurrentAgentName {
     NSString *agentName = [MQManager getCurrentAgent].nickname;
@@ -369,7 +383,7 @@
             }
             if (result == MQClientOnlineResultSuccess) {
                 success(true, agent.nickname, toMessages);
-            } else if(result == MQClientOnlineResultNotScheduledAgent) {
+            } else if((result == MQClientOnlineResultNotScheduledAgent) || (result == MQClientOnlineResultBlacklisted)) {
                 success(false, @"", toMessages);
             }
         } failure:^(NSError *error) {
@@ -381,7 +395,7 @@
         if (result == MQClientOnlineResultSuccess) {
             NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
             success(true, agent.nickname, toMessages);
-        } else if(result == MQClientOnlineResultNotScheduledAgent) {
+        } else if((result == MQClientOnlineResultNotScheduledAgent) || (result == MQClientOnlineResultBlacklisted))  {
             success(false, @"", nil);
         }
     } failure:^(NSError *error) {
@@ -393,7 +407,7 @@
                         agentGroupId:(NSString *)agentGroupId
                         scheduleRule:(MQChatScheduleRules)scheduleRule
 {
-    MQScheduleRules rule = nil;
+    MQScheduleRules rule = 0;
     switch (scheduleRule) {
         case MQChatScheduleRulesRedirectNone:
             rule = MQScheduleRulesRedirectNone;
@@ -455,8 +469,32 @@
     return [MQManager getUnreadMessagesWithCompletion:completion];
 }
 
-+ (void)updateReadMessageToken {
-    return [MQManager updateReadMessageToken];
++ (NSArray *)getLocalUnreadMessages {
+    return [MQManager getLocalUnreadeMessages];
+}
+
++ (BOOL)isBlacklisted {
+    return [MQManager isBlacklisted];
+}
+
++ (void)clearReceivedFiles {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL isDir = YES;
+    if ([fileManager fileExistsAtPath:DIR_RECEIVED_FILE isDirectory:&isDir]) {
+        NSError *error;
+        [fileManager removeItemAtPath:DIR_RECEIVED_FILE error:&error];
+        if (error) {
+            NSLog(@"Fail to clear received files: %@",error.localizedDescription);
+        }
+    }
+}
+
++ (void)updateMessageWithId:(NSString *)messageId forAccessoryData:(NSDictionary *)accessoryData {
+    [MQManager updateMessageWithId:messageId forAccessoryData:accessoryData];
+}
+
++ (void)updateMessageIds:(NSArray *)messageIds toReadStatus:(BOOL)isRead {
+    [MQManager updateMessageIds:messageIds toReadStatus:isRead];
 }
 
 #pragma MQManagerDelegate
@@ -465,7 +503,8 @@
     if (!self.serviceToViewDelegate) {
         return;
     }
-    if (messages.count == 1 && [messages firstObject].action == MQMessageActionRedirect) {
+    
+    if ([self handleRedirectMessage:messages]) {
         MQMessage *message = [messages firstObject];
         //客服被转接，给界面生成tipMessage
         NSString *agentName = message.agent.nickname ? message.agent.nickname : @"其他客服";
@@ -473,11 +512,30 @@
         if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
             [self.serviceToViewDelegate didReceiveTipsContent:tipsContent];
         }
-        if ([self.serviceToViewDelegate respondsToSelector:@selector(didRedirectWithAgentName:)]) {
-            [self.serviceToViewDelegate didRedirectWithAgentName:message.agent.nickname];
+    } else if ([self handleBlacklistMessage:messages]) {
+        //给界面生成tipMessage
+        NSString *action = messages.firstObject.accessoryData[@"action"];
+        NSString *tipsContent = [MQBundleUtil localizedStringForKey:@"message_tips_online_failed_listed_in_black_list"];
+        if ([action isEqualToString:@"sendMessage"]) {
+            tipsContent = [MQBundleUtil localizedStringForKey:@"message_tips_send_message_fail_listed_in_black_list"];
+        }
+        
+        if (action.length > 0) { //没有手动指定 action 的黑名单消息，不显示tips
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //延迟一点添加tips，以免重发失败的时候消息会在 cell 调整顺序之前到达，添加到错误的位置
+                if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
+                    [self.serviceToViewDelegate didReceiveTipsContent:tipsContent showLines:NO];
+                }
+            });
+        }
+        
+//        刷新客服状态
+        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
+        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
+            [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
     } else {
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
+        
         if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
             [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
@@ -485,6 +543,21 @@
     
 }
 
+- (BOOL)handleBlacklistMessage:(NSArray<MQMessage *> *)messages {
+    if (messages.count == 1 && [messages firstObject].action == MQMessageActionListedInBlackList) {
+        return YES;
+    }
+    return NO;
+}
 
+- (BOOL)handleRedirectMessage:(NSArray<MQMessage *> *)messages {
+    if (messages.count == 1 && [messages firstObject].action == MQMessageActionRedirect) {
+        if ([self.serviceToViewDelegate respondsToSelector:@selector(didRedirectWithAgentName:)]) {
+            [self.serviceToViewDelegate didRedirectWithAgentName:messages.firstObject.agent.nickname];
+        }
+        return YES;
+    }
+    return NO;
+}
 
 @end
