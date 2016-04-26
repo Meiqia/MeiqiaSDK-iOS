@@ -58,15 +58,15 @@
 
         self.backgroundColor = [UIColor whiteColor];
         self.incomingMsgTextColor   = [UIColor darkTextColor];
-        self.outgoingMsgTextColor   = [UIColor whiteColor];
+        self.outgoingMsgTextColor   = [UIColor darkTextColor];
         self.eventTextColor         = [UIColor grayColor];
-        self.pullRefreshColor       = [UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
+        self.pullRefreshColor       = nil;//[UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
         self.redirectAgentNameColor = [UIColor blueColor];
-        self.navBarColor            = [UIColor colorWithHexString:MQBlueColor];
-        self.navBarTintColor        = [UIColor whiteColor];
+        self.navBarColor            = nil;//[UIColor colorWithHexString:MQBlueColor];
+        self.navBarTintColor        = nil;//[UIColor whiteColor];
         self.incomingBubbleColor    = nil;//[UIColor colorWithHexString:MQSilverColor];
-        self.outgoingBubbleColor    = [UIColor colorWithHexString:MQBlueColor];
-        self.navTitleColor          = [UIColor whiteColor];
+        self.outgoingBubbleColor    = nil;//[UIColor colorWithHexString:MQBlueColor];
+        self.navTitleColor          = nil;//[UIColor whiteColor];
         
         self.photoSenderImage               = [MQAssetUtil messageCameraInputImage];
         self.photoSenderHighlightedImage    = nil;
@@ -84,7 +84,7 @@
         CGPoint stretchPoint                = CGPointMake(self.incomingBubbleImage.size.width / 4.0f, self.incomingBubbleImage.size.height * 3.0f / 4.0f);
         self.bubbleImageStretchInsets       = UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, self.incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x);
                 
-        self.statusBarStyle                 = UIStatusBarStyleLightContent;
+        self.statusBarStyle                 = UIStatusBarStyleDefault;
         self.didSetStatusBarStyle = false;
     }
     return self;

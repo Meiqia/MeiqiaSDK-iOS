@@ -701,6 +701,9 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     
     [chatViewManager setChatViewStyle:[MQChatViewStyle darkStyle]];
     
+    [MQCustomizedUIText setCustomiedTextForKey:MQUITextKeyRecordButtonBegin text:@"让我听见你的声音"];
+    [MQCustomizedUIText setCustomiedTextForKey:(MQUITextKeyMessageInputPlaceholder) text:@"开始打字吧"];
+    
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }

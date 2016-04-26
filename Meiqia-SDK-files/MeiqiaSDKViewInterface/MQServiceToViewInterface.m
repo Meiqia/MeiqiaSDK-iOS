@@ -129,6 +129,12 @@
             eventType = MQChatEventTypeAgentUpdate;
             break;
         }
+        case MQMessageActionListedInBlackList:
+        {
+            eventContent = [MQBundleUtil localizedStringForKey:@"message_tips_online_failed_listed_in_black_list"];
+            eventType = MQChatEventTypeAgentUpdate;
+            break;
+        }
         default:
             break;
     }
@@ -509,13 +515,23 @@
     } else if ([self handleBlacklistMessage:messages]) {
         //给界面生成tipMessage
         NSString *action = messages.firstObject.accessoryData[@"action"];
-        NSString *tipsContent = [MQBundleUtil localizedStringForKey:@"message_tips_send_message_fail_listed_in_black_list"];
-        if ([action isEqualToString:@"online"]) {
-            tipsContent = [MQBundleUtil localizedStringForKey:@"message_tips_online_failed_listed_in_black_list"];
+        NSString *tipsContent = [MQBundleUtil localizedStringForKey:@"message_tips_online_failed_listed_in_black_list"];
+        if ([action isEqualToString:@"sendMessage"]) {
+            tipsContent = [MQBundleUtil localizedStringForKey:@"message_tips_send_message_fail_listed_in_black_list"];
         }
         
-        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
-            [self.serviceToViewDelegate didReceiveTipsContent:tipsContent showLines:NO];
+        if (action.length > 0) { //没有手动指定 action 的黑名单消息，不显示tips
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //延迟一点添加tips，以免重发失败的时候消息会在 cell 调整顺序之前到达，添加到错误的位置
+                if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
+                    [self.serviceToViewDelegate didReceiveTipsContent:tipsContent showLines:NO];
+                }
+            });
+        }
+        
+//        刷新客服状态
+        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
+        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
+            [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
     } else {
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];

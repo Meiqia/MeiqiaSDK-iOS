@@ -25,7 +25,6 @@
     self.toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     self.fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    [self.toViewController beginAppearanceTransition:YES animated:YES];
     
     CGRect finalFrame = [transitionContext finalFrameForViewController:self.toViewController];
     if (CGRectIsEmpty(finalFrame)) {
@@ -41,7 +40,9 @@
         self.fromViewController.view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
     }
     
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [self.toViewController.navigationController beginAppearanceTransition:YES animated:YES];
+    
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.toViewController.view.frame = finalFrame;
         if (self.isPresenting) {
             self.fromViewController.view.frame = CGRectMake(-screenSize.width / 2, 0, screenSize.width, screenSize.height);
@@ -49,13 +50,13 @@
             self.fromViewController.view.frame = CGRectMake(screenSize.width, 0, screenSize.width, screenSize.height);
         }
     } completion:^(BOOL finished) {
-        [transitionContext completeTransition:YES];
+        [transitionContext completeTransition:finished];
     }];
 }
 
-- (void)animationEnded:(BOOL) transitionCompleted {
+- (void)animationEnded:(BOOL)transitionCompleted {
     if (transitionCompleted) {
-        [self.toViewController endAppearanceTransition];
+        [self.fromViewController.navigationController endAppearanceTransition];
     }
 }
 

@@ -10,6 +10,7 @@
 #import "MQChatViewController.h"
 #import "MQChatViewConfig.h"
 #import <MeiQiaSDK/MQDefinition.h>
+#import "MQCustomizedUIText.h"
 
 #define style_deprecated __attribute__((deprecated("修改 MQChatViewStyleType 中的对应属性代替")))
 

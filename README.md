@@ -490,14 +490,6 @@ NSLog(@"监听到了收到客服消息的广播");
 MQAgent *agent = [MQManager getCurrentAgent];
 ```
 
-### 获取未读消息数
-获取未读消息数分为两个场景
-
-- 应用中
-  通过监听通知 `MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION` 来维护未读消息的数量。
-- 应用外
-  使用接口 `[MQManager getUnreadMessagesWithCompletion:completion]` 来获取离开聊天界面之后，包括关闭应用之后收到的消息。
-
 
 ### 添加自定义信息
 
@@ -564,9 +556,34 @@ MQAgent *agent = [MQManager getCurrentAgent];
 }];
 ```
 
-**注意**,调用发送消息接口后，回调中会返回一个消息实体，开发者可根据此消息的状态，来判断该条消息是发送成功还是发送失败。
+**注意**，调用发送消息接口后，回调中会返回一个消息实体，开发者可根据此消息的状态，来判断该条消息是发送成功还是发送失败。
+
+### 获取未读消息数
+
+开发者使用此接口来统一获取所有的未读消息，用户可以在需要显示未读消息数是调用此接口，此接口会自动判断并合并本地和服务器上的未读消息，当用户进入聊天界面后，未读消息将会清零。
+`[MQManager getUnreadMessagesWithCompletion:completion]` 
+
+###录音和播放录音
+
+录音和播放录音分别包含 3 种可配置的模式：
+- 暂停其他音频
+- 和其他音频同时播放
+- 降低其他音频声音
+
+用户可以根据情况选择，在 `MQChatViewManager.h` 中直接配置以下两个属性： 
+
+`@property (nonatomic, assign) MQPlayMode playMode;`
+
+`@property (nonatomic, assign) MQRecordMode recordMode;`
+
+如果宿主应用本身也有声音播放，比如游戏，为了不影响背景音乐播放，可以设置 `@property (nonatomic, assign) BOOL keepAudioSessionActive;` 为 `YES` 这样就不会再完成播放和录音之后关闭 AudioSession，从而不会影响背景音乐。
+
+**注意，游戏中，要将声音播放的 category 设置为 play and record，否则会导致录音之后无法播放声音。**
 
 
+### 预发送消息
+
+在 `MQChatViewManager.h` 中， 通过设置 `@property (nonatomic, strong) NSArray *preSendMessages;` 来让客户显示聊天窗口的时候，自动向客服发送消息，支持文字和图片。
 # SDK 中嵌入美洽 SDK
 如果你的开发项目也是 SDK，那么在了解常规 App 嵌入美洽 SDK 的基础上，还需要注意其他事项。
 
@@ -739,6 +756,23 @@ request.body 为消息数据，数据结构为：
 请开发者检查 App Target - Build Settings - Search Path - Framework Search Path 或 Library Search Path 当中是否没有美洽的项目。
 
 # 更新日志
+
+
+**v3.1.8 2016 年 04 月 22 日**
+
+* 增加文件接收功能。
+* 增加黑名单功能支持。
+* 新增音频控制的接口。
+* 新增界面主题，通过修改 chatViewStyle 的对应方法来定制聊天界面。
+* 新增消息预发送的接口。
+* 升级获取未读消息的接口。
+* 修复聊天界面通过 push 显示的时候，没有调用 viewDidApear，viewWillApear，viewDidDisapper， viewWillDisappear。
+* 修复在某些情况下聊天界面下方会出现黑条的问题。
+* 修复在没有分配到客服的时候，不自动显示历史消息的问题。
+* 修复客服不在线时，客服不在线提示没有自动滚动出现。
+* 修复第二次进入聊天界面时，没有滚动到最下方的问题。
+* 修复查看图片在横屏时无法正常显示的问题。
+* 修复音频文件导致的调试断点问题。
 
 **v3.1.7 2016 年 03 月 29 日**
 

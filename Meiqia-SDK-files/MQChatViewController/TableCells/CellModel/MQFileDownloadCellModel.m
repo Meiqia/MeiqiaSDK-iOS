@@ -102,6 +102,7 @@
     block(0);
     
     [self requestForFileURLComplete:^(NSString *url) {
+        url = [url stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
         self.downloadingURL = url;
        [MQManager downloadMediaWithUrlString:url progress:^(float progress) {
            self.fileDownloadStatus = MQFileDownloadStatusDownloading;

@@ -87,7 +87,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     if ([[notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE] isEqualToString:SOCKET_STATUS_CONNECTED] && shouldHandleSocketConnectNotification) {
         [self setClientOnline];
         shouldHandleSocketConnectNotification = NO;
-    } else {
+    } else if([[notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE] isEqualToString:SOCKET_STATUS_DISCONNECTED]){
         shouldHandleSocketConnectNotification = YES;
     }
 }
@@ -220,10 +220,20 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     if (index < 0 || self.cellModels.count <= index-1) {
         return;
     }
+    
     id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index-1];
     if (cellModel && [cellModel isKindOfClass:[MQMessageDateCellModel class]]) {
         [self.cellModels removeObjectAtIndex:index-1];
+        index --;
     }
+    
+    if (self.cellModels.count > index) {
+        id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+        if (cellModel && [cellModel isKindOfClass:[MQTipsCellModel class]]) {
+            [self.cellModels removeObjectAtIndex:index];
+        }
+    }
+    
     //重新发送
     if (resendData[@"text"]) {
         [self sendTextMessageWithContent:resendData[@"text"]];
@@ -710,8 +720,6 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         //没有分配到客服
         agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length > 0 ? agentName : @"no_agent_title"];
         agentStatus = MQChatAgentStatusOffLine;
-    } else {
-        [self.delegate hideRightBarButtonItem:NO];
     }
     
     dispatch_group_t clientOnlineGroup = dispatch_group_create();
@@ -806,6 +814,10 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didScheduleClientWithViewTitle:agentStatus:)]) {
             [self.delegate didScheduleClientWithViewTitle:viewTitle agentStatus:agentStatus];
+        }
+        
+        if ([self.delegate respondsToSelector:@selector(hideRightBarButtonItem:)]) {
+            [self.delegate hideRightBarButtonItem:agentName.length == 0];
         }
     }
 }
@@ -920,7 +932,6 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         isThereNoAgent = true;
     }
     if (isThereNoAgent && ![MQServiceToViewInterface isBlacklisted]) {
-        [self.delegate hideRightBarButtonItem:YES];
         [self addNoAgentTip];
         [self updateChatTitleWithAgentName:[MQBundleUtil localizedStringForKey:@"no_agent_title"] agentStatus:MQChatAgentStatusOffLine];
     }else{

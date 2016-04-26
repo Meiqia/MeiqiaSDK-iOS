@@ -24,6 +24,7 @@
 #import "MQTransitioningAnimation.h"
 #import <MeiQiaSDK/MQManager.h>
 #import "UIView+Layout.h"
+#import "MQCustomizedUIText.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -60,6 +61,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
     [self closeMeiqiaChatView];
 #endif
+    [MQCustomizedUIText reset];
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -105,7 +107,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 //    //恢复原来的导航栏透明模式
 //    self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
 //    //恢复原来的导航栏时间条
-    [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;    
+    [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -665,6 +667,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         default:
             break;
     }
+    
+    if ([titleLabel.text isEqualToString:[MQBundleUtil localizedStringForKey:@"no_agent_title"]]) {
+        statusImageView.image = nil;
+    }
+    
     statusImageView.frame = CGRectMake(0, titleHeight/2 - statusImageView.image.size.height/2, statusImageView.image.size.width, statusImageView.image.size.height);
     titleLabel.frame = CGRectMake(statusImageView.frame.size.width + 8, 0, titleWidth, titleHeight);
     titleView.frame = CGRectMake(0, 0, titleLabel.frame.origin.x + titleLabel.frame.size.width, titleHeight);
