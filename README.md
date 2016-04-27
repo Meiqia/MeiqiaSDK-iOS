@@ -747,6 +747,7 @@ Terminating app due to uncaught exception 'UIApplicationInvalidInterfaceOrientat
 **v3.1.7 2016 年 03 月 16 日
 
 * 解决单语言的项目获取不到 App 的基本信息的问题。
+* 修复用户 App 有悬浮窗的情况下，评价界面显示不出来的情况。
 
 **v3.1.6 2016 年 03 月 11 日
 
