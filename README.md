@@ -9,6 +9,9 @@ edition: m2016
 
 > 如有疑问，欢迎加入 美洽 SDK 开发 QQ 群：295646206
 
+> *请注意，如果你是旧版 SDK 更换到新版 SDK，我们的推送数据格式统一成了 JSON 格式，具体请参见[消息推送](#消息推送)
+
+
 ## 目录
 * [SDK 工作流程](#sdk-工作流程)
 * [手动导入美洽 SDK](#导入美洽-sdk)
@@ -80,7 +83,9 @@ framework中的文件 | 说明
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.1.5'
+use_frameworks!
+
+pod 'Meiqia'
 ```
 
 接着安装美洽 pod 即可：
@@ -551,9 +556,34 @@ MQAgent *agent = [MQManager getCurrentAgent];
 }];
 ```
 
-**注意**,调用发送消息接口后，回调中会返回一个消息实体，开发者可根据此消息的状态，来判断该条消息是发送成功还是发送失败。
+**注意**，调用发送消息接口后，回调中会返回一个消息实体，开发者可根据此消息的状态，来判断该条消息是发送成功还是发送失败。
+
+### 获取未读消息数
+
+开发者使用此接口来统一获取所有的未读消息，用户可以在需要显示未读消息数是调用此接口，此接口会自动判断并合并本地和服务器上的未读消息，当用户进入聊天界面后，未读消息将会清零。
+`[MQManager getUnreadMessagesWithCompletion:completion]` 
+
+###录音和播放录音
+
+录音和播放录音分别包含 3 种可配置的模式：
+- 暂停其他音频
+- 和其他音频同时播放
+- 降低其他音频声音
+
+用户可以根据情况选择，在 `MQChatViewManager.h` 中直接配置以下两个属性： 
+
+`@property (nonatomic, assign) MQPlayMode playMode;`
+
+`@property (nonatomic, assign) MQRecordMode recordMode;`
+
+如果宿主应用本身也有声音播放，比如游戏，为了不影响背景音乐播放，可以设置 `@property (nonatomic, assign) BOOL keepAudioSessionActive;` 为 `YES` 这样就不会再完成播放和录音之后关闭 AudioSession，从而不会影响背景音乐。
+
+**注意，游戏中，要将声音播放的 category 设置为 play and record，否则会导致录音之后无法播放声音。**
 
 
+### 预发送消息
+
+在 `MQChatViewManager.h` 中， 通过设置 `@property (nonatomic, strong) NSArray *preSendMessages;` 来让客户显示聊天窗口的时候，自动向客服发送消息，支持文字和图片。
 # SDK 中嵌入美洽 SDK
 如果你的开发项目也是 SDK，那么在了解常规 App 嵌入美洽 SDK 的基础上，还需要注意其他事项。
 

@@ -12,7 +12,7 @@
 #import "MQDefinition.h"
 #import "MQAgent.h"
 
-#define MQSDKVersion @"3.1.5"
+#define MQSDKVersion @"3.1.7"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -218,6 +218,14 @@
                           progress:(void (^)(float progress))progressBlock
                         completion:(void (^)(NSData *mediaData, NSError *error))completion;
 
+
+/**
+ *  取消下载
+ *
+ *  @param urlString     url
+ */
++ (void)cancelDownloadForUrl:(NSString *)urlString;
+
 /**
  *  清除所有美洽的多媒体缓存
  *
@@ -270,10 +278,10 @@
 
 /**
  * 是否修改某条消息为未读
- * @param messageId 被修改的消息id
+ * @param messageIds 被修改的消息id数组
  * @param isRead   该消息是否已读
  */
-+ (void)updateMessage:(NSString *)messageId
++ (void)updateMessageIds:(NSArray *)messageIds
          toReadStatus:(BOOL)isRead;
 
 /**
@@ -329,6 +337,36 @@
  */
 + (NSString *)getMeiQiaSDKVersion;
 
+
+/**
+ * 获得所有未读消息，包括本地和服务端的
+ */
++ (void)getUnreadMessagesWithCompletion:(void (^)(NSArray *messages, NSError *error))completion;
+
+/**
+ 获得本地未读消息
+ */
++ (NSArray *)getLocalUnreadeMessages;
+
+/**
+ * 当前用户是否被加入黑名单
+ */
++ (BOOL)isBlacklisted;
+
+
+/**
+ * 请求文件的下载地址
+ */
++ (void)clientDownloadFileWithMessageId:(NSString *)messageId
+                                      conversatioId:(NSString *)conversationId
+                                      andCompletion:(void(^)(NSString *url, NSError *error))action;
+
+/**
+ 修改或增加已保存的消息中的 accessory data 中的数据
+ 
+ @param accessoryData 字典中的数据必须是基本数据和字符串
+ */
++ (void)updateMessageWithId:(NSString *)messageId forAccessoryData:(NSDictionary *)accessoryData;
 
 
 @end

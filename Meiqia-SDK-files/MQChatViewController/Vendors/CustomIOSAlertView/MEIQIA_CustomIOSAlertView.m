@@ -123,7 +123,15 @@ CGSize currentKeyboardSize;
             
         }
         
-        [[[[UIApplication sharedApplication] windows] firstObject] addSubview:self];
+        for (id window in [[UIApplication sharedApplication] windows]) {
+            if ([window isKindOfClass:[UIWindow class]]) {
+                UIWindow *currentWindow = (UIWindow *)window;
+                if (!currentWindow.hidden) {
+                    [currentWindow addSubview:self];
+                    break;
+                }
+            }
+        }
     }
     
     dialogView.layer.opacity = 0.5f;
@@ -263,7 +271,7 @@ CGSize currentKeyboardSize;
         [closeButton setTag:i];
         
         [closeButton setTitle:[buttonTitles objectAtIndex:i] forState:UIControlStateNormal];
-        [closeButton setTitleColor:[UIColor colorWithRed:0.0f green:0.5f blue:1.0f alpha:1.0f] forState:UIControlStateNormal];
+        [closeButton setTitleColor:self.tintColor forState:UIControlStateNormal];
         [closeButton setTitleColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.5f] forState:UIControlStateHighlighted];
         [closeButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
         [closeButton.layer setCornerRadius:kCustomIOSAlertViewCornerRadius];

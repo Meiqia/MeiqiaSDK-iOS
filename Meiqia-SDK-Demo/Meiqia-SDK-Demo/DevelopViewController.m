@@ -25,6 +25,8 @@ typedef enum : NSUInteger {
 } MQSDKDemoManager;
 
 static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
+static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount";
+
 
 @interface DevelopViewController ()<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
 
@@ -67,15 +69,18 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
                              @"删除所有美洽多媒体存储",
                              @"删除本地数据库中的消息",
                              @"查看当前 SDK 版本号",
-                             @"当前的美洽顾客 id 为：(点击复制该顾客 id )"
-                             ],
+                             @"当前的美洽顾客 id 为：(点击复制该顾客 id )",
+                             @"显示当前未读的消息数"],
                          @[
-                             @"chatViewStyle1",
-                             @"chatViewStyle2",
-                             @"chatViewStyle3",
-                             @"chatViewStyle4",
-                             @"chatViewStyle5",
-                             @"chatViewStyle6"
+                             @"自定义主题 1",
+                             @"自定义主题 2",
+                             @"自定义主题 3",
+                             @"自定义主题 4",
+                             @"自定义主题 5",
+                             @"自定义主题 6",
+                             @"系统主题 MQChatViewStyleTypeBlue",
+                             @"系统主题 MQChatViewStyleTypeGreen",
+                             @"系统主题 MQChatViewStyleTypeDark",
                              ]
                          ];
     
@@ -178,6 +183,8 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
             case 13:
                 [self copyCurrentClientIdToPasteboard];
                 break;
+            case 14:
+                [self showUnreadMessageCount:[tableView cellForRowAtIndexPath:indexPath]];
             default:
                 break;
         }
@@ -201,6 +208,15 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
             break;
         case 5:
             [self chatViewStyle6];
+            break;
+        case 6:
+            [self systemStyleBlue];
+            break;
+        case 7:
+            [self systemStyleGreen];
+            break;
+        case 8:
+            [self systemStyleDark];
             break;
         default:
             break;
@@ -234,7 +250,10 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[textArray objectAtIndex:indexPath.row]];
         }
     }
-    if (indexPath.row + 1 == [textArray count] && indexPath.section == 0) {
+    
+    cell.accessoryView = nil;
+    cell.detailTextLabel.text = nil;
+    if (indexPath.row + 2 == [textArray count] && indexPath.section == 0) {
         cell.detailTextLabel.text = currentClientId;
         cell.detailTextLabel.textColor = [UIColor redColor];
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -257,7 +276,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     //开启同步消息
     [chatViewManager enableSyncServerMessage:true];
-    [chatViewManager enableOutgoingAvatar:false];
+    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -279,7 +298,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 - (void)setClientOnlineWithClientId:(NSString *)clientId {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager setLoginMQClientId:clientId];
-    [chatViewManager enableOutgoingAvatar:false];
+    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager presentMQChatViewControllerInViewController:self];
 }
 
@@ -375,6 +394,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 - (void)setClientOnlineWithGroupId:(NSString *)groupId {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager setScheduledGroupId:groupId];
+//    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -453,6 +473,35 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 }
 
 /**
+ *  显示用户退出应用后收到的未读消息数的开关
+ */
+- (void)switchShowUnreadMessageCount {
+    [[NSUserDefaults standardUserDefaults]setObject:@(![self.class shouldShowUnreadMessageCount]) forKey:kSwitchShowUnreadMessageCount];
+    [configTableView reloadData];
+}
+
++ (BOOL)shouldShowUnreadMessageCount {
+    return [[[NSUserDefaults standardUserDefaults]objectForKey:kSwitchShowUnreadMessageCount] boolValue];
+}
+
+- (void)showUnreadMessageCount:(UITableViewCell *)cell {
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    [cell setAccessoryView:indicator];
+    
+    [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+        [indicator stopAnimating];
+        cell.accessoryView = nil;
+        UIAlertView *alert = [UIAlertView new];
+        alert.title = @"未读消息";
+        alert.message = [NSString stringWithFormat:@"未读消息数为: %d",(int)messages.count];
+        [alert addButtonWithTitle:@"OK"];
+        [alert show];
+    }];
+}
+
+/**
  *  显示顾客的属性
  */
 - (void)showSetClientAttributesAlertView {
@@ -515,25 +564,33 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
  */
 - (void)chatViewStyle1 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    UIImage *photoImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleTwo"];
-    UIImage *photoHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleTwo"];
-    UIImage *voiceImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleTwo"];
-    UIImage *voiceHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleTwo"];
-    UIImage *keyboardImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputImageNormalStyleTwo"];
-    UIImage *keyboardHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleTwo"];
-    UIImage *resightKeyboardImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleTwo"];
-    UIImage *resightKeyboardHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
+    UIImage *photoImage = [UIImage imageNamed:@"MQMessageCameraInputImageNormalStyleTwo"];
+    UIImage *photoHighlightedImage = [UIImage imageNamed:@"MQMessageCameraInputHighlightedImageStyleTwo"];
+    UIImage *voiceImage = [UIImage imageNamed:@"MQMessageVoiceInputImageNormalStyleTwo"];
+    UIImage *voiceHighlightedImage = [UIImage imageNamed:@"MQMessageVoiceInputHighlightedImageStyleTwo"];
+    UIImage *keyboardImage = [UIImage imageNamed:@"MQMessageTextInputImageNormalStyleTwo"];
+    UIImage *keyboardHighlightedImage = [UIImage imageNamed:@"MQMessageTextInputHighlightedImageStyleTwo"];
+    UIImage *resightKeyboardImage = [UIImage imageNamed:@"MQMessageKeyboardDownImageNormalStyleTwo"];
+    UIImage *resightKeyboardHighlightedImage = [UIImage imageNamed:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
     UIImage *avatar = [UIImage imageNamed:@"ijinmaoAvatar"];
+    
+    MQChatViewStyle *chatViewStyle = [chatViewManager chatViewStyle];
+    
+    [chatViewStyle setPhotoSenderImage:photoImage];
+    [chatViewStyle setPhotoSenderHighlightedImage:photoHighlightedImage];
+    [chatViewStyle setVoiceSenderImage:voiceImage];
+    [chatViewStyle setVoiceSenderHighlightedImage:voiceHighlightedImage];
+    [chatViewStyle setKeyboardSenderImage:keyboardImage];
+    [chatViewStyle setKeyboardSenderHighlightedImage:keyboardHighlightedImage];
+    [chatViewStyle setResignKeyboardImage:resightKeyboardImage];
+    [chatViewStyle setResignKeyboardHighlightedImage:resightKeyboardHighlightedImage];
+    [chatViewStyle setIncomingBubbleColor:[UIColor redColor]];
+    [chatViewStyle setIncomingMsgTextColor:[UIColor whiteColor]];
+    [chatViewStyle setOutgoingBubbleColor:[UIColor yellowColor]];
+    [chatViewStyle setOutgoingMsgTextColor:[UIColor darkTextColor]];
+    [chatViewStyle setEnableRoundAvatar:true];
+    
     [chatViewManager setoutgoingDefaultAvatarImage:avatar];
-    [chatViewManager setPhotoSenderImage:photoImage highlightedImage:photoHighlightedImage];
-    [chatViewManager setVoiceSenderImage:voiceImage highlightedImage:voiceHighlightedImage];
-    [chatViewManager setTextSenderImage:keyboardImage highlightedImage:keyboardHighlightedImage];
-    [chatViewManager setResignKeyboardImage:resightKeyboardImage highlightedImage:resightKeyboardHighlightedImage];
-    [chatViewManager setIncomingBubbleColor:[UIColor redColor]];
-    [chatViewManager setIncomingMessageTextColor:[UIColor whiteColor]];
-    [chatViewManager setOutgoingBubbleColor:[UIColor yellowColor]];
-    [chatViewManager setOutgoingMessageTextColor:[UIColor darkTextColor]];
-    [chatViewManager enableRoundAvatar:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -542,15 +599,19 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
  */
 - (void)chatViewStyle2 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    UIImage *incomingBubbleImage = [MQAssetUtil imageFromBundleWithName:@"MQBubbleIncomingStyleTwo"];
-    UIImage *outgoingBubbleImage = [MQAssetUtil imageFromBundleWithName:@"MQBubbleOutgoingStyleTwo"];
+    UIImage *incomingBubbleImage = [UIImage imageNamed:@"MQBubbleIncomingStyleTwo"];
+    UIImage *outgoingBubbleImage = [UIImage imageNamed:@"MQBubbleOutgoingStyleTwo"];
     CGPoint stretchPoint = CGPointMake(incomingBubbleImage.size.width / 2.0f - 4.0, incomingBubbleImage.size.height / 2.0f);
     [chatViewManager enableSendVoiceMessage:false];
-    [chatViewManager enableOutgoingAvatar:false];
-    [chatViewManager setIncomingBubbleImage:incomingBubbleImage];
-    [chatViewManager setOutgoingBubbleImage:outgoingBubbleImage];
-    [chatViewManager setIncomingBubbleColor:[UIColor yellowColor]];
-    [chatViewManager setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
+    [chatViewManager setIncomingMessageSoundFileName:@""];
+    
+    MQChatViewStyle *chatViewStyle = [chatViewManager chatViewStyle];
+    
+    [chatViewStyle setEnableOutgoingAvatar:false];
+    [chatViewStyle setIncomingBubbleImage:incomingBubbleImage];
+    [chatViewStyle setOutgoingBubbleImage:outgoingBubbleImage];
+    [chatViewStyle setIncomingBubbleColor:[UIColor yellowColor]];
+    [chatViewStyle setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -559,12 +620,13 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
  */
 - (void)chatViewStyle3 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager setIncomingMessageSoundFileName:@"MQNewMessageRingStyleTwo.wav"];
     [chatViewManager setMessageLinkRegex:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"];
     [chatViewManager enableChatWelcome:true];
     [chatViewManager setChatWelcomeText:@"你好，请问有什么可以帮助到您？"];
-    [chatViewManager setIncomingMessageSoundFileName:@"MQNewMessageRingStyleTwo.wav"];
     [chatViewManager enableMessageSound:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
+    
 }
 
 /**
@@ -573,6 +635,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 - (void)chatViewStyle4 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableShowNewMessageAlert:true];
+
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -582,12 +645,13 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 - (void)chatViewStyle5 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableTopPullRefresh:true];
-    [chatViewManager setPullRefreshColor:[UIColor redColor]];
+    [chatViewManager.chatViewStyle setPullRefreshColor:[UIColor redColor]];
+    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor blueColor]];
+    
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.backgroundColor = [UIColor redColor];
     rightButton.frame = CGRectMake(10, 10, 20, 20);
-    [chatViewManager setNavigationBarTintColor:[UIColor blueColor]];
-    [chatViewManager setNavRightButton:rightButton];
+    [chatViewManager.chatViewStyle setNavBarRightButton:rightButton];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -599,14 +663,49 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.backgroundColor = [UIColor redColor];
     rightButton.frame = CGRectMake(10, 10, 20, 20);
-    [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
-    [chatViewManager setNavRightButton:rightButton];
+    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor redColor]];
+    [chatViewManager.chatViewStyle setNavBarRightButton:rightButton];
     UIButton *lertButton = [UIButton buttonWithType:UIButtonTypeCustom];
     lertButton.backgroundColor = [UIColor blueColor];
     lertButton.frame = CGRectMake(10, 10, 20, 20);
-    [chatViewManager setNavLeftButton:lertButton];
+    [chatViewManager.chatViewStyle setNavBarLeftButton:lertButton];
+    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleDefault];
+    
     [chatViewManager setNavTitleText:@"我是标题哦^.^"];
-    [chatViewManager enableMessageImageMask:false];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+    
+}
+
+- (void)systemStyleBlue {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    [chatViewManager setChatViewStyle:[MQChatViewStyle blueStyle]];
+    
+    [chatViewManager enableShowNewMessageAlert:true];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+- (void)systemStyleGreen {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    [chatViewManager setChatViewStyle:[MQChatViewStyle greenStyle]];
+    
+    [chatViewManager enableShowNewMessageAlert:true];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+- (void)systemStyleDark {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    [chatViewManager setChatViewStyle:[MQChatViewStyle darkStyle]];
+    
+    [MQCustomizedUIText setCustomiedTextForKey:MQUITextKeyRecordButtonBegin text:@"让我听见你的声音"];
+    [MQCustomizedUIText setCustomiedTextForKey:(MQUITextKeyMessageInputPlaceholder) text:@"开始打字吧"];
+    
+    [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
