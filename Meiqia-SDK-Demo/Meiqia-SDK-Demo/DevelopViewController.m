@@ -645,7 +645,9 @@ static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableTopPullRefresh:true];
     [chatViewManager.chatViewStyle setPullRefreshColor:[UIColor redColor]];
-    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor blueColor]];
+//    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor blueColor]];
+//    [chatViewManager.chatViewStyle setNavBarColor:[UIColor yellowColor]];
+
     
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.backgroundColor = [UIColor redColor];

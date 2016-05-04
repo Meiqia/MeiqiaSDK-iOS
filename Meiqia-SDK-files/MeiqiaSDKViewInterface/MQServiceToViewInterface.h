@@ -22,6 +22,7 @@
 /**
  *  该协议是UI层获取数据的委托方法
  */
+@class MQAgent;
 @protocol MQServiceToViewInterfaceDelegate <NSObject>
 
 /**
@@ -179,6 +180,11 @@
  *  @param messageId 消息id
  */
 + (void)didTapMessageWithMessageId:(NSString *)messageId;
+
+/**
+ *  获取当前客服对象
+ */
++ (MQAgent *)getCurrentAgent;
 
 /**
  *  获取当前客服名字

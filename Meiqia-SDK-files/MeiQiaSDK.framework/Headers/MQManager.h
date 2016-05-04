@@ -355,7 +355,7 @@
 
 
 /**
- * 请求文件的下载地址
+ * 汇报文件被下载
  */
 + (void)clientDownloadFileWithMessageId:(NSString *)messageId
                                       conversatioId:(NSString *)conversationId
