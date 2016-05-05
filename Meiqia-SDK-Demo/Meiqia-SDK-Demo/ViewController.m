@@ -10,7 +10,7 @@
 #import "MQChatViewManager.h"
 #import "MQChatDeviceUtil.h"
 #import "DevelopViewController.h"
-//#import <MeiQiaSDK/MQManager.h>
+#import <MeiQiaSDK/MQManager.h>
 
 static CGFloat const kMQButtonVerticalSpacing   = 16.0;
 static CGFloat const kMQButtonHeight            = 42.0;
@@ -152,6 +152,10 @@ static int indicator_tag = 10;
     
     [chatViewManager setRecordMode:MQRecordModeDuckOther];
     [chatViewManager setPlayMode:MQPlayModeMixWithOther];
+    
+    [MQManager getEnterpriseConfigDataComplete:^(NSDictionary *data, NSError *error) {
+        NSLog(@">>>>>>>> %@",data);
+    }];
     
 }
 

@@ -13,6 +13,7 @@
 #import "MQNamespacedDependencies.h"
 #import "MQChatViewConfig.h"
 #import "UIColor+Hex.h"
+#import "MQServiceToViewInterface.h"
 
 static CGFloat const kMQEvaluationVerticalSpacing = 16.0;
 static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
@@ -63,6 +64,10 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     alertViewTitle.textAlignment = NSTextAlignmentCenter;
     alertViewTitle.font = [UIFont systemFontOfSize:17.0];
     [customView addSubview:alertViewTitle];
+    
+    [MQServiceToViewInterface getEnterpriseConfigInfoComplete:^(NSDictionary *data, NSError *error) {
+        alertViewTitle.text = data[@"prompt_text"];
+    }];
     
     //tableView 上分割线
     UIView *tableTopLine = [[UIView alloc] initWithFrame:CGRectMake(0, alertViewTitle.frame.origin.y+alertViewTitle.frame.size.height+kMQEvaluationVerticalSpacing, customView.frame.size.width, 0.5)];

@@ -306,4 +306,10 @@
 
 + (void)updateMessageIds:(NSArray *)messageIds toReadStatus:(BOOL)isRead;
 
+/**
+ 获取当前企业的配置信息
+ */
++ (void)getEnterpriseConfigInfoComplete:(void(^)(NSDictionary *, NSError *))action;
+
 @end
+

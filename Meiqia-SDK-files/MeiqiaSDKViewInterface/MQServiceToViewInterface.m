@@ -349,6 +349,10 @@
     }];
 }
 
++ (void)getEnterpriseConfigInfoComplete:(void(^)(NSDictionary *, NSError *))action {
+    [MQManager getEnterpriseConfigDataComplete:action];
+}
+
 #pragma 实例方法
 - (instancetype)init {
     if (self = [super init]) {

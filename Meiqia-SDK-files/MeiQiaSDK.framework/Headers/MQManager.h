@@ -355,7 +355,7 @@
 
 
 /**
- * 汇报文件被下载
+ * 请求文件的下载地址
  */
 + (void)clientDownloadFileWithMessageId:(NSString *)messageId
                                       conversatioId:(NSString *)conversationId
@@ -367,6 +367,13 @@
  @param accessoryData 字典中的数据必须是基本数据和字符串
  */
 + (void)updateMessageWithId:(NSString *)messageId forAccessoryData:(NSDictionary *)accessoryData;
+
+
+/**
+获取当前企业的配置信息
+ */
+
++ (void)getEnterpriseConfigDataComplete:(void(^)(NSDictionary *, NSError *))action;
 
 
 @end
