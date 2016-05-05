@@ -10,7 +10,7 @@
 
 @interface MQTransitioningAnimation()
 
-@property (nonatomic, strong) id<UIViewControllerTransitioningDelegate> transitioningDelegateImpl;
+@property (nonatomic, strong) MQShareTransitioningDelegateImpl <UIViewControllerTransitioningDelegate> * transitioningDelegateImpl;
 
 @end
 
@@ -36,9 +36,32 @@
     return self;
 }
 
++ (void)setInteractive:(BOOL)interactive {
+    [MQTransitioningAnimation sharedInstance].transitioningDelegateImpl.interactive = interactive;
+}
+
++ (BOOL)isInteractive {
+    return [MQTransitioningAnimation sharedInstance].transitioningDelegateImpl.interactive;
+}
+
 + (id <UIViewControllerTransitioningDelegate>)transitioningDelegateImpl {
     return [[self sharedInstance] transitioningDelegateImpl];
 }
+
++ (void)updateInteractiveTransition:(CGFloat)percent {
+    [[MQTransitioningAnimation sharedInstance].transitioningDelegateImpl.interactiveTransitioning updateInteractiveTransition:percent];
+}
+
++ (void)cancelInteractiveTransition {
+    [[MQTransitioningAnimation sharedInstance].transitioningDelegateImpl.interactiveTransitioning cancelInteractiveTransition];
+    [MQTransitioningAnimation sharedInstance].transitioningDelegateImpl.interactiveTransitioning = nil;
+}
+
++ (void)finishInteractiveTransition {
+    [[MQTransitioningAnimation sharedInstance].transitioningDelegateImpl.interactiveTransitioning finishInteractiveTransition];
+}
+
+#pragma mark -
 
 + (CATransition *)createPresentingTransiteAnimation:(MQTransiteAnimationType)animation {
     CATransition *transition = [CATransition animation];

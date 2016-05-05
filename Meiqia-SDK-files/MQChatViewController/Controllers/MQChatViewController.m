@@ -38,6 +38,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 @interface MQChatViewController()
 
 @property (nonatomic, strong) id evaluateBarButtonItem;//保存隐藏的barButtonItem
+@property (nonatomic, strong) UIViewController *presentingViewControllerCache; //保存显示当前 ViewController 的 ViewController，用于交互式转场取消的情况
 
 @end
 
@@ -95,6 +96,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     isMQCommunicationFailed = NO;
     [self addObserver];
 #endif
+    
+    UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
+    popRecognizer.edges = UIRectEdgeLeft;
+    [self.view addGestureRecognizer:popRecognizer];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -108,6 +113,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 //    self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
 //    //恢复原来的导航栏时间条
     [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+    if (parent) {
+        if (self.presentingViewController) {
+            self.presentingViewControllerCache = self.presentingViewController;
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -704,6 +717,32 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
 }
 
+#pragma mark - 
+
+- (void)handlePopRecognizer:(UIScreenEdgePanGestureRecognizer*)recognizer {
+    CGPoint translation = [recognizer translationInView:self.view];
+    
+    CGFloat xPercent = translation.x / CGRectGetWidth(self.view.bounds) * 0.5;
+    
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
+            [MQTransitioningAnimation setInteractive:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
+            break;
+        case UIGestureRecognizerStateChanged:
+            [MQTransitioningAnimation updateInteractiveTransition:xPercent];
+            break;
+        default:
+            if (xPercent < .25) {
+                [MQTransitioningAnimation cancelInteractiveTransition];
+            } else {
+                [MQTransitioningAnimation finishInteractiveTransition];
+            }
+            [MQTransitioningAnimation setInteractive:NO];
+            break;
+    }
+    
+}
 
 #endif
 

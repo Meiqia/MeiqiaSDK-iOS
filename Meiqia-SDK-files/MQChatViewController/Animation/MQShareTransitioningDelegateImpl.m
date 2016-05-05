@@ -12,14 +12,30 @@
 @implementation MQShareTransitioningDelegateImpl
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-    MQAnimatorPush *animator = [MQAnimatorPush new];
+    MQAnimatorPush *animator = (MQAnimatorPush *)self.interactiveTransitioning;
     animator.isPresenting = YES;
     return animator;
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-    return [MQAnimatorPush new];
+    MQAnimatorPush *animator = (MQAnimatorPush *)self.interactiveTransitioning;
+    animator.isPresenting = NO;
+    return animator;
 }
 
+- (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {
+    return self.interactive ? self.interactiveTransitioning : nil;
+}
+
+- (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
+    return self.interactive ? self.interactiveTransitioning : nil;
+}
+
+- (UIPercentDrivenInteractiveTransition <UIViewControllerAnimatedTransitioning> *)interactiveTransitioning {
+    if (!_interactiveTransitioning) {
+        _interactiveTransitioning = [MQAnimatorPush new];
+    }
+    return _interactiveTransitioning;
+}
 
 @end

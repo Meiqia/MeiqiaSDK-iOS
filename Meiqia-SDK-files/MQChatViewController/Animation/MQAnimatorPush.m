@@ -25,7 +25,6 @@
     self.toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     self.fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    
     CGRect finalFrame = [transitionContext finalFrameForViewController:self.toViewController];
     if (CGRectIsEmpty(finalFrame)) {
         finalFrame = [[UIScreen mainScreen] bounds];
@@ -35,8 +34,12 @@
     
     if (self.isPresenting) {
         self.toViewController.view.frame = CGRectMake(screenSize.width, 0, screenSize.width, screenSize.height);
+        [[transitionContext containerView] addSubview:self.fromViewController.view];
         [[transitionContext containerView] addSubview:self.toViewController.view];
     } else {
+        [[transitionContext containerView] addSubview:self.toViewController.view];
+        [[transitionContext containerView] addSubview:self.fromViewController.view];
+        self.toViewController.view.frame = CGRectMake(-screenSize.width / 2, 0, screenSize.width, screenSize.height);
         self.fromViewController.view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
     }
     
@@ -50,7 +53,7 @@
             self.fromViewController.view.frame = CGRectMake(screenSize.width, 0, screenSize.width, screenSize.height);
         }
     } completion:^(BOOL finished) {
-        [transitionContext completeTransition:finished];
+        [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
     }];
 }
 
