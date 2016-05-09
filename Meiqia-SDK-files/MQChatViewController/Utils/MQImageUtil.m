@@ -30,6 +30,42 @@
     }
 }
 
++ (UIImage *)resizeImage:(UIImage *)image maxSize:(CGSize)size {
+    CGSize imageSize = image.size;
+    CGFloat scale = image.scale;
+    CGFloat screenScale = [UIScreen mainScreen].scale;
+    
+    float widthScale = 1, heightScale = 1;
+    
+    if (imageSize.width * scale > size.width * screenScale) {
+        widthScale = (imageSize.width * scale) / (size.width * screenScale);
+    }
+    
+    if (imageSize.height * scale > size.width * screenScale) {
+        heightScale = (imageSize.height * scale) / (size.width * screenScale);
+    }
+    
+    float outputScale = MAX(widthScale, heightScale);
+    
+    if (outputScale > 1) {
+        return [self.class scaleImage:image toNewSize:CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(1.0/(screenScale*outputScale), 1.0/(screenScale*outputScale)))];
+    } else {
+        return image;
+    }
+}
+
++ (UIImage *)scaleImage:(UIImage *)image toNewSize:(CGSize)size
+{
+    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    
+    [image drawInRect:CGRectMake(0, 0, ceil(size.width), ceil(size.height))];
+    
+    UIImage * result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return result;
+}
+
 +(UIImage *)viewScreenshot:(UIView*)view{
     UIGraphicsBeginImageContext(view.frame.size);
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];

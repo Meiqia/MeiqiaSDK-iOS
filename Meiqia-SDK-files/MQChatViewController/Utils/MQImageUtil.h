@@ -19,6 +19,8 @@
  */
 + (UIImage *)convertImageColorWithImage:(UIImage *)originalImage toColor:(UIColor *)toColor;
 
++ (UIImage *)resizeImage:(UIImage *)image maxSize:(CGSize)size;
+
 //截图
 +(UIImage *)viewScreenshot:(UIView*)view;
 

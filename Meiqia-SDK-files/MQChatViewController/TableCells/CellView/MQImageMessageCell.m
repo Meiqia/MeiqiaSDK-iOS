@@ -11,7 +11,6 @@
 #import "MQChatFileUtil.h"
 #import "MQImageUtil.h"
 #import "MQChatViewConfig.h"
-#import "UIImageView+MEIQIA_MHFacebookImageViewer.h"
 #import "MQBundleUtil.h"
 
 @implementation MQImageMessageCell {
@@ -21,6 +20,8 @@
     UIActivityIndicatorView *sendingIndicator;
     UIImageView *failureImageView;
     UIActivityIndicatorView *loadingIndicator;
+    
+    MQImageCellModel *cellModel;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -33,7 +34,13 @@
         bubbleImageView = [[UIImageView alloc] init];
         UILongPressGestureRecognizer *longPressBubbleGesture=[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressBubbleView:)];
         [bubbleImageView addGestureRecognizer:longPressBubbleGesture];
+        bubbleImageView.userInteractionEnabled = YES;
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(bubbleTapped)];
+        [bubbleImageView addGestureRecognizer:tapGesture];
+        
         [self.contentView addSubview:bubbleImageView];
+        
         //初始化contentImageView
         bubbleContentImageView = [[UIImageView alloc] init];
         bubbleContentImageView.layer.masksToBounds = true;
@@ -63,7 +70,7 @@
         NSAssert(NO, @"传给MQImageMessageCell的Model类型不正确");
         return ;
     }
-    MQImageCellModel *cellModel = (MQImageCellModel *)model;
+    cellModel = (MQImageCellModel *)model;
 
     //刷新头像
     if (cellModel.avatarImage) {
@@ -83,14 +90,12 @@
     if (cellModel.image) {
         if ([MQChatViewConfig sharedConfig].enableMessageImageMask) {
             bubbleImageView.image = cellModel.image;
-            [bubbleImageView setupImageViewer];
             [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
         } else {
             bubbleImageView.userInteractionEnabled = true;
             bubbleImageView.image = cellModel.bubbleImage;
             bubbleContentImageView.image = cellModel.image;
             bubbleContentImageView.frame = cellModel.contentImageViewFrame;
-            [bubbleContentImageView setupImageViewer];
         }
         
         loadingIndicator.hidden = true;
@@ -123,6 +128,18 @@
     if (((UILongPressGestureRecognizer*)sender).state == UIGestureRecognizerStateBegan) {
         [self showMenuControllerInView:self targetRect:bubbleImageView.frame menuItemsName:@{@"imageCopy" : bubbleImageView.image}];
     }
+}
+
+#pragma 单击气泡
+- (void)bubbleTapped {
+    
+    UIView *view = self;
+    
+    while (![view isKindOfClass:[UITableView class]]) {
+        view = view.superview;
+    }
+    
+    [cellModel showImageViewerFromRect:[bubbleImageView.superview convertRect:bubbleImageView.frame toView:[UIApplication sharedApplication].keyWindow]];
 }
 
 #pragma 点击发送失败消息，重新发送事件
