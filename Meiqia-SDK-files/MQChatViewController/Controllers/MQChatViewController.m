@@ -439,7 +439,19 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 -(void)inputting:(NSString*)content {
     //用户正在输入
-    [chatViewService sendUserInputtingWithContent:content];
+    
+    static BOOL shouldSendInputtingMessageToServer = YES;
+    
+    if (shouldSendInputtingMessageToServer) {
+        shouldSendInputtingMessageToServer = NO;
+        [chatViewService sendUserInputtingWithContent:content];
+        
+        //wait for 5 secs to enable sending message again
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            shouldSendInputtingMessageToServer = YES;
+        });
+    }
+    
 }
 
 -(void)chatTableViewScrollToBottomWithAnimated:(BOOL)animated {
