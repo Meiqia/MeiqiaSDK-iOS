@@ -112,7 +112,9 @@
         navigationController.navigationBar.titleTextAttributes = defaultNavigationController.navigationBar.titleTextAttributes;
     }
     
-    if ([MQChatViewConfig sharedConfig].navBarColor) {
+    if ([MQChatViewConfig sharedConfig].chatViewStyle.navBarBackgroundImage) {
+        [navigationController.navigationBar setBackgroundImage:[MQChatViewConfig sharedConfig].chatViewStyle.navBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
+    } else if ([MQChatViewConfig sharedConfig].navBarColor) {
         navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
     } else if (defaultNavigationController && defaultNavigationController.navigationBar.barTintColor) {
         navigationController.navigationBar.barTintColor = defaultNavigationController.navigationBar.barTintColor;

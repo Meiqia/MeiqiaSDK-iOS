@@ -122,6 +122,10 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
 @property (nonatomic, copy) UIColor *navBarColor;
 
 /**
+ 导航栏背景图片
+ */
+@property (nonatomic, strong) UIImage *navBarBackgroundImage;
+/**
  *  设置下拉/上拉刷新的颜色；默认绿色
  *
  *  @param pullRefreshColor 颜色

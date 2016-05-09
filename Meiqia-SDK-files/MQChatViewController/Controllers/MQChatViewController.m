@@ -38,7 +38,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 @interface MQChatViewController()
 
 @property (nonatomic, strong) id evaluateBarButtonItem;//保存隐藏的barButtonItem
-@property (nonatomic, strong) UIViewController *presentingViewControllerCache; //保存显示当前 ViewController 的 ViewController，用于交互式转场取消的情况
 
 @end
 
@@ -113,14 +112,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 //    self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
 //    //恢复原来的导航栏时间条
     [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
-}
-
-- (void)didMoveToParentViewController:(UIViewController *)parent {
-    if (parent) {
-        if (self.presentingViewController) {
-            self.presentingViewControllerCache = self.presentingViewController;
-        }
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
