@@ -348,7 +348,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver{
     [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:cellNumber isLoadOver:isLoadOver];
 //    [self.chatTableView reloadData];
-    [self reloadChatTableView];
+//    [self reloadChatTableView];
 }
 
 - (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
