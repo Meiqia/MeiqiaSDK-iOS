@@ -59,6 +59,8 @@
 
 + (void)finishInteractiveTransition {
     [[MQTransitioningAnimation sharedInstance].transitioningDelegateImpl.interactiveTransitioning finishInteractiveTransition];
+    [[MQTransitioningAnimation sharedInstance].transitioningDelegateImpl finishTransition];
+    
 }
 
 #pragma mark -

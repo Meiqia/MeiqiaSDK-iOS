@@ -14,4 +14,5 @@
 @property (nonatomic, assign) BOOL interactive;
 @property (nonatomic, strong) UIPercentDrivenInteractiveTransition <UIViewControllerAnimatedTransitioning> *interactiveTransitioning;
 
+- (void)finishTransition;
 @end

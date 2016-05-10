@@ -12,14 +12,13 @@
 @implementation MQShareTransitioningDelegateImpl
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-    MQAnimatorPush *animator = (MQAnimatorPush *)self.interactiveTransitioning;
+    MQAnimatorPush *animator = [MQAnimatorPush new];
     animator.isPresenting = YES;
     return animator;
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-    MQAnimatorPush *animator = (MQAnimatorPush *)self.interactiveTransitioning;
-    animator.isPresenting = NO;
+    MQAnimatorPush *animator = [MQAnimatorPush new];
     return animator;
 }
 
@@ -36,6 +35,11 @@
         _interactiveTransitioning = [MQAnimatorPush new];
     }
     return _interactiveTransitioning;
+}
+
+///At end of transitioning call this function, otherwise the transisted view controller will be kept in memory
+- (void)finishTransition {
+    _interactiveTransitioning = nil;
 }
 
 @end
