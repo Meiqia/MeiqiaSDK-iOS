@@ -349,7 +349,7 @@
     }];
 }
 
-+ (void)getEnterpriseConfigInfoComplete:(void(^)(NSDictionary *, NSError *))action {
++ (void)getEnterpriseConfigInfoComplete:(void(^)(MQEnterprise *, NSError *))action {
     [MQManager getEnterpriseConfigDataComplete:action];
 }
 

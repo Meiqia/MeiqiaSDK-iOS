@@ -65,8 +65,8 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     alertViewTitle.font = [UIFont systemFontOfSize:17.0];
     [customView addSubview:alertViewTitle];
     
-    [MQServiceToViewInterface getEnterpriseConfigInfoComplete:^(NSDictionary *data, NSError *error) {
-        alertViewTitle.text = data[@"prompt_text"];
+    [MQServiceToViewInterface getEnterpriseConfigInfoComplete:^(MQEnterprise *enterprise, NSError *error) {
+        alertViewTitle.text = enterprise.configInfo.evaluationPromtText;
     }];
     
     //tableView 上分割线

@@ -16,7 +16,7 @@
 #import "MQTextMessage.h"
 #import "MQEventMessage.h"
 #import "MQChatViewConfig.h"
-#import <MeiQiaSDK/MQDefinition.h>
+#import <MeiQiaSDK/MeiQiaSDK.h>
 #import "MQFileDownloadMessage.h"
 
 /**
@@ -309,7 +309,7 @@
 /**
  获取当前企业的配置信息
  */
-+ (void)getEnterpriseConfigInfoComplete:(void(^)(NSDictionary *, NSError *))action;
++ (void)getEnterpriseConfigInfoComplete:(void(^)(MQEnterprise *, NSError *))action;
 
 @end
 

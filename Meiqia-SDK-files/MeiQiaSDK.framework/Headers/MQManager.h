@@ -11,8 +11,9 @@
 #import "MQMessage.h"
 #import "MQDefinition.h"
 #import "MQAgent.h"
+#import "MQEnterprise.h"
 
-#define MQSDKVersion @"3.1.7"
+#define MQSDKVersion @"3.1.9"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -373,7 +374,7 @@
 获取当前企业的配置信息
  */
 
-+ (void)getEnterpriseConfigDataComplete:(void(^)(NSDictionary *, NSError *))action;
++ (void)getEnterpriseConfigDataComplete:(void(^)(MQEnterprise *, NSError *))action;
 
 
 @end

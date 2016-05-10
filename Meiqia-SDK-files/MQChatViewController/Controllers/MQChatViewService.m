@@ -819,7 +819,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         }
         
         if ([self.delegate respondsToSelector:@selector(hideRightBarButtonItem:)]) {
-            [self.delegate hideRightBarButtonItem:agentName.length == 0];
+            [self.delegate hideRightBarButtonItem:agentStatus == MQChatAgentStatusOffLine];
         }
     }
 }
