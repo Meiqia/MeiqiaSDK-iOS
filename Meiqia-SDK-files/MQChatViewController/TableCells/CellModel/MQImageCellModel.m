@@ -385,6 +385,7 @@
         [sViewerVC dismiss];
     }];
     
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
     [viewerVC showOn:[UIApplication sharedApplication].keyWindow.rootViewController fromRect:rect];
 }
 

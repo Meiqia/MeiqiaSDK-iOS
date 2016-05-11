@@ -25,7 +25,7 @@ typedef enum : NSUInteger {
 } MQSDKDemoManager;
 
 static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
-static NSString *kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount";
+static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount";
 
 
 @interface DevelopViewController ()<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>

@@ -120,9 +120,9 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 }
 
 - (void)updateTableViewAtIndexPath:(NSIndexPath *)indexPath {
-    [self beginUpdates];
+//    [self beginUpdates];
     [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [self endUpdates];
+//    [self endUpdates];
 }
 
 /** 点击tableView的事件 */

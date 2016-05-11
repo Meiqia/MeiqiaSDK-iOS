@@ -8,6 +8,8 @@
 
 #import "MQImageViewerViewController.h"
 #import "MQServiceToViewInterface.h"
+#import "MQBundleUtil.h"
+#import "MQToast.h"
 
 #define KCellReuseId @"cell"
 
@@ -16,6 +18,10 @@
 @property (nonatomic, strong) UICollectionView *collectionView;
 
 @property (nonatomic, assign) CGRect fromRect;
+
+@property (nonatomic, strong) UIButton *saveButton;
+
+@property (nonatomic, strong) UIPageControl *pageControl;
 
 @end
 
@@ -29,15 +35,17 @@
     self.fromRect = rect;
     
     self.view.frame = self.fromRect;
-    
+    self.view.alpha = 0.0;
     [UIView animateWithDuration:0.35 delay:0.0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
         self.view.frame = [UIScreen mainScreen].bounds;
+        self.view.alpha = 1.0;
     } completion:nil];
 }
 
 - (void)dismiss {
     [UIView animateWithDuration:0.35 delay:0.0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
         self.view.frame = self.fromRect;
+        self.view.alpha = 0.0;
     } completion:^(BOOL complete){
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
@@ -49,6 +57,10 @@
     // Do any additional setup after loading the view.
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self.view addSubview:self.collectionView];
+    
+    [self.view addSubview:self.saveButton];
+    self.saveButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self leftButtonCornerConstrainsToView:self.saveButton onTo:self.view];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -100,6 +112,12 @@
     return collectionView.bounds.size;
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    NSUInteger page = floor(scrollView.contentOffset.x + scrollView.bounds.size.width / 2) / scrollView.bounds.size.width;
+    self.pageControl.currentPage = page;
+    self.currentIndex = page;
+}
+
 #pragma mark - lazy load
 
 - (UICollectionView *)collectionView {
@@ -115,6 +133,54 @@
     }
     
     return _collectionView;
+}
+
+- (UIButton *)saveButton {
+    if (!_saveButton) {
+        _saveButton = [UIButton new];
+        [_saveButton setTitle:[MQBundleUtil localizedStringForKey:@"save_photo"] forState:(UIControlStateNormal)];
+        [_saveButton sizeToFit];
+        _saveButton.layer.cornerRadius = 12;
+        _saveButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        _saveButton.layer.borderWidth = 1.0;
+        _saveButton.layer.masksToBounds = YES;
+        _saveButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [_saveButton setContentEdgeInsets:UIEdgeInsetsMake(10, 20, 10, 20)];
+        [_saveButton addTarget:self action:@selector(saveImage) forControlEvents:(UIControlEventTouchUpInside)];
+    }
+    return _saveButton;
+}
+
+- (UIPageControl *)pageControl {
+    if (!_pageControl) {
+        _pageControl = [UIPageControl new];
+        _pageControl.numberOfPages = self.images.count ?: self.imagePaths.count;
+        _pageControl.currentPage = self.currentIndex;
+    }
+    return _pageControl;
+}
+
+- (void)saveImage {
+    NSUInteger index = self.pageControl.currentPage;
+    UIImage *image = [(MQImageCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]] imageView].image;
+    if (image) {
+        UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    }
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *) error contextInfo:(void *)contextInfo {
+    if (error) {
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"save_photo_error"] duration:0.25 window:self.view.window];
+    } else {
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"save_photo_success"] duration:0.25 window:self.view.window];
+    }
+}
+
+- (void)leftButtonCornerConstrainsToView:(UIView *)innderView onTo:(UIView *)outterView {
+    NSArray *constrants = @[[NSLayoutConstraint constraintWithItem:innderView attribute:(NSLayoutAttributeLeft) relatedBy:(NSLayoutRelationEqual) toItem:outterView attribute:(NSLayoutAttributeLeft) multiplier:1.0 constant:20],
+                            [NSLayoutConstraint constraintWithItem:innderView attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:outterView attribute:(NSLayoutAttributeBottom) multiplier:1.0 constant:-20]];
+    
+    [self.view addConstraints:constrants];
 }
 
 @end

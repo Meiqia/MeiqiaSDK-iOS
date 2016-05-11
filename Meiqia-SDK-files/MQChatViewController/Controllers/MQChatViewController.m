@@ -618,7 +618,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     //更新cellModel的frame
     chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
     [chatViewService updateCellModelsFrame];
-    [self reloadChatTableView];
+    [self.chatTableView reloadData];
     //更新inputBar的frame
     CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height - kMQChatViewInputBarHeight, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
     [chatInputBar updateFrame:inputBarFrame];
