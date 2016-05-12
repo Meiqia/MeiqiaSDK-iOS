@@ -51,7 +51,7 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateIndicator) name:UIApplicationDidBecomeActiveNotification object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
     
 }
 
@@ -142,9 +142,10 @@ static int indicator_tag = 10;
     
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
-    [chatViewManager setScheduledGroupId:@"89ec00be5a215b3d232f39a32452f7b3"];
-    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectGroup];
-//    [chatViewManager setScheduledAgentId:@"f12b03466611d678797c35fbfe27b7b2"];
+    [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
+//    [chatViewManager setScheduledGroupId:@"89ec00be5a215b3d232f39a32452f7b3"];
+//    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectGroup];
+//    [chatViewManager setScheduledAgentId:@"990a7cbe603fe029e269b4c32f4fed09"];
     
     [chatViewManager pushMQChatViewControllerInViewController:self];
     

@@ -66,7 +66,9 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     [customView addSubview:alertViewTitle];
     
     [MQServiceToViewInterface getEnterpriseConfigInfoComplete:^(MQEnterprise *enterprise, NSError *error) {
-        alertViewTitle.text = enterprise.configInfo.evaluationPromtText;
+        if (enterprise.configInfo.evaluationPromtText.length > 0) {
+            alertViewTitle.text = enterprise.configInfo.evaluationPromtText;
+        }
     }];
     
     //tableView 上分割线
@@ -108,6 +110,7 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
 
     return customView;
 }
+
 
 - (void)showEvaluationAlertView {
     if (evaluationAlertView) {

@@ -33,22 +33,22 @@
 + (UIImage *)resizeImage:(UIImage *)image maxSize:(CGSize)size {
     CGSize imageSize = image.size;
     CGFloat scale = image.scale;
-    CGFloat screenScale = [UIScreen mainScreen].scale;
+//    CGFloat screenScale = [UIScreen mainScreen].scale;
     
     float widthScale = 1, heightScale = 1;
     
-    if (imageSize.width * scale > size.width * screenScale) {
-        widthScale = (imageSize.width * scale) / (size.width * screenScale);
+    if (imageSize.width * scale > size.width) {
+        widthScale = (imageSize.width * scale) / (size.width);
     }
     
-    if (imageSize.height * scale > size.width * screenScale) {
-        heightScale = (imageSize.height * scale) / (size.width * screenScale);
+    if (imageSize.height * scale > size.width) {
+        heightScale = (imageSize.height * scale) / (size.width);
     }
     
     float outputScale = MAX(widthScale, heightScale);
     
     if (outputScale > 1) {
-        return [self.class scaleImage:image toNewSize:CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(1.0/(screenScale*outputScale), 1.0/(screenScale*outputScale)))];
+        return [self.class scaleImage:image toNewSize:CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(1.0/outputScale, 1.0/outputScale))];
     } else {
         return image;
     }
@@ -56,7 +56,10 @@
 
 + (UIImage *)scaleImage:(UIImage *)image toNewSize:(CGSize)size
 {
-    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    
+    CGSize newSize = CGSizeApplyAffineTransform(size, CGAffineTransformMakeScale(1/[UIScreen mainScreen].scale, 1/[UIScreen mainScreen].scale));
+    
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, [UIScreen mainScreen].scale);
     
     [image drawInRect:CGRectMake(0, 0, ceil(size.width), ceil(size.height))];
     

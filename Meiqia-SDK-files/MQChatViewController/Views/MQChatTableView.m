@@ -120,7 +120,7 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 }
 
 - (void)updateTableViewAtIndexPath:(NSIndexPath *)indexPath {
-//    [self beginUpdates];
+//    [self beginUpdates]; //有时候会造成崩溃，但是没有查到具体原因
     [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 //    [self endUpdates];
 }

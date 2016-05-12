@@ -25,6 +25,7 @@
 #import <MeiQiaSDK/MQManager.h>
 #import "UIView+Layout.h"
 #import "MQCustomizedUIText.h"
+#import "MQImageUtil.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -538,7 +539,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if (![type isEqualToString:@"public.image"]) {
         return;
     }
-    UIImage *image          =  [MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]];
+    UIImage *image          =  [MQImageUtil resizeImage:[MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]]maxSize:CGSizeMake(1000, 1000)];
     [picker dismissViewControllerAnimated:YES completion:^{
         [chatViewService sendImageMessageWithImage:image];
         [self chatTableViewScrollToBottomWithAnimated:true];
