@@ -666,8 +666,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     UIView *titleView = [UIView new];
     UILabel *titleLabel = [UILabel new];
     titleLabel.text = agentName;
-    titleLabel.font = [UIFont systemFontOfSize:16.0];
-    titleLabel.textColor = [MQChatViewConfig sharedConfig].navTitleColor;
+    
+    UIFont *font = [MQChatViewConfig sharedConfig].chatViewStyle.navTitleFont ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSFontAttributeName] ?: [UIFont systemFontOfSize:16.0];
+    UIColor *color = [MQChatViewConfig sharedConfig].navTitleColor ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSForegroundColorAttributeName];
+    titleLabel.font = font;
+    titleLabel.textColor = color;
     CGFloat titleHeight = [MQStringSizeUtil getHeightForText:agentName withFont:titleLabel.font andWidth:self.view.frame.size.width];
     CGFloat titleWidth = [MQStringSizeUtil getWidthForText:agentName withFont:titleLabel.font andHeight:titleHeight];
     UIImageView *statusImageView = [UIImageView new];
