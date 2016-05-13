@@ -542,9 +542,9 @@
             [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
     } else if ([self handleInviteEvaluationMessage:messages]) {
-        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
-            [self.serviceToViewDelegate didReceiveTipsContent:@"发送了评价邀请" showLines:YES];
-        }
+//        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
+//            [self.serviceToViewDelegate didReceiveTipsContent:@"发送了评价邀请" showLines:YES];
+//        }
         
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
         
