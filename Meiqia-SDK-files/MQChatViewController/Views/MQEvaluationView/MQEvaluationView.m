@@ -13,6 +13,7 @@
 #import "MQNamespacedDependencies.h"
 #import "MQChatViewConfig.h"
 #import "UIColor+Hex.h"
+#import "MQServiceToViewInterface.h"
 
 static CGFloat const kMQEvaluationVerticalSpacing = 16.0;
 static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
@@ -64,6 +65,12 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     alertViewTitle.font = [UIFont systemFontOfSize:17.0];
     [customView addSubview:alertViewTitle];
     
+    [MQServiceToViewInterface getEnterpriseConfigInfoComplete:^(MQEnterprise *enterprise, NSError *error) {
+        if (enterprise.configInfo.evaluationPromtText.length > 0) {
+            alertViewTitle.text = enterprise.configInfo.evaluationPromtText;
+        }
+    }];
+    
     //tableView 上分割线
     UIView *tableTopLine = [[UIView alloc] initWithFrame:CGRectMake(0, alertViewTitle.frame.origin.y+alertViewTitle.frame.size.height+kMQEvaluationVerticalSpacing, customView.frame.size.width, 0.5)];
     tableTopLine.backgroundColor = [UIColor colorWithRed:198.0/255.0 green:198.0/255.0 blue:198.0/255.0 alpha:1.0f];
@@ -103,6 +110,7 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
 
     return customView;
 }
+
 
 - (void)showEvaluationAlertView {
     if (evaluationAlertView) {

@@ -8,6 +8,7 @@
 
 #import "MQDefinition.h"
 #import "MQAgent.h"
+#import "MQEnterprise.h"
 #import "MQManager.h"
 #import "MQMessage.h"
 #import "JSONHelper.h"

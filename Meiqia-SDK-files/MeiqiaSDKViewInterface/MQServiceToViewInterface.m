@@ -280,6 +280,10 @@
 ////    [MQManager updateMessage:messageId toReadStatus:YES];
 //}
 
++ (MQAgent *)getCurrentAgent {
+    return [MQManager getCurrentAgent];
+}
+
 + (NSString *)getCurrentAgentName {
     NSString *agentName = [MQManager getCurrentAgent].nickname;
     return agentName.length == 0 ? @"" : agentName;
@@ -343,6 +347,10 @@
             completion(avatarUrl, error);
         }
     }];
+}
+
++ (void)getEnterpriseConfigInfoComplete:(void(^)(MQEnterprise *, NSError *))action {
+    [MQManager getEnterpriseConfigDataComplete:action];
 }
 
 #pragma 实例方法
@@ -533,6 +541,16 @@
         if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
             [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
+    } else if ([self handleInviteEvaluationMessage:messages]) {
+//        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
+//            [self.serviceToViewDelegate didReceiveTipsContent:@"发送了评价邀请" showLines:YES];
+//        }
+        
+        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
+        
+        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
+            [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
+        }
     } else {
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
         
@@ -555,6 +573,13 @@
         if ([self.serviceToViewDelegate respondsToSelector:@selector(didRedirectWithAgentName:)]) {
             [self.serviceToViewDelegate didRedirectWithAgentName:messages.firstObject.agent.nickname];
         }
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)handleInviteEvaluationMessage:(NSArray<MQMessage *> *)messages {
+    if (messages.count == 1 && [messages firstObject].action == MQMessageActionInviteEvaluation) {
         return YES;
     }
     return NO;

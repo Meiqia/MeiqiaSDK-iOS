@@ -19,4 +19,14 @@
 
 + (CATransition *)createDismissingTransiteAnimation:(MQTransiteAnimationType)animation;
 
++ (void)setInteractive:(BOOL)interactive;
+
++ (BOOL)isInteractive;
+
++ (void)updateInteractiveTransition:(CGFloat)percent;
+
++ (void)cancelInteractiveTransition;
+
++ (void)finishInteractiveTransition;
+
 @end

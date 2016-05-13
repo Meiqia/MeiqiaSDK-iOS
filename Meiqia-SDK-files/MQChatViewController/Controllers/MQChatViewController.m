@@ -25,6 +25,7 @@
 #import <MeiQiaSDK/MQManager.h>
 #import "UIView+Layout.h"
 #import "MQCustomizedUIText.h"
+#import "MQImageUtil.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -95,6 +96,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     isMQCommunicationFailed = NO;
     [self addObserver];
 #endif
+    
+    UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
+    popRecognizer.edges = UIRectEdgeLeft;
+    [self.view addGestureRecognizer:popRecognizer];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -344,7 +349,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver{
     [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:cellNumber isLoadOver:isLoadOver];
 //    [self.chatTableView reloadData];
-    [self reloadChatTableView];
+//    [self reloadChatTableView];
 }
 
 - (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
@@ -426,7 +431,19 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 -(void)inputting:(NSString*)content {
     //用户正在输入
-    [chatViewService sendUserInputtingWithContent:content];
+    
+    static BOOL shouldSendInputtingMessageToServer = YES;
+    
+    if (shouldSendInputtingMessageToServer) {
+        shouldSendInputtingMessageToServer = NO;
+        [chatViewService sendUserInputtingWithContent:content];
+        
+        //wait for 5 secs to enable sending message again
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            shouldSendInputtingMessageToServer = YES;
+        });
+    }
+    
 }
 
 -(void)chatTableViewScrollToBottomWithAnimated:(BOOL)animated {
@@ -522,7 +539,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if (![type isEqualToString:@"public.image"]) {
         return;
     }
-    UIImage *image          =  [MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]];
+    UIImage *image          =  [MQImageUtil resizeImage:[MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]]maxSize:CGSizeMake(1000, 1000)];
     [picker dismissViewControllerAnimated:YES completion:^{
         [chatViewService sendImageMessageWithImage:image];
         [self chatTableViewScrollToBottomWithAnimated:true];
@@ -602,7 +619,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     //更新cellModel的frame
     chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
     [chatViewService updateCellModelsFrame];
-    [self reloadChatTableView];
+    [self.chatTableView reloadData];
     //更新inputBar的frame
     CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height - kMQChatViewInputBarHeight, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
     [chatInputBar updateFrame:inputBarFrame];
@@ -649,8 +666,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     UIView *titleView = [UIView new];
     UILabel *titleLabel = [UILabel new];
     titleLabel.text = agentName;
-    titleLabel.font = [UIFont systemFontOfSize:16.0];
-    titleLabel.textColor = [MQChatViewConfig sharedConfig].navTitleColor;
+    
+    UIFont *font = [MQChatViewConfig sharedConfig].chatViewStyle.navTitleFont ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSFontAttributeName] ?: [UIFont systemFontOfSize:16.0];
+    UIColor *color = [MQChatViewConfig sharedConfig].navTitleColor ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSForegroundColorAttributeName];
+    titleLabel.font = font;
+    titleLabel.textColor = color;
     CGFloat titleHeight = [MQStringSizeUtil getHeightForText:agentName withFont:titleLabel.font andWidth:self.view.frame.size.width];
     CGFloat titleWidth = [MQStringSizeUtil getWidthForText:agentName withFont:titleLabel.font andHeight:titleHeight];
     UIImageView *statusImageView = [UIImageView new];
@@ -704,6 +724,32 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
 }
 
+#pragma mark - 
+
+- (void)handlePopRecognizer:(UIScreenEdgePanGestureRecognizer*)recognizer {
+    CGPoint translation = [recognizer translationInView:self.view];
+    
+    CGFloat xPercent = translation.x / CGRectGetWidth(self.view.bounds) * 0.5;
+    
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
+            [MQTransitioningAnimation setInteractive:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
+            break;
+        case UIGestureRecognizerStateChanged:
+            [MQTransitioningAnimation updateInteractiveTransition:xPercent];
+            break;
+        default:
+            if (xPercent < .25) {
+                [MQTransitioningAnimation cancelInteractiveTransition];
+            } else {
+                [MQTransitioningAnimation finishInteractiveTransition];
+            }
+            [MQTransitioningAnimation setInteractive:NO];
+            break;
+    }
+    
+}
 
 #endif
 

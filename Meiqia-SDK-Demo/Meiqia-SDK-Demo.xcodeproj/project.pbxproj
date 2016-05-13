@@ -64,8 +64,6 @@
 		CC868F811C7AFFF200BFA68D /* MEIQIA_FBSquareFontView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC868F2C1C7AFFF200BFA68D /* MEIQIA_FBSquareFontView.m */; };
 		CC868F821C7AFFF200BFA68D /* MEIQIA_HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC868F2F1C7AFFF200BFA68D /* MEIQIA_HPGrowingTextView.m */; };
 		CC868F831C7AFFF200BFA68D /* MEIQIA_HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = CC868F311C7AFFF200BFA68D /* MEIQIA_HPTextViewInternal.m */; };
-		CC868F841C7AFFF200BFA68D /* MEIQIA_MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC868F341C7AFFF200BFA68D /* MEIQIA_MHFacebookImageViewer.m */; };
-		CC868F851C7AFFF200BFA68D /* UIImageView+MEIQIA_MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC868F361C7AFFF200BFA68D /* UIImageView+MEIQIA_MHFacebookImageViewer.m */; };
 		CC868F861C7AFFF200BFA68D /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC868F411C7AFFF200BFA68D /* libopencore-amrnb.a */; };
 		CC868F871C7AFFF200BFA68D /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC868F421C7AFFF200BFA68D /* libopencore-amrwb.a */; };
 		CC868F881C7AFFF200BFA68D /* MEIQIA_AmrRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CC868F451C7AFFF200BFA68D /* MEIQIA_AmrRecordWriter.m */; };
@@ -89,6 +87,7 @@
 		CCE9D1461C181399004E862E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1451C181399004E862E /* SystemConfiguration.framework */; };
 		CCE9D1481C18139E004E862E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1471C18139E004E862E /* MobileCoreServices.framework */; };
 		CCE9D14D1C1813BE004E862E /* DevelopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D14C1C1813BE004E862E /* DevelopViewController.m */; };
+		E4077FD91CE02FB000A08030 /* MQImageViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4077FD81CE02FB000A08030 /* MQImageViewerViewController.m */; };
 		E41863381CCF163D009FB370 /* MQCustomizedUIText.m in Sources */ = {isa = PBXBuildFile; fileRef = E41863371CCF163D009FB370 /* MQCustomizedUIText.m */; };
 		E45CA11F1CC60828000B8917 /* MeiQiaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */; };
 		E45CA1241CC79431000B8917 /* NSArray+MQFunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = E45CA1231CC79431000B8917 /* NSArray+MQFunctional.m */; };
@@ -240,10 +239,6 @@
 		CC868F2F1C7AFFF200BFA68D /* MEIQIA_HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_HPGrowingTextView.m; sourceTree = "<group>"; };
 		CC868F301C7AFFF200BFA68D /* MEIQIA_HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_HPTextViewInternal.h; sourceTree = "<group>"; };
 		CC868F311C7AFFF200BFA68D /* MEIQIA_HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_HPTextViewInternal.m; sourceTree = "<group>"; };
-		CC868F331C7AFFF200BFA68D /* MEIQIA_MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_MHFacebookImageViewer.h; sourceTree = "<group>"; };
-		CC868F341C7AFFF200BFA68D /* MEIQIA_MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_MHFacebookImageViewer.m; sourceTree = "<group>"; };
-		CC868F351C7AFFF200BFA68D /* UIImageView+MEIQIA_MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MEIQIA_MHFacebookImageViewer.h"; sourceTree = "<group>"; };
-		CC868F361C7AFFF200BFA68D /* UIImageView+MEIQIA_MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MEIQIA_MHFacebookImageViewer.m"; sourceTree = "<group>"; };
 		CC868F3B1C7AFFF200BFA68D /* interf_dec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
 		CC868F3C1C7AFFF200BFA68D /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
 		CC868F3E1C7AFFF200BFA68D /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
@@ -289,6 +284,8 @@
 		CCE9D1471C18139E004E862E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		CCE9D14B1C1813BE004E862E /* DevelopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevelopViewController.h; sourceTree = "<group>"; };
 		CCE9D14C1C1813BE004E862E /* DevelopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevelopViewController.m; sourceTree = "<group>"; };
+		E4077FD71CE02FB000A08030 /* MQImageViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQImageViewerViewController.h; sourceTree = "<group>"; };
+		E4077FD81CE02FB000A08030 /* MQImageViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQImageViewerViewController.m; sourceTree = "<group>"; };
 		E41863361CCF163D009FB370 /* MQCustomizedUIText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCustomizedUIText.h; sourceTree = "<group>"; };
 		E41863371CCF163D009FB370 /* MQCustomizedUIText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCustomizedUIText.m; sourceTree = "<group>"; };
 		E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MeiQiaSDK.framework; path = "../Meiqia-SDK-files/MeiQiaSDK.framework"; sourceTree = "<group>"; };
@@ -533,6 +530,7 @@
 		CC3310851C33F7EA0088E648 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E4077FD61CE02F2600A08030 /* MQImageViewer */,
 				CC3310861C33F7EA0088E648 /* MQChatTableView.h */,
 				CC3310871C33F7EA0088E648 /* MQChatTableView.m */,
 				CCD1450A1C4F41C1007CA0DC /* MQEvaluationView */,
@@ -608,7 +606,6 @@
 				CC868F1B1C7AFFF200BFA68D /* CustomIOSAlertView */,
 				CC868F1E1C7AFFF200BFA68D /* FBDigitalFont */,
 				CC868F2D1C7AFFF200BFA68D /* HPTextView */,
-				CC868F321C7AFFF200BFA68D /* MHFacebookImageViewer */,
 				CC868F371C7AFFF200BFA68D /* MLAudioRecorder */,
 				CC868F4C1C7AFFF200BFA68D /* MQNamespacedDependencies.h */,
 				CC868F6F1C7AFFF200BFA68D /* TTTAttributedLabel */,
@@ -655,17 +652,6 @@
 				CC868F311C7AFFF200BFA68D /* MEIQIA_HPTextViewInternal.m */,
 			);
 			path = HPTextView;
-			sourceTree = "<group>";
-		};
-		CC868F321C7AFFF200BFA68D /* MHFacebookImageViewer */ = {
-			isa = PBXGroup;
-			children = (
-				CC868F331C7AFFF200BFA68D /* MEIQIA_MHFacebookImageViewer.h */,
-				CC868F341C7AFFF200BFA68D /* MEIQIA_MHFacebookImageViewer.m */,
-				CC868F351C7AFFF200BFA68D /* UIImageView+MEIQIA_MHFacebookImageViewer.h */,
-				CC868F361C7AFFF200BFA68D /* UIImageView+MEIQIA_MHFacebookImageViewer.m */,
-			);
-			path = MHFacebookImageViewer;
 			sourceTree = "<group>";
 		};
 		CC868F371C7AFFF200BFA68D /* MLAudioRecorder */ = {
@@ -829,6 +815,15 @@
 				CCE9D13F1C181385004E862E /* libicucore.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4077FD61CE02F2600A08030 /* MQImageViewer */ = {
+			isa = PBXGroup;
+			children = (
+				E4077FD71CE02FB000A08030 /* MQImageViewerViewController.h */,
+				E4077FD81CE02FB000A08030 /* MQImageViewerViewController.m */,
+			);
+			path = MQImageViewer;
 			sourceTree = "<group>";
 		};
 		E44777D21CCF07F6004BA3C3 /* CustomizedText */ = {
@@ -1028,7 +1023,6 @@
 			files = (
 				CC68736A1C895E70000A1E63 /* wav.mm in Sources */,
 				CC3310B71C33F7EA0088E648 /* MQStringSizeUtil.m in Sources */,
-				CC868F841C7AFFF200BFA68D /* MEIQIA_MHFacebookImageViewer.m in Sources */,
 				E45CA1241CC79431000B8917 /* NSArray+MQFunctional.m in Sources */,
 				E4A533E61C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */,
 				CC868F7E1C7AFFF200BFA68D /* MEIQIA_FBLCDFont.m in Sources */,
@@ -1072,6 +1066,7 @@
 				CC33109C1C33F7EA0088E648 /* MQEventMessage.m in Sources */,
 				CC33109B1C33F7EA0088E648 /* MQBaseMessage.m in Sources */,
 				CC3310B31C33F7EA0088E648 /* MQChatFileUtil.m in Sources */,
+				E4077FD91CE02FB000A08030 /* MQImageViewerViewController.m in Sources */,
 				CC3310AE1C33F7EA0088E648 /* MQBundleUtil.m in Sources */,
 				E49C7BBF1C96A8D3003027E8 /* UIViewController+OrientationFix.m in Sources */,
 				CC3310B21C33F7EA0088E648 /* MQChatEmojize.m in Sources */,
@@ -1084,7 +1079,6 @@
 				CC3310DF1C33F7EA0088E648 /* MQPullRefreshView.m in Sources */,
 				CC3310B61C33F7EA0088E648 /* MQImageUtil.m in Sources */,
 				CC3310B01C33F7EA0088E648 /* MQChatAudioRecorder.m in Sources */,
-				CC868F851C7AFFF200BFA68D /* UIImageView+MEIQIA_MHFacebookImageViewer.m in Sources */,
 				CC868F821C7AFFF200BFA68D /* MEIQIA_HPGrowingTextView.m in Sources */,
 				CC3310AA1C33F7EA0088E648 /* MQTextMessageCell.m in Sources */,
 				CC3310941C33F7EA0088E648 /* MQServiceToViewInterface.m in Sources */,

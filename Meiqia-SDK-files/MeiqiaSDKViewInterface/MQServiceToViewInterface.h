@@ -16,12 +16,13 @@
 #import "MQTextMessage.h"
 #import "MQEventMessage.h"
 #import "MQChatViewConfig.h"
-#import <MeiQiaSDK/MQDefinition.h>
+#import <MeiQiaSDK/MeiQiaSDK.h>
 #import "MQFileDownloadMessage.h"
 
 /**
  *  该协议是UI层获取数据的委托方法
  */
+@class MQAgent;
 @protocol MQServiceToViewInterfaceDelegate <NSObject>
 
 /**
@@ -181,6 +182,11 @@
 + (void)didTapMessageWithMessageId:(NSString *)messageId;
 
 /**
+ *  获取当前客服对象
+ */
++ (MQAgent *)getCurrentAgent;
+
+/**
  *  获取当前客服名字
  */
 + (NSString *)getCurrentAgentName;
@@ -300,4 +306,10 @@
 
 + (void)updateMessageIds:(NSArray *)messageIds toReadStatus:(BOOL)isRead;
 
+/**
+ 获取当前企业的配置信息
+ */
++ (void)getEnterpriseConfigInfoComplete:(void(^)(MQEnterprise *, NSError *))action;
+
 @end
+

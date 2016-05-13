@@ -85,6 +85,6 @@
 "file_download_complete" = "下载完成";
 "file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ 小时后过期";
 
-"message_tips_send_message_fail_listed_in_black_list" = "对方已经拒绝接收你的消息";
+"message_tips_send_message_fail_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
 
-"message_tips_online_failed_listed_in_black_list" = "抱歉，你已被加入黑名单";
+"message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";

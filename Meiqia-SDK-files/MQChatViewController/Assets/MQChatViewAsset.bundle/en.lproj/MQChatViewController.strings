@@ -85,6 +85,6 @@
 "file_download_complete" = "Download complete";
 "file_download_ %@ ∙ %@overdue" = "%@ ∙ overdue in %@ hours";
 
-"message_tips_send_message_fail_listed_in_black_list" = "your message has been blocked";
+"message_tips_send_message_fail_listed_in_black_list" = "We are sorry, the CS system is down";
 
-"message_tips_online_failed_listed_in_black_list" = "You are blacklisted";
+"message_tips_online_failed_listed_in_black_list" = "We are sorry, the CS system is down";

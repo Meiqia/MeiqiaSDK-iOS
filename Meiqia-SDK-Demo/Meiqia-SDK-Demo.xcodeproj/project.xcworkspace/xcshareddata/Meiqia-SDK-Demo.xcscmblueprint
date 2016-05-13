@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "6187B1185BC0E8B30AC4985382A2567D065312ED",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "46C73E073A2E2B7BDDDC04F33AA5E15AA1F358F2" : 0,
+    "6187B1185BC0E8B30AC4985382A2567D065312ED" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "B50F5947-6D60-4B09-A330-6868D230E23F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "46C73E073A2E2B7BDDDC04F33AA5E15AA1F358F2" : "..\/..\/SDK\/MeiqiaSDK_Ecoboost_iOS",
+    "6187B1185BC0E8B30AC4985382A2567D065312ED" : "MeiqiaSDK-iOS\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Meiqia-SDK-Demo",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Meiqia-SDK-Demo\/Meiqia-SDK-Demo.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Meiqia\/MeiqiaSDK_Ecoboost_iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "46C73E073A2E2B7BDDDC04F33AA5E15AA1F358F2"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IanLuo\/MeiqiaSDK-iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6187B1185BC0E8B30AC4985382A2567D065312ED"
+    }
+  ]
+}

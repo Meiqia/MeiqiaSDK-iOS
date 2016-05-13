@@ -11,8 +11,9 @@
 #import "MQMessage.h"
 #import "MQDefinition.h"
 #import "MQAgent.h"
+#import "MQEnterprise.h"
 
-#define MQSDKVersion @"3.1.7"
+#define MQSDKVersion @"3.1.9"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -367,6 +368,13 @@
  @param accessoryData 字典中的数据必须是基本数据和字符串
  */
 + (void)updateMessageWithId:(NSString *)messageId forAccessoryData:(NSDictionary *)accessoryData;
+
+
+/**
+获取当前企业的配置信息
+ */
+
++ (void)getEnterpriseConfigDataComplete:(void(^)(MQEnterprise *, NSError *))action;
 
 
 @end

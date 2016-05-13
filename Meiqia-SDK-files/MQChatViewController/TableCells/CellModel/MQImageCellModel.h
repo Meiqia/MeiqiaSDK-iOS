@@ -115,6 +115,7 @@ static CGFloat const kMQCellBubbleToImageVerticalSpacing = 8.0;
 @property (nonatomic, assign) MQChatMessageSendStatus sendStatus;
 
 
+- (void)showImageViewerFromRect:(CGRect)rect;
 
 
 /**

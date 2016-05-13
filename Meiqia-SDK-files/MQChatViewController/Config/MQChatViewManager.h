@@ -293,7 +293,7 @@
  *
  *  @param leftButton 左键图片
  */
-- (void)setNavLeftButton:(UIButton *)leftButton style_deprecated;
+- (void)setNavLeftButton:(UIButton *)leftButton __attribute__((deprecated("使用 chatViewStyle.navBackButtonImage 代替")));
 
 /**
  *  设置导航栏标题
@@ -313,7 +313,7 @@
  * 设置客服的缺省头像图片；
  * @param image 头像image
  */
-- (void)setincomingDefaultAvatarImage:(UIImage *)image;
+- (void)setincomingDefaultAvatarImage:(UIImage *)image style_deprecated;
 
 /**
  * 设置顾客的头像图片；

@@ -30,6 +30,43 @@
     }
 }
 
++ (UIImage *)resizeImage:(UIImage *)image maxSize:(CGSize)size {
+    CGSize imageSize = image.size;
+    CGFloat scale = image.scale;
+//    CGFloat screenScale = [UIScreen mainScreen].scale;
+    
+    float widthScale = 1, heightScale = 1;
+    
+    if (imageSize.width * scale > size.width) {
+        widthScale = (imageSize.width * scale) / (size.width);
+    }
+    
+    if (imageSize.height * scale > size.width) {
+        heightScale = (imageSize.height * scale) / (size.width);
+    }
+    
+    float outputScale = MAX(widthScale, heightScale);
+    
+    if (outputScale > 1) {
+        return [self.class scaleImage:image toNewSize:CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(1.0/outputScale, 1.0/outputScale))];
+    } else {
+        return image;
+    }
+}
+
++ (UIImage *)scaleImage:(UIImage *)image toNewSize:(CGSize)size {
+    CGSize newSize = CGSizeApplyAffineTransform(size, CGAffineTransformMakeScale(1/[UIScreen mainScreen].scale, 1/[UIScreen mainScreen].scale));
+    
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, [UIScreen mainScreen].scale);
+    
+    [image drawInRect:CGRectMake(0, 0, ceil(newSize.width), ceil(newSize.height))];
+    
+    UIImage * result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return result;
+}
+
 +(UIImage *)viewScreenshot:(UIView*)view{
     UIGraphicsBeginImageContext(view.frame.size);
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];

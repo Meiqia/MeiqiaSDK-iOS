@@ -109,6 +109,8 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
 
 @property (nonatomic, copy) UIColor *navTitleColor;
 
+@property (nonatomic, copy) UIFont *navTitleFont;
+
 /**
  * 设置导航栏上的元素颜色；
  * @param tintColor 导航栏上的元素颜色
@@ -121,6 +123,10 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
  */
 @property (nonatomic, copy) UIColor *navBarColor;
 
+/**
+ 导航栏背景图片
+ */
+@property (nonatomic, strong) UIImage *navBarBackgroundImage;
 /**
  *  设置下拉/上拉刷新的颜色；默认绿色
  *
@@ -192,7 +198,14 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
  *
  *  @param leftButton 左键图片
  */
-@property (nonatomic, strong) UIButton *navBarLeftButton;
+@property (nonatomic, strong) UIButton *navBarLeftButton __attribute__((deprecated("使用 navBackButtonImage 代替")));
+
+/**
+ *  设置导航栏返回键的图片
+ *
+ *  @param leftButton 左键图片
+ */
+@property (nonatomic, strong) UIImage *navBackButtonImage;
 
 /**
  *  设置导航栏右键的图片
