@@ -4,9 +4,13 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>.DS_Store</key>
+		<data>
+		3y++sUAKzaCQmjLBz2v0kvESHgc=
+		</data>
 		<key>Info.plist</key>
 		<data>
-		YDZz0/2FNYGEZoAJ1A1vNw0NhiI=
+		ojSK7/wWpo42GA/yq9TBFuXZgI0=
 		</data>
 		<key>JSONHelper.h</key>
 		<data>
@@ -24,9 +28,13 @@
 		<data>
 		k3CbLFpcdgzfhO6EJYhbsfoWf24=
 		</data>
+		<key>MQEnterprise.h</key>
+		<data>
+		OMMcAdAPckYVTV86grffCnpst0A=
+		</data>
 		<key>MQManager.h</key>
 		<data>
-		AWfS8uuCxzSjj9PfgeA67aK9X74=
+		byur/Gfn5ccNRdfbslmUeSiHq30=
 		</data>
 		<key>MQMessage.h</key>
 		<data>
@@ -34,7 +42,7 @@
 		</data>
 		<key>MeiqiaSDK.h</key>
 		<data>
-		F13ebTK1q2UNAHBvscKhfml3lD4=
+		KLaYAs8X0xQeGceRl9Lw/R8qlTg=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -83,15 +91,26 @@
 			LrZVMlTMQW1zsCrfuAQUevT0OOZXmV1jqLiPeSzfD2A=
 			</data>
 		</dict>
+		<key>MQEnterprise.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			OMMcAdAPckYVTV86grffCnpst0A=
+			</data>
+			<key>hash2</key>
+			<data>
+			BiS4bXse1NnypbMJWxrgHplilCNMpjXiVHg2s9OoO0c=
+			</data>
+		</dict>
 		<key>MQManager.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			AWfS8uuCxzSjj9PfgeA67aK9X74=
+			byur/Gfn5ccNRdfbslmUeSiHq30=
 			</data>
 			<key>hash2</key>
 			<data>
-			o4zpSg5cXpkJzUTRh0U+h5EfNJviA7w0VPjaLAvRdGQ=
+			hjEGBP7d3qXvWCcyPeg25FVqI/MiKHvgToWyVA3KOhk=
 			</data>
 		</dict>
 		<key>MQMessage.h</key>
@@ -109,11 +128,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			F13ebTK1q2UNAHBvscKhfml3lD4=
+			KLaYAs8X0xQeGceRl9Lw/R8qlTg=
 			</data>
 			<key>hash2</key>
 			<data>
-			KPI+lx/K461I896dstUHDxemh8Cj758hjLZYuPk8ACI=
+			gFRmA+IeI1UrIpHDvVopfG2PZsFy+ADxRopLXW1Cd4k=
 			</data>
 		</dict>
 	</dict>
