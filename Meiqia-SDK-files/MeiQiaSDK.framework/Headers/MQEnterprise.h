@@ -13,6 +13,10 @@
 ///客服邀请评价显示的文案
 @property (nonatomic, copy) NSString *evaluationPromtText;
 
+@property (nonatomic, assign) BOOL showSwitch;
+
+@property (nonatomic, copy) NSString *intro;
+
 @end
 
 
