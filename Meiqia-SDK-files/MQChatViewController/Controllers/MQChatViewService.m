@@ -45,6 +45,8 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 @property (nonatomic, assign) MQClientStatus clientStatus;
 @property (nonatomic, strong) MQServiceToViewInterface *serviceToViewInterface;
 
+@property (nonatomic, assign) BOOL noAgentTipShowed;
+
 @end
 #else
 @interface MQChatViewService() <MQCellModelDelegate>
@@ -825,10 +827,10 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 }
 
 - (void)addNoAgentTip {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    if (!self.noAgentTipShowed && ![MQServiceToViewInterface isBlacklisted]) {
+        self.noAgentTipShowed = YES;
         [self addTipCellModelWithTips:[MQBundleUtil localizedStringForKey:@"no_agent_tips"] enableLinesDisplay:true];
-    });
+    }
 }
 
 #pragma MQServiceToViewInterfaceDelegate

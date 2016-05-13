@@ -54,14 +54,12 @@
     }
 }
 
-+ (UIImage *)scaleImage:(UIImage *)image toNewSize:(CGSize)size
-{
-    
++ (UIImage *)scaleImage:(UIImage *)image toNewSize:(CGSize)size {
     CGSize newSize = CGSizeApplyAffineTransform(size, CGAffineTransformMakeScale(1/[UIScreen mainScreen].scale, 1/[UIScreen mainScreen].scale));
     
     UIGraphicsBeginImageContextWithOptions(newSize, NO, [UIScreen mainScreen].scale);
     
-    [image drawInRect:CGRectMake(0, 0, ceil(size.width), ceil(size.height))];
+    [image drawInRect:CGRectMake(0, 0, ceil(newSize.width), ceil(newSize.height))];
     
     UIImage * result = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
