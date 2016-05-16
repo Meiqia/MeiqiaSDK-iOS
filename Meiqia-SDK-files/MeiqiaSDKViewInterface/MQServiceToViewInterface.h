@@ -311,5 +311,15 @@
  */
 + (void)getEnterpriseConfigInfoComplete:(void(^)(MQEnterprise *, NSError *))action;
 
+/**
+ 在准备显示聊天界面是调用
+ */
++ (void)prepareForChat;
+
+/**
+ 在聊天界面消失是调用
+ */
++ (void)completeChat;
+
 @end
 

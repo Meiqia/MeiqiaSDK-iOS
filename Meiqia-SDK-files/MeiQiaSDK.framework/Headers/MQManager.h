@@ -376,5 +376,14 @@
 
 + (void)getEnterpriseConfigDataComplete:(void(^)(MQEnterprise *, NSError *))action;
 
+/**
+ 开始显示聊天界面
+ */
++ (void)didStartChat;
+
+/**
+ 聊天结束
+ */
++ (void)didEndChat;
 
 @end

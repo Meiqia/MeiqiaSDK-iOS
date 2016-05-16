@@ -505,6 +505,14 @@
     [MQManager updateMessageIds:messageIds toReadStatus:isRead];
 }
 
++ (void)prepareForChat {
+    [MQManager didStartChat];
+}
+
++ (void)completeChat {
+    [MQManager didEndChat];
+}
+
 #pragma MQManagerDelegate
 //webSocket收到消息的代理方法
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)messages {

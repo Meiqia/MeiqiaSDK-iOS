@@ -63,6 +63,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self closeMeiqiaChatView];
 #endif
     [MQCustomizedUIText reset];
+    
+    [MQServiceToViewInterface completeChat];
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -74,6 +76,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [MQServiceToViewInterface prepareForChat];
+    
     // Do any additional setup after loading the view.
     previousStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
     previousStatusBarHidden = [UIApplication sharedApplication].statusBarHidden;
