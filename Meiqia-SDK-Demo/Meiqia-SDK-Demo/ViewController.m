@@ -10,7 +10,7 @@
 #import "MQChatViewManager.h"
 #import "MQChatDeviceUtil.h"
 #import "DevelopViewController.h"
-//#import <MeiQiaSDK/MQManager.h>
+#import <MeiQiaSDK/MQManager.h>
 
 static CGFloat const kMQButtonVerticalSpacing   = 16.0;
 static CGFloat const kMQButtonHeight            = 42.0;
@@ -41,13 +41,17 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     [self initAppIcon];
     [self initFunctionButtons];
     
+//    [[UINavigationBar appearance] setTranslucent:YES];
+    
 //    self.navigationController.navigationBar.translucent = NO;
     
-    [[UINavigationBar appearance] setTranslucent:NO];
+//    [[UINavigationBar appearance] setTranslucent:NO];
+    
+//    [self.navigationController setNavigationBarHidden:YES];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateIndicator) name:UIApplicationDidBecomeActiveNotification object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
     
 }
 
@@ -138,7 +142,13 @@ static int indicator_tag = 10;
     
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
+    [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
+//    [chatViewManager setScheduledGroupId:@"89ec00be5a215b3d232f39a32452f7b3"];
+//    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectGroup];
+//    [chatViewManager setScheduledAgentId:@"990a7cbe603fe029e269b4c32f4fed09"];
+
     [chatViewManager pushMQChatViewControllerInViewController:self];
+    
     [self removeIndecatorForView:basicFunctionBtn];
     
     [chatViewManager setRecordMode:MQRecordModeDuckOther];

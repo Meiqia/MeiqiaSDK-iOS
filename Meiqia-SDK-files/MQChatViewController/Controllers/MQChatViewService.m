@@ -45,6 +45,8 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 @property (nonatomic, assign) MQClientStatus clientStatus;
 @property (nonatomic, strong) MQServiceToViewInterface *serviceToViewInterface;
 
+@property (nonatomic, assign) BOOL noAgentTipShowed;
+
 @end
 #else
 @interface MQChatViewService() <MQCellModelDelegate>
@@ -54,7 +56,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 
 @implementation MQChatViewService {
 #ifdef INCLUDE_MEIQIA_SDK
-    BOOL isThereNoAgent;   //用来判断当前是否没有客服
+//    BOOL isThereNoAgent;   //用来判断当前是否没有客服
     BOOL addedNoAgentTip;  //是否已经说明了没有客服标记
     BOOL didSetOnline;     //用来判断顾客是否尝试登陆了
 #endif
@@ -67,7 +69,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         self.cellModels = [[NSMutableArray alloc] init];
 #ifdef INCLUDE_MEIQIA_SDK
         [self setClientOnline];
-        isThereNoAgent  = false;
+//        isThereNoAgent  = false;
         addedNoAgentTip = false;
         didSetOnline    = false;
         
@@ -806,6 +808,8 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
             [MQChatViewConfig sharedConfig].shouldUploadOutgoingAvartar = NO;
             completion();
         }];
+    } else {
+        completion();
     }
 }
 
@@ -817,18 +821,14 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         }
         
         if ([self.delegate respondsToSelector:@selector(hideRightBarButtonItem:)]) {
-            [self.delegate hideRightBarButtonItem:agentName.length == 0];
+            [self.delegate hideRightBarButtonItem:agentStatus == MQChatAgentStatusOffLine];
         }
     }
 }
 
-- (void)addNoAgentTip{
-    if (!isThereNoAgent) {
-        return;
-    }
-    isThereNoAgent = false;
-    if (!addedNoAgentTip) {
-        addedNoAgentTip = true;
+- (void)addNoAgentTip {
+    if (!self.noAgentTipShowed && ![MQServiceToViewInterface isBlacklisted]) {
+        self.noAgentTipShowed = YES;
         [self addTipCellModelWithTips:[MQBundleUtil localizedStringForKey:@"no_agent_tips"] enableLinesDisplay:true];
     }
 }
@@ -924,14 +924,12 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     //如果新的messageId和旧的messageId不同，且是发送成功状态，则表明肯定是分配成功的
     if (![newMessageId isEqualToString:oldMessageId] && sendStatus == MQChatMessageSendStatusSuccess) {
         NSString *agentName = [MQServiceToViewInterface getCurrentAgentName];
-        isThereNoAgent = ![MQServiceToViewInterface isThereAgent];
         if (agentName.length > 0) {
             [self updateChatTitleWithAgentName:agentName agentStatus:[MQServiceToViewInterface getCurrentAgentStatus]];
         }
-    } else {
-        isThereNoAgent = true;
     }
-    if (isThereNoAgent && ![MQServiceToViewInterface isBlacklisted]) {
+    
+    if ([MQServiceToViewInterface getCurrentAgentName].length == 0) {
         [self addNoAgentTip];
         [self updateChatTitleWithAgentName:[MQBundleUtil localizedStringForKey:@"no_agent_title"] agentStatus:MQChatAgentStatusOffLine];
     }else{

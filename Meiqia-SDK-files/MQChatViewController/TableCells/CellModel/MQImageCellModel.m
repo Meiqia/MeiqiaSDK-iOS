@@ -12,6 +12,7 @@
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
 #import "MQServiceToViewInterface.h"
+#import "MQImageViewerViewController.h"
 #ifndef INCLUDE_MEIQIA_SDK
 #import "UIImageView+WebCache.h"
 #endif
@@ -176,7 +177,7 @@
                 [MQServiceToViewInterface downloadMediaWithUrlString:message.imagePath progress:^(float progress) {
                 } completion:^(NSData *mediaData, NSError *error) {
                     if (mediaData && !error) {
-                        self.image = [UIImage imageWithData:mediaData];
+                        self.image = [MQImageUtil resizeImage:[UIImage imageWithData:mediaData] maxSize:[UIScreen mainScreen].bounds.size];
                         [self setModelsWithContentImage:self.image cellFromType:message.fromType cellWidth:cellWidth];
                     } else {
                         self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
@@ -374,5 +375,18 @@
     }
 }
 
+- (void)showImageViewerFromRect:(CGRect)rect {
+    MQImageViewerViewController *viewerVC = [MQImageViewerViewController new];
+    viewerVC.images = @[self.image];
+    
+    __weak MQImageViewerViewController *wViewerVC = viewerVC;
+    [viewerVC setSelection:^(NSUInteger index) {
+        __strong MQImageViewerViewController *sViewerVC = wViewerVC;
+        [sViewerVC dismiss];
+    }];
+    
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    [viewerVC showOn:[UIApplication sharedApplication].keyWindow.rootViewController fromRect:rect];
+}
 
 @end

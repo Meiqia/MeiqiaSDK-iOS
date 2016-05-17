@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface MQAnimatorPush : NSObject <UIViewControllerAnimatedTransitioning>
+@interface MQAnimatorPush : UIPercentDrivenInteractiveTransition <UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning>
 
 @property (nonatomic, assign) BOOL isPresenting;
 

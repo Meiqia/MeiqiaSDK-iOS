@@ -100,29 +100,33 @@
         navigationController.navigationBar.tintColor = defaultNavigationController.navigationBar.tintColor;
     }
     
-    if ([MQChatViewConfig sharedConfig].navTitleColor) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        
-        navigationController.navigationBar.titleTextAttributes = @{
-                                                                   UITextAttributeTextColor : [MQChatViewConfig sharedConfig].navTitleColor
-                                                                   };
-#pragma clang diagnostic pop
-    } else if (defaultNavigationController) {
+    UIColor *color = [MQChatViewConfig sharedConfig].navTitleColor ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSForegroundColorAttributeName] ?: [UIColor blackColor];
+    UIFont *font = [MQChatViewConfig sharedConfig].chatViewStyle.navTitleFont ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSFontAttributeName] ?: [UIFont systemFontOfSize:16.0];
+    NSDictionary *attr = @{NSForegroundColorAttributeName : color, NSFontAttributeName : font};
+    navigationController.navigationBar.titleTextAttributes = attr;
+    
+    if (defaultNavigationController) {
         navigationController.navigationBar.titleTextAttributes = defaultNavigationController.navigationBar.titleTextAttributes;
     }
     
-    if ([MQChatViewConfig sharedConfig].navBarColor) {
+    if ([MQChatViewConfig sharedConfig].chatViewStyle.navBarBackgroundImage) {
+        [navigationController.navigationBar setBackgroundImage:[MQChatViewConfig sharedConfig].chatViewStyle.navBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
+    } else if ([MQChatViewConfig sharedConfig].navBarColor) {
         navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
     } else if (defaultNavigationController && defaultNavigationController.navigationBar.barTintColor) {
         navigationController.navigationBar.barTintColor = defaultNavigationController.navigationBar.barTintColor;
     }
     
     //导航栏左键
+    UIBarButtonItem *customizedBackItem = nil;
+    if ([MQChatViewConfig sharedConfig].chatViewStyle.navBackButtonImage) {
+        customizedBackItem = [[UIBarButtonItem alloc]initWithImage:[MQChatViewConfig sharedConfig].chatViewStyle.navBackButtonImage style:(UIBarButtonItemStylePlain) target:viewController action:@selector(dismissChatViewController)];
+    }
+    
     if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypeDefault) {
-        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
+        viewController.navigationItem.leftBarButtonItem = customizedBackItem ?: [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
     } else {
-        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
+        viewController.navigationItem.leftBarButtonItem = customizedBackItem ?: [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
     }
     
     //导航栏右键
