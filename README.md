@@ -678,7 +678,6 @@ request.body 为消息数据，数据结构为：
 - [第三方库冲突](#第三方库冲突)
 - [工作台顾客信息显示应用的名称不正确](#工作台顾客信息显示应用的名称不正确)
 - [编译中出现 undefined symbols](#编译中出现-undefined-symbols)
-- [仅支持横屏的应用打开相机时崩溃](#仅支持横屏的应用打开相机时崩溃)
 
 ## SDK 初始化失败
 
@@ -756,30 +755,47 @@ request.body 为消息数据，数据结构为：
 
 请开发者检查 App Target - Build Settings - Search Path - Framework Search Path 或 Library Search Path 当中是否没有美洽的项目。
 
-## 仅支持横屏的应用打开相机时崩溃
-
-若开发者的 App 是游戏等只支持横屏，打开客服聊天界面的相册或相机，出现如下崩溃：
-
-```
-Terminating app due to uncaught exception 'UIApplicationInvalidInterfaceOrientation', reason: 'Supported orientations has no common orientation with the application, and [SomeViewController shouldAutorotate] is returning YES'
-```
-
-这个原因是 iOS 系统的相册和相机仅支持竖屏，所以需要在开发者的 AppDelegate.m 中增加如下系统方法即可：
-
-```objc
-- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    return UIInterfaceOrientationMaskAll;
-}
-```
-
 # 更新日志
 
-**v3.1.7 2016 年 03 月 16 日
+**v3.1.9 2016 年 05 月 13 日**
+* 聊天界面增加可交互转场动画
+* 发送消息失败后，会提示客服下线
+* 聊天界面优化
+* 用户正在输入的提示请求，加一个发送限制
+* 替换现有的图片全屏浏览组件
+* 修改数据库结构，不再以版本号建库
+* SDK 修改黑名单文案提示
+* 聊天界面不定时在收到消息的时候会崩溃
+* 增加导航栏标题文字字体的接口
+* 修改导航栏左键接口
+
+**v3.1.8 2016 年 04 月 22 日**
+
+* 增加文件接收功能。
+* 增加黑名单功能支持。
+* 新增音频控制的接口。
+* 新增界面主题，通过修改 chatViewStyle 的对应方法来定制聊天界面。
+* 新增消息预发送的接口。
+* 升级获取未读消息的接口。
+* 修复聊天界面通过 push 显示的时候，没有调用 viewDidApear，viewWillApear，viewDidDisapper， viewWillDisappear。
+* 修复在某些情况下聊天界面下方会出现黑条的问题。
+* 修复在没有分配到客服的时候，不自动显示历史消息的问题。
+* 修复客服不在线时，客服不在线提示没有自动滚动出现。
+* 修复第二次进入聊天界面时，没有滚动到最下方的问题。
+* 修复查看图片在横屏时无法正常显示的问题。
+* 修复音频文件导致的调试断点问题。
+
+**v3.1.7 2016 年 03 月 29 日**
 
 * 解决单语言的项目获取不到 App 的基本信息的问题。
-* 修复用户 App 有悬浮窗的情况下，评价界面显示不出来的情况。
+* 修复聊天界面从相册返回的时候界面上移的问题。
+* 增加获取未读消息的接口。
+* 修复在支持横屏的应用点击发送照片崩溃的问题。
+* 修复断线重连的时候，如果客服状态改变了，客户端没有更新的问题。
+* 修复客服转接后，客户名称没有正确更新。
+* 修复图片，文字聊天气泡在旋转过后没有正确重绘。
 
-**v3.1.6 2016 年 03 月 11 日
+**v3.1.6 2016 年 03 月 11 日**
 
 * 解决横屏状态下，发送消息后没有滚动到底部的问题。
 * 增加输入文字的缓存。
