@@ -139,11 +139,9 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
     if (enableTopPullRefresh && !isLoadingTopMessages) {
         isLoadingTopMessages = true;
         if (self.chatTableViewDelegate) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                if ([self.chatTableViewDelegate respondsToSelector:@selector(startLoadingTopMessagesInTableView:)]) {
-                    [self.chatTableViewDelegate startLoadingTopMessagesInTableView:self];
-                }
-            });
+            if ([self.chatTableViewDelegate respondsToSelector:@selector(startLoadingTopMessagesInTableView:)]) {
+                [self.chatTableViewDelegate startLoadingTopMessagesInTableView:self];
+            }
         }
     }
 }
@@ -153,11 +151,9 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
         isLoadingTopMessages = true;
         [self.topRefreshView startLoading];
         if (self.chatTableViewDelegate) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                if ([self.chatTableViewDelegate respondsToSelector:@selector(startLoadingTopMessagesInTableView:)]) {
-                    [self.chatTableViewDelegate startLoadingTopMessagesInTableView:self];
-                }
-            });
+            if ([self.chatTableViewDelegate respondsToSelector:@selector(startLoadingTopMessagesInTableView:)]) {
+                [self.chatTableViewDelegate startLoadingTopMessagesInTableView:self];
+            }
         }
     }
 }
@@ -190,11 +186,9 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 - (void)scrollToCellIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    
     CGPoint tableViewOffset = self.contentOffset;
     tableViewOffset.y -= scrollOffsetAfterLoading;
-    
-    [self setContentOffset:tableViewOffset animated:YES];
+    self.contentOffset = tableViewOffset;
 }
 
 - (void)startLoadingBottomRefreshView {

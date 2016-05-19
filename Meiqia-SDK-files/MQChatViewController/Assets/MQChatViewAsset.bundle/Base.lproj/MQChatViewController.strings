@@ -78,6 +78,8 @@
 
 "meiqia_evaluation_sheet"     = "评价";
 
+"meiqia_redirect_sheet"     = "转人工";
+
 "file_download_file_is_expired" = "文件已过期";
 "file_download_canceld" = "已取消下载";
 "file_download_failed" = "下载失败";
@@ -85,6 +87,23 @@
 "file_download_complete" = "下载完成";
 "file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ 小时后过期";
 
-"message_tips_send_message_fail_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
+"message_tips_send_message_fail_listed_in_black_list" = "对方已经拒绝接收你的消息";
 
-"message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
+"message_tips_online_failed_listed_in_black_list" = "抱歉，你已被加入黑名单";
+
+"reply_tip_text"        = "抱歉，当前没有客服在线，您可以给我们 留言";
+
+"bot_redirect_tip_text"  = "很抱歉您不满意机器人的回答，您可以尝试 转人工";
+
+"cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
+
+"send_to_fast"  = "您发送的太快啦，请休息一下吧~";"leave_a_message" = "留言";
+"submit" = "提交";
+"leave_a_message_placeholder" = "请输入你的留言";
+"param_not_allow_null" = "%@ 不允许为空";
+"submit_failure" = "提交失败";
+"add_picture" = "添加图片";
+"tel" = "电话";
+"tel_placeholder" = "请输入你的电话";
+"email" = "邮箱";
+"email_placeholder" = "请输入你的邮箱";

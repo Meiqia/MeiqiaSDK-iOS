@@ -15,7 +15,9 @@ typedef enum : NSUInteger {
 
 typedef enum : NSUInteger {
     MQAgentPrivilegeAdmin = 0,  //管理员
-    MQAgentPrivilegeAgent = 1   //客服
+    MQAgentPrivilegeAgent = 1,  //客服
+    MQAgentPrivilegeBot   = 2,  //机器人
+    MQAgentPrivilegeNone  = 999   //None
 } MQAgentPrivilege;
 
 @interface MQAgent : NSObject <NSCopying>
@@ -59,4 +61,6 @@ typedef enum : NSUInteger {
 /** 是否在线 */
 @property (nonatomic, assign) BOOL             isOnline;
 
+// 转换 agent type
+- (NSString *)convertPrivilegeToString;
 @end

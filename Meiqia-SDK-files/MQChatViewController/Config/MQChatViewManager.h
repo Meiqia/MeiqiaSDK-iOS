@@ -408,6 +408,13 @@
 - (void)setScheduledGroupId:(NSString *)groupId;
 
 /**
+ *  设置不分配给指定的客服id
+ *
+ *  @param agentId 客服id
+ */
+- (void)setNotScheduledAgentId:(NSString *)agentId;
+
+/**
  *  指定分配客服/客服组，该客服/客服组不在线，如何转接的接口
  *
  *  @param scheduleRule 转接规则

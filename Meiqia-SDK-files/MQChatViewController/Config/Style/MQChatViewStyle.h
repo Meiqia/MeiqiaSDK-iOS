@@ -63,12 +63,6 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
     MQChatViewStyleTypeDark,
 };
 
-@protocol MQChatViewStyleCustomized <NSObject>
-
-- (void)setupCustomizedStyle;
-
-@end
-
 @interface MQChatViewStyle : NSObject
 
 /**
@@ -133,6 +127,12 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
  *  @param pullRefreshColor 颜色
  */
 @property (nonatomic, copy) UIColor *pullRefreshColor;
+
+/**
+ *  按钮的文字颜色
+ */
+@property (nonatomic, copy) UIColor *btnTextColor;
+
 
 @property (nonatomic, strong) UIImage *messageSendFailureImage;
 

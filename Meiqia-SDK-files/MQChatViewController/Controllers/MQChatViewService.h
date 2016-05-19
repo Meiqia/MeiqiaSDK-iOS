@@ -14,14 +14,15 @@
 #import "MQServiceToViewInterface.h"
 #endif
 
+///TODO: 稍后用这个状态替换目前的本地状态变量
+typedef NS_ENUM(NSUInteger, MQClientStatus) {
+    MQClientStatusOffLine = 0,
+    MQClientStatusOnlining,
+    MQClientStatusOnline,
+};
+
 @protocol MQChatViewServiceDelegate <NSObject>
 
-/**
- *  是否隐藏RightBarButtonItem
- *
- *  @param enabled 是否隐藏
- */
-- (void)hideRightBarButtonItem:(BOOL)isHide;
 
 /**
  *  获取到了更多历史消息
@@ -76,6 +77,11 @@
  */
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle agentStatus:(MQChatAgentStatus)agentStatus;
 
+/**
+ *  根据 agentType 改变导航栏右键
+ */
+- (void)changeNavReightBtnWithAgentType:(NSString *)agentType;
+
 #endif
 
 @end
@@ -102,6 +108,12 @@
 
 /** 聊天界面的宽度 */
 @property (nonatomic, assign) CGFloat chatViewWidth;
+
+/** 顾客当前的状态 */
+@property (nonatomic, assign) MQClientStatus clientStatus;
+
+/** 是否显示机器人转人工按钮 */
+@property (nonatomic, assign) BOOL isShowBotRedirectBtn;
 
 /**
  * 获取更多历史聊天消息
@@ -179,6 +191,15 @@
  */
 - (void)setCurrentInputtingText:(NSString *)inputtingText;
 
+/**
+ *  评价机器人消息
+ */
+- (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId;
+
+/**
+ *  强制转接人工客服
+ */
+- (void)forceRedirectToHumanAgent;
 
 #ifndef INCLUDE_MEIQIA_SDK
 /**
