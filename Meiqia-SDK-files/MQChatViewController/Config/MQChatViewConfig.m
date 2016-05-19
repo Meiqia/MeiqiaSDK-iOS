@@ -51,6 +51,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.chatWelcomeText        = [MQBundleUtil localizedStringForKey:@"welcome_chat"];
     self.agentName              = [MQBundleUtil localizedStringForKey:@"default_assistant"];
     self.scheduledAgentId       = nil;
+    self.notScheduledAgentId    = nil;
     self.scheduledGroupId       = nil;
     self.customizedId           = @"";
     self.navTitleText           = nil;

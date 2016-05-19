@@ -58,9 +58,11 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self.view addSubview:self.collectionView];
     
-    [self.view addSubview:self.saveButton];
-    self.saveButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self leftButtonCornerConstrainsToView:self.saveButton onTo:self.view];
+    if (!self.shouldHideSaveBtn) {
+        [self.view addSubview:self.saveButton];
+        self.saveButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [self leftButtonCornerConstrainsToView:self.saveButton onTo:self.view];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

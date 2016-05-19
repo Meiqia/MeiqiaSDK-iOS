@@ -11,11 +11,16 @@
 #import "MQTipsCell.h"
 #import "MQStringSizeUtil.h"
 #import "MQChatViewConfig.h"
+#import "MQBundleUtil.h"
+
+
 
 //上下两条线与cell垂直边沿的间距
 static CGFloat const kMQMessageTipsLabelLineVerticalMargin = 2.0;
 static CGFloat const kMQMessageTipsCellVerticalSpacing = 24.0;
 static CGFloat const kMQMessageTipsCellHorizontalSpacing = 24.0;
+static CGFloat const kMQMessageReplyTipsCellVerticalSpacing = 8.0;
+static CGFloat const kMQMessageReplyTipsCellHorizontalSpacing = 8.0;
 static CGFloat const kMQMessageTipsLineHeight = 0.5;
 CGFloat const kMQMessageTipsFontSize = 13.0;
 
@@ -60,6 +65,9 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
  */
 @property (nonatomic, readwrite, copy) NSDate *date;
 
+// tip 的类型
+@property (nonatomic, readwrite, assign) MQTipType tipType;
+
 @end
 
 @implementation MQTipsCellModel
@@ -73,13 +81,14 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
                         enableLinesDisplay:(BOOL)enableLinesDisplay
 {
     if (self = [super init]) {
+        self.tipType = MQTipTypeRedirect;
         self.date = [NSDate date];
         self.tipText = tips;
         self.enableLinesDisplay = enableLinesDisplay;
         
         //tip frame
-        CGFloat tipCellHoriSpacing = enableLinesDisplay ? kMQMessageTipsCellHorizontalSpacing : 8.0;
-        CGFloat tipCellVerSpacing = enableLinesDisplay ? kMQMessageTipsCellVerticalSpacing : 8.0;
+        CGFloat tipCellHoriSpacing = enableLinesDisplay ? kMQMessageTipsCellHorizontalSpacing : kMQMessageReplyTipsCellHorizontalSpacing;
+        CGFloat tipCellVerSpacing = enableLinesDisplay ? kMQMessageTipsCellVerticalSpacing : kMQMessageReplyTipsCellVerticalSpacing;
         CGFloat tipsWidth = cellWidth - tipCellHoriSpacing * 2;
         CGFloat tipsHeight = [MQStringSizeUtil getHeightForText:tips withFont:[UIFont systemFontOfSize:kMQMessageTipsFontSize] andWidth:tipsWidth];
         CGRect tipLabelFrame = CGRectMake(tipCellHoriSpacing, tipCellVerSpacing, tipsWidth, tipsHeight);
@@ -99,18 +108,59 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
             if ([[tips substringToIndex:3] isEqualToString:@"接下来"]) {
                 NSRange firstRange = [tips rangeOfString:@" "];
                 NSString *subTips = [tips substringFromIndex:firstRange.location+1];
-                NSRange lastRange = [subTips rangeOfString:@" "];
-                NSRange agentNameRange = NSMakeRange(firstRange.location+1, lastRange.location);
+                NSRange lastRange = [subTips rangeOfString:@"为您服务"];
+                NSRange agentNameRange = NSMakeRange(firstRange.location+1, lastRange.location-1);
                 self.tipExtraAttributesRange = agentNameRange;
                 self.tipExtraAttributes = @{
                                             NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
-                                            NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].redirectAgentNameColor
+                                            NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor
                                             };
             }
         }
     }
     return self;
 }
+
+/**
+ *  生成留言提示的 cell，支持点击留言
+ */
+- (MQTipsCellModel *)initBotTipCellModelWithCellWidth:(CGFloat)cellWidth
+                                              tipType:(MQTipType)tipType
+{
+    if (self = [super init]) {
+        self.tipType = tipType;
+        self.date = [NSDate date];
+        self.tipText = [MQBundleUtil localizedStringForKey:
+                        tipType == MQTipTypeReply ? @"reply_tip_text" : @"bot_redirect_tip_text"];
+        self.enableLinesDisplay = false;
+        
+        //tip frame
+        CGFloat tipsWidth = cellWidth - kMQMessageReplyTipsCellHorizontalSpacing * 2;
+        CGFloat tipsHeight = [MQStringSizeUtil getHeightForText:self.tipText withFont:[UIFont systemFontOfSize:kMQMessageTipsFontSize] andWidth:tipsWidth];
+        CGRect tipLabelFrame = CGRectMake(kMQMessageReplyTipsCellHorizontalSpacing, kMQMessageReplyTipsCellVerticalSpacing, tipsWidth, tipsHeight);
+        self.tipLabelFrame = tipLabelFrame;
+        
+        self.cellHeight = kMQMessageReplyTipsCellVerticalSpacing * 2 + tipsHeight;
+        
+        //上线条的frame
+        CGFloat lineWidth = cellWidth;
+        self.topLineFrame = CGRectMake(cellWidth/2-lineWidth/2, kMQMessageTipsLabelLineVerticalMargin, lineWidth, kMQMessageTipsLineHeight);
+        
+        //下线条的frame
+        self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, self.cellHeight - kMQMessageTipsLabelLineVerticalMargin - kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
+        
+        //tip的文字额外属性
+        NSString *tapText = tipType == MQTipTypeReply ? @"留言" : @"转人工";
+        NSRange replyTextRange = [self.tipText rangeOfString:tapText];
+        self.tipExtraAttributesRange = replyTextRange;
+        self.tipExtraAttributes = @{
+                                    NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
+                                    NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor
+                                    };
+    }
+    return self;
+}
+
 
 #pragma MQCellModelProtocol
 - (CGFloat)getCellHeight {
@@ -138,9 +188,12 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
 }
 
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
+    CGFloat tipCellHoriSpacing = self.tipType == MQTipTypeRedirect ? kMQMessageTipsCellHorizontalSpacing : kMQMessageReplyTipsCellHorizontalSpacing;
+    CGFloat tipCellVerSpacing = self.tipType == MQTipTypeRedirect ? kMQMessageTipsCellVerticalSpacing : kMQMessageReplyTipsCellVerticalSpacing;
+    
     //tip frame
-    CGFloat tipsWidth = cellWidth - kMQMessageTipsCellHorizontalSpacing * 2;
-    self.tipLabelFrame = CGRectMake(kMQMessageTipsCellHorizontalSpacing, kMQMessageTipsCellVerticalSpacing, tipsWidth, self.tipLabelFrame.size.height);
+    CGFloat tipsWidth = cellWidth - tipCellHoriSpacing * 2;
+    self.tipLabelFrame = CGRectMake(tipCellHoriSpacing, tipCellVerSpacing, tipsWidth, self.tipLabelFrame.size.height);
     
     //上线条的frame
     CGFloat lineWidth = cellWidth;
@@ -148,6 +201,9 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
     
     //下线条的frame
     self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, self.cellHeight - kMQMessageTipsLabelLineVerticalMargin - kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
+    
+    // cell height
+    self.cellHeight = self.bottomLineFrame.origin.y + self.bottomLineFrame.size.height + 0.5;
 }
 
 

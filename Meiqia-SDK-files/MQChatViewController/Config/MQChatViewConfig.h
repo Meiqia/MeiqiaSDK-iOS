@@ -69,6 +69,7 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @property (nonatomic, copy  ) NSString *incomingMsgSoundFileName;
 @property (nonatomic, copy  ) NSString *outgoingMsgSoundFileName;
 @property (nonatomic, copy  ) NSString *scheduledAgentId;
+@property (nonatomic, copy  ) NSString *notScheduledAgentId;
 @property (nonatomic, copy  ) NSString *scheduledGroupId;
 @property (nonatomic, copy  ) NSString *customizedId;
 @property (nonatomic, copy  ) NSString *navTitleText;
