@@ -384,6 +384,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #endif
 
 - (void)changeNavReightBtnWithAgentType:(NSString *)agentType {
+    // 隐藏 loading
+    [self dismissActivityIndicatorView];
+    
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         return;
     }
@@ -412,9 +415,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     UIBarButtonItem *rightNavButtonItem = [[UIBarButtonItem alloc]initWithTitle:title style:(UIBarButtonItemStylePlain) target:self action:navBtnSelector];
     rightNavButtonItem.tintColor = chatViewConfig.chatViewStyle.btnTextColor;
     self.navigationItem.rightBarButtonItem = rightNavButtonItem;
-    
-    // 隐藏 loading
-    [self dismissActivityIndicatorView];
 }
 
 - (void)didReceiveMessage {
