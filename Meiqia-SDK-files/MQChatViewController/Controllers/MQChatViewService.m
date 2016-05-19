@@ -738,6 +738,21 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 }
 
+// 清除当前界面的「转人工」「留言」的 tipCell
+- (void)removeBotTipCellModels {
+    NSMutableArray *newCellModels = [NSMutableArray new];
+    for (id<MQCellModelProtocol> model in self.cellModels) {
+        if ([model isKindOfClass:[MQTipsCellModel class]]) {
+            MQTipsCellModel *cellModel = (MQTipsCellModel *)model;
+            if (cellModel.tipType == MQTipTypeReply || cellModel.tipType == MQTipTypeBotRedirect) {
+                continue;
+            }
+        }
+        [newCellModels addObject:model];
+    }
+    self.cellModels = newCellModels;
+}
+
 #ifdef INCLUDE_MEIQIA_SDK
 
 #pragma 顾客上线的逻辑
@@ -797,6 +812,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         self.isShowBotRedirectBtn = isShow;
         [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
     }];
+    
+    // 若是分配到了人工客服，则清除当前界面的「转人工」「留言」的 tipCell
+    if (![agentType isEqualToString:@"bot"] && agentType.length > 0) {
+        [self removeBotTipCellModels];
+    }
     
     dispatch_group_t clientOnlineGroup = dispatch_group_create();
     dispatch_group_enter(clientOnlineGroup);
@@ -1131,7 +1151,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [MQServiceToViewInterface evaluateBotMessage:messageId isUseful:isUseful completion:^(BOOL success, NSError *error) {
     }];
     // 若用户点击「无用」，生成转人工的状态
-    if (!isUseful) {
+    MQAgent *agent = [MQServiceToViewInterface getCurrentAgent];
+    if (!isUseful && agent.privilege == MQAgentPrivilegeBot) {
         // 生成转人工的状态
         [self addTipCellModelWithType:MQTipTypeBotRedirect];
     }
@@ -1178,4 +1199,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     return _serviceToViewInterface;
 }
 #endif
+
+
 @end
