@@ -40,6 +40,8 @@
         self.view.frame = [UIScreen mainScreen].bounds;
         self.view.alpha = 1.0;
     } completion:nil];
+    
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
 }
 
 - (void)dismiss {
@@ -126,6 +128,7 @@
     if (!_collectionView) {
         CGRect screenRect = [UIScreen mainScreen].bounds;
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
         _collectionView = [[UICollectionView alloc]initWithFrame:screenRect collectionViewLayout:layout];
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

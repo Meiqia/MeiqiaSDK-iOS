@@ -9,8 +9,8 @@
 #import "MQMessageFormImageView.h"
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
-//#import "UIImageView+MEIQIA_MHFacebookImageViewer.h"
 #import "MQMessageFormConfig.h"
+#import "MQImageViewerViewController.h"
 
 static CGFloat const kMQMessageFormSpacing   = 16.0;
 static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
@@ -36,6 +36,8 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
     NSMutableArray *images;
     UIImage *deleteIconImage;
     UIImage *addIconImage;
+    
+    CGFloat deleteIconLength;
 }
 
 - (instancetype)initWithScreenWidth:(CGFloat)screenWidth {
@@ -65,7 +67,8 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
 - (void)calculatePictureAndPictureItemLengthWithScreenWidth:(CGFloat)screenWidth {
     pictureItemLength = (screenWidth - 4 * kMQMessageFormSpacing) / 3;
     pictureItemLength = pictureItemLength > kMQMessageFormMaxPictureItemLength ? kMQMessageFormMaxPictureItemLength : pictureItemLength;
-    pictureLength = pictureItemLength - kMQMessageFormSpacing;
+    deleteIconLength = 24;
+    pictureLength = pictureItemLength - deleteIconLength / 2;
 }
 
 - (void)initAddPictureLabel {
@@ -84,12 +87,12 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
     pictureOneIv.contentMode = UIViewContentModeScaleAspectFill;
     pictureOneIv.clipsToBounds = YES;
     pictureOneIv.userInteractionEnabled = YES;
-    [pictureOneIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showChoosePictureActionSheet)]];
+    [pictureOneIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPictureOne)]];
     
     deleteOneIv = [[UIImageView alloc] init];
     deleteOneIv.image = deleteIconImage;
     deleteOneIv.userInteractionEnabled = YES;
-    [deleteOneIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDeleteOne:)]];
+    [deleteOneIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDeleteOne)]];
     
     [pictureOneItem addSubview:pictureOneIv];
     [pictureOneItem addSubview:deleteOneIv];
@@ -101,8 +104,8 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
 - (void)refreshPictureOneFrame {
     CGFloat addPictureLabelMaxY = CGRectGetMaxY(addPictureLabel.frame);
     pictureOneItem.frame = CGRectMake(kMQMessageFormSpacing, addPictureLabelMaxY, pictureItemLength, pictureItemLength);
-    pictureOneIv.frame = CGRectMake(0, kMQMessageFormSpacing, pictureLength, pictureLength);
-    deleteOneIv.frame = CGRectMake(pictureLength - kMQMessageFormSpacing, 0, 2 * kMQMessageFormSpacing, 2 * kMQMessageFormSpacing);
+    pictureOneIv.frame = CGRectMake(0, deleteIconLength / 2, pictureLength, pictureLength);
+    deleteOneIv.frame = CGRectMake(pictureItemLength - deleteIconLength, 0, deleteIconLength, deleteIconLength);
 }
 
 - (void)initPictureTwoItem {
@@ -112,12 +115,12 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
     pictureTwoIv.contentMode = UIViewContentModeScaleAspectFill;
     pictureTwoIv.clipsToBounds = YES;
     pictureTwoIv.userInteractionEnabled = YES;
-    [pictureTwoIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showChoosePictureActionSheet)]];
+    [pictureTwoIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPictureTwo)]];
     
     deleteTwoIv = [[UIImageView alloc] init];
     deleteTwoIv.image = deleteIconImage;
     deleteTwoIv.userInteractionEnabled = YES;
-    [deleteTwoIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDeleteTwo:)]];
+    [deleteTwoIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDeleteTwo)]];
     
     [pictureTwoItem addSubview:pictureTwoIv];
     [pictureTwoItem addSubview:deleteTwoIv];
@@ -127,9 +130,9 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
 
 - (void)refreshPictureTwoFrame {
     CGFloat addPictureLabelMaxY = CGRectGetMaxY(addPictureLabel.frame);
-    pictureTwoItem.frame = CGRectMake(CGRectGetMaxX(pictureOneItem.frame) + kMQMessageFormSpacing, addPictureLabelMaxY, pictureItemLength, pictureItemLength);
-    pictureTwoIv.frame = CGRectMake(0, kMQMessageFormSpacing, pictureLength, pictureLength);
-    deleteTwoIv.frame = CGRectMake(pictureLength - kMQMessageFormSpacing, 0, 2 * kMQMessageFormSpacing, 2 * kMQMessageFormSpacing);
+    pictureTwoItem.frame = CGRectMake(CGRectGetMaxX(pictureOneItem.frame) + kMQMessageFormSpacing - deleteIconLength / 2, addPictureLabelMaxY, pictureItemLength, pictureItemLength);
+    pictureTwoIv.frame = CGRectMake(0, deleteIconLength / 2, pictureLength, pictureLength);
+    deleteTwoIv.frame = CGRectMake(pictureItemLength - deleteIconLength, 0, deleteIconLength, deleteIconLength);
 }
 
 - (void)initPictureThreeItem {
@@ -139,12 +142,12 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
     pictureThreeIv.contentMode = UIViewContentModeScaleAspectFill;
     pictureThreeIv.clipsToBounds = YES;
     pictureThreeIv.userInteractionEnabled = YES;
-    [pictureThreeIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showChoosePictureActionSheet)]];
+    [pictureThreeIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPictureThree)]];
     
     deleteThreeIv = [[UIImageView alloc] init];
     deleteThreeIv.image = deleteIconImage;
     deleteThreeIv.userInteractionEnabled = YES;
-    [deleteThreeIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDeleteThree:)]];
+    [deleteThreeIv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDeleteThree)]];
     
     [pictureThreeItem addSubview:pictureThreeIv];
     [pictureThreeItem addSubview:deleteThreeIv];
@@ -154,31 +157,80 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
 
 - (void)refreshPictureThreeFrame {
     CGFloat addPictureLabelMaxY = CGRectGetMaxY(addPictureLabel.frame);
-    pictureThreeItem.frame = CGRectMake(CGRectGetMaxX(pictureTwoItem.frame) + kMQMessageFormSpacing, addPictureLabelMaxY, pictureItemLength, pictureItemLength);
-    pictureThreeIv.frame = CGRectMake(0, kMQMessageFormSpacing, pictureLength, pictureLength);
-    deleteThreeIv.frame = CGRectMake(pictureLength - kMQMessageFormSpacing, 0, 2 * kMQMessageFormSpacing, 2 * kMQMessageFormSpacing);
+    pictureThreeItem.frame = CGRectMake(CGRectGetMaxX(pictureTwoItem.frame) + kMQMessageFormSpacing - deleteIconLength / 2, addPictureLabelMaxY, pictureItemLength, pictureItemLength);
+    pictureThreeIv.frame = CGRectMake(0, deleteIconLength / 2, pictureLength, pictureLength);
+    deleteThreeIv.frame = CGRectMake(pictureItemLength - deleteIconLength, 0, deleteIconLength, deleteIconLength);
 }
 
-- (void)tapDeleteOne:(id)sender {
+- (void)tapDeleteOne {
     [images removeObjectAtIndex:0];
     [self handlePictureCount];
 }
 
-- (void)tapDeleteTwo:(id)sender {
+- (void)tapDeleteTwo{
     [images removeObjectAtIndex:1];
     [self handlePictureCount];
 }
 
-- (void)tapDeleteThree:(id)sender {
+- (void)tapDeleteThree {
     [images removeObjectAtIndex:2];
     [self handlePictureCount];
 }
 
-- (void)handlePictureCount {
-//    [pictureOneIv removeImageViewer];
-//    [pictureTwoIv removeImageViewer];
-//    [pictureThreeIv removeImageViewer];
+- (void)tapPictureOne {
+    if (images.count < 1) {
+        [self showChoosePictureActionSheet];
+    } else {
+        [self showImageViewerFromRect:[pictureOneIv.superview convertRect:pictureOneIv.frame toView:[UIApplication sharedApplication].keyWindow] withIndex:0];
+    }
+}
+
+- (void)tapPictureTwo {
+    if (images.count < 2) {
+        [self showChoosePictureActionSheet];
+    } else {
+        [self showImageViewerFromRect:[pictureTwoIv.superview convertRect:pictureTwoIv.frame toView:[UIApplication sharedApplication].keyWindow] withIndex:1];
+    }
+}
+
+- (void)tapPictureThree {
+    if (images.count < 3) {
+        [self showChoosePictureActionSheet];
+    } else {
+        [self showImageViewerFromRect:[pictureThreeIv.superview convertRect:pictureThreeIv.frame toView:[UIApplication sharedApplication].keyWindow] withIndex:2];
+    }
+}
+
+- (void)showImageViewerFromRect:(CGRect)rect withIndex:(NSUInteger)index {
+    MQImageViewerViewController *viewerVC = [MQImageViewerViewController new];
+    viewerVC.images = images;
+    viewerVC.currentIndex = index;
+    viewerVC.shouldHideSaveBtn = YES;
     
+    __weak MQImageViewerViewController *wViewerVC = viewerVC;
+    [viewerVC setSelection:^(NSUInteger index) {
+        __strong MQImageViewerViewController *sViewerVC = wViewerVC;
+        [sViewerVC dismiss];
+    }];
+    
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    [viewerVC showOn:[UIApplication sharedApplication].keyWindow.rootViewController fromRect:rect];
+}
+
+- (void)showMenuControllerInView:(UIView *)inView
+                      targetRect:(CGRect)targetRect
+                   menuItemsName:(NSDictionary *)menuItemsName
+{
+    [self becomeFirstResponder];
+    //判断menuItem都有哪些
+    NSMutableArray *menuItems = [[NSMutableArray alloc] init];
+    UIMenuController *menu = [UIMenuController sharedMenuController];
+    [menu setMenuItems:menuItems];
+    [menu setTargetRect:targetRect inView:inView];
+    [menu setMenuVisible:YES animated:YES];
+}
+
+- (void)handlePictureCount {
     if (images.count == 0) {
         [self changeToZeroPicture];
     } else if (images.count == 1) {
@@ -210,8 +262,6 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
     deleteThreeIv.hidden = YES;
     
     pictureOneIv.image = [images objectAtIndex:0];
-//    [pictureOneIv setupImageViewer];
-    
     pictureTwoIv.image = addIconImage;
 }
 
@@ -224,11 +274,7 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
     deleteThreeIv.hidden = YES;
     
     pictureOneIv.image = [images objectAtIndex:0];
-//    [pictureOneIv setupImageViewer];
-    
     pictureTwoIv.image = [images objectAtIndex:1];
-//    [pictureTwoIv setupImageViewer];
-    
     pictureThreeIv.image = addIconImage;
 }
 
@@ -241,11 +287,8 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
     deleteThreeIv.hidden = NO;
     
     pictureOneIv.image = [images objectAtIndex:0];
-//    [pictureOneIv setupImageViewer];
     pictureTwoIv.image = [images objectAtIndex:1];
-//    [pictureTwoIv setupImageViewer];
     pictureThreeIv.image = [images objectAtIndex:2];
-//    [pictureThreeIv setupImageViewer];
 }
 
 - (void)refreshFrameWithScreenWidth:(CGFloat)screenWidth andY:(CGFloat)y {
