@@ -181,7 +181,7 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
     if (images.count < 1) {
         [self showChoosePictureActionSheet];
     } else {
-        [self showImageViewerFromRect:[pictureOneIv.superview convertRect:pictureOneIv.frame toView:[UIApplication sharedApplication].keyWindow] withIndex:0];
+        [self showImageViewerWithIndex:0];
     }
 }
 
@@ -189,7 +189,7 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
     if (images.count < 2) {
         [self showChoosePictureActionSheet];
     } else {
-        [self showImageViewerFromRect:[pictureTwoIv.superview convertRect:pictureTwoIv.frame toView:[UIApplication sharedApplication].keyWindow] withIndex:1];
+        [self showImageViewerWithIndex:1];
     }
 }
 
@@ -197,11 +197,11 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
     if (images.count < 3) {
         [self showChoosePictureActionSheet];
     } else {
-        [self showImageViewerFromRect:[pictureThreeIv.superview convertRect:pictureThreeIv.frame toView:[UIApplication sharedApplication].keyWindow] withIndex:2];
+        [self showImageViewerWithIndex:2];
     }
 }
 
-- (void)showImageViewerFromRect:(CGRect)rect withIndex:(NSUInteger)index {
+- (void)showImageViewerWithIndex:(NSUInteger)index {
     MQImageViewerViewController *viewerVC = [MQImageViewerViewController new];
     viewerVC.images = images;
     viewerVC.currentIndex = index;
@@ -214,20 +214,21 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
     }];
     
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    [viewerVC showOn:[UIApplication sharedApplication].keyWindow.rootViewController fromRect:rect];
+    [viewerVC showOn:[UIApplication sharedApplication].keyWindow.rootViewController fromRectArray:[self getFromRectArray]];
 }
 
-- (void)showMenuControllerInView:(UIView *)inView
-                      targetRect:(CGRect)targetRect
-                   menuItemsName:(NSDictionary *)menuItemsName
-{
-    [self becomeFirstResponder];
-    //判断menuItem都有哪些
-    NSMutableArray *menuItems = [[NSMutableArray alloc] init];
-    UIMenuController *menu = [UIMenuController sharedMenuController];
-    [menu setMenuItems:menuItems];
-    [menu setTargetRect:targetRect inView:inView];
-    [menu setMenuVisible:YES animated:YES];
+- (NSArray *)getFromRectArray {
+    NSMutableArray *fromRectArray = [NSMutableArray new];
+    if (images.count > 0) {
+        [fromRectArray addObject:[NSValue valueWithCGRect:[pictureOneIv.superview convertRect:pictureOneIv.frame toView:[UIApplication sharedApplication].keyWindow]]];
+    }
+    if (images.count > 1) {
+        [fromRectArray addObject:[NSValue valueWithCGRect:[pictureTwoIv.superview convertRect:pictureTwoIv.frame toView:[UIApplication sharedApplication].keyWindow]]];
+    }
+    if (images.count > 2) {
+        [fromRectArray addObject:[NSValue valueWithCGRect:[pictureThreeIv.superview convertRect:pictureThreeIv.frame toView:[UIApplication sharedApplication].keyWindow]]];
+    }
+    return fromRectArray;
 }
 
 - (void)handlePictureCount {
