@@ -10,6 +10,7 @@
 #import "MQServiceToViewInterface.h"
 #import "MQBundleUtil.h"
 #import "MQToast.h"
+#import "MQImageUtil.h"
 
 #define KCellReuseId @"cell"
 
@@ -17,41 +18,67 @@
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 
-@property (nonatomic, assign) CGRect fromRect;
+@property (nonatomic, strong) NSArray *fromRectArray;
 
 @property (nonatomic, strong) UIButton *saveButton;
 
 @property (nonatomic, strong) UIPageControl *pageControl;
 
+@property (nonatomic, assign) CGRect centerScreenFrame;
+
 @end
 
 @implementation MQImageViewerViewController
 
-- (void)showOn:(UIViewController *)controller fromRect:(CGRect)rect {
+- (void)showOn:(UIViewController *)controller fromRectArray:(NSArray *)rectArray {
     [[[[UIApplication sharedApplication]windows]objectAtIndex:0]addSubview:self.view];
     [controller addChildViewController:self];
     [self didMoveToParentViewController:controller];
     
-    self.fromRect = rect;
+    CGRect screenRect = [UIScreen mainScreen].bounds;
+    self.centerScreenFrame = (CGRect){CGPointMake(CGRectGetMidX(screenRect), CGRectGetMidY(screenRect)), CGSizeZero};
     
-    self.view.frame = self.fromRect;
+    self.fromRectArray = rectArray;
+    
+    if (self.fromRectArray != nil && self.fromRectArray.count > 0 && self.fromRectArray.count == self.images.count) {
+        self.view.frame = [[self.fromRectArray objectAtIndex:self.currentIndex] CGRectValue];
+    } else {
+        // 从屏幕中间开始放大
+        self.view.frame = self.centerScreenFrame;
+    }
     self.view.alpha = 0.0;
     [UIView animateWithDuration:0.35 delay:0.0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
         self.view.frame = [UIScreen mainScreen].bounds;
         self.view.alpha = 1.0;
     } completion:nil];
     
+    // 选中当前要浏览图片的位置
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
 }
 
 - (void)dismiss {
     [UIView animateWithDuration:0.35 delay:0.0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
-        self.view.frame = self.fromRect;
+        if (self.fromRectArray != nil && self.fromRectArray.count > 0 && self.fromRectArray.count == self.images.count) {
+            self.view.frame = [[self.fromRectArray objectAtIndex:self.currentIndex] CGRectValue];
+        } else {
+            // 缩放到屏幕中间
+            self.view.frame = self.centerScreenFrame;
+        }
         self.view.alpha = 0.0;
     } completion:^(BOOL complete){
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
     }];
+}
+
+- (void)setImages:(NSArray *)images {
+    CGFloat scale = [UIScreen mainScreen].scale;
+    CGSize screenSize = CGSizeApplyAffineTransform([[UIScreen mainScreen] bounds].size, CGAffineTransformMakeScale(scale, scale));
+    NSMutableArray *tempImageArray = [NSMutableArray new];
+    for (UIImage * image in images) {
+        [tempImageArray addObject:[MQImageUtil resizeImage:image maxSize:screenSize]];
+    }
+    _images = tempImageArray;
 }
 
 - (void)viewDidLoad {
@@ -129,11 +156,15 @@
         CGRect screenRect = [UIScreen mainScreen].bounds;
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        layout.minimumLineSpacing = 0.0;
+        layout.minimumInteritemSpacing = 0.0;
         
         _collectionView = [[UICollectionView alloc]initWithFrame:screenRect collectionViewLayout:layout];
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
+        _collectionView.pagingEnabled = YES;
+        _collectionView.showsHorizontalScrollIndicator = NO;
         [_collectionView registerClass:[MQImageCollectionCell class] forCellWithReuseIdentifier:KCellReuseId];
     }
     
@@ -161,6 +192,9 @@
         _pageControl = [UIPageControl new];
         _pageControl.numberOfPages = self.images.count ?: self.imagePaths.count;
         _pageControl.currentPage = self.currentIndex;
+        [self.view addSubview:_pageControl];
+        _pageControl.translatesAutoresizingMaskIntoConstraints = NO;
+        [self centerButtonCornerConstrainsToView:_pageControl onTo:self.view];
     }
     return _pageControl;
 }
@@ -184,6 +218,13 @@
 - (void)leftButtonCornerConstrainsToView:(UIView *)innderView onTo:(UIView *)outterView {
     NSArray *constrants = @[[NSLayoutConstraint constraintWithItem:innderView attribute:(NSLayoutAttributeLeft) relatedBy:(NSLayoutRelationEqual) toItem:outterView attribute:(NSLayoutAttributeLeft) multiplier:1.0 constant:20],
                             [NSLayoutConstraint constraintWithItem:innderView attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:outterView attribute:(NSLayoutAttributeBottom) multiplier:1.0 constant:-20]];
+    
+    [self.view addConstraints:constrants];
+}
+
+- (void)centerButtonCornerConstrainsToView:(UIView *)innderView onTo:(UIView *)outterView {
+    NSArray *constrants = @[[NSLayoutConstraint constraintWithItem:innderView attribute:(NSLayoutAttributeCenterX) relatedBy:(NSLayoutRelationEqual) toItem:outterView attribute:(NSLayoutAttributeCenterX) multiplier:1.0 constant:0],
+                            [NSLayoutConstraint constraintWithItem:innderView attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:outterView attribute:(NSLayoutAttributeBottom) multiplier:1.0 constant:0]];
     
     [self.view addConstraints:constrants];
 }
