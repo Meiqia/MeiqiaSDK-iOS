@@ -609,7 +609,8 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewStyle setIncomingBubbleImage:incomingBubbleImage];
     [chatViewStyle setOutgoingBubbleImage:outgoingBubbleImage];
-    [chatViewStyle setIncomingBubbleColor:[UIColor yellowColor]];
+    [chatViewStyle setIncomingBubbleColor:[[UIColor yellowColor] colorWithAlphaComponent:0.3]];
+    [chatViewStyle setOutgoingBubbleColor:[[UIColor blueColor]colorWithAlphaComponent:0.7]];
     [chatViewStyle setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }

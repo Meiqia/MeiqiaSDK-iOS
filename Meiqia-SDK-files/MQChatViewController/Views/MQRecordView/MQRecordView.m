@@ -167,13 +167,13 @@ static NSInteger const kMQMaxRecordVoiceDurationDeviation = 2;
     }
 }
 
--(void)didMoveToSuperview
-{
-    if (!isVisible) {
-        [self setupUI];
-        isVisible = YES;
-    }
-}
+//-(void)didMoveToSuperview
+//{
+//    if (!isVisible) {
+//        [self setupUI];
+//        isVisible = YES;
+//    }
+//}
 
 -(void)startRecording
 {
@@ -293,7 +293,10 @@ static NSInteger const kMQMaxRecordVoiceDurationDeviation = 2;
 }
 
 - (void)didUpdateAudioVolume:(Float32)volume {
-    [self setRecordingVolume:volume];
+//    [self setRecordingVolume:volume];
+    if ([self.recordViewDelegate respondsToSelector:@selector(didUpdateVolumeInRecordView:volume:)]) {
+        [self.recordViewDelegate didUpdateVolumeInRecordView:self volume:volume];
+    }
 }
 
 - (void)didEndRecording {
