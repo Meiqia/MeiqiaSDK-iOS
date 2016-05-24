@@ -100,13 +100,13 @@
         navigationController.navigationBar.tintColor = defaultNavigationController.navigationBar.tintColor;
     }
     
-    UIColor *color = [MQChatViewConfig sharedConfig].navTitleColor ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSForegroundColorAttributeName] ?: [UIColor blackColor];
-    UIFont *font = [MQChatViewConfig sharedConfig].chatViewStyle.navTitleFont ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSFontAttributeName] ?: [UIFont systemFontOfSize:16.0];
-    NSDictionary *attr = @{NSForegroundColorAttributeName : color, NSFontAttributeName : font};
-    navigationController.navigationBar.titleTextAttributes = attr;
-    
-    if (defaultNavigationController) {
+    if (defaultNavigationController.navigationBar.titleTextAttributes) {
         navigationController.navigationBar.titleTextAttributes = defaultNavigationController.navigationBar.titleTextAttributes;
+    } else {
+        UIColor *color = [MQChatViewConfig sharedConfig].navTitleColor ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSForegroundColorAttributeName] ?: [UIColor blackColor];
+        UIFont *font = [MQChatViewConfig sharedConfig].chatViewStyle.navTitleFont ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSFontAttributeName] ?: [UIFont systemFontOfSize:16.0];
+        NSDictionary *attr = @{NSForegroundColorAttributeName : color, NSFontAttributeName : font};
+        navigationController.navigationBar.titleTextAttributes = attr;
     }
     
     if ([MQChatViewConfig sharedConfig].chatViewStyle.navBarBackgroundImage) {
