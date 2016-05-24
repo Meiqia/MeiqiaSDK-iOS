@@ -66,6 +66,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.enableTopPullRefresh    = false;
     self.enableBottomPullRefresh = false;
     self.enableVoiceRecordBlurView = false;
+    self.shouldUploadOutgoingAvartar = NO;
     
     self.enableChatWelcome         = false;
     self.enableTopAutoRefresh      = true;

@@ -10,7 +10,8 @@
 #import "MQChatViewManager.h"
 #import "MQChatDeviceUtil.h"
 #import "DevelopViewController.h"
-#import <MeiQiaSDK/MQManager.h>
+#import <MeiQiaSDK/MeiQiaSDK.h>
+#import "NSArray+MQFunctional.h"
 
 static CGFloat const kMQButtonVerticalSpacing   = 16.0;
 static CGFloat const kMQButtonHeight            = 42.0;
@@ -49,9 +50,9 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     
 //    [self.navigationController setNavigationBarHidden:YES];
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateIndicator) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onlineSuccessed) name:MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION object:nil];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
     
 }
 
@@ -61,6 +62,10 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+}
+
+- (void)onlineSuccessed {
+    [MQManager sendTextMessageWithContent:@"text" completion:nil];
 }
 
 - (void)updateIndicator {
@@ -79,7 +84,14 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 }
 
 - (void)updateUnreadMessageCount {
-    NSLog(@"unreade message count: %d",(int)[[MQServiceToViewInterface getLocalUnreadMessages] count]);
+    [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+        
+        NSUInteger count = [[messages filter:^BOOL(MQMessage *message) {
+            return message.fromType != MQMessageFromTypeClient;
+        }] count];
+        
+        NSLog(@"unreade message count: %lu",(unsigned long)count);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -150,6 +162,12 @@ static int indicator_tag = 10;
     
     [chatViewManager setRecordMode:MQRecordModeDuckOther];
     [chatViewManager setPlayMode:MQPlayModeMixWithOther];
+    
+    [MQManager getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+        int count = [[messages filter:^BOOL(MQMessage *message) {
+            return message.fromType != MQMessageFromTypeClient;
+        }] count];
+    }];
     
 }
 

@@ -648,7 +648,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewManager.chatViewStyle setPullRefreshColor:[UIColor redColor]];
 //    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor blueColor]];
 //    [chatViewManager.chatViewStyle setNavBarColor:[UIColor yellowColor]];
-
+    [chatViewManager setClientInfo:@{@"avatar":@"https://avatars3.githubusercontent.com/u/1302?v=3&s=96"}];
     
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.backgroundColor = [UIColor redColor];
@@ -672,9 +672,13 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     lertButton.frame = CGRectMake(10, 10, 20, 20);
     [chatViewManager.chatViewStyle setNavBarLeftButton:lertButton];
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleDefault];
+    chatViewManager.chatViewStyle.navTitleColor = [UIColor yellowColor];
     
+//    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blueColor]}];
     [chatViewManager setNavTitleText:@"我是标题哦^.^"];
-    [chatViewManager pushMQChatViewControllerInViewController:self];
+    
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+    [chatViewManager presentMQChatViewControllerInViewController:self];
     
 }
 

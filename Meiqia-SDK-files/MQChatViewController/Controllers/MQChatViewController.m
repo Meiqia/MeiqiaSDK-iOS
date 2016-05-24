@@ -184,7 +184,7 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
     self.chatTableView.chatTableViewDelegate = nil;
     self.chatTableView.delegate = nil;
     self.chatInputBar.delegate = nil;
-    self.recordView.recordViewDelegate = nil;
+//    self.recordView.recordViewDelegate = nil;
 #ifdef INCLUDE_MEIQIA_SDK
     chatViewService.errorDelegate = nil;
 #endif

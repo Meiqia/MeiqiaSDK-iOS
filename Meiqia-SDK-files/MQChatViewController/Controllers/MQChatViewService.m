@@ -544,9 +544,10 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         for (MQBaseMessage *message in messages) {
             [historyMessages insertObject:message atIndex:0];
         }
-    } else {
-        [MQServiceToViewInterface updateMessageIds:[historyMessages valueForKey:@"messageId"] toReadStatus:YES];
     }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [MQServiceToViewInterface updateMessageIds:[historyMessages valueForKey:@"messageId"] toReadStatus:YES];
+    });
     
     for (MQBaseMessage *message in historyMessages) {
         id<MQCellModelProtocol> cellModel;
