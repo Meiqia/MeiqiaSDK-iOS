@@ -307,6 +307,11 @@
 + (void)updateMessageIds:(NSArray *)messageIds toReadStatus:(BOOL)isRead;
 
 /**
+ * 将所有消息标记为已读
+ */
++ (void)markAllMessagesAsRead;
+
+/**
  获取当前企业的配置信息
  */
 + (void)getEnterpriseConfigInfoComplete:(void(^)(MQEnterprise *, NSError *))action;

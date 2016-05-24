@@ -505,6 +505,10 @@
     [MQManager updateMessageIds:messageIds toReadStatus:isRead];
 }
 
++ (void)markAllMessagesAsRead {
+    [MQManager markAllMessagesAsRead];
+}
+
 + (void)prepareForChat {
     [MQManager didStartChat];
 }

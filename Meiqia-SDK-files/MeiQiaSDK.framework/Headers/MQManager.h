@@ -286,6 +286,11 @@
          toReadStatus:(BOOL)isRead;
 
 /**
+ * 将所有消息标记为已读
+ */
++ (void)markAllMessagesAsRead;
+
+/**
  *  将数据库中某个message删除
  *
  *  @param messageId 消息id
