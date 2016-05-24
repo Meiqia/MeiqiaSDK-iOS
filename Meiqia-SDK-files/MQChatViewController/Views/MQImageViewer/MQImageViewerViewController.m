@@ -40,7 +40,7 @@
     
     self.fromRectArray = rectArray;
     
-    if (self.fromRectArray != nil && self.fromRectArray.count > 0 && self.fromRectArray.count == self.images.count) {
+    if ((self.fromRectArray.count > 0 && self.fromRectArray.count == self.images.count) || (self.fromRectArray.count > 0 && self.fromRectArray.count == self.imagePaths.count)) {
         self.view.frame = [[self.fromRectArray objectAtIndex:self.currentIndex] CGRectValue];
     } else {
         // 从屏幕中间开始放大
@@ -58,7 +58,7 @@
 
 - (void)dismiss {
     [UIView animateWithDuration:0.35 delay:0.0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
-        if (self.fromRectArray != nil && self.fromRectArray.count > 0 && self.fromRectArray.count == self.images.count) {
+        if ((self.fromRectArray.count > 0 && self.fromRectArray.count == self.images.count) || (self.fromRectArray.count > 0 && self.fromRectArray.count == self.imagePaths.count)) {
             self.view.frame = [[self.fromRectArray objectAtIndex:self.currentIndex] CGRectValue];
         } else {
             // 缩放到屏幕中间
@@ -72,11 +72,9 @@
 }
 
 - (void)setImages:(NSArray *)images {
-    CGFloat scale = [UIScreen mainScreen].scale;
-    CGSize screenSize = CGSizeApplyAffineTransform([[UIScreen mainScreen] bounds].size, CGAffineTransformMakeScale(scale, scale));
     NSMutableArray *tempImageArray = [NSMutableArray new];
     for (UIImage * image in images) {
-        [tempImageArray addObject:[MQImageUtil resizeImage:image maxSize:screenSize]];
+        [tempImageArray addObject:[MQImageUtil resizeImageToMaxScreenSize:image]];
     }
     _images = tempImageArray;
 }
@@ -132,7 +130,7 @@
     NSString *imagePath = self.imagePaths[indexPath.row];
     if (self.images.count == 0) {
         [MQServiceToViewInterface downloadMediaWithUrlString:imagePath progress:nil completion:^(NSData *mediaData, NSError *error) {
-            cell.imageView.image = [UIImage imageWithData:mediaData];
+            cell.imageView.image = [MQImageUtil resizeImageToMaxScreenSize:[UIImage imageWithData:mediaData]];
         }];
     } else {
         cell.imageView.image = self.images[indexPath.row];
