@@ -14,9 +14,9 @@
 
 @end
 
-@interface MQMessageFormImageView : UIView
+@interface MQMessageFormImageView : UICollectionView
 
-@property(nonatomic, weak) id<MQMessageFormImageViewDelegate> delegate;
+@property(nonatomic, weak) id<MQMessageFormImageViewDelegate> choosePictureDelegate;
 
 - (instancetype)initWithScreenWidth:(CGFloat)screenWidth;
 
