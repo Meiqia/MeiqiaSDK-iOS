@@ -18,7 +18,7 @@
 
 @property (nonatomic, assign) BOOL shouldHideSaveBtn;
 
-- (void)showOn:(UIViewController *)controller fromRect:(CGRect)rect;
+- (void)showOn:(UIViewController *)controller fromRectArray:(NSArray *)rectArray;
 
 - (void)dismiss;
 @end
