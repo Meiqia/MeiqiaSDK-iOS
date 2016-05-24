@@ -9,12 +9,30 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "UIColor+Hex.h"
+#import "MQChatViewStyle.h"
 
 typedef NS_ENUM(NSUInteger, MQMessageFormViewStyleType) {
     MQMessageFormViewStyleTypeDefault,
+    MQMessageFormViewStyleTypeBlue,
+    MQMessageFormViewStyleTypeGreen,
+    MQMessageFormViewStyleTypeDark,
 };
 
 @interface MQMessageFormViewStyle : NSObject
+
+@property (nonatomic, copy) UIColor *navTitleColor;
+
+/**
+ * 设置导航栏上的元素颜色；
+ * @param tintColor 导航栏上的元素颜色
+ */
+@property (nonatomic, copy) UIColor *navBarTintColor;
+
+/**
+ * 设置导航栏的背景色；
+ * @param barColor 导航栏背景颜色
+ */
+@property (nonatomic, copy) UIColor *navBarColor;
 
 /**
  *  留言表单界面背景色
@@ -80,5 +98,11 @@ typedef NS_ENUM(NSUInteger, MQMessageFormViewStyleType) {
 @property (nonatomic, strong) UIImage *addImage;
 
 + (instancetype)defaultStyle;
+
++ (instancetype)blueStyle;
+
++ (instancetype)darkStyle;
+
++ (instancetype)greenStyle;
 
 @end

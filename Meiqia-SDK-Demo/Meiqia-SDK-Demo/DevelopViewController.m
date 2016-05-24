@@ -719,10 +719,16 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 }
 
 - (void)messageForm {
-    // 导航栏和动画沿用聊天界面的配置
-    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    chatViewManager.chatViewStyle = [MQChatViewStyle greenStyle];
+    MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
     
+    // 如果同时配置了聊天界面和留言表单见面的主题，优先使用留言表单见面的主题。如果两个主题都没有设置，则使用默认的主题
+    messageFormViewManager.messageFormViewStyle = [MQMessageFormViewStyle greenStyle];
+//    messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor];
+    
+    // 如果没有设置留言表单界面的主题，则使用聊天界面的主题
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    chatViewManager.chatViewStyle = [MQChatViewStyle blueStyle];
+//    chatViewManager.chatViewStyle.navTitleColor = [UIColor redColor];
     
     
     MQMessageFormInputModel *phoneMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
@@ -765,11 +771,10 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
     [customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
     [customMessageFormInputModelArray addObject:emailMessageFormInputModel];
-    //    [customMessageFormInputModelArray addObject:nameMessageFormInputModel];
-    //    [customMessageFormInputModelArray addObject:commentMessageFormInputModel];
-    //    [customMessageFormInputModelArray addObject:weiboMessageFormInputModel];
+//        [customMessageFormInputModelArray addObject:nameMessageFormInputModel];
+//        [customMessageFormInputModelArray addObject:commentMessageFormInputModel];
+//        [customMessageFormInputModelArray addObject:weiboMessageFormInputModel];
     
-    MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
     [messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
     [messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
     

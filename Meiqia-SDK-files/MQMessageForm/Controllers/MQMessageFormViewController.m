@@ -15,7 +15,6 @@
 #import "MQMessageFormImageView.h"
 #import "MQMessageFormInputView.h"
 #import "MQMessageFormViewService.h"
-#import "MQChatViewConfig.h"
 
 static CGFloat const kMQMessageFormSpacing   = 16.0;
 static NSString * const kMessageFormMessageKey = @"message";
@@ -143,7 +142,7 @@ static NSString * const kMessageFormMessageKey = @"message";
     [self refreshMessageFormImageViewFrame];
     
     scrollView.frame = CGRectMake(0, 0, viewSize.width, viewSize.height);
-    [scrollView setContentSize:CGSizeMake(viewSize.width, CGRectGetMaxY(messageFormImageView.frame))];
+    [scrollView setContentSize:CGSizeMake(viewSize.width, CGRectGetMaxY(messageFormImageView.frame) + kMQMessageFormSpacing)];
     
     if (translucentView) {
         translucentView.frame = CGRectMake(0, 0, viewSize.width, viewSize.height);
@@ -206,7 +205,7 @@ static NSString * const kMessageFormMessageKey = @"message";
 
 - (void)initMQMessageFormImageView {
     messageFormImageView = [[MQMessageFormImageView alloc] initWithScreenWidth:viewSize.width];
-    messageFormImageView.delegate = self;
+    messageFormImageView.choosePictureDelegate = self;
     [self refreshMessageFormImageViewFrame];
     [scrollView addSubview:messageFormImageView];
 }
