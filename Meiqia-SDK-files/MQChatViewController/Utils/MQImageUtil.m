@@ -54,6 +54,12 @@
     }
 }
 
++ (UIImage *)resizeImageToMaxScreenSize:(UIImage *)image {
+    CGFloat scale = [UIScreen mainScreen].scale;
+    CGSize screenSize = CGSizeApplyAffineTransform([[UIScreen mainScreen] bounds].size, CGAffineTransformMakeScale(scale, scale));
+    return [MQImageUtil resizeImage:image maxSize:screenSize];
+}
+
 + (UIImage *)scaleImage:(UIImage *)image toNewSize:(CGSize)size {
     CGSize newSize = CGSizeApplyAffineTransform(size, CGAffineTransformMakeScale(1/[UIScreen mainScreen].scale, 1/[UIScreen mainScreen].scale));
     

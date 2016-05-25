@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		313E28021CF4280600E9F944 /* MQMessageFormImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 313E28011CF4280600E9F944 /* MQMessageFormImageCell.m */; };
+		313E28041CF4A42800E9F944 /* MQMessageFormViewStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 313E28031CF4A42800E9F944 /* MQMessageFormViewStyle.m */; };
+		313E28081CF4A48000E9F944 /* MQMessageFormViewStyleBlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 313E28071CF4A48000E9F944 /* MQMessageFormViewStyleBlue.m */; };
+		313E280B1CF4A4A400E9F944 /* MQMessageFormViewStyleGreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 313E280A1CF4A4A400E9F944 /* MQMessageFormViewStyleGreen.m */; };
+		313E280E1CF4A4B400E9F944 /* MQMessageFormViewStyleDark.m in Sources */ = {isa = PBXBuildFile; fileRef = 313E280D1CF4A4B400E9F944 /* MQMessageFormViewStyleDark.m */; };
 		CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */; };
 		CC3310941C33F7EA0088E648 /* MQServiceToViewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = CC330FD91C33F7EA0088E648 /* MQServiceToViewInterface.m */; };
 		CC3310951C33F7EA0088E648 /* MQChatViewAsset.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CC330FDC1C33F7EA0088E648 /* MQChatViewAsset.bundle */; };
@@ -57,7 +62,6 @@
 		CC84A8B21CEC7D790097C99E /* MQMessageFormInputModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A89B1CEC7D790097C99E /* MQMessageFormInputModel.m */; };
 		CC84A8B31CEC7D790097C99E /* MQMessageFormConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A89D1CEC7D790097C99E /* MQMessageFormConfig.m */; };
 		CC84A8B41CEC7D790097C99E /* MQMessageFormViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A89F1CEC7D790097C99E /* MQMessageFormViewManager.m */; };
-		CC84A8B51CEC7D790097C99E /* MQMessageFormViewStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A8A21CEC7D790097C99E /* MQMessageFormViewStyle.m */; };
 		CC84A8B61CEC7D790097C99E /* MQMessageFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A8A51CEC7D790097C99E /* MQMessageFormViewController.m */; };
 		CC84A8B71CEC7D790097C99E /* MQMessageFormViewService.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A8A71CEC7D790097C99E /* MQMessageFormViewService.m */; };
 		CC84A8B81CEC7D790097C99E /* MQMessageFormInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC84A8AB1CEC7D790097C99E /* MQMessageFormInputView.m */; };
@@ -140,6 +144,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		313E28001CF4280600E9F944 /* MQMessageFormImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormImageCell.h; sourceTree = "<group>"; };
+		313E28011CF4280600E9F944 /* MQMessageFormImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormImageCell.m; sourceTree = "<group>"; };
+		313E28031CF4A42800E9F944 /* MQMessageFormViewStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormViewStyle.m; sourceTree = "<group>"; };
+		313E28061CF4A48000E9F944 /* MQMessageFormViewStyleBlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormViewStyleBlue.h; sourceTree = "<group>"; };
+		313E28071CF4A48000E9F944 /* MQMessageFormViewStyleBlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormViewStyleBlue.m; sourceTree = "<group>"; };
+		313E28091CF4A4A400E9F944 /* MQMessageFormViewStyleGreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormViewStyleGreen.h; sourceTree = "<group>"; };
+		313E280A1CF4A4A400E9F944 /* MQMessageFormViewStyleGreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormViewStyleGreen.m; sourceTree = "<group>"; };
+		313E280C1CF4A4B400E9F944 /* MQMessageFormViewStyleDark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormViewStyleDark.h; sourceTree = "<group>"; };
+		313E280D1CF4A4B400E9F944 /* MQMessageFormViewStyleDark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormViewStyleDark.m; sourceTree = "<group>"; };
 		CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ijinmaoAvatar.png; sourceTree = "<group>"; };
 		CC330FD81C33F7EA0088E648 /* MQServiceToViewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQServiceToViewInterface.h; sourceTree = "<group>"; };
 		CC330FD91C33F7EA0088E648 /* MQServiceToViewInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQServiceToViewInterface.m; sourceTree = "<group>"; };
@@ -240,7 +253,6 @@
 		CC84A89E1CEC7D790097C99E /* MQMessageFormViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormViewManager.h; sourceTree = "<group>"; };
 		CC84A89F1CEC7D790097C99E /* MQMessageFormViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormViewManager.m; sourceTree = "<group>"; };
 		CC84A8A11CEC7D790097C99E /* MQMessageFormViewStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormViewStyle.h; sourceTree = "<group>"; };
-		CC84A8A21CEC7D790097C99E /* MQMessageFormViewStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormViewStyle.m; sourceTree = "<group>"; };
 		CC84A8A41CEC7D790097C99E /* MQMessageFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormViewController.h; sourceTree = "<group>"; };
 		CC84A8A51CEC7D790097C99E /* MQMessageFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormViewController.m; sourceTree = "<group>"; };
 		CC84A8A61CEC7D790097C99E /* MQMessageFormViewService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormViewService.h; sourceTree = "<group>"; };
@@ -399,6 +411,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		313E27FF1CF427D000E9F944 /* MQMessageFormImageCell */ = {
+			isa = PBXGroup;
+			children = (
+				313E28001CF4280600E9F944 /* MQMessageFormImageCell.h */,
+				313E28011CF4280600E9F944 /* MQMessageFormImageCell.m */,
+			);
+			path = MQMessageFormImageCell;
+			sourceTree = "<group>";
+		};
+		313E28051CF4A44600E9F944 /* PreDefined */ = {
+			isa = PBXGroup;
+			children = (
+				313E28061CF4A48000E9F944 /* MQMessageFormViewStyleBlue.h */,
+				313E28071CF4A48000E9F944 /* MQMessageFormViewStyleBlue.m */,
+				313E28091CF4A4A400E9F944 /* MQMessageFormViewStyleGreen.h */,
+				313E280A1CF4A4A400E9F944 /* MQMessageFormViewStyleGreen.m */,
+				313E280C1CF4A4B400E9F944 /* MQMessageFormViewStyleDark.h */,
+				313E280D1CF4A4B400E9F944 /* MQMessageFormViewStyleDark.m */,
+			);
+			path = PreDefined;
+			sourceTree = "<group>";
+		};
 		CC330FD71C33F7EA0088E648 /* MeiqiaSDKViewInterface */ = {
 			isa = PBXGroup;
 			children = (
@@ -690,8 +724,9 @@
 		CC84A8A01CEC7D790097C99E /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				313E28051CF4A44600E9F944 /* PreDefined */,
 				CC84A8A11CEC7D790097C99E /* MQMessageFormViewStyle.h */,
-				CC84A8A21CEC7D790097C99E /* MQMessageFormViewStyle.m */,
+				313E28031CF4A42800E9F944 /* MQMessageFormViewStyle.m */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -710,6 +745,7 @@
 		CC84A8A81CEC7D790097C99E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				313E27FF1CF427D000E9F944 /* MQMessageFormImageCell */,
 				CC84A8A91CEC7D790097C99E /* MQMessageFormInputView */,
 				CC84A8AC1CEC7D790097C99E /* MQMessageFormTextView */,
 				CC84A8AF1CEC7D790097C99E /* MQMessageFromImageView */,
@@ -1174,6 +1210,7 @@
 				CC84A8CF1CEC817D0097C99E /* MQBotAnswerMessage.m in Sources */,
 				CCE9D14D1C1813BE004E862E /* DevelopViewController.m in Sources */,
 				CC3310DE1C33F7EA0088E648 /* MQInputBar.m in Sources */,
+				313E28041CF4A42800E9F944 /* MQMessageFormViewStyle.m in Sources */,
 				CCE9D1111C1812F6004E862E /* ViewController.m in Sources */,
 				CC3310A31C33F7EA0088E648 /* MQTextCellModel.m in Sources */,
 				CC3310961C33F7EA0088E648 /* MQChatViewConfig.m in Sources */,
@@ -1191,7 +1228,6 @@
 				CC3310971C33F7EA0088E648 /* MQChatViewManager.m in Sources */,
 				CC3310A91C33F7EA0088E648 /* MQMessageDateCell.m in Sources */,
 				CC33109A1C33F7EA0088E648 /* MQChatViewTableDataSource.m in Sources */,
-				CC84A8B51CEC7D790097C99E /* MQMessageFormViewStyle.m in Sources */,
 				CC868F881C7AFFF200BFA68D /* MEIQIA_AmrRecordWriter.m in Sources */,
 				CC868F9C1C7AFFF200BFA68D /* MEIQIA_TTTAttributedLabel.m in Sources */,
 				CC3310E11C33F7EA0088E648 /* MQToast.m in Sources */,
@@ -1206,6 +1242,7 @@
 				E45D6D621CB510D300F5881E /* MQFileDownloadMessage.m in Sources */,
 				E4A533E71C9F90DD0053BC88 /* MQTransitioningAnimation.m in Sources */,
 				CC868F7A1C7AFFF200BFA68D /* MEIQIA_CustomIOSAlertView.m in Sources */,
+				313E28081CF4A48000E9F944 /* MQMessageFormViewStyleBlue.m in Sources */,
 				CC3310991C33F7EA0088E648 /* MQChatViewService.m in Sources */,
 				CCE9D10B1C1812F6004E862E /* main.m in Sources */,
 				CC3310B51C33F7EA0088E648 /* MQDateFormatterUtil.m in Sources */,
@@ -1223,6 +1260,7 @@
 				CC3310B21C33F7EA0088E648 /* MQChatEmojize.m in Sources */,
 				CC3310981C33F7EA0088E648 /* MQChatViewController.m in Sources */,
 				CC84A8BA1CEC7D790097C99E /* MQMessageFormImageView.m in Sources */,
+				313E280B1CF4A4A400E9F944 /* MQMessageFormViewStyleGreen.m in Sources */,
 				CCD145101C4F41DE007CA0DC /* MQEvaluationCell.m in Sources */,
 				CC84A8C61CEC80260097C99E /* MQBotMenuCell.m in Sources */,
 				CC868F7B1C7AFFF200BFA68D /* MEIQIA_FBBitmapFont.m in Sources */,
@@ -1230,6 +1268,7 @@
 				E4D3CA7A1CAA862C0002C25B /* MQChatViewStyle.m in Sources */,
 				CC84A8D01CEC817D0097C99E /* MQBotMenuMessage.m in Sources */,
 				CC6873711C895EF7000A1E63 /* MQEvaluationResultCell.m in Sources */,
+				313E280E1CF4A4B400E9F944 /* MQMessageFormViewStyleDark.m in Sources */,
 				CC3310DF1C33F7EA0088E648 /* MQPullRefreshView.m in Sources */,
 				CC3310B61C33F7EA0088E648 /* MQImageUtil.m in Sources */,
 				CC84A8B31CEC7D790097C99E /* MQMessageFormConfig.m in Sources */,
@@ -1249,6 +1288,7 @@
 				CC6873691C895E70000A1E63 /* amrFileCodec.mm in Sources */,
 				E4BCB3CB1CABDF33006B7F1B /* MQChatViewStyleDark.m in Sources */,
 				CC3310B11C33F7EA0088E648 /* MQChatDeviceUtil.m in Sources */,
+				313E28021CF4280600E9F944 /* MQMessageFormImageCell.m in Sources */,
 				E4D3CAA61CABBFEF0002C25B /* MQChatViewStyleBlue.m in Sources */,
 				CC868F811C7AFFF200BFA68D /* MEIQIA_FBSquareFontView.m in Sources */,
 				CC868F831C7AFFF200BFA68D /* MEIQIA_HPTextViewInternal.m in Sources */,
