@@ -15,6 +15,8 @@
 #import "MQVoiceMessage.h"
 #import "MQTextMessage.h"
 #import "MQEventMessage.h"
+#import "MQBotAnswerMessage.h"
+#import "MQBotMenuMessage.h"
 #import "MQChatViewConfig.h"
 #import <MeiQiaSDK/MeiQiaSDK.h>
 #import "MQFileDownloadMessage.h"
@@ -22,7 +24,6 @@
 /**
  *  该协议是UI层获取数据的委托方法
  */
-@class MQAgent;
 @protocol MQServiceToViewInterfaceDelegate <NSObject>
 
 /**
@@ -149,7 +150,7 @@
  * @param ;
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId
-                                success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+                                success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages))success
                  receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**
@@ -157,7 +158,7 @@
  * @param ;
  */
 - (void)setClientOnlineWithClientId:(NSString *)clientId
-                            success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+                            success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages))success
              receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**
@@ -167,6 +168,12 @@
 + (void)setScheduledAgentWithAgentId:(NSString *)agentId
                         agentGroupId:(NSString *)agentGroupId
                         scheduleRule:(MQChatScheduleRules)scheduleRule;
+
+/**
+ *  设置不指定分配的客服或客服组
+ *
+ */
++ (void)setNotScheduledAgentWithAgentId:(NSString *)agentId;
 
 /**
  * 设置顾客离线
@@ -182,14 +189,14 @@
 + (void)didTapMessageWithMessageId:(NSString *)messageId;
 
 /**
- *  获取当前客服对象
- */
-+ (MQAgent *)getCurrentAgent;
-
-/**
  *  获取当前客服名字
  */
 + (NSString *)getCurrentAgentName;
+
+/**
+ *  获取当前客服对象
+ */
++ (MQAgent *)getCurrentAgent;
 
 /**
  *  获取当前客服状态
@@ -305,6 +312,71 @@
 + (void)updateMessageWithId:(NSString *)messageId forAccessoryData:(NSDictionary *)accessoryData;
 
 + (void)updateMessageIds:(NSArray *)messageIds toReadStatus:(BOOL)isRead;
+
+/**
+ * 汇报文件被下载
+ */
++ (void)clientDownloadFileWithMessageId:(NSString *)messageId
+                          conversatioId:(NSString *)conversationId
+                          andCompletion:(void(^)(NSString *url, NSError *error))action;
+
+/**
+ *  取消下载
+ *
+ *  @param urlString     url
+ */
++ (void)cancelDownloadForUrl:(NSString *)urlString;
+
+
+/**
+ 对机器人的回答做评价
+ @param messageId 消息 id
+ */
++ (void)evaluateBotMessage:(NSString *)messageId
+                  isUseful:(BOOL)isUseful
+                completion:(void (^)(BOOL success, NSError *error))completion;
+
+//强制转人工
+- (void)forceRedirectHumanAgentWithSuccess:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+                                   failure:(void (^)(NSError *error))failure
+                    receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
+
+//强制转人工
++ (NSString *)getCurrentAgentId;
+
+/**
+ 获取当前的客服 type: agent | admin | robot
+ */
++ (NSString *)getCurrentAgentType;
+
+/**
+ 获取客服邀请评价显示的文案
+ */
++ (void)getEvaluationPromtTextComplete:(void(^)(NSString *, NSError *))action;
+
+/**
+ 获取是否显示强制转接人工按钮
+ */
++ (void)getIsShowRedirectHumanButtonComplete:(void(^)(BOOL, NSError *))action;
+
+/**
+ 获取留言表单引导文案
+ */
++ (void)getMessageFormIntroComplete:(void(^)(NSString *, NSError *))action;
+
+/**
+ *  提交留言表单
+ *
+ *  @param message 留言消息
+ *  @param images 图片数组
+ *  @param clientInfo 顾客的信息
+ *  @param completion  提交留言表单的回调
+ */
++ (void)submitMessageFormWithMessage:(NSString *)message
+                              images:(NSArray *)images
+                          clientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
+                          completion:(void (^)(BOOL success, NSError *error))completion;
+
 
 /**
  获取当前企业的配置信息

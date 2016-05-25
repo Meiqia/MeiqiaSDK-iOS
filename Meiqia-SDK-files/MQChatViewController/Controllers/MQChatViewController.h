@@ -35,9 +35,6 @@
  */
 @property (nonatomic, strong) UITextView *inputBarTextView;
 
-//聊天界面是否还在初始化，初始化完成后才允许用户发送消息（默认NO）
-@property (nonatomic, assign) BOOL       isInitializing;
-
 /**
  * 根据配置初始化客服聊天界面
  * @param manager 初始化配置

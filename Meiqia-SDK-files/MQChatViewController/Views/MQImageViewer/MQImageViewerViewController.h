@@ -16,7 +16,9 @@
 
 @property (nonatomic, copy) void(^selection)(NSUInteger index);
 
-- (void)showOn:(UIViewController *)controller fromRect:(CGRect)rect;
+@property (nonatomic, assign) BOOL shouldHideSaveBtn;
+
+- (void)showOn:(UIViewController *)controller fromRectArray:(NSArray *)rectArray;
 
 - (void)dismiss;
 @end

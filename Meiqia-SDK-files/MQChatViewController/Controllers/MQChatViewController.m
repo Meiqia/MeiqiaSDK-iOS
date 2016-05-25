@@ -22,10 +22,10 @@
 #import "MQAssetUtil.h"
 #import "MQStringSizeUtil.h"
 #import "MQTransitioningAnimation.h"
-#import <MeiQiaSDK/MQManager.h>
 #import "UIView+Layout.h"
 #import "MQCustomizedUIText.h"
 #import "MQImageUtil.h"
+#import "MQMessageFormViewManager.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -38,7 +38,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 @interface MQChatViewController()
 
-@property (nonatomic, strong) id evaluateBarButtonItem;//保存隐藏的barButtonItem
+//@property (nonatomic, strong) id evaluateBarButtonItem;//保存隐藏的barButtonItem
 
 @end
 
@@ -52,6 +52,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
     UIStatusBarStyle previousStatusBarStyle;//当前statusBar样式
     BOOL previousStatusBarHidden;   //调出聊天视图界面前是否隐藏 statusBar
+    NSTimeInterval sendTime;        //发送时间，用于限制发送频率
+    UIView *translucentView;        //loading 的半透明层
+    UIActivityIndicatorView *activityIndicatorView; //loading
 }
 
 - (void)dealloc {
@@ -81,6 +84,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [[UIApplication sharedApplication] setStatusBarStyle:[MQChatViewConfig sharedConfig].chatViewStyle.statusBarStyle];
     [self setNeedsStatusBarAppearanceUpdate];
     
+    sendTime = [NSDate timeIntervalSinceReferenceDate];
     self.view.backgroundColor = [MQChatViewConfig sharedConfig].chatViewStyle.backgroundColor ?: [UIColor colorWithWhite:0.95 alpha:1];
     [self setNavBar];
     [self initChatTableView];
@@ -111,7 +115,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 //    }
 //    //恢复原来的导航栏透明模式
 //    self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
-//    //恢复原来的导航栏时间条
+    //恢复原来的导航栏时间条
     [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
 }
 
@@ -276,13 +280,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
 #ifndef INCLUDE_MEIQIA_SDK
     UIBarButtonItem *loadMessageButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"收取消息" style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
+    loadMessageButtonItem.tintColor = [UIColor redColor];
     self.navigationItem.rightBarButtonItem = loadMessageButtonItem;
-#else
     if (![MQChatViewConfig sharedConfig].enableEvaluationButton) {
         return;
     }
-    
     UIBarButtonItem *rightNavButtonItem = [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
+    rightNavButtonItem.tintColor = chatViewConfig.chatViewStyle.btnTextColor;
     self.navigationItem.rightBarButtonItem = rightNavButtonItem;
 #endif
 }
@@ -296,6 +300,17 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #else
     [self showEvaluationAlertView];
 #endif
+}
+
+- (void)tapNavigationRedirectBtn:(id)sender {
+    [chatViewService forceRedirectToHumanAgent];
+    // 清除当前右上角的按钮
+    self.navigationItem.rightBarButtonItem = nil;
+    // 改变 title
+#ifdef INCLUDE_MEIQIA_SDK
+    [self updateNavTitleWithAgentName:[MQBundleUtil localizedStringForKey:@"wait_agent"] agentStatus:MQChatAgentStatusOffLine];
+#endif
+    [self showActivityIndicatorView];
 }
 
 - (void)didSelectNavigationRightButton {
@@ -330,21 +345,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma MQChatViewServiceDelegate
-- (void)hideRightBarButtonItem:(BOOL)enabled {
-    //如果开发者自定义了导航栏右键，则不隐藏
-    if ([MQChatViewConfig sharedConfig].navBarRightButton) {
-        return;
-    }
-    
-    if (enabled) {
-        self.evaluateBarButtonItem = self.navigationItem.rightBarButtonItem;
-        self.navigationItem.rightBarButtonItem = nil;
-    } else {
-        if (self.evaluateBarButtonItem) {
-            self.navigationItem.rightBarButtonItem = self.evaluateBarButtonItem;
-        }
-    }
-}
 
 - (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver{
     [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:cellNumber isLoadOver:isLoadOver];
@@ -383,6 +383,40 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 #endif
 
+- (void)changeNavReightBtnWithAgentType:(NSString *)agentType {
+    // 隐藏 loading
+    [self dismissActivityIndicatorView];
+    
+    if ([MQChatViewConfig sharedConfig].navBarRightButton) {
+        return;
+    }
+    NSString *titleKey = nil;
+    SEL navBtnSelector = nil;
+    if ([agentType isEqualToString:@"bot"]) {
+        if (chatViewService.isShowBotRedirectBtn) {
+            titleKey = @"meiqia_redirect_sheet";
+            navBtnSelector = @selector(tapNavigationRedirectBtn:);
+        }
+    } else if ([agentType isEqualToString:@"agent"] || [agentType isEqualToString:@"admin"]) {
+        if ([MQChatViewConfig sharedConfig].enableEvaluationButton) {
+            titleKey = @"meiqia_evaluation_sheet";
+            navBtnSelector = @selector(tapNavigationRightBtn:);
+        }
+    }
+    // 判断是否隐藏右导航栏按钮
+    if (!navBtnSelector) {
+        self.navigationItem.rightBarButtonItem = nil;
+        return;
+    }
+    NSString *title = [MQBundleUtil localizedStringForKey:titleKey];
+    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:title]) {
+        return;
+    }
+    UIBarButtonItem *rightNavButtonItem = [[UIBarButtonItem alloc]initWithTitle:title style:(UIBarButtonItemStylePlain) target:self action:navBtnSelector];
+    rightNavButtonItem.tintColor = chatViewConfig.chatViewStyle.btnTextColor;
+    self.navigationItem.rightBarButtonItem = rightNavButtonItem;
+}
+
 - (void)didReceiveMessage {
     //判断是否显示新消息提示
     if ([self.chatTableView isTableViewScrolledToBottom]) {
@@ -400,12 +434,16 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 #pragma MQInputBarDelegate
 -(BOOL)sendTextMessage:(NSString*)text {
-    if (self.isInitializing) {
-        [MQToast showToast:@"wait_agent" duration:3 window:self.view];
+    // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
+    if (chatViewService.clientStatus == MQClientStatusOnlining || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
+        NSString *alertText = chatViewService.clientStatus == MQClientStatusOnlining ? @"cannot_text_client_is_onlining" : @"send_to_fast";
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view];
+        chatInputBar.textView.text = text;
         return NO;
     }
     [chatViewService sendTextMessageWithContent:text];
     [self chatTableViewScrollToBottomWithAnimated:true];
+    sendTime = [NSDate timeIntervalSinceReferenceDate];
     return YES;
 }
 
@@ -419,6 +457,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         return;
     }
     
+    // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
+    if (chatViewService.clientStatus == MQClientStatusOnlining || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
+        NSString *alertText = chatViewService.clientStatus == MQClientStatusOnlining ? @"cannot_text_client_is_onlining" : @"send_to_fast";
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view];
+        return ;
+    }
+    sendTime = [NSDate timeIntervalSinceReferenceDate];
     self.navigationController.delegate = self;
     //兼容ipad打不开相册问题，使用队列延迟
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -460,6 +505,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         return;
     }
     
+    // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
+    if (chatViewService.clientStatus == MQClientStatusOnlining || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
+        NSString *alertText = chatViewService.clientStatus == MQClientStatusOnlining ? @"cannot_text_client_is_onlining" : @"send_to_fast";
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view];
+        return ;
+    }
+    sendTime = [NSDate timeIntervalSinceReferenceDate];
     //停止播放的通知
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
     
@@ -578,6 +630,36 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     
 }
 
+- (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId{
+    if (isUseful){
+        NSLog(@"点击有用按钮");
+    } else{
+        NSLog(@"点击无用按钮");
+    }
+    [chatViewService evaluateBotAnswer:isUseful messageId:messageId];
+}
+
+- (void)didTapMenuWithText:(NSString *)menuText {
+    NSLog(@"点击 menu text = %@", menuText);
+    //去掉 menu 的序号后，主动发送该 menu 消息
+    NSRange orderRange = [menuText rangeOfString:@". "];
+    if (orderRange.location == NSNotFound) {
+        return ;
+    }
+    NSString *sendText = [menuText substringFromIndex:orderRange.location+2];
+    [chatViewService sendTextMessageWithContent:sendText];
+}
+
+- (void)didTapReplyBtn {
+    NSLog(@"点击了留言按钮");
+    [self showMQMessageForm];
+}
+
+- (void)didTapBotRedirectBtn {
+    NSLog(@"点击了转人工");
+    [self tapNavigationRedirectBtn:nil];
+}
+
 - (void)didTapMessageInCell:(UITableViewCell *)cell {
     NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
     [chatViewService didTapMessageCellAtIndex:indexPath.row];
@@ -629,6 +711,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
                                         self.chatTableView.frame.size.width,
                                         self.view.viewHeight);
     [recordView updateFrame:recordViewFrame];
+    // 更新半透明层
+    if (translucentView) {
+        translucentView.frame = CGRectMake(0, 0, self.chatTableView.frame.size.width, self.chatTableView.frame.size.height);
+        [activityIndicatorView setCenter:CGPointMake(self.chatTableView.frame.size.width / 2.0, self.chatTableView.frame.size.height / 2.0)];
+    }
 }
 
 - (void)setChatTableViewFrame {
@@ -724,7 +811,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
 }
 
-#pragma mark - 
+#pragma mark -
 
 - (void)handlePopRecognizer:(UIScreenEdgePanGestureRecognizer*)recognizer {
     CGPoint translation = [recognizer translationInView:self.view];
@@ -752,6 +839,46 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #endif
+
+
+#pragma 美洽留言的界面
+- (void)showMQMessageForm {
+    MQMessageFormViewManager *formManager = [[MQMessageFormViewManager alloc] init];
+    [formManager pushMQMessageFormViewControllerInViewController:self];
+}
+
+/**
+ 显示数据提交遮罩层
+ */
+- (void)showActivityIndicatorView {
+    if (!translucentView) {
+        translucentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.chatTableView.frame.size.width, self.chatTableView.frame.size.height)];
+        translucentView.backgroundColor = [UIColor blackColor];
+        translucentView.alpha = 0.5;
+        
+        activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [activityIndicatorView setCenter:CGPointMake(self.chatTableView.frame.size.width / 2.0, self.chatTableView.frame.size.height / 2.0)];
+        [translucentView addSubview:activityIndicatorView];
+        [self.view addSubview:translucentView];
+    }
+    
+    translucentView.hidden = NO;
+    translucentView.alpha = 0;
+    [activityIndicatorView startAnimating];
+    [UIView animateWithDuration:0.5 animations:^{
+        translucentView.alpha = 0.5;
+    }];
+}
+
+/**
+ 隐藏数据提交遮罩层
+ */
+- (void)dismissActivityIndicatorView {
+    if (translucentView) {
+        [activityIndicatorView stopAnimating];
+        translucentView.hidden = YES;
+    }
+}
 
 
 @end

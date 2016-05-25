@@ -11,6 +11,8 @@
 #import <MeiQiaSDK/MQManager.h>
 #import "MQAssetUtil.h"
 #import "MQToast.h"
+#import "MQMessageFormInputModel.h"
+#import "MQMessageFormViewManager.h"
 
 #define MQ_DEMO_ALERTVIEW_TAG 3000
 
@@ -70,7 +72,8 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                              @"删除本地数据库中的消息",
                              @"查看当前 SDK 版本号",
                              @"当前的美洽顾客 id 为：(点击复制该顾客 id )",
-                             @"显示当前未读的消息数"],
+                             @"显示当前未读的消息数",
+                             @"留言表单"],
                          @[
                              @"自定义主题 1",
                              @"自定义主题 2",
@@ -185,6 +188,10 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                 break;
             case 14:
                 [self showUnreadMessageCount:[tableView cellForRowAtIndexPath:indexPath]];
+                break;
+            case 15:
+                [self messageForm];
+                break;
             default:
                 break;
         }
@@ -515,6 +522,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  上传顾客的属性
  */
 - (void)uploadClientAttributes {
+    //注意这个接口是将顾客信息上传到当前的顾客上。
     [MQManager setClientInfo:clientCustomizedAttrs completion:^(BOOL success, NSError *error) {
         NSString *alertString = @"上传顾客自定义信息成功~";
         NSString *message = @"您可前往美洽工作台，查看该顾客的信息是否有修改";
@@ -708,6 +716,69 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+- (void)messageForm {
+    MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
+    
+    // 如果同时配置了聊天界面和留言表单界面的主题，优先使用留言表单界面的主题。如果两个主题都没有设置，则使用默认的主题
+    messageFormViewManager.messageFormViewStyle = [MQMessageFormViewStyle greenStyle];
+//    messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor];
+    
+    // 如果没有设置留言表单界面的主题，则使用聊天界面的主题
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    chatViewManager.chatViewStyle = [MQChatViewStyle blueStyle];
+//    chatViewManager.chatViewStyle.navTitleColor = [UIColor redColor];
+    
+    
+    MQMessageFormInputModel *phoneMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    phoneMessageFormInputModel.tip = @"手机";
+    phoneMessageFormInputModel.key = @"tel";
+    phoneMessageFormInputModel.isSingleLine = YES;
+    phoneMessageFormInputModel.placeholder = @"请输入你的手机号";
+    phoneMessageFormInputModel.isRequired = YES;
+    phoneMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
+    
+    MQMessageFormInputModel *emailMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    emailMessageFormInputModel.tip = @"邮箱";
+    emailMessageFormInputModel.key = @"email";
+    emailMessageFormInputModel.isSingleLine = YES;
+    emailMessageFormInputModel.placeholder = @"请输入你的邮箱";
+    emailMessageFormInputModel.isRequired = NO;
+    emailMessageFormInputModel.keyboardType = UIKeyboardTypeEmailAddress;
+    
+    MQMessageFormInputModel *nameMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    nameMessageFormInputModel.tip = @"姓名";
+    nameMessageFormInputModel.key = @"name";
+    nameMessageFormInputModel.isSingleLine = YES;
+    nameMessageFormInputModel.placeholder = @"请输入你的姓名";
+    nameMessageFormInputModel.isRequired = NO;
+    
+    MQMessageFormInputModel *commentMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    commentMessageFormInputModel.tip = @"备注";
+    commentMessageFormInputModel.key = @"comment";
+    commentMessageFormInputModel.isSingleLine = NO;
+    commentMessageFormInputModel.placeholder = @"请输入你的备注";
+    commentMessageFormInputModel.isRequired = NO;
+    
+    MQMessageFormInputModel *weiboMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    weiboMessageFormInputModel.tip = @"微博";
+    weiboMessageFormInputModel.key = @"weibo";
+    weiboMessageFormInputModel.isSingleLine = YES;
+    weiboMessageFormInputModel.placeholder = @"请输入你的微博";
+    weiboMessageFormInputModel.isRequired = NO;
+    
+    NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
+    [customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
+    [customMessageFormInputModelArray addObject:emailMessageFormInputModel];
+//        [customMessageFormInputModelArray addObject:nameMessageFormInputModel];
+//        [customMessageFormInputModelArray addObject:commentMessageFormInputModel];
+//        [customMessageFormInputModelArray addObject:weiboMessageFormInputModel];
+    
+    [messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
+    [messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
+    
+    [messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
 }
 
 #pragma 监听收到美洽聊天消息的广播

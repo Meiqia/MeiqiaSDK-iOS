@@ -8,7 +8,6 @@
 
 #import "MQFileDownloadCellModel.h"
 #import "MQFileDownloadMessage.h"
-#import <MeiQiaSDK/MeiqiaSDK.h>
 #import "MQChatFileUtil.h"
 #import "MQFileDownloadCell.h"
 #import "MQServiceToViewInterface.h"
@@ -77,7 +76,7 @@
     }
     
     //用于统计
-    [MQManager clientDownloadFileWithMessageId:self.message.messageId conversatioId:self.message.conversationId andCompletion:^(NSString *url, NSError *error) {
+    [MQServiceToViewInterface clientDownloadFileWithMessageId:self.message.messageId conversatioId:self.message.conversationId andCompletion:^(NSString *url, NSError *error) {
         if (!isURLReady) {
             action(url);
         }
@@ -104,7 +103,7 @@
     [self requestForFileURLComplete:^(NSString *url) {
         url = [url stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
         self.downloadingURL = url;
-       [MQManager downloadMediaWithUrlString:url progress:^(float progress) {
+       [MQServiceToViewInterface downloadMediaWithUrlString:url progress:^(float progress) {
            self.fileDownloadStatus = MQFileDownloadStatusDownloading;
            block(progress);
        } completion:^(NSData *mediaData, NSError *error) {
@@ -125,7 +124,7 @@
 
 - (void)cancelDownload {
     [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_download_canceld"] duration:2 window:[UIApplication sharedApplication].keyWindow];
-    [MQManager cancelDownloadForUrl:self.downloadingURL];
+    [MQServiceToViewInterface cancelDownloadForUrl:self.downloadingURL];
     self.downloadingURL = nil;
     self.fileDownloadStatus = MQFileDownloadStatusNotDownloaded;
     if (self.needsToUpdateUI) {
