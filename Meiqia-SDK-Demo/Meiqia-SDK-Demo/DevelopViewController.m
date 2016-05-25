@@ -721,7 +721,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 - (void)messageForm {
     MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
     
-    // 如果同时配置了聊天界面和留言表单见面的主题，优先使用留言表单见面的主题。如果两个主题都没有设置，则使用默认的主题
+    // 如果同时配置了聊天界面和留言表单界面的主题，优先使用留言表单界面的主题。如果两个主题都没有设置，则使用默认的主题
     messageFormViewManager.messageFormViewStyle = [MQMessageFormViewStyle greenStyle];
 //    messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor];
     

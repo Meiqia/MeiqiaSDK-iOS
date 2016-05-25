@@ -21,6 +21,7 @@ edition: m2016
 * [美洽开源聊天界面集成客服功能](#使用美洽开源聊天界面集成客服功能)
 * [美洽 API 接口介绍](#美洽-api-接口介绍)
 * [消息推送](#消息推送)
+* [留言表单](#留言表单)
 * [常见问题](#常见问题)
 * [更新日志](#更新日志)
 
@@ -598,7 +599,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 ### 获取未读消息数
 
 开发者使用此接口来统一获取所有的未读消息，用户可以在需要显示未读消息数是调用此接口，此接口会自动判断并合并本地和服务器上的未读消息，当用户进入聊天界面后，未读消息将会清零。
-`[MQManager getUnreadMessagesWithCompletion:completion]` 
+`[MQManager getUnreadMessagesWithCompletion:completion]`
 
 ###录音和播放录音
 
@@ -607,7 +608,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 - 和其他音频同时播放
 - 降低其他音频声音
 
-用户可以根据情况选择，在 `MQChatViewManager.h` 中直接配置以下两个属性： 
+用户可以根据情况选择，在 `MQChatViewManager.h` 中直接配置以下两个属性：
 
 `@property (nonatomic, assign) MQPlayMode playMode;`
 
@@ -701,6 +702,52 @@ request.body 为消息数据，数据结构为：
 
 开发者可以根据请求中的签名，对推送消息进行数据验证，美洽提供了 `Java、Python、Ruby、JavaScript、PHP` 5种语言的计算签名的代码，具体请移步 [美洽 SDK 3.0 推送的数据结构签名算法](https://github.com/Meiqia/MeiqiaSDK-Push-Signature-Example)。
 
+# 留言表单
+
+留言表单可单独使用，也可以结合聊天界面一起使用。
+
+### 设置留言表单引导文案
+
+开发者可根据此接口设置留言表单引导文案，配置了该引导文案后将不会读取工作台配置的引导文案。
+
+```objc
+MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
+[messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
+[messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
+```
+
+### 设置留言表单的自定义输入信息
+
+开发者可根据此接口设置留言表单的自定义输入信息。如果不设置该参数，默认有「留言」、「手机」、「邮箱」这三个文本输入框。MQMessageFormInputModel 中 key 的值参考 [添加自定义信息](#添加自定义信息)。
+
+```objc
+MQMessageFormInputModel *phoneMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+phoneMessageFormInputModel.tip = @"手机";
+phoneMessageFormInputModel.key = @"tel";
+phoneMessageFormInputModel.isSingleLine = YES;
+phoneMessageFormInputModel.placeholder = @"请输入你的手机号";
+phoneMessageFormInputModel.isRequired = YES;
+phoneMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
+
+NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
+[customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
+
+MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
+[messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
+[messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
+```
+
+### 设置留言表单主题
+
+如果同时配置了聊天界面和留言表单界面的主题，优先使用留言表单界面的主题。如果两个主题都没有设置，则使用默认的主题。
+
+```objc
+MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
+messageFormViewManager.messageFormViewStyle = [MQMessageFormViewStyle greenStyle];
+messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor];
+[messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
+```
+
 # 常见问题
 
 - [SDK 初始化失败](#sdk-初始化失败)
@@ -793,6 +840,10 @@ request.body 为消息数据，数据结构为：
 请开发者检查 App Target - Build Settings - Search Path - Framework Search Path 或 Library Search Path 当中是否没有美洽的项目。
 
 # 更新日志
+
+**v3.2.0 2016 年 05 月 25 日**
+* 增加机器人客服
+* 增加留言表单
 
 **v3.1.9 2016 年 05 月 13 日**
 * 聊天界面增加可交互转场动画
