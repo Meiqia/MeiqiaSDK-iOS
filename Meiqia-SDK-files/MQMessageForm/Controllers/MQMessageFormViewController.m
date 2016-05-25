@@ -220,7 +220,7 @@ static NSString * const kMessageFormMessageKey = @"message";
         MQMessageFormInputModel *model = [messageFormInputModelArray objectAtIndex:i];
         NSString *text = [[messageFormInputViewArray objectAtIndex:i] getText];
         if (model.isRequired && text.length == 0) {
-            [MQToast showToast:[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"param_not_allow_null"], model.tip] duration:1.0 window:self.view];
+            [MQToast showToast:[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"param_not_allow_null"], model.tip] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
             return;
         }
         [dict setObject:text forKey:model.key];
@@ -243,7 +243,7 @@ static NSString * const kMessageFormMessageKey = @"message";
                 [self dismissMessageFormViewController];
             } else {
                 self.navigationItem.rightBarButtonItem.enabled = YES;
-                [MQToast showToast:[MQBundleUtil localizedStringForKey:@"submit_failure"] duration:1.0 window:self.view];
+                [MQToast showToast:[MQBundleUtil localizedStringForKey:@"submit_failure"] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
             }
         });
     }];
@@ -358,7 +358,7 @@ static NSString * const kMessageFormMessageKey = @"message";
         return;
     }
     if (![mediaPermission isEqualToString:@"ok"]) {
-        [MQToast showToast:[MQBundleUtil localizedStringForKey:mediaPermission] duration:2 window:self.view];
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:mediaPermission] duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
         return;
     }
     //兼容ipad打不开相册问题，使用队列延迟
