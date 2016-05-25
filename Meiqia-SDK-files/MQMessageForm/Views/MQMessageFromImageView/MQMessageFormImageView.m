@@ -173,7 +173,12 @@ static NSString * const kMQMessageFormImageViewCellHeaderID = @"MQMessageFormIma
 }
 
 - (NSArray *)getImages {
-    return images;
+    // 如果最后一张图片是「加号图片」，则返回「加号图片」以外的图片数组
+    if ([images lastObject] == [MQMessageFormConfig sharedConfig].messageFormViewStyle.addImage) {
+        return [images subarrayWithRange:NSMakeRange(0, images.count - 1)];
+    } else {
+        return images;
+    }
 }
 
 - (void)showChoosePictureActionSheet {
