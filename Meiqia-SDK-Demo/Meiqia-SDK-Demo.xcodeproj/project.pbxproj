@@ -1460,7 +1460,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.ecoboost.sdk.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "55307c07-18ea-4f2e-a167-ff23c6b827ef";
 				VALID_ARCHS = "armv7 arm64";
 			};
 			name = Debug;
@@ -1488,7 +1488,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.ecoboost.sdk.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "55307c07-18ea-4f2e-a167-ff23c6b827ef";
 				VALID_ARCHS = "armv7 arm64";
 			};
 			name = Release;
