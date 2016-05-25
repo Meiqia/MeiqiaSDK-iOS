@@ -64,7 +64,7 @@ static NSString * const kMQMessageFormImageViewCellHeaderID = @"MQMessageFormIma
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return MIN(images.count, kMQMessageFormImageViewMaxItemCount);
+    return images.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -73,10 +73,16 @@ static NSString * const kMQMessageFormImageViewCellHeaderID = @"MQMessageFormIma
     cell.indexPath = indexPath;
     
     cell.pictureIv.image = [images objectAtIndex:indexPath.row];
-    if (indexPath.row == images.count - 1) {
+    if (indexPath.row == images.count - 1 && [images lastObject] == [MQMessageFormConfig sharedConfig].messageFormViewStyle.addImage) {
         cell.deleteIv.hidden = YES;
     } else {
         cell.deleteIv.hidden = NO;
+    }
+    // 图片数达到上限后，隐藏「添加」图片
+    if (images.count == kMQMessageFormImageViewMaxItemCount + 1 && indexPath.row == images.count - 1) {
+        cell.hidden = YES;
+    } else {
+        cell.hidden = NO;
     }
     return cell;
 }
@@ -98,14 +104,19 @@ static NSString * const kMQMessageFormImageViewCellHeaderID = @"MQMessageFormIma
 
 #pragma MQMessageFormImageCellDelegate
 - (void)tapDeleteIv:(NSUInteger)index {
-    [images removeObjectAtIndex:index];
-    [self reloadData];
-    
-//    [self performBatchUpdates:^{
-//        [self deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
-//    } completion:^(BOOL finished) {
-//        [self reloadData];
-//    }];
+    // 若少于上限，则显示「添加」图片
+    if ([images lastObject] != [MQMessageFormConfig sharedConfig].messageFormViewStyle.addImage) {
+        [images removeObjectAtIndex:index];
+        [images addObject:[MQMessageFormConfig sharedConfig].messageFormViewStyle.addImage];
+        [self reloadData];
+    } else {
+        [images removeObjectAtIndex:index];
+        [self performBatchUpdates:^{
+            [self deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+        } completion:^(BOOL finished) {
+            [self reloadData];
+        }];
+    }
 }
 
 - (void)tapPictureIv:(NSUInteger)index {
@@ -152,7 +163,12 @@ static NSString * const kMQMessageFormImageViewCellHeaderID = @"MQMessageFormIma
 }
 
 - (void)addImage:(UIImage *)image {
-    [images insertObject:image atIndex:images.count - 1];
+    // 达到上限时，清楚「添加」图片
+    if (images.count == kMQMessageFormImageViewMaxItemCount) {
+        [images replaceObjectAtIndex:kMQMessageFormImageViewMaxItemCount - 1 withObject:image];
+    } else {
+        [images insertObject:image atIndex:images.count - 1];
+    }
     [self reloadData];
 }
 
