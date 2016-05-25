@@ -386,7 +386,7 @@
     }];
     
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    [viewerVC showOn:[UIApplication sharedApplication].keyWindow.rootViewController fromRect:rect];
+    [viewerVC showOn:[UIApplication sharedApplication].keyWindow.rootViewController fromRectArray:[NSArray arrayWithObject:[NSValue valueWithCGRect:rect]]];
 }
 
 @end

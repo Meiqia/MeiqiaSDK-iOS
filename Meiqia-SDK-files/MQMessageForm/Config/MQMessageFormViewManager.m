@@ -51,7 +51,9 @@
 }
 
 - (void)presentOnViewController:(UIViewController *)rootViewController transiteAnimation:(MQTransiteAnimationType)animation {
-    [MQChatViewConfig sharedConfig].presentingAnimation = animation;
+    if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypeDefault) {
+        messageFormConfig.presentingAnimation = animation;
+    }
     
     UIViewController *viewController = nil;
     if (animation == MQTransiteAnimationTypePush) {
@@ -73,7 +75,12 @@
         [navigationController setModalPresentationStyle:UIModalPresentationCustom];
     } else {
         [self updateNavAttributesWithViewController:messageFormViewController navigationController:(UINavigationController *)navigationController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
-        [rootViewController.view.window.layer addAnimation:[MQTransitioningAnimation createPresentingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
+        
+        MQTransiteAnimationType animation = [MQChatViewConfig sharedConfig].presentingAnimation;
+        if (animation == MQTransiteAnimationTypeDefault) {
+            animation = messageFormConfig.presentingAnimation;
+        }
+        [rootViewController.view.window.layer addAnimation:[MQTransitioningAnimation createPresentingTransiteAnimation:animation] forKey:nil];
     }
     return navigationController;
 }
@@ -83,13 +90,24 @@
                          navigationController:(UINavigationController *)navigationController
                   defaultNavigationController:(UINavigationController *)defaultNavigationController
                            isPresentModalView:(BOOL)isPresentModalView {
-    if ([MQChatViewConfig sharedConfig].navBarTintColor) {
+    
+    if (messageFormConfig.messageFormViewStyle.navBarTintColor) {
+        navigationController.navigationBar.tintColor = messageFormConfig.messageFormViewStyle.navBarTintColor;
+    } else if ([MQChatViewConfig sharedConfig].navBarTintColor) {
         navigationController.navigationBar.tintColor = [MQChatViewConfig sharedConfig].navBarTintColor;
     } else if (defaultNavigationController && defaultNavigationController.navigationBar.tintColor) {
         navigationController.navigationBar.tintColor = defaultNavigationController.navigationBar.tintColor;
     }
     
-    if ([MQChatViewConfig sharedConfig].navTitleColor) {
+    if (messageFormConfig.messageFormViewStyle.navTitleColor) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        
+        navigationController.navigationBar.titleTextAttributes = @{
+                                                                   UITextAttributeTextColor : messageFormConfig.messageFormViewStyle.navTitleColor
+                                                                   };
+#pragma clang diagnostic pop
+    } else if ([MQChatViewConfig sharedConfig].navTitleColor) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
         
@@ -101,14 +119,20 @@
         navigationController.navigationBar.titleTextAttributes = defaultNavigationController.navigationBar.titleTextAttributes;
     }
     
-    if ([MQChatViewConfig sharedConfig].navBarColor) {
+    if (messageFormConfig.messageFormViewStyle.navBarColor) {
+        navigationController.navigationBar.barTintColor = messageFormConfig.messageFormViewStyle.navBarColor;
+    } else if ([MQChatViewConfig sharedConfig].navBarColor) {
         navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
     } else if (defaultNavigationController && defaultNavigationController.navigationBar.barTintColor) {
         navigationController.navigationBar.barTintColor = defaultNavigationController.navigationBar.barTintColor;
     }
     
     //导航栏左键
-    if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypeDefault) {
+    MQTransiteAnimationType animation = [MQChatViewConfig sharedConfig].presentingAnimation;
+    if (animation == MQTransiteAnimationTypeDefault) {
+        animation = messageFormConfig.presentingAnimation;
+    }
+    if (animation== MQTransiteAnimationTypeDefault) {
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissMessageFormViewController)];
     } else {
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissMessageFormViewController)];

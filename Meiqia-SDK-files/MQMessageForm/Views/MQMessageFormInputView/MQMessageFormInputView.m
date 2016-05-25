@@ -52,7 +52,7 @@ static CGFloat const kMQMessageFormSpacing   = 16.0;
 
 - (void)refreshTipLabelFrameWithScreenWidth:(CGFloat)screenWidth {
     [tipLabel sizeToFit];
-    tipLabel.frame = CGRectMake(kMQMessageFormSpacing, 0, screenWidth - kMQMessageFormSpacing * 2, tipLabel.frame.size.height + kMQMessageFormSpacing / 2);
+    tipLabel.frame = CGRectMake(kMQMessageFormSpacing, kMQMessageFormSpacing, screenWidth - kMQMessageFormSpacing * 2, tipLabel.frame.size.height + kMQMessageFormSpacing / 2);
 }
 
 - (void)initContentTfWidthModel:(MQMessageFormInputModel *)model andScreenWidth:(CGFloat)screenWidth {

@@ -8,8 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "MQMessageFormViewStyle.h"
+#import "MQChatViewConfig.h"
 
 @interface MQMessageFormConfig : NSObject
+
+@property (nonatomic, assign) MQTransiteAnimationType presentingAnimation;
 
 /// 预设的聊天界面样式
 @property (nonatomic, strong) MQMessageFormViewStyle *messageFormViewStyle;
