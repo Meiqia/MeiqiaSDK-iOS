@@ -731,22 +731,23 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 //    chatViewManager.chatViewStyle.navTitleColor = [UIColor redColor];
     
     
-    MQMessageFormInputModel *phoneMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    phoneMessageFormInputModel.tip = @"手机";
-    phoneMessageFormInputModel.key = @"tel";
-    phoneMessageFormInputModel.isSingleLine = YES;
-    phoneMessageFormInputModel.placeholder = @"请输入你的手机号";
-    phoneMessageFormInputModel.isRequired = YES;
-    phoneMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
     
     MQMessageFormInputModel *emailMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
     emailMessageFormInputModel.tip = @"邮箱";
     emailMessageFormInputModel.key = @"email";
     emailMessageFormInputModel.isSingleLine = YES;
     emailMessageFormInputModel.placeholder = @"请输入你的邮箱";
-    emailMessageFormInputModel.isRequired = NO;
+    emailMessageFormInputModel.isRequired = YES;
     emailMessageFormInputModel.keyboardType = UIKeyboardTypeEmailAddress;
     
+    MQMessageFormInputModel *telMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    telMessageFormInputModel.tip = @"电话";
+    telMessageFormInputModel.key = @"tel";
+    telMessageFormInputModel.isSingleLine = YES;
+    telMessageFormInputModel.placeholder = @"请输入你的电话";
+    telMessageFormInputModel.isRequired = NO;
+    telMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
+
     MQMessageFormInputModel *nameMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
     nameMessageFormInputModel.tip = @"姓名";
     nameMessageFormInputModel.key = @"name";
@@ -769,9 +770,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     weiboMessageFormInputModel.isRequired = NO;
     
     NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
-    [customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
     [customMessageFormInputModelArray addObject:emailMessageFormInputModel];
-//        [customMessageFormInputModelArray addObject:nameMessageFormInputModel];
+    [customMessageFormInputModelArray addObject:telMessageFormInputModel];
+    [customMessageFormInputModelArray addObject:nameMessageFormInputModel];
 //        [customMessageFormInputModelArray addObject:commentMessageFormInputModel];
 //        [customMessageFormInputModelArray addObject:weiboMessageFormInputModel];
     
