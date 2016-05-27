@@ -160,17 +160,37 @@ static NSString * const kMessageFormMessageKey = @"message";
 }
 
 - (void)initFormContainer {
-    MQMessageFormInputModel *defaultMQMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    defaultMQMessageFormInputModel.tip = [MQBundleUtil localizedStringForKey:@"leave_a_message"];
-    defaultMQMessageFormInputModel.key = kMessageFormMessageKey;
-    defaultMQMessageFormInputModel.isSingleLine = NO;
-    defaultMQMessageFormInputModel.placeholder = [MQBundleUtil localizedStringForKey:@"leave_a_message_placeholder"];
-    defaultMQMessageFormInputModel.isRequired = YES;
-    
     messageFormInputModelArray = [NSMutableArray array];
-    [messageFormInputModelArray addObject:defaultMQMessageFormInputModel];
+    
+    MQMessageFormInputModel *messageMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    messageMessageFormInputModel.tip = [MQBundleUtil localizedStringForKey:@"leave_a_message"];
+    messageMessageFormInputModel.key = kMessageFormMessageKey;
+    messageMessageFormInputModel.isSingleLine = NO;
+    messageMessageFormInputModel.placeholder = [MQBundleUtil localizedStringForKey:@"leave_a_message_placeholder"];
+    messageMessageFormInputModel.isRequired = YES;
+    [messageFormInputModelArray addObject:messageMessageFormInputModel];
+    
+    // 如果用户配置了自定义输入信息，则使用用户配置的。否则默认添加邮件和手机
     if (messageFormConfig.customMessageFormInputModelArray && messageFormConfig.customMessageFormInputModelArray.count > 0) {
         [messageFormInputModelArray addObjectsFromArray:messageFormConfig.customMessageFormInputModelArray];
+    } else {
+        MQMessageFormInputModel *emailMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+        emailMessageFormInputModel.tip = [MQBundleUtil localizedStringForKey:@"email"];
+        emailMessageFormInputModel.key = @"email";
+        emailMessageFormInputModel.isSingleLine = YES;
+        emailMessageFormInputModel.placeholder = [MQBundleUtil localizedStringForKey:@"email_placeholder"];
+        emailMessageFormInputModel.isRequired = YES;
+        emailMessageFormInputModel.keyboardType = UIKeyboardTypeEmailAddress;
+        [messageFormInputModelArray addObject:emailMessageFormInputModel];
+        
+        MQMessageFormInputModel *telMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+        telMessageFormInputModel.tip = [MQBundleUtil localizedStringForKey:@"tel"];
+        telMessageFormInputModel.key = @"tel";
+        telMessageFormInputModel.isSingleLine = YES;
+        telMessageFormInputModel.placeholder = [MQBundleUtil localizedStringForKey:@"tel_placeholder"];
+        telMessageFormInputModel.isRequired = NO;
+        telMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
+        [messageFormInputModelArray addObject:telMessageFormInputModel];
     }
     
     formContainer = [[UIView alloc] init];
