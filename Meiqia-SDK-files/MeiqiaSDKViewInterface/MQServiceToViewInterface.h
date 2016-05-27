@@ -318,8 +318,9 @@
  */
 + (void)markAllMessagesAsRead;
 
-
-// 汇报文件被下载
+/**
+ * 汇报文件被下载
+ */
 + (void)clientDownloadFileWithMessageId:(NSString *)messageId
                           conversatioId:(NSString *)conversationId
                           andCompletion:(void(^)(NSString *url, NSError *error))action;

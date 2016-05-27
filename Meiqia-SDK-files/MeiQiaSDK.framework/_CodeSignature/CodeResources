@@ -135,6 +135,50 @@
 			gFRmA+IeI1UrIpHDvVopfG2PZsFy+ADxRopLXW1Cd4k=
 			</data>
 		</dict>
+		<key>MQAgent.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			gsY8y5rLzBaNIHhc55UQZmVcR0U=
+			</data>
+			<key>hash2</key>
+			<data>
+			czfScZOFe5Hf2EsHrjF4+wKc4vXs299M3TWlDTyrIZA=
+			</data>
+		</dict>
+		<key>MQDefinition.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			N4wvu+ksZRdig16cCz34XZutlTs=
+			</data>
+			<key>hash2</key>
+			<data>
+			xdbKkZNl4mJ2+DX8NuVUdrYDQqa5ofoRPLe+W0ylKqg=
+			</data>
+		</dict>
+		<key>MQManager.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			fHPL0sxg8IoUTsU1xHqyrYa1B4k=
+			</data>
+			<key>hash2</key>
+			<data>
+			XYyLi1akZ+Bfv9VaERPV+fsLyFdoETx1A8Ozag50/Ks=
+			</data>
+		</dict>
+		<key>MQMessage.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			vr7WGmQ7VWya3zqQ6mH1XJgB3ts=
+			</data>
+			<key>hash2</key>
+			<data>
+			Lb7qB2phDdjUXAcAZ2sc01GIiz1OW+R7ZK60CB2Ms0w=
+			</data>
+		</dict>
 	</dict>
 	<key>rules</key>
 	<dict>
