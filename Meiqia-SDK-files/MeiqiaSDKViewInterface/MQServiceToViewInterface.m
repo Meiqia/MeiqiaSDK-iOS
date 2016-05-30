@@ -517,6 +517,10 @@
     [MQManager didEndChat];
 }
 
++ (void)refreshLocalClientWithCustomizedId:(NSString *)customizedId complete:(void(^)(NSString *clientId))action {
+    [MQManager refreshLocalClientWithCustomizedId:customizedId complete:action];
+}
+
 #pragma MQManagerDelegate
 //webSocket收到消息的代理方法
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)messages {
