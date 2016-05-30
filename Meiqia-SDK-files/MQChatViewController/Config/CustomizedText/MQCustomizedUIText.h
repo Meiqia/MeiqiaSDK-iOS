@@ -48,6 +48,7 @@ typedef NS_ENUM(NSUInteger, MQUITextKey) {
     MQUITextKeyOpenLinkWithSafari,
     
     MQUITextKeyRequestEvaluation,
+    MQUITextKeyRequestRedirectAgent,
     
     MQUITextKeyFileDownloadOverdue,
     MQUITextKeyFileDownloadCancel,
@@ -57,6 +58,12 @@ typedef NS_ENUM(NSUInteger, MQUITextKey) {
     
     MQUITextKeyBlacklistMessageRejected,
     MQUITextKeyBlacklistListedInBlacklist,
+    
+    MQUITextKeyNoAgentAvailableTip,
+    MQUITextKeyBotRedirectTip,
+    
+    MQUITextKeyClientIsOnlining,
+    MQUITextKeySendTooFast
 };
 
 @interface MQCustomizedUIText : NSObject

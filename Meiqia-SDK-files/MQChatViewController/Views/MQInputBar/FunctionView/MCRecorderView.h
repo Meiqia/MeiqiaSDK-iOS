@@ -10,7 +10,7 @@
 
 @protocol MCRecorderViewDelegate <NSObject>
 
-- (NSString *)voiceFilePath;
+//- (NSString *)voiceFilePath;
 
 - (void)recordEnd;
 

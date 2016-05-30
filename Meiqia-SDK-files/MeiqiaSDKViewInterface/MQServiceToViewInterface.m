@@ -151,6 +151,51 @@
 + (MQBaseMessage *)convertToSendMessageWithMessage:(MQMessage *)fromMessage {
     MQBaseMessage *toMessage;
     switch (fromMessage.contentType) {
+        case MQMessageContentTypeBot: {
+            //判断是否是机器人消息
+            if ([[fromMessage.accessoryData objectForKey:@"content_robot"] count] > 0) {
+                NSString *subType = [fromMessage.accessoryData objectForKey:@"sub_type"] ?: @"";
+                if ([subType isEqualToString:@"evaluate"] || [subType isEqualToString:@"reply"] ||
+                    [subType isEqualToString:@"redirect"]) {
+                    // 机器人普通回答消息
+                    NSString *content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                    content = [MQManager convertToUnicodeWithEmojiAlias:content];
+                    BOOL isEvaluated = [fromMessage.accessoryData objectForKey:@"is_evaluated"] ? [[fromMessage.accessoryData objectForKey:@"is_evaluated"] boolValue] : false;
+                    MQBotAnswerMessage *botMessage = [[MQBotAnswerMessage alloc] initWithContent:content subType:subType isEvaluated:isEvaluated];
+                    toMessage = botMessage;
+                    break;
+                } else if ([subType isEqualToString:@"menu"]) {
+                    // 机器人菜单消息
+                    NSString *content = @"";
+                    NSMutableArray *menu = [NSMutableArray new];
+                    NSArray *contentRobot = [fromMessage.accessoryData objectForKey:@"content_robot"] ?: [NSArray new];
+                    for (NSInteger i=0; i < [contentRobot count]; i++) {
+                        NSDictionary *subContent = [contentRobot objectAtIndex:i];
+                        if (i == 0 && [[subContent objectForKey:@"type"] isEqualToString:@"text"]) {
+                            content = [subContent objectForKey:@"text"];
+                        } else if ([[subContent objectForKey:@"type"] isEqualToString:@"menu"]) {
+                            NSArray *items = [subContent objectForKey:@"items"];
+                            for (NSDictionary *item in items) {
+                                NSString *menuTitle = [item objectForKey:@"text"];
+                                menuTitle = [MQManager convertToUnicodeWithEmojiAlias:menuTitle];
+                                [menu addObject:menuTitle];
+                            }
+                        }
+                    }
+                    content = [MQManager convertToUnicodeWithEmojiAlias:content];
+                    MQBotMenuMessage *botMessage = [[MQBotMenuMessage alloc] initWithContent:content menu:menu];
+                    toMessage = botMessage;
+                    break;
+                } else if ([subType isEqualToString:@"message"]) {
+                    NSString *content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                    content = [MQManager convertToUnicodeWithEmojiAlias:content];
+                    MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:content];
+                    toMessage = textMessage;
+                    break;
+                }
+            }
+            break;
+        }
         case MQMessageContentTypeText: {
             MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:fromMessage.content];
             toMessage = textMessage;
@@ -201,6 +246,11 @@
         case MQMessageFromTypeClient:
         {
             toMessage.fromType = MQChatMessageOutgoing;
+            break;
+        }
+        case MQMessageFromTypeBot:
+        {
+            toMessage.fromType = MQChatMessageIncoming;
             break;
         }
         default:
@@ -280,13 +330,13 @@
 ////    [MQManager updateMessage:messageId toReadStatus:YES];
 //}
 
-+ (MQAgent *)getCurrentAgent {
-    return [MQManager getCurrentAgent];
-}
-
 + (NSString *)getCurrentAgentName {
     NSString *agentName = [MQManager getCurrentAgent].nickname;
     return agentName.length == 0 ? @"" : agentName;
+}
+
++ (MQAgent *)getCurrentAgent {
+    return [MQManager getCurrentAgent];
 }
 
 + (MQChatAgentStatus)getCurrentAgentStatus {
@@ -362,24 +412,25 @@
 }
 
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId
-                                success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+                                success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages))success
                  receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
 {
     self.serviceToViewDelegate = receiveMessageDelegate;
     [MQManager setClientOnlineWithCustomizedId:customizedId success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
         if (result == MQClientOnlineResultSuccess) {
-            success(true, agent.nickname, toMessages);
+            NSString *agentType = [agent convertPrivilegeToString];
+            success(true, agent.nickname, agentType, toMessages);
         } else if(result == MQClientOnlineResultNotScheduledAgent) {
-            success(false, @"", toMessages);
+            success(false, @"", @"", toMessages);
         }
     } failure:^(NSError *error) {
-        success(false, @"", nil);
+        success(false, @"", @"", nil);
     } receiveMessageDelegate:self];
 }
 
 - (void)setClientOnlineWithClientId:(NSString *)clientId
-                            success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+                            success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages))success
              receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
 {
     self.serviceToViewDelegate = receiveMessageDelegate;
@@ -390,24 +441,26 @@
                 toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
             }
             if (result == MQClientOnlineResultSuccess) {
-                success(true, agent.nickname, toMessages);
+                NSString *agentType = [agent convertPrivilegeToString];
+                success(true, agent.nickname, agentType, toMessages);
             } else if((result == MQClientOnlineResultNotScheduledAgent) || (result == MQClientOnlineResultBlacklisted)) {
-                success(false, @"", toMessages);
+                success(false, @"", @"", toMessages);
             }
         } failure:^(NSError *error) {
-            success(false, @"初始化失败，请重新打开", nil);
+            success(false, @"初始化失败，请重新打开", @"", nil);
         } receiveMessageDelegate:self];
         return ;
     }
     [MQManager setClientOnlineWithClientId:clientId success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
         if (result == MQClientOnlineResultSuccess) {
             NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
-            success(true, agent.nickname, toMessages);
+            NSString *agentType = [agent convertPrivilegeToString];
+            success(true, agent.nickname, agentType, toMessages);
         } else if((result == MQClientOnlineResultNotScheduledAgent) || (result == MQClientOnlineResultBlacklisted))  {
-            success(false, @"", nil);
+            success(false, @"", @"", nil);
         }
     } failure:^(NSError *error) {
-        success(false, @"初始化失败，请重新打开", nil);
+        success(false, @"初始化失败，请重新打开", @"", nil);
     } receiveMessageDelegate:self];
 }
 
@@ -430,6 +483,10 @@
             break;
     }
     [MQManager setScheduledAgentWithAgentId:agentId agentGroupId:agentGroupId scheduleRule:rule];
+}
+
++ (void)setNotScheduledAgentWithAgentId:(NSString *)agentId {
+    [MQManager setNotScheduledAgentWithAgentId:agentId];
 }
 
 + (void)setEvaluationLevel:(NSInteger)level
@@ -521,6 +578,24 @@
     [MQManager refreshLocalClientWithCustomizedId:customizedId complete:action];
 }
 
++ (void)clientDownloadFileWithMessageId:(NSString *)messageId
+                          conversatioId:(NSString *)conversationId
+                          andCompletion:(void(^)(NSString *url, NSError *error))action {
+    [MQManager clientDownloadFileWithMessageId:messageId conversatioId:conversationId andCompletion:action];
+}
+
++ (void)cancelDownloadForUrl:(NSString *)urlString {
+    [MQManager cancelDownloadForUrl:urlString];
+}
+
++ (void)evaluateBotMessage:(NSString *)messageId
+                  isUseful:(BOOL)isUseful
+                completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [MQManager evaluateBotMessage:messageId isUseful:isUseful completion:completion];
+}
+
+
 #pragma MQManagerDelegate
 //webSocket收到消息的代理方法
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)messages {
@@ -552,18 +627,8 @@
             });
         }
         
-//        刷新客服状态
+        // 刷新客服状态
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
-        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
-            [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
-        }
-    } else if ([self handleInviteEvaluationMessage:messages]) {
-//        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
-//            [self.serviceToViewDelegate didReceiveTipsContent:@"发送了评价邀请" showLines:YES];
-//        }
-        
-        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
-        
         if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
             [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
@@ -594,11 +659,54 @@
     return NO;
 }
 
-- (BOOL)handleInviteEvaluationMessage:(NSArray<MQMessage *> *)messages {
-    if (messages.count == 1 && [messages firstObject].action == MQMessageActionInviteEvaluation) {
-        return YES;
-    }
-    return NO;
+//强制转人工
+- (void)forceRedirectHumanAgentWithSuccess:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+                                   failure:(void (^)(NSError *error))failure
+                    receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
+{
+    self.serviceToViewDelegate = receiveMessageDelegate;
+    
+    [MQManager forceRedirectHumanAgentWithSuccess:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
+        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
+        if (result == MQClientOnlineResultSuccess) {
+            success(true, agent.nickname, toMessages);
+        } else if(result == MQClientOnlineResultNotScheduledAgent) {
+            success(false, @"", toMessages);
+        }
+    } failure:^(NSError *error) {
+        
+    } receiveMessageDelegate:self];
+}
+
+/**
+ 转换 emoji 别名为 Unicode
+ */
++ (NSString *)convertToUnicodeWithEmojiAlias:(NSString *)text {
+    return [MQManager convertToUnicodeWithEmojiAlias:text];
+}
+
++ (NSString *)getCurrentAgentId {
+    return [MQManager getCurrentAgentId];
+}
+
++ (NSString *)getCurrentAgentType {
+    return [MQManager getCurrentAgentType];
+}
+
++ (void)getEvaluationPromtTextComplete:(void (^)(NSString *, NSError *))action {
+    [MQManager getEvaluationPromtTextComplete:action];
+}
+
++ (void)getIsShowRedirectHumanButtonComplete:(void (^)(BOOL, NSError *))action {
+    [MQManager getIsShowRedirectHumanButtonComplete:action];
+}
+
++ (void)getMessageFormIntroComplete:(void (^)(NSString *, NSError *))action {
+    [MQManager getMessageFormIntroComplete:action];
+}
+
++ (void)submitMessageFormWithMessage:(NSString *)message images:(NSArray *)images clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
+    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
 }
 
 @end

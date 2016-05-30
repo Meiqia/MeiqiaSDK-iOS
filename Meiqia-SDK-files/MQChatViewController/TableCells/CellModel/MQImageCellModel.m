@@ -196,10 +196,10 @@
                     
                     if (image) {
                         self.image = tempImageView.image.copy;
-                        [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                        [self setModelsWithContentImage:self.image cellFromType:message.fromType cellWidth:cellWidth];
                     } else {
                         self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
-                        [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                        [self setModelsWithContentImage:self.image cellFromType:message.fromType cellWidth:cellWidth];
                     }
                     if (self.delegate) {
                         if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
@@ -386,7 +386,7 @@
     }];
     
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    [viewerVC showOn:[UIApplication sharedApplication].keyWindow.rootViewController fromRect:rect];
+    [viewerVC showOn:[UIApplication sharedApplication].keyWindow.rootViewController fromRectArray:[NSArray arrayWithObject:[NSValue valueWithCGRect:rect]]];
 }
 
 @end

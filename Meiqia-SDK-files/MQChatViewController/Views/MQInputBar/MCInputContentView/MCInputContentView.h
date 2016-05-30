@@ -30,6 +30,8 @@
 
 - (BOOL)inputContentViewShouldBeginEditing:(MCInputContentView *)inputContentView;
 
+- (void)inputContentTextDidChange:(NSString *)newString;
+
 @end
 
 @protocol MCInputContentViewLayoutDelegate <NSObject>

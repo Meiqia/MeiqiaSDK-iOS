@@ -13,7 +13,7 @@
 #import "MQAgent.h"
 #import "MQEnterprise.h"
 
-#define MQSDKVersion @"3.1.9"
+#define MQSDKVersion @"3.2.0"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -77,10 +77,16 @@
                         scheduleRule:(MQScheduleRules)scheduleRule;
 
 /**
+ * 设置不指定分配的客服或客服组。
+ *
+*/
++ (void)setNotScheduledAgentWithAgentId:(NSString *)agentId;
+
+/**
  * 开发者自定义当前顾客的信息，用于展示给客服。
  *
  * @param clientInfo 顾客的信息
- * @warning 需要顾客先上线，再上传顾客信息
+ * @warning 需要顾客先上线，再上传顾客信息。如果开发者使用美洽的开源界面，不需要调用此接口，使用 MQChatViewManager 中的 setClientInfo 配置用户自定义信息即可。
  * @warning 如果开发者使用「开源聊天界面」的接口来上线，则需要监听 MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION「顾客成功上线」的广播（见 MQDefinition.h），再调用此接口
  */
 + (void)setClientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
@@ -374,6 +380,35 @@
  */
 + (void)updateMessageWithId:(NSString *)messageId forAccessoryData:(NSDictionary *)accessoryData;
 
+/**
+ 对机器人的回答做评价
+ @param messageId 消息 id
+ */
++ (void)evaluateBotMessage:(NSString *)messageId
+                  isUseful:(BOOL)isUseful
+                completion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
+ 强制转人工
+ */
++ (void)forceRedirectHumanAgentWithSuccess:(void (^)(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages))success
+                                   failure:(void (^)(NSError *error))failure
+                    receiveMessageDelegate:(id<MQManagerDelegate>)receiveMessageDelegate;
+
+/**
+ 转换 emoji 别名为 Unicode
+ */
++ (NSString *)convertToUnicodeWithEmojiAlias:(NSString *)text;
+
+/**
+ 获取当前的客服 id
+ */
++ (NSString *)getCurrentAgentId;
+
+/**
+ 获取当前的客服 type: agent | admin | robot
+ */
++ (NSString *)getCurrentAgentType;
 
 /**
 获取当前企业的配置信息
@@ -391,4 +426,35 @@
  */
 + (void)didEndChat;
 
+/* 获取客服邀请评价显示的文案
+ */
++ (void)getEvaluationPromtTextComplete:(void(^)(NSString *, NSError *))action;
+
+/**
+ 获取是否显示强制转接人工按钮
+ */
++ (void)getIsShowRedirectHumanButtonComplete:(void(^)(BOOL, NSError *))action;
+
+/**
+ 获取留言表单引导文案
+ */
++ (void)getMessageFormIntroComplete:(void(^)(NSString *, NSError *))action;
+
+/**
+ *  提交留言表单
+ *
+ *  @param message 留言消息
+ *  @param images 图片数组
+ *  @param clientInfo 顾客的信息
+ *  @param completion  提交留言表单的回调
+ */
++ (void)submitMessageFormWithMessage:(NSString *)message
+                              images:(NSArray *)images
+                          clientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
+                          completion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
+    切换本地用户为指定的自定义 id 用户, 回调的 clientId 如果为 nil 的话表示刷新失败，或者该用户不存在。
+ */
++ (void)refreshLocalClientWithCustomizedId:(NSString *)customizedId complete:(void(^)(NSString *clientId))action;
 @end

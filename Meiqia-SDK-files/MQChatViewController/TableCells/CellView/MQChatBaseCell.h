@@ -50,6 +50,26 @@
  */
 - (void)didTapMessageInCell:(UITableViewCell *)cell;
 
+/**
+ *  点击了语音消息的委托方法
+ */
+- (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId;
+
+/**
+ *  点击了菜单
+ */
+- (void)didTapMenuWithText:(NSString *)menuText;
+
+/**
+ *  点击了留言
+ */
+- (void)didTapReplyBtn;
+
+/**
+ *  点击了转人工
+ */
+- (void)didTapBotRedirectBtn;
+
 @end
 
 

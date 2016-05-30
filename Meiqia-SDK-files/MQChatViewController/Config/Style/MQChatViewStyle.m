@@ -61,6 +61,7 @@
         self.outgoingMsgTextColor   = [UIColor darkTextColor];
         self.eventTextColor         = [UIColor grayColor];
         self.pullRefreshColor       = nil;//[UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
+        self.btnTextColor            = [UIColor colorWithHex:0x3E8BFF];
         self.redirectAgentNameColor = [UIColor blueColor];
         self.navBarColor            = nil;//[UIColor colorWithHexString:MQBlueColor];
         self.navBarTintColor        = nil;//[UIColor whiteColor];

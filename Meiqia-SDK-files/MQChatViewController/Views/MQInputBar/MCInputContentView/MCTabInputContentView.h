@@ -12,12 +12,9 @@
 
 @interface MCTabInputContentView : MCInputContentView <UITextFieldDelegate>
 
-//@property (strong, nonatomic) DMFilterView *filterView;
 @property (strong, nonatomic) MEIQIA_HPGrowingTextView *textField;
 
 - (instancetype)initWithFrame:(CGRect)frame;
-
-//- (void)changeTitles:(NSArray<NSString *> *)strings;
 
 - (void)setupButtons;
 

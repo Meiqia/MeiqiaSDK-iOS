@@ -65,7 +65,7 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 }
 
 - (void)onlineSuccessed {
-    [MQManager sendTextMessageWithContent:@"text" completion:nil];
+//    [MQManager sendTextMessageWithContent:@"text" completion:nil];
 }
 
 - (void)updateIndicator {

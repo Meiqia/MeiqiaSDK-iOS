@@ -17,6 +17,7 @@
 @optional
 - (void)inputBar:(MCInputToolBar *)inputBar willChangeHeight:(CGFloat)height;
 - (void)inputBar:(MCInputToolBar *)inputBar didChangeHeight:(CGFloat)height;
+- (void)textContentDidChange:(NSString *)newString;
 
 @end
 

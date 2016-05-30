@@ -203,4 +203,12 @@
     }
 }
 
+- (void)inputContentTextDidChange:(NSString *)newString {
+    if ([newString length] > 0) {
+        if ([self.delegate respondsToSelector:@selector(textContentDidChange:)]) {
+            [self.delegate textContentDidChange:newString];
+        }
+    }
+}
+
 @end

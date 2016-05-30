@@ -17,9 +17,11 @@ edition: m2016
 * [手动导入美洽 SDK](#导入美洽-sdk)
 * [CocoaPods 导入](#CocoaPods-导入)
 * [快速集成 SDK](#快速集成-sdk)
+* [名词解释](#名词解释)
 * [美洽开源聊天界面集成客服功能](#使用美洽开源聊天界面集成客服功能)
 * [美洽 API 接口介绍](#美洽-api-接口介绍)
 * [消息推送](#消息推送)
+* [留言表单](#留言表单)
 * [常见问题](#常见问题)
 * [更新日志](#更新日志)
 
@@ -158,6 +160,42 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 关于 S3 证书问题，可参考 stackoverflow 上面的一个 [讨论](http://stackoverflow.com/questions/32500655/ios-9-app-download-from-amazon-s3-ssl-error-tls-1-2-support)。
 
 至此，你已经为你的 APP 添加美洽提供的客服服务。而美洽 SDK 还提供其他强大的功能，可以帮助提高服务效率，提升用户使用体验。接下来为你详细介绍如何使用其他功能。
+
+
+# 名词解释
+
+### 开发者的推送消息服务器
+
+目前美洽是把 SDK 的 `离线消息` 通过 webhook 形式发送给 - 开发者提供的 URL。
+
+接收美洽 SDK 离线消息的服务器即为 `开发者的推送消息服务器`。
+
+
+### 客服 id
+
+美洽企业每一位注册客服均有一个唯一 id。通过此 id 开发者可用 SDK 接口指定分配对话给该客服。
+
+
+### 客服组 id
+
+美洽工作台支持为不同的客服分组，每一个组都有一个唯一id。通过此 id 开发者可用 SDK 接口指定分配对话给该客服组。
+
+
+### 美洽顾客 id
+
+美洽 SDK 在上线后（或称为分配对话后），均有一个唯一 id。
+
+开发者可保存此 id，在其他设备上进行上线操作。这样此 id 的顾客信息和历史对话，都会同步到其他设备。
+
+
+### 开发者自定义 id
+
+即开发者自己定义的 id，例如开发者账号系统下的 user_id。
+
+开发者可用此 id 进行上线，上线成功后，此 id 会绑定一个 `美洽顾客 id`。开发者在其他设备用自己的 id 上线后，可以同步之前的数据。
+
+**注意**，如果开发者自己的 id 过于简单（例如自增长的数字），安全起见，建议开发者保存 `美洽顾客 id`，来进行上线操作。
+
 
 # 使用美洽开源聊天界面集成客服功能
 
@@ -561,7 +599,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 ### 获取未读消息数
 
 开发者使用此接口来统一获取所有的未读消息，用户可以在需要显示未读消息数是调用此接口，此接口会自动判断并合并本地和服务器上的未读消息，当用户进入聊天界面后，未读消息将会清零。
-`[MQManager getUnreadMessagesWithCompletion:completion]` 
+`[MQManager getUnreadMessagesWithCompletion:completion]`
 
 ###录音和播放录音
 
@@ -570,7 +608,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 - 和其他音频同时播放
 - 降低其他音频声音
 
-用户可以根据情况选择，在 `MQChatViewManager.h` 中直接配置以下两个属性： 
+用户可以根据情况选择，在 `MQChatViewManager.h` 中直接配置以下两个属性：
 
 `@property (nonatomic, assign) MQPlayMode playMode;`
 
@@ -663,6 +701,52 @@ request.body 为消息数据，数据结构为：
 |type|消息类型 - mesage 普通消息 / welcome 欢迎消息 / ending 结束消息 / remark 评价消息 / 留言消息|
 
 开发者可以根据请求中的签名，对推送消息进行数据验证，美洽提供了 `Java、Python、Ruby、JavaScript、PHP` 5种语言的计算签名的代码，具体请移步 [美洽 SDK 3.0 推送的数据结构签名算法](https://github.com/Meiqia/MeiqiaSDK-Push-Signature-Example)。
+
+# 留言表单
+
+留言表单可单独使用，也可以结合聊天界面一起使用。
+
+### 设置留言表单引导文案
+
+开发者可根据此接口设置留言表单引导文案，配置了该引导文案后将不会读取工作台配置的引导文案。
+
+```objc
+MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
+[messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
+[messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
+```
+
+### 设置留言表单的自定义输入信息
+
+开发者可根据此接口设置留言表单的自定义输入信息。如果不设置该参数，默认有「留言」、「手机」、「邮箱」这三个文本输入框。MQMessageFormInputModel 中 key 的值参考 [添加自定义信息](#添加自定义信息)。
+
+```objc
+MQMessageFormInputModel *phoneMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+phoneMessageFormInputModel.tip = @"手机";
+phoneMessageFormInputModel.key = @"tel";
+phoneMessageFormInputModel.isSingleLine = YES;
+phoneMessageFormInputModel.placeholder = @"请输入你的手机号";
+phoneMessageFormInputModel.isRequired = YES;
+phoneMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
+
+NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
+[customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
+
+MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
+[messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
+[messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
+```
+
+### 设置留言表单主题
+
+如果同时配置了聊天界面和留言表单界面的主题，优先使用留言表单界面的主题。如果两个主题都没有设置，则使用默认的主题。
+
+```objc
+MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
+messageFormViewManager.messageFormViewStyle = [MQMessageFormViewStyle greenStyle];
+messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor];
+[messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
+```
 
 # 常见问题
 
@@ -757,6 +841,21 @@ request.body 为消息数据，数据结构为：
 
 # 更新日志
 
+**v3.2.0 2016 年 05 月 25 日**
+* 增加机器人客服
+* 增加留言表单
+
+**v3.1.9 2016 年 05 月 13 日**
+* 聊天界面增加可交互转场动画
+* 发送消息失败后，会提示客服下线
+* 聊天界面优化
+* 用户正在输入的提示请求，加一个发送限制
+* 替换现有的图片全屏浏览组件
+* 修改数据库结构，不再以版本号建库
+* SDK 修改黑名单文案提示
+* 聊天界面不定时在收到消息的时候会崩溃
+* 增加导航栏标题文字字体的接口
+* 修改导航栏左键接口
 
 **v3.1.8 2016 年 04 月 22 日**
 

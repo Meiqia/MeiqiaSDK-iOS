@@ -42,44 +42,11 @@
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[tabBackgroud]-0-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(tabBackgroud)]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_textField]-0-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(_textField)]];
         
-//        self.filterView = [[DMFilterView alloc] initWithStrings:strings containerView:self.textField];
     }
     return self;
 }
 
-//- (void)changeTitles:(NSArray<NSString *> *)strings
-//{
-//    self.filterView = [[DMFilterView alloc] initWithStrings:strings containerView:self.textField];
-//}
 
-//-(void)setFilterView:(DMFilterView *)filterView
-//{
-//    if(self.filterView) {
-//        [_filterView removeFromSuperview];
-//        _filterView = nil;
-//    }
-//    
-//    [filterView setTitlesColor:[UIColor colorWithRed:90/255.0 green:105/255.0 blue:120/255.0 alpha:1]];
-//    [filterView setBackgroundColor:[UIColor colorWithRed:248/255.0 green:248/255.0 blue:253/255.0 alpha:1]];
-//    [filterView setSelectedItemBackgroundColor:[UIColor whiteColor]];
-//    [filterView setSelectedItemTopBackgroundColor:[UIColor colorWithRed:23/255.0 green:199/255.0 blue:209/255.0 alpha:1]];
-//    [filterView setSelectedItemTopBackroundColorHeight:0];
-//    filterView.draggable = NO;
-//    filterView.delegate = self;
-//    
-//    _filterView = filterView;
-//    [tabBackgroud addSubview:_filterView];
-//    [tabBackgroud removeConstraints:self.constraints];
-//    
-//    self.filterView.translatesAutoresizingMaskIntoConstraints = NO;
-//    CGFloat width = [self.filterView titlesCount] * self.frame.size.width / 4;
-//    [tabBackgroud addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_filterView]-0-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(_filterView)]];
-//    [tabBackgroud addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-0-[_filterView(%f)]", width] options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(_filterView)]];
-//    
-//    if (self.delegate && [self.delegate respondsToSelector:@selector(inputContentView:userObjectChange:)]) {
-//        [self.delegate inputContentView:self userObjectChange:[self.filterView titleAtIndex:self.filterView.selectedIndex]];
-//    }
-//}
 
 - (void)setupButtons {
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputContentView:userObjectChange:)]) {
@@ -175,12 +142,11 @@
     }
 }
 
-//#pragma make - DMFilterViewDelegate
-//-(void)filterView:(DMFilterView *)filterView didSelectedAtIndex:(NSInteger)index
-//{
-//    if (self.delegate && [self.delegate respondsToSelector:@selector(inputContentView:userObjectChange:)]) {
-//        [self.delegate inputContentView:self userObjectChange:[self.filterView titleAtIndex:index]];
-//    }
-//}
+- (void)growingTextViewDidChangeSelection:(MEIQIA_HPGrowingTextView *)growingTextView {
+    if ([self.delegate respondsToSelector:@selector(inputContentTextDidChange:)]) {
+        [self.delegate inputContentTextDidChange:growingTextView.text];
+    }
+}
+
 
 @end
