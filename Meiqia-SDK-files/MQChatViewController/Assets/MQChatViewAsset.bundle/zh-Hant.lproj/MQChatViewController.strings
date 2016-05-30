@@ -74,17 +74,36 @@
 
 "microphone_denied"     = "請在系統設置中允許該App訪問麥克風";
 
-"meiqia_communication_failed" = "抱歉，连接通信网络可能有问题，请更换网络试一下。";
+"meiqia_communication_failed" = "抱歉，連接通信網絡可能有問題，請更換網絡試壹下。";
 
 "meiqia_evaluation_sheet"     = "評價";
 
-"file_download_file_is_expired" = "文件已过期";
-"file_download_canceld" = "已取消下载";
-"file_download_failed" = "下载失败";
-"file_download_downloading" = "下载中...";
-"file_download_complete" = "下载完成";
-"file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ 小时后过期";
+"meiqia_redirect_sheet"     = "轉人工";
 
-"message_tips_send_message_fail_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
+"file_download_file_is_expired" = "文件已過期";
+"file_download_canceld" = "已取消下載";
+"file_download_failed" = "下載失敗";
+"file_download_downloading" = "下載中...";
+"file_download_complete" = "下載完成";
+"file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ 小時後過期";
 
-"message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
+"message_tips_send_message_fail_listed_in_black_list" = "對不起，當前客服系統暫時無法使用。";
+
+"message_tips_online_failed_listed_in_black_list" = "對不起，當前客服系統暫時無法使用。";
+
+"reply_tip_text"        = "抱歉，當前沒有客服在線，您可以給我們 留言";
+"bot_redirect_tip_text"  = "很抱歉您不滿意機器人的回答，您可以嘗試 轉人工";
+
+"cannot_text_client_is_onlining"  = "正在為您分配客服，請稍後重發。";
+
+"send_to_fast"  = "您發送的太快啦，請休息壹下吧~";
+"leave_a_message" = "留言";
+"submit" = "提交";
+"leave_a_message_placeholder" = "請輸入你的留言";
+"param_not_allow_null" = "%@ 不允許為空";
+"submit_failure" = "提交失敗";
+"add_picture" = "添加圖片";
+"tel" = "電話";
+"tel_placeholder" = "請輸入你的電話";
+"email" = "邮箱";
+"email_placeholder" = "请输入你的邮箱";

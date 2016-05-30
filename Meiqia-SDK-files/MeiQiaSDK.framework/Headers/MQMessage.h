@@ -21,7 +21,7 @@ typedef enum : NSUInteger {
     MQMessageActionTicketReply                  = 8,   //客服留言回复的消息
     MQMessageActionAgentUpdate                  = 9,    //客服的状态发生了改变
     MQMessageActionListedInBlackList            = 10,  //被客户加入到黑名单
-    MQMessageActionRemovedFromBlackList         = 11,  //被客户从黑名单中移除
+    MQMessageActionRemovedFromBlackList         = 11  //被客户从黑名单中移除
 } MQMessageAction;
 
 typedef enum : NSUInteger {
@@ -29,12 +29,14 @@ typedef enum : NSUInteger {
     MQMessageContentTypeImage                = 1,//图片
     MQMessageContentTypeVoice                = 2, //语音
     MQMessageContentTypeFile                 = 3, //文件传输
+    MQMessageContentTypeBot                  = 4  //机器人消息
 } MQMessageContentType;
 
 typedef enum : NSUInteger {
     MQMessageFromTypeClient                  = 0,//来自 顾客
     MQMessageFromTypeAgent                   = 1,//来自 客服
-    MQMessageFromTypeSystem                  = 2 //来自 系统
+    MQMessageFromTypeSystem                  = 2,//来自 系统
+    MQMessageFromTypeBot                     = 3 //来自 机器人
 } MQMessageFromType;
 
 typedef enum : NSUInteger {
@@ -98,7 +100,19 @@ typedef enum : NSUInteger {
 /** 消息是否已读 */
 @property (nonatomic, assign) BOOL                 isRead;
 
+///** 消息的 sub_type */
+//@property (nonatomic, copy)   NSString             *subType;
+//
+///** 机器人消息 */
+//@property (nonatomic, copy)   NSArray              *contentRobot;
+
 /** 不同的 message 类型会携带不同数据，也可能为空, 以JSON格式保存到数据库 */
+/**
+ 机器人的 accessorData
+ {
+    sub_type, content_robot, question_id, is_evaluate
+ }
+ **/
 @property (nonatomic, copy) id accessoryData;
 
 + (instancetype)createBlacklistMessageWithAction:(NSString *)action;

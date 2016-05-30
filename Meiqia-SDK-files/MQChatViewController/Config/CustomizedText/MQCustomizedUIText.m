@@ -55,6 +55,11 @@ static NSMutableDictionary * customizedTextMap;
         
         @(MQUITextKeyRequestEvaluation) : @"meiqia_evaluation_sheet",
         
+        @(MQUITextKeyRequestRedirectAgent) : @"meiqia_redirect_sheet",
+        
+        @(MQUITextKeyNoAgentAvailableTip) : @"reply_tip_text",
+        @(MQUITextKeyBotRedirectTip) : @"bot_redirect_tip_text",
+        
         @(MQUITextKeyFileDownloadOverdue) : @"file_download_file_is_expired",
         @(MQUITextKeyFileDownloadCancel) : @"file_download_canceld",
         @(MQUITextKeyFileDownloadFail) : @"file_download_failed",
@@ -63,7 +68,11 @@ static NSMutableDictionary * customizedTextMap;
         
         @(MQUITextKeyBlacklistMessageRejected) : @"message_tips_send_message_fail_listed_in_black_list",
         @(MQUITextKeyBlacklistListedInBlacklist) : @"message_tips_online_failed_listed_in_black_list",
+        
+        @(MQUITextKeyClientIsOnlining) : @"cannot_text_client_is_onlining",
+        @(MQUITextKeySendTooFast) : @"send_to_fast",
         };
+    
     
     customizedTextMap = [NSMutableDictionary new];
 }

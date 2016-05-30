@@ -36,11 +36,11 @@ static CGFloat const kMQCellBubbleToTextHorizontalSmallerSpacing = 10.0;
 /**
  * 聊天气泡和其中的文字垂直间距
  */
-static CGFloat const kMQCellBubbleToTextVerticalSpacing = 8.0;
+static CGFloat const kMQCellBubbleToTextVerticalSpacing = 12.0;
 /**
  * 聊天气泡最大宽度与边沿的距离
  */
-static CGFloat const kMQCellBubbleMaxWidthToEdgeSpacing = 32.0;
+static CGFloat const kMQCellBubbleMaxWidthToEdgeSpacing = 48.0;
 /**
  * 聊天头像的直径
  */

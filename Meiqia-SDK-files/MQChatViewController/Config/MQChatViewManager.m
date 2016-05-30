@@ -472,6 +472,13 @@
     chatViewConfig.scheduledAgentId = agentId;
 }
 
+- (void)setNotScheduledAgentId:(NSString *)agentId {
+    if (!agentId) {
+        return;
+    }
+    chatViewConfig.notScheduledAgentId = agentId;
+}
+
 - (void)setScheduledGroupId:(NSString *)groupId {
     if (!groupId) {
         return;
