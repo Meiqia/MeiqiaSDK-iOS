@@ -15,7 +15,7 @@
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
 
-@interface MQFileDownloadCell()
+@interface MQFileDownloadCell()<UIActionSheetDelegate>
 
 @property (nonatomic, strong) MQFileDownloadCellModel *viewModel;
 
@@ -165,7 +165,7 @@
                     [sself.downloadProgressBar setProgress:process];
                 } else if (process == 100) {
                     [sself updateUI];
-                    [sself.viewModel openFile:self];
+                    [self showActionSheet];
                 } else {
                     [sself updateUI];
                 }
@@ -179,10 +179,41 @@
         }
         break;
         case MQFileDownloadStatusDownloadComplete: {
-            [self.viewModel openFile:self];
+            [self showActionSheet];
         }
         break;
     }
+}
+
+- (void)showActionSheet {
+    [self.window endEditing:YES];
+    UIActionSheet *as = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"显示预览", @"打开文件", nil];
+    as.delegate = self;
+    [as showInView:self];
+}
+
+#pragma mark - action sheet delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        [self.viewModel previewFileFromController:[self topController]];
+    } else if (buttonIndex == 1) {
+        [self.viewModel openFile:self];
+    }
+}
+
+- (UIViewController *)topController {
+    for (UIWindow *window in [[[UIApplication sharedApplication]windows] reverseObjectEnumerator]) {
+        if ([window isKindOfClass:[UIWindow class]] &&
+            window.windowLevel == UIWindowLevelNormal &&
+            CGRectEqualToRect(window.bounds, [UIScreen mainScreen].bounds)) {
+            UIViewController *topController = window.rootViewController;
+            while (topController.presentedViewController) {
+                topController = topController.presentedViewController;
+            }
+            return topController;
+        }
+    }
+    return nil;
 }
 
 #pragma mark - lazy load
