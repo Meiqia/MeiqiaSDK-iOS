@@ -15,7 +15,7 @@ typedef enum{
     ViewAlignmentBottomRight,
 }ViewAlignment;
 
-@interface UIView(Layout)
+@interface UIView(MQLayout)
 
 @property (nonatomic) CGFloat viewWidth;		//view.frame.size.width
 @property (nonatomic) CGFloat viewHeight;		//view.frame.size.height

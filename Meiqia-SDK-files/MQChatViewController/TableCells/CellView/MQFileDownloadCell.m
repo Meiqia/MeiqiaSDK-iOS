@@ -7,7 +7,7 @@
 //
 
 #import "MQFileDownloadCell.h"
-#import "UIView+Layout.h"
+#import "UIView+MQLayout.h"
 #import "MQFileDownloadCellModel.h"
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"

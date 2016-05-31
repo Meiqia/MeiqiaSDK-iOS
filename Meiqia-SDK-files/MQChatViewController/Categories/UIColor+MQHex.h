@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface UIColor(Hex)
+@interface UIColor(MQHex)
 
 + (UIColor *)colorWithHex:(long)hexColor alpha:(CGFloat)a;
 

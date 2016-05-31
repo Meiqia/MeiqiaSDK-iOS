@@ -112,8 +112,8 @@
 		E45D6D5C1CB504A100F5881E /* MQFileDownloadCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E45D6D5B1CB504A100F5881E /* MQFileDownloadCellModel.m */; };
 		E45D6D5F1CB504DB00F5881E /* MQFileDownloadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E45D6D5E1CB504DB00F5881E /* MQFileDownloadCell.m */; };
 		E45D6D621CB510D300F5881E /* MQFileDownloadMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E45D6D611CB510D300F5881E /* MQFileDownloadMessage.m */; };
-		E488BF7F1CA2608800753736 /* UIView+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = E488BF7E1CA2608800753736 /* UIView+Layout.m */; };
-		E49C7BBF1C96A8D3003027E8 /* UIViewController+OrientationFix.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C7BBE1C96A8D3003027E8 /* UIViewController+OrientationFix.m */; };
+		E488BF7F1CA2608800753736 /* UIView+MQLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E488BF7E1CA2608800753736 /* UIView+MQLayout.m */; };
+		E49C7BBF1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C7BBE1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m */; };
 		E4A533E51C9F90DD0053BC88 /* MQAnimatorPush.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E01C9F90DD0053BC88 /* MQAnimatorPush.m */; };
 		E4A533E61C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E21C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m */; };
 		E4A533E71C9F90DD0053BC88 /* MQTransitioningAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E41C9F90DD0053BC88 /* MQTransitioningAnimation.m */; };
@@ -121,7 +121,7 @@
 		E4BCB3CB1CABDF33006B7F1B /* MQChatViewStyleDark.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCB3CA1CABDF33006B7F1B /* MQChatViewStyleDark.m */; };
 		E4D3CA7A1CAA862C0002C25B /* MQChatViewStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3CA791CAA862C0002C25B /* MQChatViewStyle.m */; };
 		E4D3CAA61CABBFEF0002C25B /* MQChatViewStyleBlue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3CAA51CABBFEF0002C25B /* MQChatViewStyleBlue.m */; };
-		E4D3CAA91CABC2AA0002C25B /* UIColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3CAA81CABC2AA0002C25B /* UIColor+Hex.m */; };
+		E4D3CAA91CABC2AA0002C25B /* UIColor+MQHex.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3CAA81CABC2AA0002C25B /* UIColor+MQHex.m */; };
 		E4FED6B41CED5ABE00295D50 /* MCRecorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6A81CED5ABE00295D50 /* MCRecorderView.m */; };
 		E4FED6B51CED5ABE00295D50 /* MCButtonGroupBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6AA1CED5ABE00295D50 /* MCButtonGroupBar.m */; };
 		E4FED6B71CED5ABE00295D50 /* MCInputContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6AE1CED5ABE00295D50 /* MCInputContentView.m */; };
@@ -356,10 +356,10 @@
 		E45D6D5E1CB504DB00F5881E /* MQFileDownloadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQFileDownloadCell.m; sourceTree = "<group>"; };
 		E45D6D601CB510D300F5881E /* MQFileDownloadMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQFileDownloadMessage.h; sourceTree = "<group>"; };
 		E45D6D611CB510D300F5881E /* MQFileDownloadMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQFileDownloadMessage.m; sourceTree = "<group>"; };
-		E488BF7D1CA2608800753736 /* UIView+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Layout.h"; sourceTree = "<group>"; };
-		E488BF7E1CA2608800753736 /* UIView+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Layout.m"; sourceTree = "<group>"; };
-		E49C7BBD1C96A8D3003027E8 /* UIViewController+OrientationFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+OrientationFix.h"; sourceTree = "<group>"; };
-		E49C7BBE1C96A8D3003027E8 /* UIViewController+OrientationFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+OrientationFix.m"; sourceTree = "<group>"; };
+		E488BF7D1CA2608800753736 /* UIView+MQLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MQLayout.h"; sourceTree = "<group>"; };
+		E488BF7E1CA2608800753736 /* UIView+MQLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MQLayout.m"; sourceTree = "<group>"; };
+		E49C7BBD1C96A8D3003027E8 /* UIViewController+MQOrientationFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MQOrientationFix.h"; sourceTree = "<group>"; };
+		E49C7BBE1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MQOrientationFix.m"; sourceTree = "<group>"; };
 		E4A533DF1C9F90DD0053BC88 /* MQAnimatorPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQAnimatorPush.h; sourceTree = "<group>"; };
 		E4A533E01C9F90DD0053BC88 /* MQAnimatorPush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQAnimatorPush.m; sourceTree = "<group>"; };
 		E4A533E11C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQShareTransitioningDelegateImpl.h; sourceTree = "<group>"; };
@@ -374,8 +374,8 @@
 		E4D3CA791CAA862C0002C25B /* MQChatViewStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatViewStyle.m; sourceTree = "<group>"; };
 		E4D3CAA41CABBFEF0002C25B /* MQChatViewStyleBlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatViewStyleBlue.h; sourceTree = "<group>"; };
 		E4D3CAA51CABBFEF0002C25B /* MQChatViewStyleBlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatViewStyleBlue.m; sourceTree = "<group>"; };
-		E4D3CAA71CABC2AA0002C25B /* UIColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
-		E4D3CAA81CABC2AA0002C25B /* UIColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
+		E4D3CAA71CABC2AA0002C25B /* UIColor+MQHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MQHex.h"; sourceTree = "<group>"; };
+		E4D3CAA81CABC2AA0002C25B /* UIColor+MQHex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+MQHex.m"; sourceTree = "<group>"; };
 		E4FED6A71CED5ABE00295D50 /* MCRecorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCRecorderView.h; sourceTree = "<group>"; };
 		E4FED6A81CED5ABE00295D50 /* MCRecorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCRecorderView.m; sourceTree = "<group>"; };
 		E4FED6A91CED5ABE00295D50 /* MCButtonGroupBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCButtonGroupBar.h; sourceTree = "<group>"; };
@@ -1043,12 +1043,12 @@
 		E49C7BBC1C96A8B9003027E8 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				E49C7BBD1C96A8D3003027E8 /* UIViewController+OrientationFix.h */,
-				E49C7BBE1C96A8D3003027E8 /* UIViewController+OrientationFix.m */,
-				E488BF7D1CA2608800753736 /* UIView+Layout.h */,
-				E488BF7E1CA2608800753736 /* UIView+Layout.m */,
-				E4D3CAA71CABC2AA0002C25B /* UIColor+Hex.h */,
-				E4D3CAA81CABC2AA0002C25B /* UIColor+Hex.m */,
+				E49C7BBD1C96A8D3003027E8 /* UIViewController+MQOrientationFix.h */,
+				E49C7BBE1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m */,
+				E488BF7D1CA2608800753736 /* UIView+MQLayout.h */,
+				E488BF7E1CA2608800753736 /* UIView+MQLayout.m */,
+				E4D3CAA71CABC2AA0002C25B /* UIColor+MQHex.h */,
+				E4D3CAA81CABC2AA0002C25B /* UIColor+MQHex.m */,
 				E45CA1221CC79431000B8917 /* NSArray+MQFunctional.h */,
 				E45CA1231CC79431000B8917 /* NSArray+MQFunctional.m */,
 			);
@@ -1267,7 +1267,7 @@
 				CC3310961C33F7EA0088E648 /* MQChatViewConfig.m in Sources */,
 				CC3310AD1C33F7EA0088E648 /* MQAssetUtil.m in Sources */,
 				CC3310AC1C33F7EA0088E648 /* MQVoiceMessageCell.m in Sources */,
-				E488BF7F1CA2608800753736 /* UIView+Layout.m in Sources */,
+				E488BF7F1CA2608800753736 /* UIView+MQLayout.m in Sources */,
 				CC33109D1C33F7EA0088E648 /* MQImageMessage.m in Sources */,
 				CCD1450D1C4F41C1007CA0DC /* MQEvaluationView.m in Sources */,
 				CC3310A81C33F7EA0088E648 /* MQImageMessageCell.m in Sources */,
@@ -1309,7 +1309,7 @@
 				CC33109B1C33F7EA0088E648 /* MQBaseMessage.m in Sources */,
 				CC3310B31C33F7EA0088E648 /* MQChatFileUtil.m in Sources */,
 				CC3310AE1C33F7EA0088E648 /* MQBundleUtil.m in Sources */,
-				E49C7BBF1C96A8D3003027E8 /* UIViewController+OrientationFix.m in Sources */,
+				E49C7BBF1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m in Sources */,
 				CC3310B21C33F7EA0088E648 /* MQChatEmojize.m in Sources */,
 				CC3310981C33F7EA0088E648 /* MQChatViewController.m in Sources */,
 				CC84A8BA1CEC7D790097C99E /* MQMessageFormImageView.m in Sources */,
@@ -1352,7 +1352,7 @@
 				CC3310A11C33F7EA0088E648 /* MQImageCellModel.m in Sources */,
 				CC3310A21C33F7EA0088E648 /* MQMessageDateCellModel.m in Sources */,
 				CC3310A01C33F7EA0088E648 /* MQEventCellModel.m in Sources */,
-				E4D3CAA91CABC2AA0002C25B /* UIColor+Hex.m in Sources */,
+				E4D3CAA91CABC2AA0002C25B /* UIColor+MQHex.m in Sources */,
 				CC84A8B21CEC7D790097C99E /* MQMessageFormInputModel.m in Sources */,
 				CC3310A61C33F7EA0088E648 /* MQChatBaseCell.m in Sources */,
 				CC33109F1C33F7EA0088E648 /* MQVoiceMessage.m in Sources */,

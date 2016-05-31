@@ -1,8 +1,8 @@
 
 
-#import "UIView+Layout.h"
+#import "UIView+MQLayout.h"
 
-@implementation UIView(Layout)
+@implementation UIView(MQLayout)
 
 - (CGFloat)viewWidth{
     return self.frame.size.width;

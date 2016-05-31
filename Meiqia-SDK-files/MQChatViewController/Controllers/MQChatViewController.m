@@ -24,7 +24,7 @@
 #import "MQAssetUtil.h"
 #import "MQStringSizeUtil.h"
 #import "MQTransitioningAnimation.h"
-#import "UIView+Layout.h"
+#import "UIView+MQLayout.h"
 #import "MQCustomizedUIText.h"
 #import "MQImageUtil.h"
 #import "MCRecorderView.h"

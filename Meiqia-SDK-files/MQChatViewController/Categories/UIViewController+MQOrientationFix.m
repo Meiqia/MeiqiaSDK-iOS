@@ -6,9 +6,9 @@
 //  Copyright © 2016年 GAME-CHINA.ORG. All rights reserved.
 //
 
-#import "UIViewController+OrientationFix.h"
+#import "UIViewController+MQOrientationFix.h"
 
-@implementation UIViewController(OrientationFix)
+@implementation UIViewController(MQOrientationFix)
 
 - (BOOL)shouldAutorotate {
     return [self supportsLandscape] && [self supportsPortait];

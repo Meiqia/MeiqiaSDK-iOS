@@ -6,9 +6,9 @@
 //  Copyright (c) 2014年 com.qcb008.QiCheApp. All rights reserved.
 //
 
-#import "UIColor+Hex.h"
+#import "UIColor+MQHex.h"
 
-@implementation UIColor(Hex)
+@implementation UIColor(MQHex)
 
 + (UIColor *)colorWithHex:(long)hexColor
 {
