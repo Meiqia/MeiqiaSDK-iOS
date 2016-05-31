@@ -619,16 +619,10 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
 }
 
 - (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId{
-    if (isUseful){
-        NSLog(@"点击有用按钮");
-    } else{
-        NSLog(@"点击无用按钮");
-    }
     [chatViewService evaluateBotAnswer:isUseful messageId:messageId];
 }
 
 - (void)didTapMenuWithText:(NSString *)menuText {
-    NSLog(@"点击 menu text = %@", menuText);
     //去掉 menu 的序号后，主动发送该 menu 消息
     NSRange orderRange = [menuText rangeOfString:@". "];
     if (orderRange.location == NSNotFound) {
@@ -639,12 +633,10 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
 }
 
 - (void)didTapReplyBtn {
-    NSLog(@"点击了留言按钮");
     [self showMQMessageForm];
 }
 
 - (void)didTapBotRedirectBtn {
-    NSLog(@"点击了转人工");
     [self tapNavigationRedirectBtn:nil];
 }
 
@@ -655,7 +647,6 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
 
 #pragma MQEvaluationViewDelegate
 - (void)didSelectLevel:(NSInteger)level comment:(NSString *)comment {
-    NSLog(@"评价 level = %d\n评价内容 = %@", (int)level, comment);
     [chatViewService sendEvaluationLevel:level comment:comment];
 }
 

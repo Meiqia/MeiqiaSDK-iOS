@@ -709,6 +709,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 // 增加留言提示的 cell model
 - (void)addTipCellModelWithType:(MQTipType)tipType {
+    // 判断当前是否是机器人客服
+    if ([MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
+        return;
+    }
     // 判断 table 中是否出现「转人工」或「留言」，如果出现过，并不在最后一个 cell，则将之移到底部
     MQTipsCellModel *tipModel = nil;
     if (tipType == MQTipTypeReply || tipType == MQTipTypeBotRedirect) {

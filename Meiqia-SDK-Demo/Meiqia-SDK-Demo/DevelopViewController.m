@@ -735,8 +735,6 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 //    chatViewManager.chatViewStyle = [MQChatViewStyle blueStyle];
 //    chatViewManager.chatViewStyle.navTitleColor = [UIColor redColor];
     
-    
-    
     MQMessageFormInputModel *emailMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
     emailMessageFormInputModel.tip = @"邮箱";
     emailMessageFormInputModel.key = @"email";

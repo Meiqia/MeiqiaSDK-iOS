@@ -74,6 +74,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.isPushChatView            = true;
     self.enableShowNewMessageAlert = true;
     self.enableEvaluationButton    = true;
+    self.shouldUploadOutgoingAvartar = NO;
     
     self.maxVoiceDuration               = 60;
     

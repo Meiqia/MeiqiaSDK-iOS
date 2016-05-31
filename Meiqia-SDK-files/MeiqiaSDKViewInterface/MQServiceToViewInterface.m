@@ -595,7 +595,6 @@
     [MQManager evaluateBotMessage:messageId isUseful:isUseful completion:completion];
 }
 
-
 #pragma MQManagerDelegate
 //webSocket收到消息的代理方法
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)messages {

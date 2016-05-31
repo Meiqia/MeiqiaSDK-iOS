@@ -87,7 +87,15 @@
 "file_download_complete" = "下载完成";
 "file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ 小时后过期";
 
-"message_tips_send_message_fail_listed_in_black_list" = "对方已经拒绝接收你的消息";
+"message_tips_send_message_fail_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
+
+"message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
+
+"reply_tip_text"        = "抱歉，当前没有客服在线，您可以给我们 留言";
+
+"bot_redirect_tip_text"  = "很抱歉您不满意机器人的回答，您可以尝试 转人工";
+
+"cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
 
 "message_tips_online_failed_listed_in_black_list" = "抱歉，你已被加入黑名单";
 

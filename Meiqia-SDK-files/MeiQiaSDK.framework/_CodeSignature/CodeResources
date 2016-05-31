@@ -4,6 +4,10 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>.DS_Store</key>
+		<data>
+		3y++sUAKzaCQmjLBz2v0kvESHgc=
+		</data>
 		<key>Headers/JSONHelper.h</key>
 		<data>
 		VD2DS4zL5PIfgpvLYzQW1q0rMkI=
@@ -26,7 +30,7 @@
 		</data>
 		<key>Headers/MQManager.h</key>
 		<data>
-		5xoH5dg/CLWqkt4zg91flfa/OwI=
+		BhJyD5VldJo6AOfUTD9pTIKxEzM=
 		</data>
 		<key>Headers/MQMessage.h</key>
 		<data>
@@ -38,23 +42,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		ojSK7/wWpo42GA/yq9TBFuXZgI0=
-		</data>
-		<key>MQAgent.h</key>
-		<data>
-		gsY8y5rLzBaNIHhc55UQZmVcR0U=
-		</data>
-		<key>MQDefinition.h</key>
-		<data>
-		N4wvu+ksZRdig16cCz34XZutlTs=
-		</data>
-		<key>MQManager.h</key>
-		<data>
-		fHPL0sxg8IoUTsU1xHqyrYa1B4k=
-		</data>
-		<key>MQMessage.h</key>
-		<data>
-		vr7WGmQ7VWya3zqQ6mH1XJgB3ts=
+		R/33ke7GZ8vVmvXXwNNlfHok1CA=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -118,11 +106,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			5xoH5dg/CLWqkt4zg91flfa/OwI=
+			BhJyD5VldJo6AOfUTD9pTIKxEzM=
 			</data>
 			<key>hash2</key>
 			<data>
-			pVz6raTP5ICsadmu4zePiIEDgcdg5zflNLPL86dJ7B0=
+			tG762Q4eeC8zwRGrvXzkGi379Z8k5aewt07nlBAzV0U=
 			</data>
 		</dict>
 		<key>Headers/MQMessage.h</key>
@@ -145,50 +133,6 @@
 			<key>hash2</key>
 			<data>
 			gFRmA+IeI1UrIpHDvVopfG2PZsFy+ADxRopLXW1Cd4k=
-			</data>
-		</dict>
-		<key>MQAgent.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			gsY8y5rLzBaNIHhc55UQZmVcR0U=
-			</data>
-			<key>hash2</key>
-			<data>
-			czfScZOFe5Hf2EsHrjF4+wKc4vXs299M3TWlDTyrIZA=
-			</data>
-		</dict>
-		<key>MQDefinition.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			N4wvu+ksZRdig16cCz34XZutlTs=
-			</data>
-			<key>hash2</key>
-			<data>
-			xdbKkZNl4mJ2+DX8NuVUdrYDQqa5ofoRPLe+W0ylKqg=
-			</data>
-		</dict>
-		<key>MQManager.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			fHPL0sxg8IoUTsU1xHqyrYa1B4k=
-			</data>
-			<key>hash2</key>
-			<data>
-			XYyLi1akZ+Bfv9VaERPV+fsLyFdoETx1A8Ozag50/Ks=
-			</data>
-		</dict>
-		<key>MQMessage.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			vr7WGmQ7VWya3zqQ6mH1XJgB3ts=
-			</data>
-			<key>hash2</key>
-			<data>
-			Lb7qB2phDdjUXAcAZ2sc01GIiz1OW+R7ZK60CB2Ms0w=
 			</data>
 		</dict>
 	</dict>
