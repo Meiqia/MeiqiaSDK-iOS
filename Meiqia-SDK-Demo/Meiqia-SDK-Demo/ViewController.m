@@ -54,6 +54,9 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
     
+    id obj = @{@"1":[NSNull null]};
+    [JSONHelper JSONStringWith:obj];
+    NSLog(@">>> %@",obj[@"1"][@""]);
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -157,6 +160,7 @@ static int indicator_tag = 10;
     [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
 
     [chatViewManager pushMQChatViewControllerInViewController:self];
+    [chatViewManager setClientInfo:@{@"name":@"my name", @"tel":@13400000000}];
     
     [self removeIndecatorForView:basicFunctionBtn];
     

@@ -19,7 +19,7 @@
  *  @param content          输入内容
  *  @param object           当前自定义数据
  */
-- (void)inputContentViewShouldReturn:(MCInputContentView *)inputContentView content:(NSString *)content userObject:(NSObject *)object;
+- (BOOL)inputContentViewShouldReturn:(MCInputContentView *)inputContentView content:(NSString *)content userObject:(NSObject *)object;
 
 /**
  *  自定义数据改变

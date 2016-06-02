@@ -134,8 +134,6 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    //更新view frame
-//    [self updateContentViewsFrame];
     
     [self.keyboardController beginListeningForKeyboard];
 }
@@ -145,12 +143,17 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
     [self.view endEditing:YES];
     
     [self.keyboardController endListeningForKeyboard];
+    
+    if ([MQServiceToViewInterface isWaitingInQueue]) {
+        [chatViewService saveTextDraftIfNeeded:(UITextField *)[(MCTabInputContentView *)self.chatInputBar.contentView textField]];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [UIView setAnimationsEnabled:YES];
     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+    [chatViewService fillTextDraftToFiledIfExists:(UITextField *)[(MCTabInputContentView *)self.chatInputBar.contentView textField]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -226,7 +229,6 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
 - (void)initInputBar {
     [self.view addSubview:self.chatInputBar];
 }
-
 
 - (void)layoutViews {
     self.chatTableView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -350,8 +352,6 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
 
 - (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver{
     [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:cellNumber isLoadOver:isLoadOver];
-//    [self.chatTableView reloadData];
-//    [self reloadChatTableView];
 }
 
 - (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
@@ -371,7 +371,7 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
 }
 
 - (void)showEvaluationAlertView {
-//    [chatInputBar.textView resignFirstResponder];
+    [self.view.window endEditing:YES];
     [self.evaluationView showEvaluationAlertView];
 }
 
@@ -474,9 +474,8 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
     }];
 }
 
--(void)inputContentTextDidChange:(NSString *)newString {
+- (void)inputContentTextDidChange:(NSString *)newString {
     //用户正在输入
-    
     static BOOL shouldSendInputtingMessageToServer = YES;
     
     if (shouldSendInputtingMessageToServer) {
@@ -491,7 +490,7 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
     
 }
 
--(void)chatTableViewScrollToBottomWithAnimated:(BOOL)animated {
+- (void)chatTableViewScrollToBottomWithAnimated:(BOOL)animated {
     NSInteger lastCellIndex = chatViewService.cellModels.count;
     if (lastCellIndex == 0) {
         return;
@@ -499,7 +498,7 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
     [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
--(void)beginRecord:(CGPoint)point {
+- (void)beginRecord:(CGPoint)point {
     if (TARGET_IPHONE_SIMULATOR){
         [MQToast showToast:[MQBundleUtil localizedStringForKey:@"simulator_not_support_microphone"] duration:2 window:self.view];
         return;
@@ -540,21 +539,21 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
     [self.recordView startRecording];
 }
 
--(void)finishRecord:(CGPoint)point {
+- (void)finishRecord:(CGPoint)point {
     [self.recordView stopRecord];
     [self didEndRecord];
 }
 
--(void)cancelRecord:(CGPoint)point {
+- (void)cancelRecord:(CGPoint)point {
     [self.recordView cancelRecording];
     [self didEndRecord];
 }
 
--(void)changedRecordViewToCancel:(CGPoint)point {
+- (void)changedRecordViewToCancel:(CGPoint)point {
     self.recordView.revoke = true;
 }
 
--(void)changedRecordViewToNormal:(CGPoint)point {
+- (void)changedRecordViewToNormal:(CGPoint)point {
     self.recordView.revoke = false;
 }
 
@@ -650,60 +649,6 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
     [chatViewService sendEvaluationLevel:level comment:comment];
 }
 
-//#pragma ios7以下系统的横屏的事件
-//- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-//{
-//    NSLog(@"willAnimateRotationToInterfaceOrientation");
-//    [self updateContentViewsFrame];
-//}
-//
-//- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-//{
-//    [self updateContentViewsFrame];
-//    [self.view endEditing:YES];
-//}
-//
-//#pragma ios8以上系统的横屏的事件
-//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-//    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-//    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-//    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-//        [self updateContentViewsFrame];
-//    }];
-//    [self.view endEditing:YES];
-//}
-//
-////更新viewConroller中所有的view的frame
-//- (void)updateContentViewsFrame {
-//    //更新tableView的frame
-//    [self setChatTableViewFrame];
-//    //更新cellModel的frame
-//    chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
-//    [chatViewService updateCellModelsFrame];
-//    [self.chatTableView reloadData];
-//    //更新inputBar的frame
-//    CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height - kMQChatViewInputBarHeight, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
-//    [chatInputBar updateFrame:inputBarFrame];
-//    //更新recordView的frame
-//    CGRect recordViewFrame = CGRectMake(0,
-//                                        0,
-//                                        self.chatTableView.frame.size.width,
-//                                        self.view.viewHeight);
-//    [recordView updateFrame:recordViewFrame];
-//    // 更新半透明层
-//    if (translucentView) {
-//        translucentView.frame = CGRectMake(0, 0, self.chatTableView.frame.size.width, self.chatTableView.frame.size.height);
-//        [activityIndicatorView setCenter:CGPointMake(self.chatTableView.frame.size.width / 2.0, self.chatTableView.frame.size.height / 2.0)];
-//    }
-//}
-//
-//- (void)setChatTableViewFrame {
-//    //更新tableView的frame
-//    chatViewConfig.chatViewFrame = self.view.bounds;
-//    [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];
-//}
-//
-//>>>>>>> meiqia/robot
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma MQServiceToViewInterfaceErrorDelegate 后端返回的数据的错误委托方法
 - (void)getLoadHistoryMessageError {
@@ -835,31 +780,51 @@ static CGFloat const kMQChatViewInputBarHeight = 100.0;
     [imageRoll setImage:[MQAssetUtil imageFromBundleWithName:@"imageIcon"] forState:(UIControlStateNormal)];
     [imageRoll addTarget:self action:@selector(imageRoll) forControlEvents:(UIControlEventTouchUpInside)];
     [self.chatInputBar.buttonGroupBar addButton:imageRoll];
-    
+}
+
+- (BOOL)handleCanSendData {
+    if ([MQServiceToViewInterface isWaitingInQueue]) {
+        [self.view.window endEditing:YES];
+        [MQToast showToast:@"正在排队，请等待客服介入后发送消息" duration:2.5 window:self.view.window];
+        return NO;
+    }
+    return YES;
 }
 
 - (void)showRecorder {
-    if (self.chatInputBar.isFirstResponder) {
-        [self.chatInputBar resignFirstResponder];
-    }else{
-        self.chatInputBar.inputView = self.displayRecordView;
-        [self.chatInputBar becomeFirstResponder];
+    if ([self handleCanSendData]) {
+        if (self.chatInputBar.isFirstResponder) {
+            [self.chatInputBar resignFirstResponder];
+        }else{
+            self.chatInputBar.inputView = self.displayRecordView;
+            [self.chatInputBar becomeFirstResponder];
+        }
     }
 }
 
 - (void)camera {
-    [self sendImageWithSourceType:(UIImagePickerControllerSourceTypeCamera)];
+    if ([self handleCanSendData]) {
+        [self sendImageWithSourceType:(UIImagePickerControllerSourceTypeCamera)];
+    }
 }
 
 - (void)imageRoll {
-    [self sendImageWithSourceType:(UIImagePickerControllerSourceTypePhotoLibrary)];
+    if ([self handleCanSendData]) {
+        [self sendImageWithSourceType:(UIImagePickerControllerSourceTypePhotoLibrary)];
+    }
 }
 
-- (void)inputContentViewShouldReturn:(MCInputContentView *)inputContentView content:(NSString *)content userObject:(NSObject *)object {
+- (BOOL)inputContentViewShouldReturn:(MCInputContentView *)inputContentView content:(NSString *)content userObject:(NSObject *)object {
 
     if ([content length] > 0) {
-        [self sendTextMessage:content];
+        if ([self handleCanSendData]) {
+            [self sendTextMessage:content];
+            return YES;
+        } else {
+            return NO;
+        }
     }
+    return YES;
 }
 
 - (BOOL)inputContentViewShouldBeginEditing:(MCInputContentView *)inputContentView {

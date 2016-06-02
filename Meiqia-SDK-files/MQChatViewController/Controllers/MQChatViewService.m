@@ -358,6 +358,14 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
 }
 
+- (void)scrollToButton {
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
+            [self.delegate scrollTableViewToBottom];
+        }
+    }
+}
+
 #ifndef INCLUDE_MEIQIA_SDK
 /**
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
@@ -735,12 +743,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self.cellModels addObject:cellModel];
     }
     [self reloadChatTableView];
-    if (self.delegate) {
-        if ([self.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
-            [self.delegate scrollTableViewToBottom];
-        }
-    }
-
+    [self scrollToButton];
 }
 
 // 清除当前界面的「转人工」「留言」的 tipCell
@@ -750,6 +753,29 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if ([model isKindOfClass:[MQTipsCellModel class]]) {
             MQTipsCellModel *cellModel = (MQTipsCellModel *)model;
             if (cellModel.tipType == MQTipTypeReply || cellModel.tipType == MQTipTypeBotRedirect) {
+                continue;
+            }
+        }
+        [newCellModels addObject:model];
+    }
+    self.cellModels = newCellModels;
+}
+
+- (void)addWaitingInQueueTipWithPosition:(int)position {
+    [self removeWaitingInQueueCellModels];
+    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initWaitingInQueueTipCellModelWithCellWidth:self.chatViewWidth position:position tipType:MQTipTypeWaitingInQueue];
+    [self.cellModels addObject:cellModel];
+    [self reloadChatTableView];
+    [self scrollToButton];
+}
+
+/// 清除当前界面的「转人工」「留言」的 tipCell
+- (void)removeWaitingInQueueCellModels {
+    NSMutableArray *newCellModels = [NSMutableArray new];
+    for (id<MQCellModelProtocol> model in self.cellModels) {
+        if ([model isKindOfClass:[MQTipsCellModel class]]) {
+            MQTipsCellModel *cellModel = (MQTipsCellModel *)model;
+            if (cellModel.tipType == MQTipTypeWaitingInQueue) {
                 continue;
             }
         }
@@ -867,6 +893,54 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)afterClientOnline {
     [self sendPreSendMessages];
+    
+    [self handleWaitingQueue];
+}
+
+- (void)handleWaitingQueue {
+    __weak typeof(self) wself = self;
+    __block BOOL wasInQueue = NO;
+    dispatch_async(dispatch_queue_create(nil, DISPATCH_QUEUE_PRIORITY_DEFAULT), ^{
+        
+        MQInfo(@"check wating queue position")
+        while ([MQServiceToViewInterface isWaitingInQueue]) {
+            __strong typeof(wself)sself = wself;
+            [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
+                if (position >= 0) {
+                    wasInQueue = YES;
+                    [sself addWaitingInQueueTipWithPosition:(int)position + 1];
+                    MQInfo(@"now at %d", (int)position + 1);
+                }
+            }];
+            
+            [NSThread sleepForTimeInterval:10];
+        }
+        
+        if (wasInQueue) {
+            [MQServiceToViewInterface manuallyEnterConversationComplete:^{
+                __strong typeof(wself)sself = wself;
+                [sself removeWaitingInQueueCellModels];
+                [sself reloadChatTableView];
+            }];
+        }
+    });
+}
+
+#define kSaveTextDraftIfNeeded @"kSaveTextDraftIfNeeded"
+- (void)saveTextDraftIfNeeded:(UITextField *)tf {
+    if (tf.text.length) {
+        [[NSUserDefaults standardUserDefaults]setObject:tf.text forKey:kSaveTextDraftIfNeeded];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+}
+
+- (void)fillTextDraftToFiledIfExists:(UITextField *)tf {
+    NSString *string = [[NSUserDefaults standardUserDefaults]objectForKey:kSaveTextDraftIfNeeded];
+    if (string.length) {
+        tf.text = string;
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:kSaveTextDraftIfNeeded];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
 }
 
 - (void)sendPreSendMessages {
@@ -885,6 +959,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if ([[clientInfo objectForKey:@"avatar"] length] == 0) {
         return ;
     }
+    
     [MQServiceToViewInterface downloadMediaWithUrlString:[clientInfo objectForKey:@"avatar"] progress:^(float progress) {
     } completion:^(NSData *mediaData, NSError *error) {
         [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage = [UIImage imageWithData:mediaData];

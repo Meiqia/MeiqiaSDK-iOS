@@ -26,12 +26,18 @@
 /**
  *  美洽的错误码
  */
-static NSString * const MQRequesetErrorDomain = @"com.meiqia.error.resquest.error";
+#define MQRequesetErrorDomain @"com.meiqia.error.resquest.error"
 
 
-static NSString *const MQ_NOTIFICATION_SOCKET_STATUS_CHANGE = @"MQ_NOTIFICATION_SOCKET_STATUS_CHANGE";
-static NSString *const SOCKET_STATUS_CONNECTED = @"SOCKET_STATUS_CONNECTED";
-static NSString *const SOCKET_STATUS_DISCONNECTED = @"SOCKET_STATUS_DISCONNECTED";
+/**
+ 当连接的状态改变时发送的通知
+ */
+#define MQ_NOTIFICATION_SOCKET_STATUS_CHANGE @"MQ_NOTIFICATION_SOCKET_STATUS_CHANGE"
+#define SOCKET_STATUS_CONNECTED @"SOCKET_STATUS_CONNECTED"
+#define SOCKET_STATUS_DISCONNECTED @"SOCKET_STATUS_DISCONNECTED"
+
+#define MQ_CHAT_BEGIN @"MQ_CHAT_BEGIN"
+#define MQ_CHAT_END @"MQ_CHAT_END"
 
 /**
  美洽Error的code对应码

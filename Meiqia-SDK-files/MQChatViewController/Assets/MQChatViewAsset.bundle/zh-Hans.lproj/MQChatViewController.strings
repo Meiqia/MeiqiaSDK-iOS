@@ -113,3 +113,5 @@
 "tel_placeholder" = "请输入你的电话";
 "email" = "邮箱";
 "email_placeholder" = "请输入你的邮箱";
+
+"wating_in_queue_tip_text" = "请稍等，前面还有%d个访客，您也可以选择给我们 留言";

@@ -112,6 +112,7 @@
 		E45D6D5C1CB504A100F5881E /* MQFileDownloadCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E45D6D5B1CB504A100F5881E /* MQFileDownloadCellModel.m */; };
 		E45D6D5F1CB504DB00F5881E /* MQFileDownloadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E45D6D5E1CB504DB00F5881E /* MQFileDownloadCell.m */; };
 		E45D6D621CB510D300F5881E /* MQFileDownloadMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E45D6D611CB510D300F5881E /* MQFileDownloadMessage.m */; };
+		E47BA67B1CFE7CC500358AB4 /* NSNull+MQSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = E47BA67A1CFE7CC500358AB4 /* NSNull+MQSafe.m */; };
 		E488BF7F1CA2608800753736 /* UIView+MQLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E488BF7E1CA2608800753736 /* UIView+MQLayout.m */; };
 		E49C7BBF1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C7BBE1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m */; };
 		E4A533E51C9F90DD0053BC88 /* MQAnimatorPush.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E01C9F90DD0053BC88 /* MQAnimatorPush.m */; };
@@ -356,6 +357,8 @@
 		E45D6D5E1CB504DB00F5881E /* MQFileDownloadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQFileDownloadCell.m; sourceTree = "<group>"; };
 		E45D6D601CB510D300F5881E /* MQFileDownloadMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQFileDownloadMessage.h; sourceTree = "<group>"; };
 		E45D6D611CB510D300F5881E /* MQFileDownloadMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQFileDownloadMessage.m; sourceTree = "<group>"; };
+		E47BA6791CFE7CC500358AB4 /* NSNull+MQSafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+MQSafe.h"; sourceTree = "<group>"; };
+		E47BA67A1CFE7CC500358AB4 /* NSNull+MQSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+MQSafe.m"; sourceTree = "<group>"; };
 		E488BF7D1CA2608800753736 /* UIView+MQLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MQLayout.h"; sourceTree = "<group>"; };
 		E488BF7E1CA2608800753736 /* UIView+MQLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MQLayout.m"; sourceTree = "<group>"; };
 		E49C7BBD1C96A8D3003027E8 /* UIViewController+MQOrientationFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MQOrientationFix.h"; sourceTree = "<group>"; };
@@ -1051,6 +1054,8 @@
 				E4D3CAA81CABC2AA0002C25B /* UIColor+MQHex.m */,
 				E45CA1221CC79431000B8917 /* NSArray+MQFunctional.h */,
 				E45CA1231CC79431000B8917 /* NSArray+MQFunctional.m */,
+				E47BA6791CFE7CC500358AB4 /* NSNull+MQSafe.h */,
+				E47BA67A1CFE7CC500358AB4 /* NSNull+MQSafe.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1331,6 +1336,7 @@
 				CC3310AA1C33F7EA0088E648 /* MQTextMessageCell.m in Sources */,
 				CC3310941C33F7EA0088E648 /* MQServiceToViewInterface.m in Sources */,
 				CC3310B41C33F7EA0088E648 /* MQChatRegexUtil.m in Sources */,
+				E47BA67B1CFE7CC500358AB4 /* NSNull+MQSafe.m in Sources */,
 				E4FED6C51CEDA80100295D50 /* MQImageViewerViewController.m in Sources */,
 				CC3310AB1C33F7EA0088E648 /* MQTipsCell.m in Sources */,
 				CC868F8B1C7AFFF200BFA68D /* MEIQIA_MLAudioRecorder.m in Sources */,

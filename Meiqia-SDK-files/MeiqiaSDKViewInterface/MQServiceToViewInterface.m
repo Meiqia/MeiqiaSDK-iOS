@@ -708,4 +708,15 @@
     [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
 }
 
++ (BOOL)isWaitingInQueue {
+    return YES;// [MQManager isWaitingInQueue];
+}
+
++ (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action {
+    return [MQManager getClientQueuePositionComplete:action];
+}
+
++ (void)manuallyEnterConversationComplete:(void(^)(void))action {
+    [MQManager manuallyEnterConversationComplete:action];
+}
 @end

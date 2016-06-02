@@ -65,7 +65,7 @@
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputContentViewShouldReturn:content:userObject:)])
     {
-        [self.delegate inputContentViewShouldReturn:self content:self.textField.text userObject:nil];
+        return [self.delegate inputContentViewShouldReturn:self content:self.textField.text userObject:nil];
     }
     
     return YES;
@@ -125,9 +125,11 @@
 {
     if ([growingTextView.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet].length > 0) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(inputContentViewShouldReturn:content:userObject:)]) {
-            [self.delegate inputContentViewShouldReturn:self content:growingTextView.text userObject:nil];
-            
-            growingTextView.text = @"";
+            BOOL should = [self.delegate inputContentViewShouldReturn:self content:growingTextView.text userObject:nil];
+            if (should) {
+                growingTextView.text = @"";
+            }
+            return should;
         }
     }
     return YES;

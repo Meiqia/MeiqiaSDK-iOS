@@ -108,3 +108,5 @@
 "tel_placeholder" = "Please enter your phone number";
 "email" = "Email";
 "email_placeholder" = "Please enter your email";
+
+"wating_in_queue_tip_text" = "please hold on, %d visitors in front, of you can leave a message";

@@ -105,5 +105,7 @@
 "add_picture" = "添加圖片";
 "tel" = "電話";
 "tel_placeholder" = "請輸入你的電話";
-"email" = "邮箱";
-"email_placeholder" = "请输入你的邮箱";
+"email" = "郵箱";
+"email_placeholder" = "請輸入您的郵箱";
+
+"wating_in_queue_tip_text" = "請稍等，前面還有%d個訪客，您也可以選擇給我們 留言";
