@@ -156,10 +156,16 @@
             if ([[fromMessage.accessoryData objectForKey:@"content_robot"] count] > 0) {
                 NSString *subType = [fromMessage.accessoryData objectForKey:@"sub_type"] ?: @"";
                 if ([subType isEqualToString:@"evaluate"] || [subType isEqualToString:@"reply"] ||
-                    [subType isEqualToString:@"redirect"]) {
+                    [subType isEqualToString:@"redirect"] || [subType isEqualToString:@"queueing"]) {
                     // 机器人普通回答消息
-                    NSString *content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
-                    content = [MQManager convertToUnicodeWithEmojiAlias:content];
+                    NSString *content;
+                    if ([subType isEqualToString:@"queueing"]) {
+                        content = @"暂无在线客服，请等待或者留言。";
+                        subType = @"reply";
+                    } else {
+                        content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                        content = [MQManager convertToUnicodeWithEmojiAlias:content];
+                    }
                     BOOL isEvaluated = [fromMessage.accessoryData objectForKey:@"is_evaluated"] ? [[fromMessage.accessoryData objectForKey:@"is_evaluated"] boolValue] : false;
                     MQBotAnswerMessage *botMessage = [[MQBotAnswerMessage alloc] initWithContent:content subType:subType isEvaluated:isEvaluated];
                     toMessage = botMessage;
