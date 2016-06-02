@@ -894,20 +894,22 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)afterClientOnline {
     [self sendPreSendMessages];
     
-    [self handleWaitingQueue];
+    [self handleWaitingQueueFromMessage:NO];
 }
 
-- (void)handleWaitingQueue {
+- (void)handleWaitingQueueFromMessage:(BOOL)isFromMessage {
     __weak typeof(self) wself = self;
     __block BOOL wasInQueue = NO;
+    __block BOOL shouldCheckQueuePositionMannually = isFromMessage;
     dispatch_async(dispatch_queue_create(nil, DISPATCH_QUEUE_PRIORITY_DEFAULT), ^{
         
         MQInfo(@"check wating queue position")
-        while ([MQServiceToViewInterface isWaitingInQueue]) {
+        while ([MQServiceToViewInterface isWaitingInQueue] || shouldCheckQueuePositionMannually) {
+            wasInQueue = YES;
+            shouldCheckQueuePositionMannually = NO;
             __strong typeof(wself)sself = wself;
             [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
                 if (position >= 0) {
-                    wasInQueue = YES;
                     [sself addWaitingInQueueTipWithPosition:(int)position + 1];
                     MQInfo(@"now at %d", (int)position + 1);
                 }
@@ -1102,6 +1104,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self forceRedirectToHumanAgent];
             });
+        }
+        
+        if ([((MQBotAnswerMessage *)[messages firstObject]).subType isEqualToString:@"queueing"]) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self handleWaitingQueueFromMessage:YES];
+            });
+            return;//TODO:
         }
     }
     //等待 0.1 秒，等待 tableView 更新后再滑动到底部，优化体验

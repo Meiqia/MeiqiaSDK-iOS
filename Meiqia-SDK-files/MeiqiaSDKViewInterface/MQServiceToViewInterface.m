@@ -709,7 +709,7 @@
 }
 
 + (BOOL)isWaitingInQueue {
-    return YES;// [MQManager isWaitingInQueue];
+    return [MQManager isWaitingInQueue];
 }
 
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action {
