@@ -120,6 +120,10 @@
     [self.fileNameLabel sizeToFit];
     [self.fileDetailLabel sizeToFit];
     
+    if (self.viewModel.avartarImage) {
+        self.avatarImageView.image = self.viewModel.avartarImage;
+    }
+    
     //layout
     
     [self.avatarImageView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarToHorizontalEdgeSpacing)];
@@ -139,6 +143,7 @@
     CGFloat maxMiddleRightEdge = self.viewWidth - self.avatarImageView.viewRightEdge - !self.actionButton.isHidden * self.actionButton.viewWidth - kMQCellAvatarToVerticalEdgeSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
     CGFloat middlePartRightEdge = MIN(MAX(self.fileNameLabel.viewRightEdge, self.fileDetailLabel.viewRightEdge), maxMiddleRightEdge);
     self.fileNameLabel.viewWidth = maxMiddleRightEdge - self.fileNameLabel.viewX; // 防止文件名过长
+    self.fileDetailLabel.viewWidth = maxMiddleRightEdge - self.fileDetailLabel.viewX;
     
     [self.downloadProgressBar align:ViewAlignmentTopLeft relativeToPoint:CGPointMake([MQChatViewConfig sharedConfig].bubbleImageStretchInsets.left, self.fileDetailLabel.viewBottomEdge + kMQCellBubbleToTextHorizontalSmallerSpacing)];
     
@@ -263,6 +268,7 @@
         _fileDetailLabel = [UILabel new];
         _fileDetailLabel.font = [UIFont systemFontOfSize:12];
         _fileDetailLabel.textColor = [UIColor lightGrayColor];
+        _fileDetailLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }
     return _fileDetailLabel;
 }
@@ -281,6 +287,10 @@
         _avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
         _avatarImageView.viewSize = CGSizeMake(kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         _avatarImageView.image = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
+        if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
+            _avatarImageView.layer.masksToBounds = YES;
+            _avatarImageView.layer.cornerRadius = _avatarImageView.viewSize.width/2;
+        }
     }
     return _avatarImageView;
 }

@@ -609,8 +609,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                         }
                     }
                 }
+            } else if (eventMessage.eventType == MQChatEventTypeInitConversation) {
+                //
+                [self checkAndUpdateWaitingQueueStatus];
             } else if (eventMessage.eventType == MQChatEventTypeClientEvaluation) {
 
+            } else if (eventMessage.eventType == MQChatEventTypeQueueingRemoved) {
+                [MQServiceToViewInterface getCurrentAgent].agentId = @"";
+                [self setClientOnline];
+            } else if (eventMessage.eventType == MQChatEventTypeQueueingAdd) {
+                [self checkAndUpdateWaitingQueueStatus];
             } else if (eventMessage.eventType == MQChatEventTypeAgentUpdate) {
 #ifdef INCLUDE_MEIQIA_SDK
                 //客服状态发生改变
@@ -861,7 +869,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //确保 tableView 的 contentInsect 生效，tableView 能够正确滑动到底部
                     if (!completion) {
                         // 显示留言提示
-                        [self addTipCellModelWithType:MQTipTypeReply];
+//                        [self addTipCellModelWithType:MQTipTypeReply];
                     } else {
                         [self.delegate scrollTableViewToBottom];
                     }
@@ -894,39 +902,29 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)afterClientOnline {
     [self sendPreSendMessages];
     
-    [self handleWaitingQueueFromMessage:NO];
+    [self checkAndUpdateWaitingQueueStatus];
 }
 
-- (void)handleWaitingQueueFromMessage:(BOOL)isFromMessage {
-    __weak typeof(self) wself = self;
-    __block BOOL wasInQueue = NO;
-    __block BOOL shouldCheckQueuePositionMannually = isFromMessage;
-    dispatch_async(dispatch_queue_create(nil, DISPATCH_QUEUE_PRIORITY_DEFAULT), ^{
-        
+- (void)checkAndUpdateWaitingQueueStatus {
+    if ([MQServiceToViewInterface isWaitingInQueue]) {
         MQInfo(@"check wating queue position")
-        while ([MQServiceToViewInterface isWaitingInQueue] || shouldCheckQueuePositionMannually) {
-            wasInQueue = YES;
-            shouldCheckQueuePositionMannually = NO;
+        __weak typeof(self) wself = self;
+        [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
             __strong typeof(wself)sself = wself;
-            [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
-                if (position >= 0) {
-                    [sself addWaitingInQueueTipWithPosition:(int)position + 1];
-                    MQInfo(@"now at %d", (int)position + 1);
-                }
-            }];
-            
-            [NSThread sleepForTimeInterval:10];
-        }
-        
-        if (wasInQueue) {
-            [MQServiceToViewInterface manuallyEnterConversationComplete:^{
-                __strong typeof(wself)sself = wself;
-                [sself removeWaitingInQueueCellModels];
-                [sself reloadChatTableView];
-            }];
-        }
-    });
+            if (position >= 0) {
+                [sself addWaitingInQueueTipWithPosition:(int)position];
+                MQInfo(@"now you are at %d in waiting queue", (int)position);
+            } else {
+                [self removeWaitingInQueueCellModels];
+                [self reloadChatTableView];
+            }
+        }];
+    } else {
+        [self removeWaitingInQueueCellModels];
+        [self reloadChatTableView];
+    }
 }
+
 
 #define kSaveTextDraftIfNeeded @"kSaveTextDraftIfNeeded"
 - (void)saveTextDraftIfNeeded:(UITextField *)tf {
@@ -1104,13 +1102,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self forceRedirectToHumanAgent];
             });
-        }
-        
-        if ([((MQBotAnswerMessage *)[messages firstObject]).subType isEqualToString:@"queueing"]) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self handleWaitingQueueFromMessage:YES];
-            });
-            return;//TODO:
         }
     }
     //等待 0.1 秒，等待 tableView 更新后再滑动到底部，优化体验

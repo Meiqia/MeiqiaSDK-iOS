@@ -159,19 +159,18 @@ static int indicator_tag = 10;
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
 
+    [chatViewManager setClientInfo:@{@"name":@"my name 2", @"tel":@1340000000011}];
     [chatViewManager pushMQChatViewControllerInViewController:self];
-    [chatViewManager setClientInfo:@{@"name":@"my name", @"tel":@13400000000}];
+//    [chatViewManager setLoginCustomizedId:[NSUUID UUID].UUIDString];
+//    [chatViewManager setLoginMQClientId:@"87b01b6c295211e688ed06904f27bcff"];
+    [chatViewManager setScheduledAgentId:@"e6c87ec5966e357448145c80f8f5ba41"];
+    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
+    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
     
     [self removeIndecatorForView:basicFunctionBtn];
     
     [chatViewManager setRecordMode:MQRecordModeDuckOther];
     [chatViewManager setPlayMode:MQPlayModeMixWithOther];
-    
-    [MQManager getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
-        int count = [[messages filter:^BOOL(MQMessage *message) {
-            return message.fromType != MQMessageFromTypeClient;
-        }] count];
-    }];
     
 }
 

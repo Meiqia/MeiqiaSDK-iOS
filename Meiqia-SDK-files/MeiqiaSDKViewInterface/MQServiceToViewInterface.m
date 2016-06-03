@@ -135,6 +135,18 @@
             eventType = MQChatEventTypeAgentUpdate;
             break;
         }
+        case MQMessageActionQueueingRemoved:
+        {
+            eventContent = @"queue remove";
+            eventType = MQChatEventTypeQueueingRemoved;
+            break;
+        }
+        case MQMessageActionQueueingAdd:
+        {
+            eventContent = @"queue add";
+            eventType = MQChatEventTypeQueueingAdd;
+            break;
+        }
         default:
             break;
     }
@@ -637,6 +649,11 @@
         if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
             [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
+    } else if ([self handleQueueingMessage:messages]) {
+        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
+        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
+            [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
+        }
     } else {
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
         
@@ -644,7 +661,13 @@
             [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
     }
-    
+}
+
+- (BOOL)handleQueueingMessage:(NSArray<MQMessage *> *)messages {
+    if (messages.count == 1 && ([messages firstObject].action == MQMessageActionQueueingAdd || [messages firstObject].action == MQMessageActionQueueingRemoved)) {
+        return YES;
+    }
+    return NO;
 }
 
 - (BOOL)handleBlacklistMessage:(NSArray<MQMessage *> *)messages {
@@ -720,9 +743,5 @@
 
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action {
     return [MQManager getClientQueuePositionComplete:action];
-}
-
-+ (void)manuallyEnterConversationComplete:(void(^)(void))action {
-    [MQManager manuallyEnterConversationComplete:action];
 }
 @end

@@ -30,7 +30,7 @@
 #import "MCRecorderView.h"
 #import "MQMessageFormViewManager.h"
 
-static CGFloat const kMQChatViewInputBarHeight = 100.0;
+static CGFloat const kMQChatViewInputBarHeight = 70.0;
 
 @interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MCInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MCInputContentViewDelegate, MCKeyboardControllerDelegate, MQRecordViewDelegate, MCRecorderViewDelegate>
 

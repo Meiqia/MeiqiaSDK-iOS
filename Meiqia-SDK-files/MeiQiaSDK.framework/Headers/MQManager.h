@@ -468,8 +468,4 @@
  */
 + (BOOL)isWaitingInQueue;
 
-/**
- 手动进入对话
- */
-+ (void)manuallyEnterConversationComplete:(void(^)(void))action;
 @end

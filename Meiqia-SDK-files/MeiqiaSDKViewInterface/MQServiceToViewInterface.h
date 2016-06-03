@@ -413,9 +413,5 @@
  */
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action;
 
-/**
- 手动进入对话
- */
-+ (void)manuallyEnterConversationComplete:(void(^)(void))action;
 @end
 
