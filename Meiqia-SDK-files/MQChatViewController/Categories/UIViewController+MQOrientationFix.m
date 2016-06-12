@@ -35,13 +35,7 @@
 #pragma mark - private
 
 - (NSArray *)supportedOrientations {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        return [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UISupportedInterfaceOrientations"];
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UISupportedInterfaceOrientations~ipad"];
-    } else {
-        return @[@"UIInterfaceOrientationPortrait"];
-    }
+    return [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UISupportedInterfaceOrientations"] ?: @[@"UIInterfaceOrientationPortrait"];
 }
 
 - (BOOL)supportsPortait {

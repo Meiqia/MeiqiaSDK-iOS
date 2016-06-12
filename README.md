@@ -373,6 +373,13 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 开发者需要获取 clientId，可使用接口`[MQManager getCurrentClientId]`。
 
+### 设置自定义上传数据
+```objc
+MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+[chatViewManager setClientInfo:@{@"name":@"my name", @"tel":@"13333333333"}];
+[chatViewManager pushMQChatViewControllerInViewController:self];
+```
+其中，系统定义 key 参见 [添加自定义信息](#添加自定义信息)
 
 ### 国际化
 
@@ -839,6 +846,12 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 请开发者检查 App Target - Build Settings - Search Path - Framework Search Path 或 Library Search Path 当中是否没有美洽的项目。
 
 # 更新日志
+
+**v3.2.1 2016 年 06 月  日**
+* 支持排队功能
+* 更新聊天输入界面
+* 增加接收文件预览功能
+* 修复问题
 
 **v3.2.0 2016 年 05 月 30 日**
 * 增加机器人客服

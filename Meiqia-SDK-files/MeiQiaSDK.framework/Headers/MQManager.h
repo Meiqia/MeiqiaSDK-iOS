@@ -13,7 +13,7 @@
 #import "MQAgent.h"
 #import "MQEnterprise.h"
 
-#define MQSDKVersion @"3.2.0"
+#define MQSDKVersion @"3.2.1"
 
 @protocol MQManagerDelegate <NSObject>
 

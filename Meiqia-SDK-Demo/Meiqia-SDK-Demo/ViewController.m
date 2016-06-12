@@ -159,14 +159,15 @@ static int indicator_tag = 10;
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
 
-    [chatViewManager setClientInfo:@{@"name":@"my name 2", @"tel":@1340000000011}];
+    [chatViewManager setClientInfo:@{@"name":@"SDK 3.2.1 测试"}];
     [chatViewManager pushMQChatViewControllerInViewController:self];
+    //    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor redColor]];
 //    [chatViewManager setLoginCustomizedId:[NSUUID UUID].UUIDString];
 //    [chatViewManager setLoginMQClientId:@"87b01b6c295211e688ed06904f27bcff"];
-    [chatViewManager setScheduledAgentId:@"e6c87ec5966e357448145c80f8f5ba41"];
-    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
+//    [chatViewManager setScheduledAgentId:@"e6c87ec5966e357448145c80f8f5ba41"];
+//    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
-    
+        
     [self removeIndecatorForView:basicFunctionBtn];
     
     [chatViewManager setRecordMode:MQRecordModeDuckOther];

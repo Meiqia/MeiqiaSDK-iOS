@@ -857,9 +857,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self removeBotTipCellModels];
     }
     
-    dispatch_group_t clientOnlineGroup = dispatch_group_create();
-    dispatch_group_enter(clientOnlineGroup);
-    
     //更新客服聊天界面标题
     [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
     if (receivedMessages) {
@@ -873,7 +870,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                     } else {
                         [self.delegate scrollTableViewToBottom];
                     }
-                    dispatch_group_leave(clientOnlineGroup);
                 });
             }
         }
@@ -887,10 +883,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [strongSelf getClientInfo];
     }];
     
-    dispatch_group_notify(clientOnlineGroup, dispatch_get_main_queue(), ^{
-        __strong typeof (weakSelf) strongSelf = weakSelf;
-        [strongSelf afterClientOnline];
-    });
+    [self afterClientOnline];
     
     // 判断是否是机器人客服，来改变右上角按钮
     agentType = completion ? agentType : @"";

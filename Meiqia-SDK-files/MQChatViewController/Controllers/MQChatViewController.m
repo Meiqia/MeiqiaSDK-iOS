@@ -30,7 +30,7 @@
 #import "MCRecorderView.h"
 #import "MQMessageFormViewManager.h"
 
-static CGFloat const kMQChatViewInputBarHeight = 70.0;
+static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 @interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MCInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MCInputContentViewDelegate, MCKeyboardControllerDelegate, MQRecordViewDelegate, MCRecorderViewDelegate>
 
@@ -413,7 +413,6 @@ static CGFloat const kMQChatViewInputBarHeight = 70.0;
         return;
     }
     UIBarButtonItem *rightNavButtonItem = [[UIBarButtonItem alloc]initWithTitle:title style:(UIBarButtonItemStylePlain) target:self action:navBtnSelector];
-    rightNavButtonItem.tintColor = chatViewConfig.chatViewStyle.btnTextColor;
     self.navigationItem.rightBarButtonItem = rightNavButtonItem;
 }
 

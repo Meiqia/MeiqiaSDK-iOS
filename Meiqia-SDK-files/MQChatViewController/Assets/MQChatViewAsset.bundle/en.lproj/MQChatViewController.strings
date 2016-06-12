@@ -50,7 +50,7 @@
 
 "default_assistant"     = "Assistant";
 
-"no_agent_title"        = "Online Customer Service";
+"no_agent_title"        = "Leave message";
 
 "no_agent_tips"         = "Sorry, there are no agents.\nPlease send your contact information to us. We will contact you as soon as possible.";
 

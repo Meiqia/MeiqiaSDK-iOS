@@ -1190,6 +1190,7 @@
 				TargetAttributes = {
 					CCE9D1051C1812F6004E862E = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = T9YSHM8D7E;
 					};
 					CCE9D11E1C1812F6004E862E = {
 						CreatedOnToolsVersion = 7.1;
