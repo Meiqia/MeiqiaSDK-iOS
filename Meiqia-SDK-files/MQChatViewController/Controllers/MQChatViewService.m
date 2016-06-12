@@ -911,6 +911,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [self removeWaitingInQueueCellModels];
                 [self reloadChatTableView];
             }
+            [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
         }];
     } else {
         [self removeWaitingInQueueCellModels];
@@ -990,9 +991,18 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         completion();
     }
 }
+
+
+- (NSString *)noAgentTitle {
+    if ([MQServiceToViewInterface isWaitingInQueue]) {
+        return @"排队中";
+    }
+    return [MQBundleUtil localizedStringForKey:@"no_agent_title"];
+}
+
 - (void)updateChatTitleWithAgent:(MQAgent *)agent {
     MQChatAgentStatus agentStatus = [self getAgentStatus:agent];
-    NSString *viewTitle = agent.nickname.length == 0 ? [MQBundleUtil localizedStringForKey:@"no_agent_title"] : agent.nickname;
+    NSString *viewTitle = agent.nickname.length == 0 ? [self noAgentTitle] : agent.nickname;
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didScheduleClientWithViewTitle:agentStatus:)]) {
             [self.delegate didScheduleClientWithViewTitle:viewTitle agentStatus:agentStatus];
