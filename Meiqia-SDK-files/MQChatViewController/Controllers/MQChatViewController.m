@@ -144,7 +144,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     [self.keyboardController endListeningForKeyboard];
     
-    if ([MQServiceToViewInterface isWaitingInQueue]) {
+    if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
         [chatViewService saveTextDraftIfNeeded:(UITextField *)[(MCTabInputContentView *)self.chatInputBar.contentView textField]];
     }
 }
@@ -699,7 +699,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             break;
     }
     
-    if ([titleLabel.text isEqualToString:[MQBundleUtil localizedStringForKey:@"no_agent_title"]] || [MQServiceToViewInterface isWaitingInQueue]) {
+    if ([titleLabel.text isEqualToString:[MQBundleUtil localizedStringForKey:@"no_agent_title"]] || [MQServiceToViewInterface waitingInQueuePosition] > 0) {
         statusImageView.image = nil;
     }
     
@@ -782,7 +782,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (BOOL)handleCanSendData {
-    if ([MQServiceToViewInterface isWaitingInQueue] && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
+    if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
         [self.view.window endEditing:YES];
         [MQToast showToast:@"正在排队，请等待客服介入后发送消息" duration:2.5 window:self.view.window];
         return NO;

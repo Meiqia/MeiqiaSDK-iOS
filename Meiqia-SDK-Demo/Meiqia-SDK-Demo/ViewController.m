@@ -164,8 +164,8 @@ static int indicator_tag = 10;
     //    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor redColor]];
 //    [chatViewManager setLoginCustomizedId:[NSUUID UUID].UUIDString];
 //    [chatViewManager setLoginMQClientId:@"87b01b6c295211e688ed06904f27bcff"];
-//    [chatViewManager setScheduledAgentId:@"e6c87ec5966e357448145c80f8f5ba41"];
-//    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
+    [chatViewManager setScheduledAgentId:@"f12b03466611d678797c35fbfe27b7b2"];
+    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectEnterprise];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
         
     [self removeIndecatorForView:basicFunctionBtn];

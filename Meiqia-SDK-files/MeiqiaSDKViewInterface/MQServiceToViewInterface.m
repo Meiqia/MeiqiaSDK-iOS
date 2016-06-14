@@ -172,8 +172,8 @@
                     // 机器人普通回答消息
                     NSString *content;
                     if ([subType isEqualToString:@"queueing"]) {
-                        content = @"暂无在线客服，请等待或者留言。";
-                        subType = @"reply";
+                        content = @"暂无空闲客服，您已进入排队等待。";
+                        subType = @"redirect";
                     } else {
                         content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
                         content = [MQManager convertToUnicodeWithEmojiAlias:content];
@@ -737,11 +737,15 @@
     [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
 }
 
-+ (BOOL)isWaitingInQueue {
-    return [MQManager isWaitingInQueue];
++ (int)waitingInQueuePosition {
+    return [MQManager waitingInQueuePosition];
 }
 
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action {
     return [MQManager getClientQueuePositionComplete:action];
+}
+
++ (NSError *)checkGlobalError {
+    return [MQManager checkGlobalError];
 }
 @end

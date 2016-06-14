@@ -466,6 +466,9 @@
 /**
  判断用户是否在等待
  */
-+ (BOOL)isWaitingInQueue;
++ (int)waitingInQueuePosition;
+
+
++ (NSError *)checkGlobalError;
 
 @end

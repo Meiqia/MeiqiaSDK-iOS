@@ -406,12 +406,14 @@
 /**
  判断用户是否在等待
  */
-+ (BOOL)isWaitingInQueue;
++ (int)waitingInQueuePosition;
 
 /**
  获取当前用户在等待队列的位置
  */
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action;
+
++ (NSError *)checkGlobalError;
 
 @end
 
