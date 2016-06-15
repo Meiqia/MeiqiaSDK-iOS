@@ -230,9 +230,14 @@
             toMessage = voiceMessage;
             break;
         }
+//        case MQMessageContentTypeFile: {
+//            MQFileDownloadMessage *fileDownloadMessage = [[MQFileDownloadMessage alloc] initWithDictionary:fromMessage.accessoryData];
+//            toMessage = fileDownloadMessage;
+//            break;
+//        }
         case MQMessageContentTypeFile: {
-            MQFileDownloadMessage *fileDownloadMessage = [[MQFileDownloadMessage alloc] initWithDictionary:fromMessage.accessoryData];
-            toMessage = fileDownloadMessage;
+            MQRichTextMessage *richTextMessage = [[MQRichTextMessage alloc] initWithDictionary:fromMessage.accessoryData];
+            toMessage = richTextMessage;
             break;
         }
         default:
@@ -738,7 +743,7 @@
 }
 
 + (BOOL)isWaitingInQueue {
-    return [MQManager isWaitingInQueue];
+    return [MQManager waitingInQueuePosition];
 }
 
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action {

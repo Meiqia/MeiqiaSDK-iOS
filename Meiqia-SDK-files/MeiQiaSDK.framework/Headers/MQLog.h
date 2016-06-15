@@ -6,9 +6,9 @@
 //  Copyright © 2016年 MeiQia Inc. All rights reserved.
 //
 
+
 #ifndef MQLog_h
 #define MQLog_h
-
 
 #endif /* MQLog_h */
 

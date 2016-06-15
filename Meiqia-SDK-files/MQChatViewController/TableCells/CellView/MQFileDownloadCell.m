@@ -14,6 +14,7 @@
 #import "MQChatViewConfig.h"
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
+#import "MQWindowUtil.h"
 
 @interface MQFileDownloadCell()<UIActionSheetDelegate>
 
@@ -200,25 +201,10 @@
 #pragma mark - action sheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
-        [self.viewModel previewFileFromController:[self topController]];
+        [self.viewModel previewFileFromController:[MQWindowUtil topController]];
     } else if (buttonIndex == 1) {
         [self.viewModel openFile:self];
     }
-}
-
-- (UIViewController *)topController {
-    for (UIWindow *window in [[[UIApplication sharedApplication]windows] reverseObjectEnumerator]) {
-        if ([window isKindOfClass:[UIWindow class]] &&
-            window.windowLevel == UIWindowLevelNormal &&
-            CGRectEqualToRect(window.bounds, [UIScreen mainScreen].bounds)) {
-            UIViewController *topController = window.rootViewController;
-            while (topController.presentedViewController) {
-                topController = topController.presentedViewController;
-            }
-            return topController;
-        }
-    }
-    return nil;
 }
 
 #pragma mark - lazy load
