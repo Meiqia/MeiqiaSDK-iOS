@@ -154,17 +154,13 @@ static int indicator_tag = 10;
 #pragma 最基本功能
 - (void)didTapBasicFunctionBtn:(UIButton *)button {
     //基本功能 - 在线客服
-    
+        
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
 
     [chatViewManager setClientInfo:@{@"name":@"SDK 3.2.1 测试"}];
     [chatViewManager pushMQChatViewControllerInViewController:self];
-    //    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor redColor]];
-//    [chatViewManager setLoginCustomizedId:[NSUUID UUID].UUIDString];
-//    [chatViewManager setLoginMQClientId:@"87b01b6c295211e688ed06904f27bcff"];
-    [chatViewManager setScheduledAgentId:@"f12b03466611d678797c35fbfe27b7b2"];
     [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectEnterprise];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
         
