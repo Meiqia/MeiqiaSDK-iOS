@@ -785,7 +785,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (BOOL)handleSendMessageAbility {
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
         [self.view.window endEditing:YES];
-        [MQToast showToast:@"正在排队，请等待客服介入后发送消息" duration:2.5 window:self.view.window];
+        [MQToast showToast:@"正在排队，请等待客服接入后发送消息" duration:2.5 window:self.view.window];
         return NO;
     }
     return YES;

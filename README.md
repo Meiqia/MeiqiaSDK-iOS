@@ -628,6 +628,19 @@ MQAgent *agent = [MQManager getCurrentAgent];
 ### 预发送消息
 
 在 `MQChatViewManager.h` 中， 通过设置 `@property (nonatomic, strong) NSArray *preSendMessages;` 来让客户显示聊天窗口的时候，自动向客服发送消息，支持文字和图片。
+
+### 监听聊天界面显示和消失
+
+* `MQ_NOTIFICATION_CHAT_BEGIN` 在聊天界面出现的时候发送
+*  `MQ_NOTIFICATION_CHAT_END` 在聊天界面消失时发送
+
+
+### 用户排队
+
+监听消息:
+当用户被客服接入时，会受到 `MQ_NOTIFICATION_QUEUEING_END` 通知。
+
+
 # SDK 中嵌入美洽 SDK
 如果你的开发项目也是 SDK，那么在了解常规 App 嵌入美洽 SDK 的基础上，还需要注意其他事项。
 
@@ -710,11 +723,19 @@ request.body 为消息数据，数据结构为：
 
 # 留言表单
 
-留言表单可单独使用，也可以结合聊天界面一起使用。
+目前是两种模式：
+
+1. 完全对话模式：
+	* 无机器人时：如果当前客服不在线，直接聊天界面输入就是留言，客服上线后能够直接回复，如果客服在线，则进入正常客服对话模式。
+	* 有机器人时：如果当前客服不在线，直接聊天界面输入的话，还是由机器人回答，顾客点击留言就会跳转到表单。
+
+2. 单一表单模式：
+不管客服是否在线都会进入表单，顾客提交后，不会有聊天界面。这种主要用于一些 App 只需要用户反馈，不需要直接回复的形式。
 
 ### 设置留言表单引导文案
 
-开发者可根据此接口设置留言表单引导文案，配置了该引导文案后将不会读取工作台配置的引导文案。
+配置了该引导文案后将不会读取工作台配置的引导文案。
+最佳实践：尽量不要在 SDK 中配置引导文案，而是通过工作台配置引导文案，方便在节假日的时候统一配置各端的引导文案，避免重新打包发布 App。
 
 ```objc
 MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
