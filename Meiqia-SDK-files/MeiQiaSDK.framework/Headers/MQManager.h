@@ -417,12 +417,12 @@
 + (void)getEnterpriseConfigDataComplete:(void(^)(MQEnterprise *, NSError *))action;
 
 /**
- 开始显示聊天界面
+ 开始显示聊天界面，如果自定义聊天界面，在聊天界面出现的时候调用，通知 SDK 进行初始化
  */
 + (void)didStartChat;
 
 /**
- 聊天结束
+ 聊天结束，如果自定义聊天界面，在聊天界面消失的时候嗲用，通知 SDK 进行清理工作
  */
 + (void)didEndChat;
 
@@ -464,7 +464,7 @@
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action;
 
 /**
- 判断用户是否在等待
+ 获取用户在等待队列中的位置，为 0 则表示没有在等待队列
  */
 + (int)waitingInQueuePosition;
 

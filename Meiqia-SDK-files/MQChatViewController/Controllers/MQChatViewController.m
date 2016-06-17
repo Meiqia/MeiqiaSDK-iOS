@@ -12,9 +12,9 @@
 #import "MQChatViewService.h"
 #import "MQCellModelProtocol.h"
 #import "MQChatDeviceUtil.h"
-#import "MCInputToolBar.h"
-#import "MCTabInputContentView.h"
-#import "MCKeyboardController.h"
+#import "MQInputToolBar.h"
+#import "MQTabInputContentView.h"
+#import "MQKeyboardController.h"
 #import "MQToast.h"
 #import "MQRecordView.h"
 #import "MQBundleUtil.h"
@@ -27,25 +27,25 @@
 #import "UIView+MQLayout.h"
 #import "MQCustomizedUIText.h"
 #import "MQImageUtil.h"
-#import "MCRecorderView.h"
+#import "MQRecorderView.h"
 #import "MQMessageFormViewManager.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MCInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MCInputContentViewDelegate, MCKeyboardControllerDelegate, MQRecordViewDelegate, MCRecorderViewDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate>
 
 @end
 
 @interface MQChatViewController()
 
 @property (nonatomic, strong) id evaluateBarButtonItem;//保存隐藏的barButtonItem
-@property (nonatomic, strong) MCInputToolBar *chatInputBar;
+@property (nonatomic, strong) MQInputToolBar *chatInputBar;
 @property (nonatomic, strong) NSLayoutConstraint *constaintInputBarHeight;
 @property (nonatomic, strong) NSLayoutConstraint *constraintInputBarBottom;
 @property (nonatomic, strong) MQEvaluationView *evaluationView;
-@property (nonatomic, strong) MCKeyboardController *keyboardController;
+@property (nonatomic, strong) MQKeyboardController *keyboardController;
 @property (nonatomic, strong) MQRecordView *recordView;
-@property (nonatomic, strong) MCRecorderView *displayRecordView;//只用来显示
+@property (nonatomic, strong) MQRecorderView *displayRecordView;//只用来显示
 
 @end
 
@@ -65,7 +65,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     NSLog(@"清除chatViewController");
     [self removeDelegateAndObserver];
     [chatViewConfig setConfigToDefault];
-    [chatViewService setCurrentInputtingText:[(MCTabInputContentView *)self.chatInputBar.contentView textField].text];
+    [chatViewService setCurrentInputtingText:[(MQTabInputContentView *)self.chatInputBar.contentView textField].text];
 #ifdef INCLUDE_MEIQIA_SDK
     [self closeMeiqiaChatView];
 #endif
@@ -145,7 +145,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.keyboardController endListeningForKeyboard];
     
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
-        [chatViewService saveTextDraftIfNeeded:(UITextField *)[(MCTabInputContentView *)self.chatInputBar.contentView textField]];
+        [chatViewService saveTextDraftIfNeeded:(UITextField *)[(MQTabInputContentView *)self.chatInputBar.contentView textField]];
     }
 }
 
@@ -153,7 +153,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [super viewWillAppear:animated];
     [UIView setAnimationsEnabled:YES];
     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
-    [chatViewService fillTextDraftToFiledIfExists:(UITextField *)[(MCTabInputContentView *)self.chatInputBar.contentView textField]];
+    [chatViewService fillTextDraftToFiledIfExists:(UITextField *)[(MQTabInputContentView *)self.chatInputBar.contentView textField]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -189,6 +189,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     self.chatTableView.delegate = nil;
     self.chatInputBar.delegate = nil;
 //    self.recordView.recordViewDelegate = nil;
+    
 #ifdef INCLUDE_MEIQIA_SDK
     chatViewService.errorDelegate = nil;
 #endif
@@ -437,7 +438,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if (chatViewService.clientStatus == MQClientStatusOnlining || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
         NSString *alertText = chatViewService.clientStatus == MQClientStatusOnlining ? @"cannot_text_client_is_onlining" : @"send_to_fast";
         [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view];
-        [[(MCTabInputContentView *)self.chatInputBar.contentView textField] setText:text];
+        [[(MQTabInputContentView *)self.chatInputBar.contentView textField] setText:text];
         return NO;
     }
     [chatViewService sendTextMessageWithContent:text];
@@ -762,7 +763,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 #pragma mark - input content view deletate
 
-- (void)inputContentView:(MCInputContentView *)inputContentView userObjectChange:(NSObject *)object {
+- (void)inputContentView:(MQInputContentView *)inputContentView userObjectChange:(NSObject *)object {
     self.chatInputBar.buttonGroupBar.buttons = [NSMutableArray new];
     CGRect rect = CGRectMake(0, 0, 40, 40);
     UIButton *recorderBtn  = [[UIButton alloc] initWithFrame:rect];
@@ -781,7 +782,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.chatInputBar.buttonGroupBar addButton:imageRoll];
 }
 
-- (BOOL)handleCanSendData {
+- (BOOL)handleSendMessageAbility {
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
         [self.view.window endEditing:YES];
         [MQToast showToast:@"正在排队，请等待客服介入后发送消息" duration:2.5 window:self.view.window];
@@ -791,7 +792,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)showRecorder {
-    if ([self handleCanSendData]) {
+    if ([self handleSendMessageAbility]) {
         if (self.chatInputBar.isFirstResponder) {
             [self.chatInputBar resignFirstResponder];
         }else{
@@ -802,21 +803,21 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)camera {
-    if ([self handleCanSendData]) {
+    if ([self handleSendMessageAbility]) {
         [self sendImageWithSourceType:(UIImagePickerControllerSourceTypeCamera)];
     }
 }
 
 - (void)imageRoll {
-    if ([self handleCanSendData]) {
+    if ([self handleSendMessageAbility]) {
         [self sendImageWithSourceType:(UIImagePickerControllerSourceTypePhotoLibrary)];
     }
 }
 
-- (BOOL)inputContentViewShouldReturn:(MCInputContentView *)inputContentView content:(NSString *)content userObject:(NSObject *)object {
+- (BOOL)inputContentViewShouldReturn:(MQInputContentView *)inputContentView content:(NSString *)content userObject:(NSObject *)object {
 
     if ([content length] > 0) {
-        if ([self handleCanSendData]) {
+        if ([self handleSendMessageAbility]) {
             [self sendTextMessage:content];
             return YES;
         } else {
@@ -826,13 +827,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     return YES;
 }
 
-- (BOOL)inputContentViewShouldBeginEditing:(MCInputContentView *)inputContentView {
+- (BOOL)inputContentViewShouldBeginEditing:(MQInputContentView *)inputContentView {
     return YES;
 }
 
 #pragma mark - inputbar delegate
 
-- (void)inputBar:(MCInputToolBar *)inputBar willChangeHeight:(CGFloat)height {
+- (void)inputBar:(MQInputToolBar *)inputBar willChangeHeight:(CGFloat)height {
     if (height > kMQChatViewInputBarHeight) {
         CGFloat diff = height - self.constaintInputBarHeight.constant;
         if (diff < self.chatTableView.contentInset.top + self.self.chatTableView.contentSize.height) {
@@ -860,7 +861,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 #pragma mark - keyboard controller delegate
-- (void)keyboardController:(MCKeyboardController *)keyboardController keyboardChangeFrame:(CGRect)keyboardFrame isImpressionOfGesture:(BOOL)isImpressionOfGesture {
+- (void)keyboardController:(MQKeyboardController *)keyboardController keyboardChangeFrame:(CGRect)keyboardFrame isImpressionOfGesture:(BOOL)isImpressionOfGesture {
 
     CGFloat heightFromBottom = MAX(0.0, CGRectGetMaxY(self.view.frame) - CGRectGetMinY(keyboardFrame));
     
@@ -926,10 +927,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     return _evaluationView;
 }
 
-- (MCInputToolBar *)chatInputBar {
+- (MQInputToolBar *)chatInputBar {
     if (!_chatInputBar) {
-        MCTabInputContentView *contentView = [[MCTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 118)];
-        _chatInputBar = [[MCInputToolBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kMQChatViewInputBarHeight) contentView: contentView];
+        MQTabInputContentView *contentView = [[MQTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 118)];
+        _chatInputBar = [[MQInputToolBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kMQChatViewInputBarHeight) contentView: contentView];
         _chatInputBar.delegate = self;
         _chatInputBar.contentViewDelegate = self;
         [contentView setupButtons];
@@ -938,18 +939,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     return _chatInputBar;
 }
 
-- (MCKeyboardController *)keyboardController {
+- (MQKeyboardController *)keyboardController {
     if (!_keyboardController) {
-        _keyboardController = [[MCKeyboardController alloc] initWithResponders:@[self.chatInputBar.contentView, self.chatInputBar] contextView:self.view panGestureRecognizer:self.chatTableView.panGestureRecognizer delegate:self];
+        _keyboardController = [[MQKeyboardController alloc] initWithResponders:@[self.chatInputBar.contentView, self.chatInputBar] contextView:self.view panGestureRecognizer:self.chatTableView.panGestureRecognizer delegate:self];
         _keyboardController.keyboardTriggerPoint = CGPointMake(0, self.constaintInputBarHeight.constant);
         _keyboardController.delegate = self;
     }
     return _keyboardController;
 }
 
-- (MCRecorderView *)displayRecordView {
+- (MQRecorderView *)displayRecordView {
     if (!_displayRecordView) {
-        _displayRecordView = [[MCRecorderView alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, 258)];
+        _displayRecordView = [[MQRecorderView alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, 258)];
         _displayRecordView.delegate = self;
         _displayRecordView.backgroundColor = [[UIColor alloc] initWithRed: 242/255.0 green: 242/255.0 blue: 247/255.0 alpha: 1];
     }

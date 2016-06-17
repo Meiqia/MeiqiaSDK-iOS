@@ -123,12 +123,12 @@
 		E4D3CA7A1CAA862C0002C25B /* MQChatViewStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3CA791CAA862C0002C25B /* MQChatViewStyle.m */; };
 		E4D3CAA61CABBFEF0002C25B /* MQChatViewStyleBlue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3CAA51CABBFEF0002C25B /* MQChatViewStyleBlue.m */; };
 		E4D3CAA91CABC2AA0002C25B /* UIColor+MQHex.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3CAA81CABC2AA0002C25B /* UIColor+MQHex.m */; };
-		E4FED6B41CED5ABE00295D50 /* MCRecorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6A81CED5ABE00295D50 /* MCRecorderView.m */; };
-		E4FED6B51CED5ABE00295D50 /* MCButtonGroupBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6AA1CED5ABE00295D50 /* MCButtonGroupBar.m */; };
-		E4FED6B71CED5ABE00295D50 /* MCInputContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6AE1CED5ABE00295D50 /* MCInputContentView.m */; };
-		E4FED6B81CED5ABE00295D50 /* MCTabInputContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6B01CED5ABE00295D50 /* MCTabInputContentView.m */; };
-		E4FED6B91CED5ABE00295D50 /* MCInputToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6B21CED5ABE00295D50 /* MCInputToolBar.m */; };
-		E4FED6C11CED6C3E00295D50 /* MCKeyboardController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6C01CED6C3E00295D50 /* MCKeyboardController.m */; };
+		E4FED6B41CED5ABE00295D50 /* MQRecorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6A81CED5ABE00295D50 /* MQRecorderView.m */; };
+		E4FED6B51CED5ABE00295D50 /* MQButtonGroupBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6AA1CED5ABE00295D50 /* MQButtonGroupBar.m */; };
+		E4FED6B71CED5ABE00295D50 /* MQInputContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6AE1CED5ABE00295D50 /* MQInputContentView.m */; };
+		E4FED6B81CED5ABE00295D50 /* MQTabInputContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6B01CED5ABE00295D50 /* MQTabInputContentView.m */; };
+		E4FED6B91CED5ABE00295D50 /* MQInputToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6B21CED5ABE00295D50 /* MQInputToolBar.m */; };
+		E4FED6C11CED6C3E00295D50 /* MQKeyboardController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6C01CED6C3E00295D50 /* MQKeyboardController.m */; };
 		E4FED6C51CEDA80100295D50 /* MQImageViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6C41CEDA80100295D50 /* MQImageViewerViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -379,18 +379,18 @@
 		E4D3CAA51CABBFEF0002C25B /* MQChatViewStyleBlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatViewStyleBlue.m; sourceTree = "<group>"; };
 		E4D3CAA71CABC2AA0002C25B /* UIColor+MQHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MQHex.h"; sourceTree = "<group>"; };
 		E4D3CAA81CABC2AA0002C25B /* UIColor+MQHex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+MQHex.m"; sourceTree = "<group>"; };
-		E4FED6A71CED5ABE00295D50 /* MCRecorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCRecorderView.h; sourceTree = "<group>"; };
-		E4FED6A81CED5ABE00295D50 /* MCRecorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCRecorderView.m; sourceTree = "<group>"; };
-		E4FED6A91CED5ABE00295D50 /* MCButtonGroupBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCButtonGroupBar.h; sourceTree = "<group>"; };
-		E4FED6AA1CED5ABE00295D50 /* MCButtonGroupBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCButtonGroupBar.m; sourceTree = "<group>"; };
-		E4FED6AD1CED5ABE00295D50 /* MCInputContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCInputContentView.h; sourceTree = "<group>"; };
-		E4FED6AE1CED5ABE00295D50 /* MCInputContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCInputContentView.m; sourceTree = "<group>"; };
-		E4FED6AF1CED5ABE00295D50 /* MCTabInputContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCTabInputContentView.h; sourceTree = "<group>"; };
-		E4FED6B01CED5ABE00295D50 /* MCTabInputContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCTabInputContentView.m; sourceTree = "<group>"; };
-		E4FED6B11CED5ABE00295D50 /* MCInputToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCInputToolBar.h; sourceTree = "<group>"; };
-		E4FED6B21CED5ABE00295D50 /* MCInputToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCInputToolBar.m; sourceTree = "<group>"; };
-		E4FED6BF1CED6C3E00295D50 /* MCKeyboardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCKeyboardController.h; sourceTree = "<group>"; };
-		E4FED6C01CED6C3E00295D50 /* MCKeyboardController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCKeyboardController.m; sourceTree = "<group>"; };
+		E4FED6A71CED5ABE00295D50 /* MQRecorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQRecorderView.h; sourceTree = "<group>"; };
+		E4FED6A81CED5ABE00295D50 /* MQRecorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQRecorderView.m; sourceTree = "<group>"; };
+		E4FED6A91CED5ABE00295D50 /* MQButtonGroupBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQButtonGroupBar.h; sourceTree = "<group>"; };
+		E4FED6AA1CED5ABE00295D50 /* MQButtonGroupBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQButtonGroupBar.m; sourceTree = "<group>"; };
+		E4FED6AD1CED5ABE00295D50 /* MQInputContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQInputContentView.h; sourceTree = "<group>"; };
+		E4FED6AE1CED5ABE00295D50 /* MQInputContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQInputContentView.m; sourceTree = "<group>"; };
+		E4FED6AF1CED5ABE00295D50 /* MQTabInputContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTabInputContentView.h; sourceTree = "<group>"; };
+		E4FED6B01CED5ABE00295D50 /* MQTabInputContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTabInputContentView.m; sourceTree = "<group>"; };
+		E4FED6B11CED5ABE00295D50 /* MQInputToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQInputToolBar.h; sourceTree = "<group>"; };
+		E4FED6B21CED5ABE00295D50 /* MQInputToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQInputToolBar.m; sourceTree = "<group>"; };
+		E4FED6BF1CED6C3E00295D50 /* MQKeyboardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQKeyboardController.h; sourceTree = "<group>"; };
+		E4FED6C01CED6C3E00295D50 /* MQKeyboardController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQKeyboardController.m; sourceTree = "<group>"; };
 		E4FED6C31CEDA80100295D50 /* MQImageViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQImageViewerViewController.h; sourceTree = "<group>"; };
 		E4FED6C41CEDA80100295D50 /* MQImageViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQImageViewerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -654,11 +654,11 @@
 			isa = PBXGroup;
 			children = (
 				E4FED6A51CED5ABE00295D50 /* FunctionView */,
-				E4FED6A91CED5ABE00295D50 /* MCButtonGroupBar.h */,
-				E4FED6AA1CED5ABE00295D50 /* MCButtonGroupBar.m */,
-				E4FED6AC1CED5ABE00295D50 /* MCInputContentView */,
-				E4FED6B11CED5ABE00295D50 /* MCInputToolBar.h */,
-				E4FED6B21CED5ABE00295D50 /* MCInputToolBar.m */,
+				E4FED6A91CED5ABE00295D50 /* MQButtonGroupBar.h */,
+				E4FED6AA1CED5ABE00295D50 /* MQButtonGroupBar.m */,
+				E4FED6AC1CED5ABE00295D50 /* MQInputContentView */,
+				E4FED6B11CED5ABE00295D50 /* MQInputToolBar.h */,
+				E4FED6B21CED5ABE00295D50 /* MQInputToolBar.m */,
 			);
 			path = MQInputBar;
 			sourceTree = "<group>";
@@ -1086,28 +1086,28 @@
 		E4FED6A51CED5ABE00295D50 /* FunctionView */ = {
 			isa = PBXGroup;
 			children = (
-				E4FED6A71CED5ABE00295D50 /* MCRecorderView.h */,
-				E4FED6A81CED5ABE00295D50 /* MCRecorderView.m */,
+				E4FED6A71CED5ABE00295D50 /* MQRecorderView.h */,
+				E4FED6A81CED5ABE00295D50 /* MQRecorderView.m */,
 			);
 			path = FunctionView;
 			sourceTree = "<group>";
 		};
-		E4FED6AC1CED5ABE00295D50 /* MCInputContentView */ = {
+		E4FED6AC1CED5ABE00295D50 /* MQInputContentView */ = {
 			isa = PBXGroup;
 			children = (
-				E4FED6AD1CED5ABE00295D50 /* MCInputContentView.h */,
-				E4FED6AE1CED5ABE00295D50 /* MCInputContentView.m */,
-				E4FED6AF1CED5ABE00295D50 /* MCTabInputContentView.h */,
-				E4FED6B01CED5ABE00295D50 /* MCTabInputContentView.m */,
+				E4FED6AD1CED5ABE00295D50 /* MQInputContentView.h */,
+				E4FED6AE1CED5ABE00295D50 /* MQInputContentView.m */,
+				E4FED6AF1CED5ABE00295D50 /* MQTabInputContentView.h */,
+				E4FED6B01CED5ABE00295D50 /* MQTabInputContentView.m */,
 			);
-			path = MCInputContentView;
+			path = MQInputContentView;
 			sourceTree = "<group>";
 		};
 		E4FED6BE1CED6C3E00295D50 /* MCKeyboardController */ = {
 			isa = PBXGroup;
 			children = (
-				E4FED6BF1CED6C3E00295D50 /* MCKeyboardController.h */,
-				E4FED6C01CED6C3E00295D50 /* MCKeyboardController.m */,
+				E4FED6BF1CED6C3E00295D50 /* MQKeyboardController.h */,
+				E4FED6C01CED6C3E00295D50 /* MQKeyboardController.m */,
 			);
 			path = MCKeyboardController;
 			sourceTree = "<group>";
@@ -1263,8 +1263,8 @@
 				E45CA1241CC79431000B8917 /* NSArray+MQFunctional.m in Sources */,
 				E4A533E61C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */,
 				CC868F7E1C7AFFF200BFA68D /* MEIQIA_FBLCDFont.m in Sources */,
-				E4FED6B71CED5ABE00295D50 /* MCInputContentView.m in Sources */,
-				E4FED6B91CED5ABE00295D50 /* MCInputToolBar.m in Sources */,
+				E4FED6B71CED5ABE00295D50 /* MQInputContentView.m in Sources */,
+				E4FED6B91CED5ABE00295D50 /* MQInputToolBar.m in Sources */,
 				CCE9D14D1C1813BE004E862E /* DevelopViewController.m in Sources */,
 				CC84A8CF1CEC817D0097C99E /* MQBotAnswerMessage.m in Sources */,
 				313E28041CF4A42800E9F944 /* MQMessageFormViewStyle.m in Sources */,
@@ -1295,9 +1295,9 @@
 				CC3310AF1C33F7EA0088E648 /* MQChatAudioPlayer.m in Sources */,
 				CC868F891C7AFFF200BFA68D /* MEIQIA_CafRecordWriter.m in Sources */,
 				CC3310E01C33F7EA0088E648 /* MQRecordView.m in Sources */,
-				E4FED6B81CED5ABE00295D50 /* MCTabInputContentView.m in Sources */,
-				E4FED6B51CED5ABE00295D50 /* MCButtonGroupBar.m in Sources */,
-				E4FED6B41CED5ABE00295D50 /* MCRecorderView.m in Sources */,
+				E4FED6B81CED5ABE00295D50 /* MQTabInputContentView.m in Sources */,
+				E4FED6B51CED5ABE00295D50 /* MQButtonGroupBar.m in Sources */,
+				E4FED6B41CED5ABE00295D50 /* MQRecorderView.m in Sources */,
 				E45D6D621CB510D300F5881E /* MQFileDownloadMessage.m in Sources */,
 				E4A533E71C9F90DD0053BC88 /* MQTransitioningAnimation.m in Sources */,
 				CC868F7A1C7AFFF200BFA68D /* MEIQIA_CustomIOSAlertView.m in Sources */,
@@ -1342,7 +1342,7 @@
 				CC3310AB1C33F7EA0088E648 /* MQTipsCell.m in Sources */,
 				CC868F8B1C7AFFF200BFA68D /* MEIQIA_MLAudioRecorder.m in Sources */,
 				CC868F8A1C7AFFF200BFA68D /* MEIQIA_MLAudioMeterObserver.m in Sources */,
-				E4FED6C11CED6C3E00295D50 /* MCKeyboardController.m in Sources */,
+				E4FED6C11CED6C3E00295D50 /* MQKeyboardController.m in Sources */,
 				E45D6D5F1CB504DB00F5881E /* MQFileDownloadCell.m in Sources */,
 				CC84A8B81CEC7D790097C99E /* MQMessageFormInputView.m in Sources */,
 				CC868F7F1C7AFFF200BFA68D /* MEIQIA_FBLCDFontView.m in Sources */,
