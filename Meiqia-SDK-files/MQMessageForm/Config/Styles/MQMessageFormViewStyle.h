@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "UIColor+Hex.h"
+#import "UIColor+MQHex.h"
 #import "MQChatViewStyle.h"
 
 typedef NS_ENUM(NSUInteger, MQMessageFormViewStyleType) {

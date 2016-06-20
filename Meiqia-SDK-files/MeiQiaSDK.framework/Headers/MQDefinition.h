@@ -26,12 +26,30 @@
 /**
  *  美洽的错误码
  */
-static NSString * const MQRequesetErrorDomain = @"com.meiqia.error.resquest.error";
+#define MQRequesetErrorDomain @"com.meiqia.error.resquest.error"
 
 
-static NSString *const MQ_NOTIFICATION_SOCKET_STATUS_CHANGE = @"MQ_NOTIFICATION_SOCKET_STATUS_CHANGE";
-static NSString *const SOCKET_STATUS_CONNECTED = @"SOCKET_STATUS_CONNECTED";
-static NSString *const SOCKET_STATUS_DISCONNECTED = @"SOCKET_STATUS_DISCONNECTED";
+/**
+ 当连接的状态改变时发送的通知
+ */
+#define MQ_NOTIFICATION_SOCKET_STATUS_CHANGE @"MQ_NOTIFICATION_SOCKET_STATUS_CHANGE"
+#define SOCKET_STATUS_CONNECTED @"SOCKET_STATUS_CONNECTED"
+#define SOCKET_STATUS_DISCONNECTED @"SOCKET_STATUS_DISCONNECTED"
+
+/**
+ 聊天窗口出现
+ */
+#define MQ_NOTIFICATION_CHAT_BEGIN @"MQ_NOTIFICATION_CHAT_BEGIN"
+
+/**
+ 聊天窗口消失
+ */
+#define MQ_NOTIFICATION_CHAT_END @"MQ_NOTIFICATION_CHAT_END"
+
+/**
+ 当用户从排队队列被客服接入的时候出现
+ */
+#define MQ_NOTIFICATION_QUEUEING_END @"MQ_NOTIFICATION_QUEUEING_END"
 
 /**
  美洽Error的code对应码
@@ -44,6 +62,8 @@ typedef enum : NSInteger {
     MQErrorCodeConversationNotFound         = -2005,    //美洽服务端没有找到该对话
     MQErrorCodePlistConfigurationError      = -2006,    //开发者App的info.plist没有增加NSExceptionDomains，请参考https://github.com/Meiqia/Meiqia-SDK-iOS-Demo#info.plist设置
     MQErrorCodeBlacklisted                  = -2007,    //被加入黑名单，发消息和分配对话都会失败
+    MQErrorCodeSchedulerFail                = -2008,    // 分配对话失败
+    MQErrorCodeBotFailToRedirectToHuman     = -3001,    // 机器人转人工失败
 } MQErrorCode;
 
 /**

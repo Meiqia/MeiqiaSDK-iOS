@@ -15,7 +15,8 @@ extern CGFloat const kMQMessageTipsFontSize;
 typedef NS_ENUM(NSUInteger, MQTipType) {
     MQTipTypeRedirect,
     MQTipTypeReply,
-    MQTipTypeBotRedirect
+    MQTipTypeBotRedirect,
+    MQTipTypeWaitingInQueue
 };
 
 /**
@@ -85,5 +86,7 @@ typedef NS_ENUM(NSUInteger, MQTipType) {
  *  生成留言提示的 cell，支持点击留言
  */
 - (MQTipsCellModel *)initBotTipCellModelWithCellWidth:(CGFloat)cellWidth tipType:(MQTipType)tipType;
+
+- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth position:(int)position tipType:(MQTipType)tipType;
 
 @end

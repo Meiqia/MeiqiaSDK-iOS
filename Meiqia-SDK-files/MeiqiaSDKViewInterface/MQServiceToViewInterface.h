@@ -388,5 +388,32 @@
  */
 + (void)getEnterpriseConfigInfoComplete:(void(^)(MQEnterprise *, NSError *))action;
 
+/**
+ 在准备显示聊天界面是调用
+ */
++ (void)prepareForChat;
+
+/**
+ 在聊天界面消失是调用
+ */
++ (void)completeChat;
+
+/**
+ 切换本地用户为指定的自定义 id 用户, 回调的 clientId 如果为 nil 的话表示刷新失败，或者该用户不存在。
+ */
++ (void)refreshLocalClientWithCustomizedId:(NSString *)customizedId complete:(void(^)(NSString *clientId))action;
+
+/**
+ 判断用户是否在等待
+ */
++ (int)waitingInQueuePosition;
+
+/**
+ 获取当前用户在等待队列的位置
+ */
++ (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action;
+
++ (NSError *)checkGlobalError;
+
 @end
 

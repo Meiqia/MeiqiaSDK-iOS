@@ -17,7 +17,9 @@ typedef enum : NSUInteger {
     MQChatEventTypeAgentInputting            = 4,   //客服正在输入 (agent_inputting)
     MQChatEventTypeInviteEvaluation          = 5,    //收到客服邀请评价 (invite_evaluation)
     MQChatEventTypeClientEvaluation          = 6,    //顾客评价的结果
-    MQChatEventTypeAgentUpdate               = 7     //客服的状态发生改变
+    MQChatEventTypeAgentUpdate               = 7,    //客服的状态发生改变
+    MQChatEventTypeQueueingRemoved           = 8,    //顾客从等待客服队列中移除
+    MQChatEventTypeQueueingAdd               = 9,    //顾客被添加到客服等待队列
 } MQChatEventType;
 
 @interface MQEventMessage : MQBaseMessage

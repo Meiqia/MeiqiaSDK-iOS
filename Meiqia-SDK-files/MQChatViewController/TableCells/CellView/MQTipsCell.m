@@ -15,6 +15,7 @@
     CALayer *topLineLayer;
     CALayer *bottomLineLayer;
     UITapGestureRecognizer *tapReconizer;
+    MQTipType tipType;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -44,6 +45,8 @@
     }
     
     MQTipsCellModel *cellModel = (MQTipsCellModel *)model;
+    
+    tipType = cellModel.tipType;
     
     //刷新时间label
     NSMutableAttributedString *tipsString = [[NSMutableAttributedString alloc] initWithString:cellModel.tipText];
@@ -91,6 +94,11 @@
     if ([tipsLabel.text isEqualToString:[MQBundleUtil localizedStringForKey:@"bot_redirect_tip_text"]]) {
         if ([self.chatCellDelegate respondsToSelector:@selector(didTapBotRedirectBtn)]) {
             [self.chatCellDelegate didTapBotRedirectBtn];
+        }
+    }
+    if (tipType == MQTipTypeWaitingInQueue) {
+        if ([self.chatCellDelegate respondsToSelector:@selector(didTapReplyBtn)]) {
+            [self.chatCellDelegate didTapReplyBtn];
         }
     }
 }

@@ -39,5 +39,6 @@ typedef NS_ENUM(NSUInteger, MQFileDownloadStatus) {
 - (void)startDownloadWitchProcess:(void(^)(CGFloat))block;
 - (void)cancelDownload;
 - (void)openFile:(id)sender;
+- (void)previewFileFromController:(UIViewController *)controller;
 
 @end

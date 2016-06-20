@@ -64,7 +64,7 @@
         self.btnTextColor            = [UIColor colorWithHex:0x3E8BFF];
         self.redirectAgentNameColor = [UIColor blueColor];
         self.navBarColor            = nil;//[UIColor colorWithHexString:MQBlueColor];
-        self.navBarTintColor        = nil;//[UIColor whiteColor];
+        self.navBarTintColor        = [UIColor colorWithHex:0x3E8BFF];//[UIColor whiteColor];
         self.incomingBubbleColor    = nil;//[UIColor colorWithHexString:MQSilverColor];
         self.outgoingBubbleColor    = nil;//[UIColor colorWithHexString:MQBlueColor];
         self.navTitleColor          = nil;//[UIColor whiteColor];

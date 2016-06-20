@@ -12,7 +12,7 @@
 #import "MQEvaluationCell.h"
 #import "MQNamespacedDependencies.h"
 #import "MQChatViewConfig.h"
-#import "UIColor+Hex.h"
+#import "UIColor+MQHex.h"
 #import "MQServiceToViewInterface.h"
 
 static CGFloat const kMQEvaluationVerticalSpacing = 16.0;

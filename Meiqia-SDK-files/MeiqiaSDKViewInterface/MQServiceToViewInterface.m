@@ -135,6 +135,18 @@
             eventType = MQChatEventTypeAgentUpdate;
             break;
         }
+        case MQMessageActionQueueingRemoved:
+        {
+            eventContent = @"queue remove";
+            eventType = MQChatEventTypeQueueingRemoved;
+            break;
+        }
+        case MQMessageActionQueueingAdd:
+        {
+            eventContent = @"queue add";
+            eventType = MQChatEventTypeQueueingAdd;
+            break;
+        }
         default:
             break;
     }
@@ -160,8 +172,8 @@
                     // 机器人普通回答消息
                     NSString *content;
                     if ([subType isEqualToString:@"queueing"]) {
-                        content = @"暂无在线客服，请等待或者留言。";
-                        subType = @"reply";
+                        content = @"暂无空闲客服，您已进入排队等待。";
+                        subType = @"redirect";
                     } else {
                         content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
                         content = [MQManager convertToUnicodeWithEmojiAlias:content];
@@ -572,6 +584,18 @@
     [MQManager markAllMessagesAsRead];
 }
 
++ (void)prepareForChat {
+    [MQManager didStartChat];
+}
+
++ (void)completeChat {
+    [MQManager didEndChat];
+}
+
++ (void)refreshLocalClientWithCustomizedId:(NSString *)customizedId complete:(void(^)(NSString *clientId))action {
+    [MQManager refreshLocalClientWithCustomizedId:customizedId complete:action];
+}
+
 + (void)clientDownloadFileWithMessageId:(NSString *)messageId
                           conversatioId:(NSString *)conversationId
                           andCompletion:(void(^)(NSString *url, NSError *error))action {
@@ -625,6 +649,11 @@
         if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
             [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
+    } else if ([self handleQueueingMessage:messages]) {
+        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
+        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
+            [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
+        }
     } else {
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
         
@@ -632,7 +661,13 @@
             [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
     }
-    
+}
+
+- (BOOL)handleQueueingMessage:(NSArray<MQMessage *> *)messages {
+    if (messages.count == 1 && ([messages firstObject].action == MQMessageActionQueueingAdd || [messages firstObject].action == MQMessageActionQueueingRemoved)) {
+        return YES;
+    }
+    return NO;
 }
 
 - (BOOL)handleBlacklistMessage:(NSArray<MQMessage *> *)messages {
@@ -702,4 +737,15 @@
     [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
 }
 
++ (int)waitingInQueuePosition {
+    return [MQManager waitingInQueuePosition];
+}
+
++ (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action {
+    return [MQManager getClientQueuePositionComplete:action];
+}
+
++ (NSError *)checkGlobalError {
+    return [MQManager checkGlobalError];
+}
 @end

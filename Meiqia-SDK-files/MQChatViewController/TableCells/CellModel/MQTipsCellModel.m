@@ -161,6 +161,40 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
     return self;
 }
 
+- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth position:(int)position tipType:(MQTipType)tipType {
+    if (self = [super init]) {
+        self.tipType = tipType;
+        self.date = [NSDate date];
+        self.tipText = [NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_text"], position];
+        self.enableLinesDisplay = false;
+        
+        //tip frame
+        CGFloat tipsWidth = cellWidth - kMQMessageReplyTipsCellHorizontalSpacing * 2;
+        CGFloat tipsHeight = [MQStringSizeUtil getHeightForText:self.tipText withFont:[UIFont systemFontOfSize:kMQMessageTipsFontSize] andWidth:tipsWidth];
+        CGRect tipLabelFrame = CGRectMake(kMQMessageReplyTipsCellHorizontalSpacing, kMQMessageReplyTipsCellVerticalSpacing, tipsWidth, tipsHeight);
+        self.tipLabelFrame = tipLabelFrame;
+        
+        self.cellHeight = kMQMessageReplyTipsCellVerticalSpacing * 2 + tipsHeight;
+        
+        //上线条的frame
+        CGFloat lineWidth = cellWidth;
+        self.topLineFrame = CGRectMake(cellWidth/2-lineWidth/2, kMQMessageTipsLabelLineVerticalMargin, lineWidth, kMQMessageTipsLineHeight);
+        
+        //下线条的frame
+        self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, self.cellHeight - kMQMessageTipsLabelLineVerticalMargin - kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
+        
+        //tip的文字额外属性
+        NSString *tapText = @"留言";
+        NSRange replyTextRange = [self.tipText rangeOfString:tapText];
+        self.tipExtraAttributesRange = replyTextRange;
+        self.tipExtraAttributes = @{
+                                    NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
+                                    NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor
+                                    };
+    }
+    return self;
+}
+
 
 #pragma MQCellModelProtocol
 - (CGFloat)getCellHeight {

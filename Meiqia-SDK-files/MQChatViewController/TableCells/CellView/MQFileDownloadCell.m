@@ -7,7 +7,7 @@
 //
 
 #import "MQFileDownloadCell.h"
-#import "UIView+Layout.h"
+#import "UIView+MQLayout.h"
 #import "MQFileDownloadCellModel.h"
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
@@ -15,7 +15,7 @@
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
 
-@interface MQFileDownloadCell()
+@interface MQFileDownloadCell()<UIActionSheetDelegate>
 
 @property (nonatomic, strong) MQFileDownloadCellModel *viewModel;
 
@@ -120,6 +120,10 @@
     [self.fileNameLabel sizeToFit];
     [self.fileDetailLabel sizeToFit];
     
+    if (self.viewModel.avartarImage) {
+        self.avatarImageView.image = self.viewModel.avartarImage;
+    }
+    
     //layout
     
     [self.avatarImageView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarToHorizontalEdgeSpacing)];
@@ -139,6 +143,7 @@
     CGFloat maxMiddleRightEdge = self.viewWidth - self.avatarImageView.viewRightEdge - !self.actionButton.isHidden * self.actionButton.viewWidth - kMQCellAvatarToVerticalEdgeSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
     CGFloat middlePartRightEdge = MIN(MAX(self.fileNameLabel.viewRightEdge, self.fileDetailLabel.viewRightEdge), maxMiddleRightEdge);
     self.fileNameLabel.viewWidth = maxMiddleRightEdge - self.fileNameLabel.viewX; // 防止文件名过长
+    self.fileDetailLabel.viewWidth = maxMiddleRightEdge - self.fileDetailLabel.viewX;
     
     [self.downloadProgressBar align:ViewAlignmentTopLeft relativeToPoint:CGPointMake([MQChatViewConfig sharedConfig].bubbleImageStretchInsets.left, self.fileDetailLabel.viewBottomEdge + kMQCellBubbleToTextHorizontalSmallerSpacing)];
     
@@ -165,7 +170,7 @@
                     [sself.downloadProgressBar setProgress:process];
                 } else if (process == 100) {
                     [sself updateUI];
-                    [sself.viewModel openFile:self];
+                    [self showActionSheet];
                 } else {
                     [sself updateUI];
                 }
@@ -179,10 +184,41 @@
         }
         break;
         case MQFileDownloadStatusDownloadComplete: {
-            [self.viewModel openFile:self];
+            [self showActionSheet];
         }
         break;
     }
+}
+
+- (void)showActionSheet {
+    [self.window endEditing:YES];
+    UIActionSheet *as = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"显示预览", @"打开文件", nil];
+    as.delegate = self;
+    [as showInView:self];
+}
+
+#pragma mark - action sheet delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        [self.viewModel previewFileFromController:[self topController]];
+    } else if (buttonIndex == 1) {
+        [self.viewModel openFile:self];
+    }
+}
+
+- (UIViewController *)topController {
+    for (UIWindow *window in [[[UIApplication sharedApplication]windows] reverseObjectEnumerator]) {
+        if ([window isKindOfClass:[UIWindow class]] &&
+            window.windowLevel == UIWindowLevelNormal &&
+            CGRectEqualToRect(window.bounds, [UIScreen mainScreen].bounds)) {
+            UIViewController *topController = window.rootViewController;
+            while (topController.presentedViewController) {
+                topController = topController.presentedViewController;
+            }
+            return topController;
+        }
+    }
+    return nil;
 }
 
 #pragma mark - lazy load
@@ -232,6 +268,7 @@
         _fileDetailLabel = [UILabel new];
         _fileDetailLabel.font = [UIFont systemFontOfSize:12];
         _fileDetailLabel.textColor = [UIColor lightGrayColor];
+        _fileDetailLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }
     return _fileDetailLabel;
 }
@@ -250,6 +287,10 @@
         _avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
         _avatarImageView.viewSize = CGSizeMake(kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         _avatarImageView.image = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
+        if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
+            _avatarImageView.layer.masksToBounds = YES;
+            _avatarImageView.layer.cornerRadius = _avatarImageView.viewSize.width/2;
+        }
     }
     return _avatarImageView;
 }
