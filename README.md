@@ -868,7 +868,7 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 
 # 更新日志
 
-**v3.2.1 2016 年 06 月  日**
+**v3.2.1 2016 年 06 月 20 日**
 * 支持排队功能
 * 更新聊天输入界面
 * 增加接收文件预览功能
