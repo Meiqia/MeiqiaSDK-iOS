@@ -26,15 +26,15 @@
         self.message = message;
         
         self.url = self.message.url;
-        self.content = self.message.content;
-        self.iconPath = self.message.iconPath;
+        self.content = self.message.summary;
+        self.iconPath = self.message.thumbnail;
     }
     return self;
 }
 
 - (void)load {
     if (self.modelChanges) {
-        self.modelChanges(self.message.url, self.message.content, self.message.iconPath);
+        self.modelChanges(self.message.url, self.message.summary, self.message.thumbnail);
     }
     
     __weak typeof(self)wself = self;
@@ -51,7 +51,7 @@
     if (self.iconLoaded) {
         self.iconLoaded([MQAssetUtil incomingDefaultAvatarImage]);
     }
-    [MQServiceToViewInterface downloadMediaWithUrlString:self.message.iconPath progress:nil completion:^(NSData *mediaData, NSError *error) {
+    [MQServiceToViewInterface downloadMediaWithUrlString:self.message.thumbnail progress:nil completion:^(NSData *mediaData, NSError *error) {
         if (mediaData) {
             __strong typeof (wself) sself = wself;
             sself.iconImage = [UIImage imageWithData:mediaData];

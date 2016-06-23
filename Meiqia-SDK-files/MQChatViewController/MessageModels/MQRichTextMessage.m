@@ -12,9 +12,9 @@
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
     if (self = [super init]) {
-        self.url = @"https://developer.apple.com/ios/";
-        self.content = @"The iOS 10 SDK includes new APIs and services that enable new categories of apps and features. Your apps can now extend to Messages, Siri, Phone, and Maps to provide more engaging functionality like never before.";
-        self.iconPath = @"https://dbd6j53uzcole.cloudfront.net/assets/images/icons/project-types/project-icon_ios.e4c7d03f.svg";
+        self.url = dictionary[@"url"] ?: @"";
+        self.summary = dictionary[@"summary"] ?: @"";
+        self.thumbnail = dictionary[@"thumbnail"] ?: @"";
     }
     return self;
 }

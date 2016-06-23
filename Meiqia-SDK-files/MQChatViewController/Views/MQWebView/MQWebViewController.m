@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) UIActivityIndicatorView *indicator;
+@property (nonatomic, strong) NSValue *backBarTitleOffset;
 
 @end
 
@@ -30,9 +31,23 @@
     
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.url]]];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:self action:@selector(close)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:self action:@selector(close)];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.indicator];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.indicator];
+    
+    self.backBarTitleOffset = [NSValue valueWithUIOffset:[[UIBarButtonItem appearance] backButtonTitlePositionAdjustmentForBarMetrics:(UIBarMetricsDefault)]];
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -100) forBarMetrics:(UIBarMetricsDefault)];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:[self.backBarTitleOffset UIOffsetValue] forBarMetrics:(UIBarMetricsDefault)];
 }
 
 - (void)close {

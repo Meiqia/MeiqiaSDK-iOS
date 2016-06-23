@@ -230,12 +230,12 @@
             toMessage = voiceMessage;
             break;
         }
-//        case MQMessageContentTypeFile: {
-//            MQFileDownloadMessage *fileDownloadMessage = [[MQFileDownloadMessage alloc] initWithDictionary:fromMessage.accessoryData];
-//            toMessage = fileDownloadMessage;
-//            break;
-//        }
         case MQMessageContentTypeFile: {
+            MQFileDownloadMessage *fileDownloadMessage = [[MQFileDownloadMessage alloc] initWithDictionary:fromMessage.accessoryData];
+            toMessage = fileDownloadMessage;
+            break;
+        }
+        case MQMessageContentTypeRichText: {
             MQRichTextMessage *richTextMessage = [[MQRichTextMessage alloc] initWithDictionary:fromMessage.accessoryData];
             toMessage = richTextMessage;
             break;

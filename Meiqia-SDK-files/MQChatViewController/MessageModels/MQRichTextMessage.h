@@ -11,8 +11,8 @@
 @interface MQRichTextMessage : MQBaseMessage
 
 @property (nonatomic, copy)NSString *url;
-@property (nonatomic, copy)NSString *iconPath;
-@property (nonatomic, copy)NSString *content;
+@property (nonatomic, copy)NSString *thumbnail;
+@property (nonatomic, copy)NSString *summary;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 
