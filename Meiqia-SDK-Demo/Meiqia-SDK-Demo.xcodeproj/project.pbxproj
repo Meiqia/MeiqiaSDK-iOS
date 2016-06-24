@@ -119,6 +119,7 @@
 		E45D6D621CB510D300F5881E /* MQFileDownloadMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E45D6D611CB510D300F5881E /* MQFileDownloadMessage.m */; };
 		E47BA69F1D003F8700358AB4 /* NSNull+MQSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = E47BA69E1D003F8700358AB4 /* NSNull+MQSafe.m */; };
 		E488BF7F1CA2608800753736 /* UIView+MQLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E488BF7E1CA2608800753736 /* UIView+MQLayout.m */; };
+		E48C70701D1D4DA900BFEA80 /* MQTabInputContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6B01CED5ABE00295D50 /* MQTabInputContentView.m */; };
 		E49C7BBF1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C7BBE1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m */; };
 		E4A533E51C9F90DD0053BC88 /* MQAnimatorPush.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E01C9F90DD0053BC88 /* MQAnimatorPush.m */; };
 		E4A533E61C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E21C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m */; };
@@ -131,7 +132,6 @@
 		E4FED6B41CED5ABE00295D50 /* MQRecorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6A81CED5ABE00295D50 /* MQRecorderView.m */; };
 		E4FED6B51CED5ABE00295D50 /* MQButtonGroupBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6AA1CED5ABE00295D50 /* MQButtonGroupBar.m */; };
 		E4FED6B71CED5ABE00295D50 /* MQInputContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6AE1CED5ABE00295D50 /* MQInputContentView.m */; };
-		E4FED6B81CED5ABE00295D50 /* MQTabInputContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6B01CED5ABE00295D50 /* MQTabInputContentView.m */; };
 		E4FED6B91CED5ABE00295D50 /* MQInputToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6B21CED5ABE00295D50 /* MQInputToolBar.m */; };
 		E4FED6C11CED6C3E00295D50 /* MQKeyboardController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6C01CED6C3E00295D50 /* MQKeyboardController.m */; };
 		E4FED6C51CEDA80100295D50 /* MQImageViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6C41CEDA80100295D50 /* MQImageViewerViewController.m */; };
@@ -1289,6 +1289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E48C70701D1D4DA900BFEA80 /* MQTabInputContentView.m in Sources */,
 				CC84A8B71CEC7D790097C99E /* MQMessageFormViewService.m in Sources */,
 				CC84A8B61CEC7D790097C99E /* MQMessageFormViewController.m in Sources */,
 				CC68736A1C895E70000A1E63 /* wav.mm in Sources */,
@@ -1329,13 +1330,9 @@
 				CC3310AF1C33F7EA0088E648 /* MQChatAudioPlayer.m in Sources */,
 				CC868F891C7AFFF200BFA68D /* MEIQIA_CafRecordWriter.m in Sources */,
 				CC3310E01C33F7EA0088E648 /* MQRecordView.m in Sources */,
-				E4FED6B81CED5ABE00295D50 /* MQTabInputContentView.m in Sources */,
 				E4FED6B51CED5ABE00295D50 /* MQButtonGroupBar.m in Sources */,
 				E4FED6B41CED5ABE00295D50 /* MQRecorderView.m in Sources */,
 				E4036E0C1D0FE2C10065D5A5 /* MQRichTextViewCell.m in Sources */,
-				E4FED6B81CED5ABE00295D50 /* MCTabInputContentView.m in Sources */,
-				E4FED6B51CED5ABE00295D50 /* MCButtonGroupBar.m in Sources */,
-				E4FED6B41CED5ABE00295D50 /* MCRecorderView.m in Sources */,
 				E45D6D621CB510D300F5881E /* MQFileDownloadMessage.m in Sources */,
 				E4A533E71C9F90DD0053BC88 /* MQTransitioningAnimation.m in Sources */,
 				CC868F7A1C7AFFF200BFA68D /* MEIQIA_CustomIOSAlertView.m in Sources */,

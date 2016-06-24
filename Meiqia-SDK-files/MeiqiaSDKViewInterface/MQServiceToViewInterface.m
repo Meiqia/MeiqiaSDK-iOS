@@ -743,6 +743,8 @@
 }
 
 + (int)waitingInQueuePosition {
+    return [MQManager waitingInQueuePosition];
+}
 
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action {
     return [MQManager getClientQueuePositionComplete:action];
