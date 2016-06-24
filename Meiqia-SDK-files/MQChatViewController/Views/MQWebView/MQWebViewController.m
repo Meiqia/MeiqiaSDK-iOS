@@ -37,6 +37,8 @@
     
     self.backBarTitleOffset = [NSValue valueWithUIOffset:[[UIBarButtonItem appearance] backButtonTitlePositionAdjustmentForBarMetrics:(UIBarMetricsDefault)]];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -100) forBarMetrics:(UIBarMetricsDefault)];
+    
+    self.title = @"图文详情";
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -60,6 +62,11 @@
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [self.indicator startAnimating];
+    
+    NSString *title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    if (title.length > 0) {
+        self.title = title;
+    }
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {

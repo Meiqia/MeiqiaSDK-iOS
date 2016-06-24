@@ -34,7 +34,7 @@
 
 - (void)load {
     if (self.modelChanges) {
-        self.modelChanges(self.message.url, self.message.summary, self.message.thumbnail);
+        self.modelChanges(self.message.url, self.message.summary, self.message.thumbnail, self.message.htmlContent);
     }
     
     __weak typeof(self)wself = self;

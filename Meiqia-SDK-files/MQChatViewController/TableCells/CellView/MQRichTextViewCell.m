@@ -13,7 +13,7 @@
 #import "MQCellModelProtocol.h"
 #import "MQRichTextViewModel.h"
 #import "MQWindowUtil.h"
-
+#import "MQAssetUtil.h"
 
 CGFloat internalSpace = 10;
 CGFloat internalImageToTextSpace = kMQCellBubbleToTextHorizontalLargerSpacing;
@@ -24,6 +24,7 @@ CGFloat internalImageWidth = 80;
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UILabel *contentLabel;
 @property (nonatomic, strong) UIView *itemsView;
+@property (nonatomic, strong) UIImageView *indicatorImageView;
 
 @property (nonatomic, strong) MQRichTextViewModel *viewModel;
 
@@ -49,13 +50,19 @@ CGFloat internalImageWidth = 80;
 - (void)bind:(MQRichTextViewModel *)viewModel {
     
     __weak typeof(self) wself = self;
-    [self.viewModel setModelChanges:^(NSString *url, NSString *content, NSString *iconPath) {
+    [self.viewModel setModelChanges:^(NSString *url, NSString *content, NSString *iconPath, NSString *htmlString) {
         __strong typeof (wself) sself = wself;
         
         sself.contentLabel.preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToHorizontalEdgeSpacing - internalSpace - internalImageToTextSpace - internalImageWidth;
-        sself.contentLabel.text = content;
+        
+        if (content.length > 0) {
+            sself.contentLabel.text = content;
+        } else {
+            sself.contentLabel.text = [sself stripTags:htmlString];
+        }
     }];
     
+    self.iconImageView.image = [MQAssetUtil imageLoadErrorImage];
     [self.viewModel setIconLoaded:^(UIImage *iconImage) {
         __strong typeof (wself) sself = wself;
         if (iconImage) {
@@ -74,15 +81,39 @@ CGFloat internalImageWidth = 80;
     [self.viewModel load];
 }
 
+
+- (NSString *)stripTags:(NSString *)str
+{
+    NSMutableString *html = [NSMutableString stringWithCapacity:[str length]];
+    
+    NSScanner *scanner = [NSScanner scannerWithString:str];
+    scanner.charactersToBeSkipped = NULL;
+    NSString *tempText = nil;
+    
+    while (![scanner isAtEnd]) {
+        [scanner scanUpToString:@"<" intoString:&tempText];
+        
+        if (tempText != nil)
+            [html appendString:[NSString stringWithFormat:@"%@ ",tempText]];
+        
+        [scanner scanUpToString:@">" intoString:NULL];
+        
+        if (![scanner isAtEnd])
+            [scanner setScanLocation:[scanner scanLocation] + 1];
+        
+        tempText = nil;
+    }
+    
+    return html;
+}
+
 - (void)setupUI {
     [self.contentView addSubview:self.itemsView];
     self.iconImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].incomingDefaultAvatarImage];
+    self.indicatorImageView = [[UIImageView alloc] initWithImage:[MQAssetUtil imageFromBundleWithName:@"arrowRight"]];
     [self.itemsView addSubview:self.iconImageView];
     [self.itemsView addSubview:self.contentLabel];
-}
-
-- (void)prepareForReuse {
-    self.iconImageView.image = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
+    [self.itemsView addSubview:self.indicatorImageView];
 }
 
 - (void)makeConstraints {
@@ -90,13 +121,15 @@ CGFloat internalImageWidth = 80;
     self.iconImageView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.itemsView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.indicatorImageView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    NSDictionary *d = @{@"icon":self.iconImageView, @"label":self.contentLabel};
+    NSDictionary *d = @{@"icon":self.iconImageView, @"label":self.contentLabel, @"indicator":self.indicatorImageView};
     NSDictionary *m = @{@"av":@(kMQCellAvatarToVerticalEdgeSpacing), @"bv":@(kMQCellBubbleToTextVerticalSpacing), @"al":@(kMQCellAvatarToBubbleSpacing), @"br":@(kMQCellBubbleMaxWidthToEdgeSpacing), @"ad":@(kMQCellAvatarDiameter), @"id":@(internalImageWidth), @"is":@(internalSpace), @"iis":@(internalImageToTextSpace), @"bts":@(kMQCellBubbleToTextHorizontalLargerSpacing), @"btvs":@(kMQCellBubbleToTextVerticalSpacing)};
     
-    [self.itemsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[icon(id)]-is-[label]-bts-|" options:0 metrics:m views:d]];
+    [self.itemsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[icon(id)]-is-[label]-10-[indicator(13)]-10-|" options:0 metrics:m views:d]];
     [self.itemsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[icon(id)]-0-|" options:0 metrics:m views:d]];
     [self.itemsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[label]-|" options:0 metrics:m views:d]];
+    [self.itemsView addConstraint:[NSLayoutConstraint constraintWithItem:self.indicatorImageView attribute:(NSLayoutAttributeCenterY) relatedBy:(NSLayoutRelationEqual) toItem:self.itemsView attribute:(NSLayoutAttributeCenterY) multiplier:1 constant:0]];
     
     d = @{@"items":self.itemsView};
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-av-[items]-br-|" options:0 metrics:m views:d]];
@@ -132,6 +165,8 @@ CGFloat internalImageWidth = 80;
         _itemsView.backgroundColor = [MQChatViewConfig sharedConfig].incomingBubbleColor;
         _itemsView.layer.cornerRadius = 4;
         _itemsView.layer.masksToBounds = YES;
+        _itemsView.layer.borderColor = [UIColor colorWithHexString:silver].CGColor;
+        _itemsView.layer.borderWidth = 0.5;
     }
     return _itemsView;
 }

@@ -13,6 +13,7 @@
 @property (nonatomic, copy)NSString *url;
 @property (nonatomic, copy)NSString *thumbnail;
 @property (nonatomic, copy)NSString *summary;
+@property (nonatomic, copy)NSString *htmlContent;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 

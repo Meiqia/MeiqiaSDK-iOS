@@ -15,6 +15,7 @@
         self.url = dictionary[@"url"] ?: @"";
         self.summary = dictionary[@"summary"] ?: @"";
         self.thumbnail = dictionary[@"thumbnail"] ?: @"";
+        self.htmlContent = dictionary[@"content"] ?: @"";
     }
     return self;
 }
