@@ -235,6 +235,11 @@
             toMessage = fileDownloadMessage;
             break;
         }
+        case MQMessageContentTypeRichText: {
+            MQRichTextMessage *richTextMessage = [[MQRichTextMessage alloc] initWithDictionary:fromMessage.accessoryData];
+            toMessage = richTextMessage;
+            break;
+        }
         default:
             break;
     }
@@ -738,8 +743,6 @@
 }
 
 + (int)waitingInQueuePosition {
-    return [MQManager waitingInQueuePosition];
-}
 
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action {
     return [MQManager getClientQueuePositionComplete:action];

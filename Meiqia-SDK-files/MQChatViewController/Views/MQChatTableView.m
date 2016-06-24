@@ -59,6 +59,10 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
         enableTopPullRefresh = [MQChatViewConfig sharedConfig].enableTopPullRefresh || enableTopAutoRefresh;
         enableBottomPullRefresh = [MQChatViewConfig sharedConfig].enableBottomPullRefresh;
         
+        if ([UIDevice currentDevice].systemVersion.intValue >= 7) {
+            self.estimatedRowHeight = 80;
+        }
+        
         if (enableTopPullRefresh) {
             [self initTopPullRefreshView];
         }

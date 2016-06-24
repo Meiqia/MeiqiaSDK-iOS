@@ -18,6 +18,7 @@
 #import "MQVoiceCellModel.h"
 #import "MQBotMenuCellModel.h"
 #import "MQBotAnswerCellModel.h"
+#import "MQRichTextViewModel.h"
 #import "MQTipsCellModel.h"
 #import "MQEvaluationResultCellModel.h"
 #import "MQMessageDateCellModel.h"
@@ -619,7 +620,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:(MQVoiceMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQFileDownloadMessage class]]) {
             cellModel = [[MQFileDownloadCellModel alloc] initCellModelWithMessage:(MQFileDownloadMessage *)message cellWidth:self.chatViewWidth delegate:self];
-        } else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
+        } else if ([message isKindOfClass:[MQRichTextMessage class]]) {
+            cellModel = [[MQRichTextViewModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+        }else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
             cellModel = [[MQBotAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQBotMenuMessage class]]) {
             cellModel = [[MQBotMenuCellModel alloc] initCellModelWithMessage:(MQBotMenuMessage *)message cellWidth:self.chatViewWidth delegate:self];
