@@ -36,9 +36,7 @@
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.indicator];
     
     self.backBarTitleOffset = [NSValue valueWithUIOffset:[[UIBarButtonItem appearance] backButtonTitlePositionAdjustmentForBarMetrics:(UIBarMetricsDefault)]];
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -100) forBarMetrics:(UIBarMetricsDefault)];
-    
-    self.title = @"图文详情";
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -100) forBarMetrics:(UIBarMetricsDefault)];    
 }
 
 - (void)viewDidAppear:(BOOL)animated {

@@ -65,6 +65,7 @@
 - (void)openFrom:(UINavigationController *)cv {
     MQWebViewController *webViewController = [MQWebViewController new];
     webViewController.url = self.url;
+    webViewController.title = @"图文消息";
     [cv pushViewController:webViewController animated:YES];
 }
 
