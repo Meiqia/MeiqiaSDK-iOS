@@ -274,9 +274,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 //下拉刷新，获取以前的消息
 - (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:1 isLoadOver:true];
-    });
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:1 isLoadOver:true];
+//    });
+    [chatViewService startGettingHistoryMessages];
 }
 
 //上拉刷新，获取更新的消息
