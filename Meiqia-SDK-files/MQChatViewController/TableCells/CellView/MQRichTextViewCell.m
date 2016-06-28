@@ -50,15 +50,15 @@ CGFloat internalImageWidth = 80;
 - (void)bind:(MQRichTextViewModel *)viewModel {
     
     __weak typeof(self) wself = self;
-    [self.viewModel setModelChanges:^(NSString *url, NSString *content, NSString *iconPath, NSString *htmlString) {
+    [self.viewModel setModelChanges:^(NSString *summary, NSString *iconPath, NSString *content) {
         __strong typeof (wself) sself = wself;
         
         sself.contentLabel.preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToHorizontalEdgeSpacing - internalSpace - internalImageToTextSpace - internalImageWidth;
         
         if (content.length > 0) {
-            sself.contentLabel.text = content;
+            sself.contentLabel.text = summary;
         } else {
-            sself.contentLabel.text = [sself stripTags:htmlString];
+            sself.contentLabel.text = [sself stripTags:content];
         }
     }];
     

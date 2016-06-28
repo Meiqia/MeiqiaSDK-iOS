@@ -12,10 +12,9 @@
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
     if (self = [super init]) {
-        self.url = dictionary[@"url"] ?: @"";
         self.summary = dictionary[@"summary"] ?: @"";
         self.thumbnail = dictionary[@"thumbnail"] ?: @"";
-        self.htmlContent = dictionary[@"content"] ?: @"";
+        self.content = dictionary[@"content"] ?: @"";
     }
     return self;
 }

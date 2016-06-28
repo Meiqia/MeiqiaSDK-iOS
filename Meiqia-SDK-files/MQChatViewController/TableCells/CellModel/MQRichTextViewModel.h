@@ -15,9 +15,9 @@
 @property (nonatomic, copy) CGFloat(^cellHeight)(void);
 @property (nonatomic, copy) void(^avatarLoaded)(UIImage *);
 @property (nonatomic, copy) void(^iconLoaded)(UIImage *);
-@property (nonatomic, copy) void(^modelChanges)(NSString *url, NSString *content, NSString *iconPath, NSString *htmlString);
+@property (nonatomic, copy) void(^modelChanges)(NSString *summary, NSString *iconPath, NSString *content);
 
-@property (nonatomic, copy) NSString *url;
+@property (nonatomic, copy) NSString *summary;
 @property (nonatomic, copy) NSString *content;
 @property (nonatomic, copy) NSString *iconPath;
 @property (nonatomic, strong) UIImage *avartarImage;

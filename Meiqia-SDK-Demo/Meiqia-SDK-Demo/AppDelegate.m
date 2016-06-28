@@ -35,7 +35,7 @@
     }
     
 //#error 请填写您的美洽 AppKey
-    [MQManager initWithAppkey:@"bdf443cbee3d75df3453a36e64101f59" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"f439490271c3bb7dd95fbc20906d014f" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {

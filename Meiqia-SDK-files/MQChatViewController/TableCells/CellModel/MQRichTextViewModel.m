@@ -24,17 +24,16 @@
 - (id)initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:(CGFloat)cellWidth delegate:(id<MQCellModelDelegate>)delegator {
     if (self = [super init]) {
         self.message = message;
-        
-        self.url = self.message.url;
-        self.content = self.message.summary;
+        self.summary = self.message.summary;
         self.iconPath = self.message.thumbnail;
+        self.content = self.message.content;
     }
     return self;
 }
 
 - (void)load {
     if (self.modelChanges) {
-        self.modelChanges(self.message.url, self.message.summary, self.message.thumbnail, self.message.htmlContent);
+        self.modelChanges(self.message.summary, self.message.thumbnail, self.message.content);
     }
     
     __weak typeof(self)wself = self;
@@ -64,7 +63,7 @@
 
 - (void)openFrom:(UINavigationController *)cv {
     MQWebViewController *webViewController = [MQWebViewController new];
-    webViewController.url = self.url;
+    webViewController.contentHTML = self.content;
     webViewController.title = @"图文消息";
     [cv pushViewController:webViewController animated:YES];
 }
