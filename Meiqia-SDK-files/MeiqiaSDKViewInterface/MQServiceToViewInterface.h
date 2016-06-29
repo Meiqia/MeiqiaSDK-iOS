@@ -414,7 +414,17 @@
  */
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action;
 
+
+/**
+ 判断上一步操作是否失败
+ */
 + (NSError *)checkGlobalError;
+
+
+/**
+ 获取询前表单的数据，如果不需要显示，则返回 nil，需要则返回获取到的数据
+ */
++ (void)requestPreChatServeyDataIfNeed:(void(^)(id data, NSError *error))block;
 
 @end
 
