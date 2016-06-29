@@ -158,6 +158,7 @@ static int indicator_tag = 10;
 
     [chatViewManager setClientInfo:@{@"name":@"SDK 3.2.2 测试"}];
     [chatViewManager pushMQChatViewControllerInViewController:self];
+    [chatViewManager setScheduledAgentId:@"0cbbf19b74456f5db68176a0e2a2cfdc"];
     [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectEnterprise];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
         

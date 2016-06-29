@@ -62,7 +62,7 @@ CGFloat internalImageWidth = 80;
         }
     }];
     
-    self.iconImageView.image = [MQAssetUtil imageLoadErrorImage];
+    self.iconImageView.image = [MQAssetUtil imageFromBundleWithName:@"default_image"];
     [self.viewModel setIconLoaded:^(UIImage *iconImage) {
         __strong typeof (wself) sself = wself;
         if (iconImage) {

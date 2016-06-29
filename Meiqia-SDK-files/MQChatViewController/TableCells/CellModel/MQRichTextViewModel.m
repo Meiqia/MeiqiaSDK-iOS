@@ -47,9 +47,6 @@
         }
     }];
     
-    if (self.iconLoaded) {
-        self.iconLoaded([MQAssetUtil incomingDefaultAvatarImage]);
-    }
     [MQServiceToViewInterface downloadMediaWithUrlString:self.message.thumbnail progress:nil completion:^(NSData *mediaData, NSError *error) {
         if (mediaData) {
             __strong typeof (wself) sself = wself;
