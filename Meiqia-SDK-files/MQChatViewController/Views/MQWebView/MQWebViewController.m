@@ -60,7 +60,9 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     
-    return YES;
+    [[UIApplication sharedApplication] openURL:request.URL];
+    
+    return NO;
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [self.indicator startAnimating];
