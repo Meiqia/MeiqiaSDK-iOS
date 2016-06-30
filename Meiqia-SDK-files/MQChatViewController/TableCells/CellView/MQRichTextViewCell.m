@@ -55,7 +55,7 @@ CGFloat internalImageWidth = 80;
         
         sself.contentLabel.preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToHorizontalEdgeSpacing - internalSpace - internalImageToTextSpace - internalImageWidth;
         
-        if (content.length > 0) {
+        if (summary.length > 0) {
             sself.contentLabel.text = summary;
         } else {
             sself.contentLabel.text = [sself stripTags:content];
@@ -94,7 +94,7 @@ CGFloat internalImageWidth = 80;
         [scanner scanUpToString:@"<" intoString:&tempText];
         
         if (tempText != nil)
-            [html appendString:[NSString stringWithFormat:@"%@ ",tempText]];
+            [html appendString:[NSString stringWithFormat:@"%@",tempText]];
         
         [scanner scanUpToString:@">" intoString:NULL];
         
