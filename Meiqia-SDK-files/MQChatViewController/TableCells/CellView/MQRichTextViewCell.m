@@ -71,11 +71,7 @@ CGFloat internalImageWidth = 80;
     }];
     
     [self.viewModel setCellHeight:^CGFloat{
-        if ([UIDevice currentDevice].systemVersion.intValue >= 7) {
-            return UITableViewAutomaticDimension;
-        } else {
-            return internalImageWidth + kMQCellAvatarToVerticalEdgeSpacing * 2;
-        }
+        return internalImageWidth + kMQCellAvatarToVerticalEdgeSpacing * 2;
     }];
     
     [self.viewModel load];

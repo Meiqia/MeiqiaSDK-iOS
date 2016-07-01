@@ -966,6 +966,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self removeWaitingInQueueCellModels];
         [self reloadChatTableView];
         [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
+        [self.positionCheckTimer invalidate];
     }
 }
 

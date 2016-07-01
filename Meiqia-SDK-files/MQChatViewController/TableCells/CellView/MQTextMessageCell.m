@@ -55,7 +55,6 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         textLabel.textAlignment = NSTextAlignmentLeft;
         textLabel.userInteractionEnabled = true;
         textLabel.backgroundColor = [UIColor clearColor];
-        textLabel.linkAttributes = @{NSForegroundColorAttributeName: [MQChatViewConfig sharedConfig].outgoingMsgTextColor, NSUnderlineColorAttributeName: [MQChatViewConfig sharedConfig].outgoingMsgTextColor, NSUnderlineStyleAttributeName: @1};
         [bubbleImageView addSubview:textLabel];
         //初始化indicator
         sendingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];

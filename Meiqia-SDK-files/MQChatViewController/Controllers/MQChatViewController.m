@@ -361,11 +361,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)reloadChatTableView {
-    CGSize preContentSize = self.chatTableView.contentSize;
+//    CGSize preContentSize = self.chatTableView.contentSize;
     [self.chatTableView reloadData];
-    if (!CGSizeEqualToSize(preContentSize, self.chatTableView.contentSize)) {
-        [self scrollTableViewToBottom];
-    }
+//    if (!CGSizeEqualToSize(preContentSize, self.chatTableView.contentSize)) {
+//        [self scrollTableViewToBottom];
+//    }
 }
 
 - (void)scrollTableViewToBottom {
@@ -492,11 +492,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)chatTableViewScrollToBottomWithAnimated:(BOOL)animated {
-    NSInteger lastCellIndex = chatViewService.cellModels.count;
-    if (lastCellIndex == 0) {
+    NSInteger cellCount = [self.chatTableView numberOfRowsInSection:0];
+    if (cellCount == 0) {
         return;
     }
-    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:cellCount-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
 - (void)beginRecord:(CGPoint)point {
