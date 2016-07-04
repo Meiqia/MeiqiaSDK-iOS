@@ -97,11 +97,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     self.view.backgroundColor = [MQChatViewConfig sharedConfig].chatViewStyle.backgroundColor ?: [UIColor colorWithWhite:0.95 alpha:1];
     [self setNavBar];
     [self initChatTableView];
+    [self initInputBar];
+    [self layoutViews];
     [self initchatViewService];
     [self initTableViewDataSource];
-    [self initInputBar];
     
-    [self layoutViews];
     
     chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
     [chatViewService sendLocalWelcomeChatMessage];
@@ -241,6 +241,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [constrains addObjectsFromArray:[self addFitWidthConstraintsToView:self.chatInputBar onTo:self.view]];
     
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeTop) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeTop) multiplier:1 constant:0]];
+    [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeLeft) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeLeft) multiplier:1 constant:0]];
+    [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeRight) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeRight) multiplier:1 constant:0]];
     self.constraintInputBarBottom = [NSLayoutConstraint constraintWithItem:self.view attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.chatInputBar attribute:(NSLayoutAttributeBottom) multiplier:1 constant:0];
     [constrains addObject:self.constraintInputBarBottom];
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.chatInputBar attribute:(NSLayoutAttributeTop) multiplier:1 constant:0]];
@@ -361,11 +363,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)reloadChatTableView {
-//    CGSize preContentSize = self.chatTableView.contentSize;
+    CGSize preContentSize = self.chatTableView.contentSize;
     [self.chatTableView reloadData];
-//    if (!CGSizeEqualToSize(preContentSize, self.chatTableView.contentSize)) {
-//        [self scrollTableViewToBottom];
-//    }
+    if (!CGSizeEqualToSize(preContentSize, self.chatTableView.contentSize)) {
+        [self scrollTableViewToBottom];
+    }
 }
 
 - (void)scrollTableViewToBottom {
@@ -496,7 +498,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if (cellCount == 0) {
         return;
     }
-    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:cellCount-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:cellCount-1 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
 }
 
 - (void)beginRecord:(CGPoint)point {
