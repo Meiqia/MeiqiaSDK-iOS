@@ -866,7 +866,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #pragma mark - keyboard controller delegate
 - (void)keyboardController:(MQKeyboardController *)keyboardController keyboardChangeFrame:(CGRect)keyboardFrame isImpressionOfGesture:(BOOL)isImpressionOfGesture {
 
-    CGFloat heightFromBottom = MAX(0.0, CGRectGetMaxY(self.view.frame) - CGRectGetMinY(keyboardFrame));
+    CGFloat viewHeight = self.navigationController.navigationBar.translucent ? CGRectGetMaxY(self.view.frame) : CGRectGetMaxY(self.view.frame) - 64;
+    CGFloat heightFromBottom = MAX(0.0, viewHeight - CGRectGetMinY(keyboardFrame));
     
     if (!isImpressionOfGesture) {
         CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant;
