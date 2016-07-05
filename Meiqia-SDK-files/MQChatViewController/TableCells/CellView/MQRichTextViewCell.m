@@ -47,6 +47,7 @@ CGFloat internalImageWidth = 80;
     [self bind:model];
 }
 
+//通过将 UI 于 viewModel 的响应方法绑定，使得 UI 可以响应数据的变化
 - (void)bind:(MQRichTextViewModel *)viewModel {
     
     __weak typeof(self) wself = self;
@@ -74,6 +75,7 @@ CGFloat internalImageWidth = 80;
         return internalImageWidth + kMQCellAvatarToVerticalEdgeSpacing * 2;
     }];
     
+    // 绑定完成，通知 viewModel 进行数据加载和加工
     [self.viewModel load];
 }
 

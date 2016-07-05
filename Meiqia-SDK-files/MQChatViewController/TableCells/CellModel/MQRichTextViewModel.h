@@ -12,11 +12,13 @@
 @class MQRichTextMessage;
 @interface MQRichTextViewModel : NSObject <MQCellModelProtocol>
 
+//与 UI 绑定的数据变化回调
 @property (nonatomic, copy) CGFloat(^cellHeight)(void);
 @property (nonatomic, copy) void(^avatarLoaded)(UIImage *);
 @property (nonatomic, copy) void(^iconLoaded)(UIImage *);
 @property (nonatomic, copy) void(^modelChanges)(NSString *summary, NSString *iconPath, NSString *content);
 
+//暴露给 UI 的模型数据
 @property (nonatomic, copy) NSString *summary;
 @property (nonatomic, copy) NSString *content;
 @property (nonatomic, copy) NSString *iconPath;

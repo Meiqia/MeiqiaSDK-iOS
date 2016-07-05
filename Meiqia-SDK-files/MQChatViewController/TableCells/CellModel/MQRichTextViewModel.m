@@ -31,6 +31,7 @@
     return self;
 }
 
+// 绑定 UI 完成后，加载数据
 - (void)load {
     if (self.modelChanges) {
         self.modelChanges(self.message.summary, self.message.thumbnail, self.message.content);
