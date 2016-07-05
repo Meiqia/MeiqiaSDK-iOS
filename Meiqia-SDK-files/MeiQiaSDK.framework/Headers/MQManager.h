@@ -13,7 +13,7 @@
 #import "MQAgent.h"
 #import "MQEnterprise.h"
 
-#define MQSDKVersion @"3.2.1"
+#define MQSDKVersion @"3.2.2"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -470,5 +470,7 @@
 
 
 + (NSError *)checkGlobalError;
+
++ (void)requestPreChatServeyDataIfNeedWithClientId:(NSString *)clientId customizId:(NSString *)customizId action:(void(^)(id data, NSError *error))block;
 
 @end

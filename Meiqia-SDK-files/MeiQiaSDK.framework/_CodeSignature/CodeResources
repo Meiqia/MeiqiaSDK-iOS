@@ -30,7 +30,7 @@
 		</data>
 		<key>Headers/MQManager.h</key>
 		<data>
-		3A96TcbhtS2kolfOOyiOFmdX9e4=
+		A1Z62iZWQaBCzAsElT7JIaBVyUg=
 		</data>
 		<key>Headers/MQMessage.h</key>
 		<data>
@@ -43,6 +43,10 @@
 		<key>Info.plist</key>
 		<data>
 		R/33ke7GZ8vVmvXXwNNlfHok1CA=
+		</data>
+		<key>testdata.txt</key>
+		<data>
+		NgumEfZlZNZ1eU5+/upSwkQVLB0=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -117,11 +121,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			3A96TcbhtS2kolfOOyiOFmdX9e4=
+			A1Z62iZWQaBCzAsElT7JIaBVyUg=
 			</data>
 			<key>hash2</key>
 			<data>
-			R1F+OJsuXSF7QTasGG7VmOefatz/26IP69yeYs42Jig=
+			rSg6/Mzu20JhpQou8vJxJwBj7CSPJuV/MDZkIo+G3Z8=
 			</data>
 		</dict>
 		<key>Headers/MQMessage.h</key>
@@ -144,6 +148,17 @@
 			<key>hash2</key>
 			<data>
 			hjA4Kq3RVv3jsG9ZQXK5AGy9fegvMgHqfMF2BiYRdws=
+			</data>
+		</dict>
+		<key>testdata.txt</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			NgumEfZlZNZ1eU5+/upSwkQVLB0=
+			</data>
+			<key>hash2</key>
+			<data>
+			S5dQq6Mt31sM8Xw5fli/OsfknCUMryjpYgt5TjH0l+Q=
 			</data>
 		</dict>
 	</dict>

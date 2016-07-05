@@ -110,9 +110,10 @@
 		E4036E0F1D0FE5170065D5A5 /* MQRichTextMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E4036E0E1D0FE5170065D5A5 /* MQRichTextMessage.m */; };
 		E4036E1B1D10F7240065D5A5 /* MQWindowUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E4036E1A1D10F7240065D5A5 /* MQWindowUtil.m */; };
 		E4036E1F1D110C6B0065D5A5 /* MQWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4036E1E1D110C6B0065D5A5 /* MQWebViewController.m */; };
+		E40C2C7B1D2B710300744577 /* testdata.txt in Resources */ = {isa = PBXBuildFile; fileRef = E40C2C7A1D2B710300744577 /* testdata.txt */; };
 		E41863381CCF163D009FB370 /* MQCustomizedUIText.m in Sources */ = {isa = PBXBuildFile; fileRef = E41863371CCF163D009FB370 /* MQCustomizedUIText.m */; };
-		E426A9F81D2396DA002AA08C /* MQPreAdviseFormListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9F71D2396DA002AA08C /* MQPreAdviseFormListViewController.m */; };
-		E426A9FB1D239711002AA08C /* MQAdviseFormSubmitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9FA1D239711002AA08C /* MQAdviseFormSubmitViewController.m */; };
+		E426A9F81D2396DA002AA08C /* MQPreChatFormListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9F71D2396DA002AA08C /* MQPreChatFormListViewController.m */; };
+		E426A9FB1D239711002AA08C /* MQPreChatSubmitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */; };
 		E45CA11F1CC60828000B8917 /* MeiQiaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */; };
 		E45CA1241CC79431000B8917 /* NSArray+MQFunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = E45CA1231CC79431000B8917 /* NSArray+MQFunctional.m */; };
 		E45CA12D1CCA33EF000B8917 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E45CA12C1CCA33EF000B8917 /* libsqlite3.tbd */; };
@@ -361,12 +362,13 @@
 		E4036E1A1D10F7240065D5A5 /* MQWindowUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQWindowUtil.m; sourceTree = "<group>"; };
 		E4036E1D1D110C6B0065D5A5 /* MQWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQWebViewController.h; sourceTree = "<group>"; };
 		E4036E1E1D110C6B0065D5A5 /* MQWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQWebViewController.m; sourceTree = "<group>"; };
+		E40C2C7A1D2B710300744577 /* testdata.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testdata.txt; sourceTree = "<group>"; };
 		E41863361CCF163D009FB370 /* MQCustomizedUIText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCustomizedUIText.h; sourceTree = "<group>"; };
 		E41863371CCF163D009FB370 /* MQCustomizedUIText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCustomizedUIText.m; sourceTree = "<group>"; };
-		E426A9F61D2396DA002AA08C /* MQPreAdviseFormListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPreAdviseFormListViewController.h; sourceTree = "<group>"; };
-		E426A9F71D2396DA002AA08C /* MQPreAdviseFormListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPreAdviseFormListViewController.m; sourceTree = "<group>"; };
-		E426A9F91D239711002AA08C /* MQAdviseFormSubmitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQAdviseFormSubmitViewController.h; sourceTree = "<group>"; };
-		E426A9FA1D239711002AA08C /* MQAdviseFormSubmitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQAdviseFormSubmitViewController.m; sourceTree = "<group>"; };
+		E426A9F61D2396DA002AA08C /* MQPreChatFormListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MQPreChatFormListViewController.h; path = ../PreChatForm/MQPreChatFormListViewController.h; sourceTree = "<group>"; };
+		E426A9F71D2396DA002AA08C /* MQPreChatFormListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MQPreChatFormListViewController.m; path = ../PreChatForm/MQPreChatFormListViewController.m; sourceTree = "<group>"; };
+		E426A9F91D239711002AA08C /* MQPreChatSubmitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MQPreChatSubmitViewController.h; path = ../PreChatForm/MQPreChatSubmitViewController.h; sourceTree = "<group>"; };
+		E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MQPreChatSubmitViewController.m; path = ../PreChatForm/MQPreChatSubmitViewController.m; sourceTree = "<group>"; };
 		E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MeiQiaSDK.framework; path = "../Meiqia-SDK-files/MeiQiaSDK.framework"; sourceTree = "<group>"; };
 		E45CA1201CC628D8000B8917 /* MQChatAudioTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MQChatAudioTypes.h; sourceTree = "<group>"; };
 		E45CA1221CC79431000B8917 /* NSArray+MQFunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MQFunctional.h"; sourceTree = "<group>"; };
@@ -524,7 +526,7 @@
 		CC330FE21C33F7EA0088E648 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				E426A9F51D237C04002AA08C /* PreAdviseForm */,
+				E426A9F51D237C04002AA08C /* PreChatForm */,
 				CC330FE31C33F7EA0088E648 /* MQChatViewController.h */,
 				CC330FE41C33F7EA0088E648 /* MQChatViewController.m */,
 				CC330FE51C33F7EA0088E648 /* MQChatViewService.h */,
@@ -996,6 +998,7 @@
 		CCE9D1081C1812F6004E862E /* Meiqia-SDK-Demo */ = {
 			isa = PBXGroup;
 			children = (
+				E40C2C7A1D2B710300744577 /* testdata.txt */,
 				CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */,
 				CCE9D14B1C1813BE004E862E /* DevelopViewController.h */,
 				CCE9D14C1C1813BE004E862E /* DevelopViewController.m */,
@@ -1061,15 +1064,15 @@
 			path = MQWebView;
 			sourceTree = "<group>";
 		};
-		E426A9F51D237C04002AA08C /* PreAdviseForm */ = {
+		E426A9F51D237C04002AA08C /* PreChatForm */ = {
 			isa = PBXGroup;
 			children = (
-				E426A9F61D2396DA002AA08C /* MQPreAdviseFormListViewController.h */,
-				E426A9F71D2396DA002AA08C /* MQPreAdviseFormListViewController.m */,
-				E426A9F91D239711002AA08C /* MQAdviseFormSubmitViewController.h */,
-				E426A9FA1D239711002AA08C /* MQAdviseFormSubmitViewController.m */,
+				E426A9F61D2396DA002AA08C /* MQPreChatFormListViewController.h */,
+				E426A9F71D2396DA002AA08C /* MQPreChatFormListViewController.m */,
+				E426A9F91D239711002AA08C /* MQPreChatSubmitViewController.h */,
+				E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */,
 			);
-			path = PreAdviseForm;
+			path = PreChatForm;
 			sourceTree = "<group>";
 		};
 		E44777D21CCF07F6004BA3C3 /* CustomizedText */ = {
@@ -1282,6 +1285,7 @@
 				CCE9D1161C1812F6004E862E /* Assets.xcassets in Resources */,
 				CC3310951C33F7EA0088E648 /* MQChatViewAsset.bundle in Resources */,
 				CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */,
+				E40C2C7B1D2B710300744577 /* testdata.txt in Resources */,
 				CCE9D1141C1812F6004E862E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1312,7 +1316,7 @@
 				CC84A8B61CEC7D790097C99E /* MQMessageFormViewController.m in Sources */,
 				CC68736A1C895E70000A1E63 /* wav.mm in Sources */,
 				E4036E1B1D10F7240065D5A5 /* MQWindowUtil.m in Sources */,
-				E426A9F81D2396DA002AA08C /* MQPreAdviseFormListViewController.m in Sources */,
+				E426A9F81D2396DA002AA08C /* MQPreChatFormListViewController.m in Sources */,
 				CC3310B71C33F7EA0088E648 /* MQStringSizeUtil.m in Sources */,
 				E45CA1241CC79431000B8917 /* NSArray+MQFunctional.m in Sources */,
 				E4A533E61C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */,
@@ -1361,7 +1365,7 @@
 				CC3310B51C33F7EA0088E648 /* MQDateFormatterUtil.m in Sources */,
 				CC68736E1C895EE6000A1E63 /* MQEvaluationResultCellModel.m in Sources */,
 				CC84A8B41CEC7D790097C99E /* MQMessageFormViewManager.m in Sources */,
-				E426A9FB1D239711002AA08C /* MQAdviseFormSubmitViewController.m in Sources */,
+				E426A9FB1D239711002AA08C /* MQPreChatSubmitViewController.m in Sources */,
 				CC868F7C1C7AFFF200BFA68D /* MEIQIA_FBBitmapFontView.m in Sources */,
 				CC3310A51C33F7EA0088E648 /* MQVoiceCellModel.m in Sources */,
 				E47BA69F1D003F8700358AB4 /* NSNull+MQSafe.m in Sources */,

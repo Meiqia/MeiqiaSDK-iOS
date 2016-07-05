@@ -47,6 +47,7 @@ CGFloat internalImageWidth = 80;
     [self bind:model];
 }
 
+//绑定 UI 控件和 viewModel 的数据，当数据更新的时候更新 UI 控件
 - (void)bind:(MQRichTextViewModel *)viewModel {
     
     __weak typeof(self) wself = self;
@@ -62,7 +63,7 @@ CGFloat internalImageWidth = 80;
         }
     }];
     
-    self.iconImageView.image = [MQAssetUtil imageLoadErrorImage];
+    self.iconImageView.image = [MQAssetUtil imageLoadErrorImage];//默认图标
     [self.viewModel setIconLoaded:^(UIImage *iconImage) {
         __strong typeof (wself) sself = wself;
         if (iconImage) {
@@ -78,6 +79,7 @@ CGFloat internalImageWidth = 80;
         }
     }];
     
+    //绑定操作完成，通知 viewModel 加工数据
     [self.viewModel load];
 }
 

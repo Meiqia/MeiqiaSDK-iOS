@@ -1,0 +1,49 @@
+{
+"version": 1,
+"captcha": true,
+"inputs": {
+"title": "售后咨询表单",
+"status": "close",
+"fields": [
+{
+"display_name": "姓名",
+"field_name": "name",
+"type": "text",
+"optional": false,
+"ignore_returned_customer": true
+},
+{
+"display_name": "性别",
+"field_name": "gender",
+"type": "single_choice",
+"optional": true,
+"choices": ["男", "女"],
+"ignore_returned_customer": false
+},
+{
+"display_name": "购买过哪些产品",
+"field_name": "purchased_products",
+"type": "multiple_choice",
+"optional": true,
+"choices": ["大米手机", "东北米平衡车", "泰香米移动电源"],
+"ignore_returned_customer": true
+}
+]
+},
+"menus": {
+"status": "open",
+"title": "您好，请问遇到了什么问题？",
+"assignments": [
+{
+"description": "怎么在网页中嵌入美洽？",
+"target_kind": "agent",
+"target": "agent_token_xxxx"
+},
+{
+"description": "美洽的坐席是指什么？",
+"target_kind": "group",
+"target": "group_token_yyy"
+}
+]
+}
+}

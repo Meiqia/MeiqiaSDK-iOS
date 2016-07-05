@@ -753,4 +753,11 @@
 + (NSError *)checkGlobalError {
     return [MQManager checkGlobalError];
 }
+
++ (void)requestPreChatServeyDataIfNeed:(void(^)(id data, NSError *error))block {
+    NSString *userDefinedClientId = [MQChatViewConfig sharedConfig].MQClientId;
+    NSString *userDefinedCostomId = [MQChatViewConfig sharedConfig].customizedId;
+    
+    [MQManager requestPreChatServeyDataIfNeedWithClientId:userDefinedClientId customizId:userDefinedCostomId action:block];
+}
 @end
