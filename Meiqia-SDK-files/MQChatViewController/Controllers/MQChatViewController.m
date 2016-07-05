@@ -971,7 +971,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         _recordView.recordMode = [MQChatViewConfig sharedConfig].recordMode;
         _recordView.keepSessionActive = [MQChatViewConfig sharedConfig].keepAudioSessionActive;
         _recordView.recordViewDelegate = self;
-        [self.view addSubview:_recordView];
+//        [self.view addSubview:_recordView];
     }
     
     return _recordView;
