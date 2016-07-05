@@ -47,6 +47,7 @@ Demo中的文件 | 说明
 [MeiQiaSDK.framework](https://github.com/Meiqia/MeiqiaSDK-iOS/tree/master/Meiqia-SDK-Demo/MeiQiaSDK.framework) | 美洽 SDK 的 framework 。
 [MQChatViewController/](https://github.com/Meiqia/MeiqiaSDK-iOS/tree/master/Meiqia-SDK-Demo/MQChatViewController) | 美洽提供的开源聊天界面 Library，详细介绍请移步 [github](https://github.com/Meiqia/MQChatViewController) 。
 [MeiqiaSDKViewInterface](https://github.com/Meiqia/MeiqiaSDK-iOS/tree/master/Meiqia-SDK-Demo/MeiqiaSDKViewInterface) | 美洽的 SDK 逻辑接口层 与 开源聊天 Library 的中间层，调用美洽 SDK 的接口，完成界面所需的功能。
+[MQMessageForm](https://github.com/Meiqia/MeiqiaSDK-iOS/tree/master/Meiqia-SDK-files/MQMessageForm) | 留言表单
 
 
 
@@ -79,7 +80,7 @@ framework中的文件 | 说明
 - CoreTelephony.framework
 - SystemConfiguration.framework
 - MobileCoreServices.framework
-
+- QuickLook.framework
 # CocoaPods 导入
 
 在 Podfile 中加入：
@@ -867,6 +868,11 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 请开发者检查 App Target - Build Settings - Search Path - Framework Search Path 或 Library Search Path 当中是否没有美洽的项目。
 
 # 更新日志
+
+**v3.2.1 2016 年 07 月 5 日**
+* 增加图文消息显示的支持
+* 修复部分问题
+* 优化界面
 
 **v3.2.1 2016 年 06 月 20 日**
 * 支持排队功能
