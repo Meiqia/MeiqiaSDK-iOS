@@ -61,6 +61,7 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
 }
 
 - (void)onlineSuccessed {
@@ -155,7 +156,7 @@ static int indicator_tag = 10;
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
 
-    [chatViewManager setClientInfo:@{@"name":@"SDK 3.2.1 测试"}];
+    [chatViewManager setClientInfo:@{@"name":@"SDK 3.2.2 测试"}];
     [chatViewManager pushMQChatViewControllerInViewController:self];
     [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectEnterprise];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];

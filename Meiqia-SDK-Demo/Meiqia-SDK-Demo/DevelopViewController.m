@@ -325,7 +325,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  @param customizedId 自定义id
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId {
-    [MQManager initWithAppkey:customizedId completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"58767158dd91adf8410f7916f76b66e2" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
             [chatViewManager setLoginCustomizedId:customizedId];
@@ -655,12 +655,12 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewManager.chatViewStyle setPullRefreshColor:[UIColor redColor]];
 //    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor blueColor]];
 //    [chatViewManager.chatViewStyle setNavBarColor:[UIColor yellowColor]];
-    [chatViewManager setClientInfo:@{@"avatar":@"https://avatars3.githubusercontent.com/u/1302?v=3&s=96"}];
     
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.backgroundColor = [UIColor redColor];
     rightButton.frame = CGRectMake(10, 10, 20, 20);
     [chatViewManager.chatViewStyle setNavBarRightButton:rightButton];
+    [chatViewManager setClientInfo:@{@"avatar":@"https://avatars3.githubusercontent.com/u/1302?v=3&s=96"}];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 

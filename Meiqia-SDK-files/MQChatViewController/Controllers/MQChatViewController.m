@@ -97,11 +97,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     self.view.backgroundColor = [MQChatViewConfig sharedConfig].chatViewStyle.backgroundColor ?: [UIColor colorWithWhite:0.95 alpha:1];
     [self setNavBar];
     [self initChatTableView];
+    [self initInputBar];
+    [self layoutViews];
     [self initchatViewService];
     [self initTableViewDataSource];
-    [self initInputBar];
     
-    [self layoutViews];
     
     chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
     [chatViewService sendLocalWelcomeChatMessage];
@@ -241,6 +241,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [constrains addObjectsFromArray:[self addFitWidthConstraintsToView:self.chatInputBar onTo:self.view]];
     
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeTop) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeTop) multiplier:1 constant:0]];
+    [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeLeft) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeLeft) multiplier:1 constant:0]];
+    [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeRight) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeRight) multiplier:1 constant:0]];
     self.constraintInputBarBottom = [NSLayoutConstraint constraintWithItem:self.view attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.chatInputBar attribute:(NSLayoutAttributeBottom) multiplier:1 constant:0];
     [constrains addObject:self.constraintInputBarBottom];
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.chatInputBar attribute:(NSLayoutAttributeTop) multiplier:1 constant:0]];
@@ -274,9 +276,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 //下拉刷新，获取以前的消息
 - (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:1 isLoadOver:true];
-    });
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:1 isLoadOver:true];
+//    });
+    [chatViewService startGettingHistoryMessages];
 }
 
 //上拉刷新，获取更新的消息
@@ -491,11 +494,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)chatTableViewScrollToBottomWithAnimated:(BOOL)animated {
-    NSInteger lastCellIndex = chatViewService.cellModels.count;
-    if (lastCellIndex == 0) {
+    NSInteger cellCount = [self.chatTableView numberOfRowsInSection:0];
+    if (cellCount == 0) {
         return;
     }
-    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:cellCount-1 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
 }
 
 - (void)beginRecord:(CGPoint)point {
@@ -968,7 +971,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         _recordView.recordMode = [MQChatViewConfig sharedConfig].recordMode;
         _recordView.keepSessionActive = [MQChatViewConfig sharedConfig].keepAudioSessionActive;
         _recordView.recordViewDelegate = self;
-        [self.view addSubview:_recordView];
+//        [self.view addSubview:_recordView];
     }
     
     return _recordView;

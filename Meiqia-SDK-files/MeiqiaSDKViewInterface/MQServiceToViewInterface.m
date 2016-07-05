@@ -235,6 +235,11 @@
             toMessage = fileDownloadMessage;
             break;
         }
+        case MQMessageContentTypeRichText: {
+            MQRichTextMessage *richTextMessage = [[MQRichTextMessage alloc] initWithDictionary:fromMessage.accessoryData];
+            toMessage = richTextMessage;
+            break;
+        }
         default:
             break;
     }

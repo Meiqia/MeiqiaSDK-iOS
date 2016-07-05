@@ -18,6 +18,7 @@
 #import "MQVoiceCellModel.h"
 #import "MQBotMenuCellModel.h"
 #import "MQBotAnswerCellModel.h"
+#import "MQRichTextViewModel.h"
 #import "MQTipsCellModel.h"
 #import "MQEvaluationResultCellModel.h"
 #import "MQMessageDateCellModel.h"
@@ -619,7 +620,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:(MQVoiceMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQFileDownloadMessage class]]) {
             cellModel = [[MQFileDownloadCellModel alloc] initCellModelWithMessage:(MQFileDownloadMessage *)message cellWidth:self.chatViewWidth delegate:self];
-        } else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
+        } else if ([message isKindOfClass:[MQRichTextMessage class]]) {
+            cellModel = [[MQRichTextViewModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+        }else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
             cellModel = [[MQBotAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQBotMenuMessage class]]) {
             cellModel = [[MQBotMenuCellModel alloc] initCellModelWithMessage:(MQBotMenuMessage *)message cellWidth:self.chatViewWidth delegate:self];
@@ -647,10 +650,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             } else if (eventMessage.eventType == MQChatEventTypeQueueingAdd) {
                 [self checkAndUpdateWaitingQueueStatus];
             } else if (eventMessage.eventType == MQChatEventTypeAgentUpdate) {
-#ifdef INCLUDE_MEIQIA_SDK
                 //客服状态发生改变
                 [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
-#endif
             } else if ([MQChatViewConfig sharedConfig].enableEventDispaly) {
                 if (eventMessage.eventType == MQChatEventTypeAgentInputting) {
                     if (self.delegate) {
@@ -890,23 +891,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     
     //更新客服聊天界面标题
     [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
-    if (receivedMessages) {
-        [self saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
-        if (self.delegate) {
-            if ([self.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
-                
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //确保 tableView 的 contentInsect 生效，tableView 能够正确滑动到底部
-                __strong typeof (wself) sself = wself;
-                    if (!completion) {
-                        // 显示留言提示
-//                        [self addTipCellModelWithType:MQTipTypeReply];
-                    } else {
-                        [sself.delegate scrollTableViewToBottom];
-                    }
-                });
-            }
-        }
-    }
     
     //上传顾客信息
     [self setCurrentClientInfoWithCompletion:^(BOOL success) {
@@ -922,6 +906,15 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if ([self.delegate respondsToSelector:@selector(changeNavReightBtnWithAgentType:)]) {
         [self.delegate changeNavReightBtnWithAgentType:agentType];
     }
+    
+    if (receivedMessages) {
+        [self saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
+    }
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        __strong typeof (wself) sself = wself;
+        [sself scrollToButton];
+    });
 }
 
 - (void)afterClientOnline {
@@ -963,6 +956,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self removeWaitingInQueueCellModels];
         [self reloadChatTableView];
         [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
+        [self.positionCheckTimer invalidate];
     }
 }
 

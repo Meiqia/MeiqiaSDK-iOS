@@ -31,7 +31,8 @@ typedef enum : NSUInteger {
     MQMessageContentTypeImage                = 1,//图片
     MQMessageContentTypeVoice                = 2, //语音
     MQMessageContentTypeFile                 = 3, //文件传输
-    MQMessageContentTypeBot                  = 4  //机器人消息
+    MQMessageContentTypeBot                  = 4,  //机器人消息
+    MQMessageContentTypeRichText             = 5, //图文消息
 } MQMessageContentType;
 
 typedef enum : NSUInteger {
