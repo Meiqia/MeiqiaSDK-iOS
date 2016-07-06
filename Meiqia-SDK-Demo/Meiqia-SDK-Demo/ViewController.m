@@ -166,6 +166,8 @@ static int indicator_tag = 10;
     [chatViewManager setRecordMode:MQRecordModeDuckOther];
     [chatViewManager setPlayMode:MQPlayModeMixWithOther];
     
+    [[UINavigationBar appearance] setTranslucent:NO];
+    
 }
 
 #pragma 开发者的高级功能，其中有调用美洽SDK的API接口

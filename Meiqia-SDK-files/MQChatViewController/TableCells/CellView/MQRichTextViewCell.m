@@ -47,23 +47,23 @@ CGFloat internalImageWidth = 80;
     [self bind:model];
 }
 
-//绑定 UI 控件和 viewModel 的数据，当数据更新的时候更新 UI 控件
+//通过将 UI 于 viewModel 的响应方法绑定，使得 UI 可以响应数据的变化
 - (void)bind:(MQRichTextViewModel *)viewModel {
     
     __weak typeof(self) wself = self;
-    [self.viewModel setModelChanges:^(NSString *url, NSString *content, NSString *iconPath, NSString *htmlString) {
+    [self.viewModel setModelChanges:^(NSString *summary, NSString *iconPath, NSString *content) {
         __strong typeof (wself) sself = wself;
         
         sself.contentLabel.preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToHorizontalEdgeSpacing - internalSpace - internalImageToTextSpace - internalImageWidth;
         
-        if (content.length > 0) {
-            sself.contentLabel.text = content;
+        if (summary.length > 0) {
+            sself.contentLabel.text = summary;
         } else {
-            sself.contentLabel.text = [sself stripTags:htmlString];
+            sself.contentLabel.text = [sself stripTags:content];
         }
     }];
     
-    self.iconImageView.image = [MQAssetUtil imageLoadErrorImage];//默认图标
+    self.iconImageView.image = [MQAssetUtil imageFromBundleWithName:@"default_image"];
     [self.viewModel setIconLoaded:^(UIImage *iconImage) {
         __strong typeof (wself) sself = wself;
         if (iconImage) {
@@ -72,14 +72,10 @@ CGFloat internalImageWidth = 80;
     }];
     
     [self.viewModel setCellHeight:^CGFloat{
-        if ([UIDevice currentDevice].systemVersion.intValue >= 7) {
-            return UITableViewAutomaticDimension;
-        } else {
-            return internalImageWidth + kMQCellAvatarToVerticalEdgeSpacing * 2;
-        }
+        return internalImageWidth + kMQCellAvatarToVerticalEdgeSpacing * 2;
     }];
     
-    //绑定操作完成，通知 viewModel 加工数据
+    // 绑定完成，通知 viewModel 进行数据加载和加工
     [self.viewModel load];
 }
 
@@ -96,7 +92,7 @@ CGFloat internalImageWidth = 80;
         [scanner scanUpToString:@"<" intoString:&tempText];
         
         if (tempText != nil)
-            [html appendString:[NSString stringWithFormat:@"%@ ",tempText]];
+            [html appendString:[NSString stringWithFormat:@"%@",tempText]];
         
         [scanner scanUpToString:@">" intoString:NULL];
         

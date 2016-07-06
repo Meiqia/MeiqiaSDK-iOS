@@ -25,7 +25,8 @@
 }
 
 + (UIColor *)colorWithHexString:(NSString *)hexString {
-    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+    NSString *removeSharpMarkhexString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    NSScanner *scanner = [NSScanner scannerWithString:removeSharpMarkhexString];
     unsigned result = 0;
     [scanner scanHexInt:&result];
     return [self.class colorWithHex:result];

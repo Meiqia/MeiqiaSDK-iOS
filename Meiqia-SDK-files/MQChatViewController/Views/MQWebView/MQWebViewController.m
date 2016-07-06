@@ -29,14 +29,15 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|" options:0 metrics:nil views:@{@"webView":self.webView}]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[webView]|" options:0 metrics:nil views:@{@"webView":self.webView}]];
     
-    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.url]]];
+    if (self.url.length > 0) {
+        [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.url]]];
+    } else if (self.contentHTML.length > 0) {
+        [self.webView loadHTMLString:self.contentHTML baseURL:nil];
+    }
     
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:self action:@selector(close)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:self action:@selector(close)];
     
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.indicator];
-    
-    self.backBarTitleOffset = [NSValue valueWithUIOffset:[[UIBarButtonItem appearance] backButtonTitlePositionAdjustmentForBarMetrics:(UIBarMetricsDefault)]];
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -100) forBarMetrics:(UIBarMetricsDefault)];    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.indicator];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -45,9 +46,6 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    
-    
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:[self.backBarTitleOffset UIOffsetValue] forBarMetrics:(UIBarMetricsDefault)];
 }
 
 - (void)close {
@@ -55,6 +53,11 @@
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    
+    if (![request.URL.absoluteString isEqualToString:@"about:blank"]) {
+        [[UIApplication sharedApplication] openURL:request.URL];
+        return NO;
+    }
     
     return YES;
 }
