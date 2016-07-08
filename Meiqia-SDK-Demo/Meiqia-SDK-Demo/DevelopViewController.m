@@ -694,6 +694,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [chatViewManager setChatViewStyle:[MQChatViewStyle blueStyle]];
+    [chatViewManager.chatViewStyle setNavBackButtonImage:[UIImage imageNamed:@"ijinmaoAvatar"]];
     
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];

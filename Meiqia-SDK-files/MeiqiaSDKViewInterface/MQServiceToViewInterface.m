@@ -750,14 +750,16 @@
     return [MQManager getClientQueuePositionComplete:action];
 }
 
++ (void)requestPreChatServeyDataIfNeedWithClientId:(NSString *)clientId customizId:(NSString *)customizId action:(void(^)(MQPreChatData *data, NSError *error))block {
+    [MQManager requestPreChatServeyDataIfNeedWithClientId:clientId customizId:customizId action:block];
+}
+
++ (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block {
+    [MQManager getCaptchaComplete:block];
+}
+
 + (NSError *)checkGlobalError {
     return [MQManager checkGlobalError];
 }
 
-+ (void)requestPreChatServeyDataIfNeed:(void(^)(id data, NSError *error))block {
-    NSString *userDefinedClientId = [MQChatViewConfig sharedConfig].MQClientId;
-    NSString *userDefinedCostomId = [MQChatViewConfig sharedConfig].customizedId;
-    
-    [MQManager requestPreChatServeyDataIfNeedWithClientId:userDefinedClientId customizId:userDefinedCostomId action:block];
-}
 @end

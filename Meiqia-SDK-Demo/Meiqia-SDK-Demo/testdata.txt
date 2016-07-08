@@ -43,6 +43,11 @@
 "description": "美洽的坐席是指什么？",
 "target_kind": "group",
 "target": "group_token_yyy"
+},
+{
+"description": "不进行定向分配的结构",
+"target_kind": null,
+"target": null
 }
 ]
 }

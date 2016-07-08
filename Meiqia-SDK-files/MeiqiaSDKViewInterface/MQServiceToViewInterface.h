@@ -414,6 +414,16 @@
  */
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action;
 
+/**
+ 
+ */
++ (void)requestPreChatServeyDataIfNeedWithClientId:(NSString *)clientId customizId:(NSString *)customizId action:(void(^)(MQPreChatData *data, NSError *error))block;
+
+/**
+ 获取验证码
+ */
++ (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block;
+
 
 /**
  判断上一步操作是否失败
@@ -421,10 +431,7 @@
 + (NSError *)checkGlobalError;
 
 
-/**
- 获取询前表单的数据，如果不需要显示，则返回 nil，需要则返回获取到的数据
- */
-+ (void)requestPreChatServeyDataIfNeed:(void(^)(id data, NSError *error))block;
+
 
 @end
 

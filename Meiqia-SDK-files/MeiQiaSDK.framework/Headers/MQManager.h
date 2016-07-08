@@ -471,6 +471,4 @@
 
 + (NSError *)checkGlobalError;
 
-+ (void)requestPreChatServeyDataIfNeedWithClientId:(NSString *)clientId customizId:(NSString *)customizId action:(void(^)(id data, NSError *error))block;
-
 @end

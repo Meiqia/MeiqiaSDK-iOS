@@ -110,3 +110,9 @@
 "email_placeholder" = "Please enter your email";
 
 "wating_in_queue_tip_text" = "please hold on, %d visitors in front, of you can leave a message";
+
+//询前表单
+"pre_chat_list_title" = "Client Support";
+"pre_chat_form_title" =  "Please fill those blanks";
+"pre_chat_form_mutiple_selection_label" = "(multiple)";
+"pre_chat_form_black_alert_label" = "Please complete the red blank";

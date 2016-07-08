@@ -117,24 +117,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     popRecognizer.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:popRecognizer];
     
-    [self presentUI];
+//    [self presentUI];
+    [chatViewService setClientOnline];
 }
 
 - (void)presentUI {
-    [MQServiceToViewInterface requestPreChatServeyDataIfNeed:^(id data, NSError *error) {
-        if (data == nil) {
-            //存在未结束对话，不显示询前表单
-            [chatViewService setClientOnline];
-        } else {
-            chatViewService.clientStatus = MQClientStatusPendingOnPreChatForm;
-            //显示询前表单，在提交之后上线
-            MQPreChatFormListViewController *preChatViewController = [MQPreChatFormListViewController new];
-            [self addChildViewController:[preChatViewController appendPreChatWithConfig:[MQChatViewConfig sharedConfig] on:self.view completion:^{
-                chatViewService.clientStatus = MQClientStatusOffLine;
-                [chatViewService setClientOnline];
-            }]];
-        }
+    
+    MQPreChatFormListViewController *viewController =[MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^{
+        [chatViewService setClientOnline];
     }];
+    
+    viewController.config = [MQChatViewConfig sharedConfig];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

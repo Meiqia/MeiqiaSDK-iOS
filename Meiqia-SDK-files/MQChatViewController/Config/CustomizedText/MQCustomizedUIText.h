@@ -63,7 +63,13 @@ typedef NS_ENUM(NSUInteger, MQUITextKey) {
     MQUITextKeyBotRedirectTip,
     
     MQUITextKeyClientIsOnlining,
-    MQUITextKeySendTooFast
+    MQUITextKeySendTooFast,
+    
+    //询前表单
+    MQUITextKeyPreChatListTitle,
+    MQUITextKeyPreChatFormTitle,
+    MQUITextKeyPreChatFormMultipleSelectionLabel,
+    MQUITextKeyPreChatFormBlankAlertLabel,
 };
 
 @interface MQCustomizedUIText : NSObject

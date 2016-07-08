@@ -8,15 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^CompleteBlock)(void);
-
 @class MQChatViewConfig;
 @interface MQPreChatFormListViewController : UITableViewController
 
-@property (nonatomic, copy) void(^CompleteBlock)(void);
+@property (nonatomic, weak) MQChatViewConfig *config;
 
-@property (nonatomic, strong) id formData;
 
-- (MQPreChatFormListViewController *)appendPreChatWithConfig:(MQChatViewConfig *)config on:(UIView*)view completion:(CompleteBlock)block;
++ (MQPreChatFormListViewController *)usePreChatFormIfNeededOnViewController:(UIViewController *)controller compeletion:(void(^)(void))block;
+
 
 @end
