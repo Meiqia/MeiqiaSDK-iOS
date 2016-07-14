@@ -751,11 +751,19 @@
 }
 
 + (void)requestPreChatServeyDataIfNeedWithClientId:(NSString *)clientId customizId:(NSString *)customizId action:(void(^)(MQPreChatData *data, NSError *error))block {
-    [MQManager requestPreChatServeyDataIfNeedWithClientId:clientId customizId:customizId action:block];
+    NSString *testJSONString = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"testdata" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
+    id obj = [JSONHelper createWithJSONString:testJSONString];
+    block([[MQPreChatData alloc] initWithDictionary:obj],nil);
+    
+//    [MQManager requestPreChatServeyDataIfNeedWithClientId:clientId customizId:customizId action:block];
 }
 
 + (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block {
     [MQManager getCaptchaComplete:block];
+}
+
++ (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id,NSError *))block {
+    [MQManager submitPreChatForm:formData completion:block];
 }
 
 + (NSError *)checkGlobalError {

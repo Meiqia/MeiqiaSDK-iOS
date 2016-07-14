@@ -12,6 +12,7 @@
 #import "MQDefinition.h"
 #import "MQAgent.h"
 #import "MQEnterprise.h"
+#import "MQPreChatData.h"
 
 #define MQSDKVersion @"3.2.2"
 
@@ -470,5 +471,20 @@
 
 
 + (NSError *)checkGlobalError;
+
+/**
+ 根据当前的用户 id， 或者自定义用户 id，首先判断需不需要显示询前表单：如果当前对话未结束，则需要显示，这时发起请求，从服务器获取表单数据，返回的结果根据用户指定的 agent token， group token（如果有），将数据过滤之后返回。
+ */
++ (void)requestPreChatServeyDataIfNeedWithClientId:(NSString *)clientId customizId:(NSString *)customizId action:(void(^)(MQPreChatData *data, NSError *error))block;
+
+/**
+ 获取验证码图片和 token
+ */
++ (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block;
+
+/**
+ 提交用户填写的讯前表单数据
+ */
++ (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id, NSError *))block;
 
 @end

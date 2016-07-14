@@ -170,7 +170,7 @@
         [self.viewModel setValue:selectedRowsInCurrentSection forFieldIndex:indexPath.section];
     }
     
-    if ( formItem.type != MQPreChatFormItemInputTypeMultipleSelection) {
+    if (formItem.type != MQPreChatFormItemInputTypeMultipleSelection) {
         for (int i = 0; i < [[formItem choices] count]; i++) {
             if (i != indexPath.row) {
                 [tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:indexPath.section] animated:NO];
@@ -195,22 +195,50 @@
 }
 
 - (void)submitAction {
-    NSArray *unsatisfiedSections = [self.viewModel submitForm];
-    
-    if (unsatisfiedSections.count > 0) {
-        for (int i = 0; i < self.viewModel.formData.form.formItems.count; i ++) {
-            MQPreChatSectionHeaderView *header = (MQPreChatSectionHeaderView *)[self.tableView headerViewForSection:i];
-            [header setStatus:![unsatisfiedSections containsObject:@(i)]];
-        }
-        
-        [MQToast showToast:@"xxxxx" duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
-        
-    } else {
-        [self dismissViewControllerAnimated:YES completion:^{
-            [self setupConfigInfo];
-            if (self.completeBlock) {
-                self.completeBlock();
+    __weak typeof(self) wself = self;
+    [self showLoadingIndicator];
+    NSArray *unsatisfiedSectionIndexs = [self.viewModel submitFormCompletion:^(id response, NSError *e) {
+        __strong typeof (wself) sself = wself;
+        [sself hideLoadingIndicator];
+        if (e == nil) {
+            [sself dismissViewControllerAnimated:YES completion:^{
+                [sself setupConfigInfo];
+                if (sself.completeBlock) {
+                    sself.completeBlock();
+                }
+            }];
+        } else {
+            if (e.code != 1) {
+                [self resetCaptchaCellIfExists];
             }
+            [MQToast showToast:e.localizedDescription duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
+        }
+    }];
+    
+    for (int i = 0; i < self.viewModel.formData.form.formItems.count; i ++) {
+        MQPreChatSectionHeaderView *header = (MQPreChatSectionHeaderView *)[self.tableView headerViewForSection:i];
+        [header setStatus:![unsatisfiedSectionIndexs containsObject:@(i)]];
+    }
+}
+
+static UIBarButtonItem *rightBarButtonItemCache = nil;
+
+- (void)showLoadingIndicator {
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleGray)];
+    rightBarButtonItemCache = self.navigationItem.rightBarButtonItem;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:indicator];
+    [indicator startAnimating];
+}
+
+- (void)hideLoadingIndicator {
+    self.navigationItem.rightBarButtonItem = rightBarButtonItemCache;
+}
+
+- (void)resetCaptchaCellIfExists {
+    if (self.viewModel.formData.isUseCapcha) {
+        [self.viewModel requestCaptchaComplete:^(UIImage *image) {
+            MQPreChatCaptchaCell *captchaCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.viewModel.formData.form.formItems.count - 1]];
+            [captchaCell.refreshCapchaButton setImage:image forState:UIControlStateNormal];
         }];
     }
 }

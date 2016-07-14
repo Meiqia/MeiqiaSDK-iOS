@@ -117,8 +117,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     popRecognizer.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:popRecognizer];
     
-//    [self presentUI];
-    [chatViewService setClientOnline];
+    [self presentUI];
+//    [chatViewService setClientOnline];
 }
 
 - (void)presentUI {

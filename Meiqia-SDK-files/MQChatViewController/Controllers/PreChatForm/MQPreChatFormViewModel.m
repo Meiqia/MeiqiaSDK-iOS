@@ -28,6 +28,7 @@
             captchaItem.type = MQPreChatFormItemInputTypeCaptcha;
             captchaItem.displayName = @"验证码";
             captchaItem.isOptional = @(NO);
+            captchaItem.filedName = kCaptchaValue;
             data.form.formItems = [data.form.formItems arrayByAddingObject:captchaItem];
         }
         
@@ -36,10 +37,11 @@
 }
 
 - (void)setValue:(id)value forFieldIndex:(NSInteger)fieldIndex {
+    NSString *filedName = [(MQPreChatFormItem *)self.formData.form.formItems[fieldIndex] filedName];
     if (value) {
-        [self.filledFieldValue setObject:value forKey:@(fieldIndex)];
+        [self.filledFieldValue setObject:value forKey:filedName];
     } else {
-        [self.filledFieldValue removeObjectForKey:@(fieldIndex)];
+        [self.filledFieldValue removeObjectForKey:filedName];
     }
     MQInfo(@"valued changed: %@", self.filledFieldValue);
 }
@@ -52,43 +54,52 @@
 }
 
 - (id)valueForFieldIndex:(NSInteger)fieldIndex {
-    return [self.filledFieldValue objectForKey:@(fieldIndex)];
+    NSString *filedName = [(MQPreChatFormItem *)self.formData.form.formItems[fieldIndex] filedName];
+    return [self.filledFieldValue objectForKey:filedName];
 }
 
 - (void)requestCaptchaComplete:(void(^)(UIImage *image))block {
     if (block == nil) return;
     
+    __weak typeof(self) wself = self;
     [MQServiceToViewInterface getCaptchaComplete:^(NSString *token, UIImage *image) {
-        self.captchaToken = token;
-        
+        __strong typeof (wself) sself = wself;
+        sself.captchaToken = token;
+        [self.filledFieldValue setObject:token forKey:kCaptchaToken];
         block(image);
     }];
 }
 
-- (NSArray *)submitForm {
-    NSArray *unsatisfiedInputs = [self audioInputs:self.filledFieldValue];
+- (NSArray *)submitFormCompletion:(void(^)(id response, NSError *e))block {
+    NSArray *unsatisfiedIndexs = [self auditInputs:self.filledFieldValue];
     
-    if (unsatisfiedInputs.count == 0) {
+    if (unsatisfiedIndexs.count == 0) {
         //do submition
+        [MQServiceToViewInterface submitPreChatForm:self.filledFieldValue completion:^(id r, NSError *e) {
+            return block(r, e);
+        }];
+    } else {
+        block(nil, [NSError errorWithDomain:@"请填写完整标记部分的内容" code:1 userInfo:nil]);
     }
     
-    return unsatisfiedInputs;
+    return unsatisfiedIndexs;
 }
 
-- (NSArray *)audioInputs:(NSDictionary *)inputs {
-    NSMutableArray *unsatifiledFileds = [NSMutableArray new];
+- (NSArray *)auditInputs:(NSDictionary *)inputs {
+    NSMutableArray *unsatisfiedIndexs = [NSMutableArray new];
     
     int i = 0;
     for (MQPreChatFormItem *item in self.formData.form.formItems) {
         if (!item.isOptional.boolValue) {
-            if (![self.filledFieldValue objectForKey:@(i)]) {
-                [unsatifiledFileds addObject:@(i)];
+            NSString *filedName = [(MQPreChatFormItem *)self.formData.form.formItems[i] filedName];
+            if (![self.filledFieldValue objectForKey:filedName]) {
+                [unsatisfiedIndexs addObject:@(i)];
             }
         }
         i ++;
     }
     
-    return unsatifiledFileds;
+    return unsatisfiedIndexs;
 }
 
 @end

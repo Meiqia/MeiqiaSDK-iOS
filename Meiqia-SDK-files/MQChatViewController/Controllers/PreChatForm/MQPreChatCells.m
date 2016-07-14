@@ -116,8 +116,10 @@
 - (void)refreshCaptchaButtonTapped {
     if (self.loadCaptchaAction) {
         self.loadCaptchaAction(self.refreshCapchaButton);
+        self.textField.text = @"";
     }
 }
+
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     NSString *resultString = [textField.text stringByReplacingCharactersInRange:range withString:string];

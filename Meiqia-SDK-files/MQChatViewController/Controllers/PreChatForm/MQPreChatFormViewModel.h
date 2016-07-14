@@ -13,6 +13,10 @@
 
 typedef void(^CompleteBlock)(void);
 
+
+@property (nonatomic, copy) void(^captchaReloadAction)(UIImage *);
+
+
 @property (nonatomic, strong) MQPreChatData *formData;
 @property (nonatomic, copy) NSString *captchaToken;
 @property (nonatomic, strong) NSMutableDictionary *filledFieldValue;
@@ -24,7 +28,7 @@ typedef void(^CompleteBlock)(void);
 
 - (void)requestCaptchaComplete:(void(^)(UIImage *image))block;
 
-- (NSArray *)submitForm;
+- (NSArray *)submitFormCompletion:(void(^)(id response, NSError *e))block;
 
 - (void)setValue:(id)value forFieldIndex:(NSInteger)fieldIndex;
 
