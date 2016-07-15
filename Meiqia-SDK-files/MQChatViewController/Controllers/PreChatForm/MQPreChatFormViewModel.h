@@ -13,10 +13,6 @@
 
 typedef void(^CompleteBlock)(void);
 
-
-@property (nonatomic, copy) void(^captchaReloadAction)(UIImage *);
-
-
 @property (nonatomic, strong) MQPreChatData *formData;
 @property (nonatomic, copy) NSString *captchaToken;
 @property (nonatomic, strong) NSMutableDictionary *filledFieldValue;

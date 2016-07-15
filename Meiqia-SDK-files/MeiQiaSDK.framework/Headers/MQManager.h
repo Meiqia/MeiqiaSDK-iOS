@@ -483,6 +483,11 @@
 + (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block;
 
 /**
+ 获取验证码图片和 token
+ */
++ (void)getCaptchaURLComplete:(void(^)(NSString *token, NSString *imageURL))block;
+
+/**
  提交用户填写的讯前表单数据
  */
 + (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id, NSError *))block;

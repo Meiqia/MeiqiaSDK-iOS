@@ -196,6 +196,7 @@
 
 - (void)submitAction {
     __weak typeof(self) wself = self;
+    
     [self showLoadingIndicator];
     NSArray *unsatisfiedSectionIndexs = [self.viewModel submitFormCompletion:^(id response, NSError *e) {
         __strong typeof (wself) sself = wself;
@@ -224,6 +225,7 @@
 static UIBarButtonItem *rightBarButtonItemCache = nil;
 
 - (void)showLoadingIndicator {
+    [self.view endEditing:true];
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleGray)];
     rightBarButtonItemCache = self.navigationItem.rightBarButtonItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:indicator];
@@ -238,6 +240,8 @@ static UIBarButtonItem *rightBarButtonItemCache = nil;
     if (self.viewModel.formData.isUseCapcha) {
         [self.viewModel requestCaptchaComplete:^(UIImage *image) {
             MQPreChatCaptchaCell *captchaCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.viewModel.formData.form.formItems.count - 1]];
+            captchaCell.textField.text = @"";
+            [self.viewModel setValue:nil forFieldIndex:self.viewModel.formData.form.formItems.count - 1];
             [captchaCell.refreshCapchaButton setImage:image forState:UIControlStateNormal];
         }];
     }

@@ -12,27 +12,30 @@
 #import "NSArray+MQFunctional.h"
 #import "UIView+MQLayout.h"
 #import "MQPreChatSubmitViewController.h"
+#import "MQAssetUtil.h"
 
 @interface MQPreChatFormListViewController ()
 
 @property (nonatomic, strong) MQPreChatFormViewModel *viewModel;
 @property (nonatomic, strong) void(^completionBlock)(void);
+@property (nonatomic, strong) void(^cancelBlock)(void);
 
 @end
 
 @implementation MQPreChatFormListViewController
 
-+ (MQPreChatFormListViewController *)usePreChatFormIfNeededOnViewController:(UIViewController *)controller compeletion:(void(^)(void))block {
++ (MQPreChatFormListViewController *)usePreChatFormIfNeededOnViewController:(UIViewController *)controller compeletion:(void(^)(void))block cancle:(void(^)(void))cancelBlock {
     
     MQPreChatFormListViewController *preChatViewController = [MQPreChatFormListViewController new];
     preChatViewController.completionBlock = block;
+    preChatViewController.cancelBlock = cancelBlock;
     
     [preChatViewController.viewModel requestPreChatServeyDataIfNeed:^(MQPreChatData *data, NSError *error) {
         if (data) {
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:preChatViewController];
             nav.navigationBar.barTintColor = controller.navigationController.navigationBar.barTintColor;
             nav.navigationBar.tintColor = controller.navigationController.navigationBar.tintColor;
-            [controller presentViewController:nav animated:NO completion:nil];
+            [controller presentViewController:nav animated:YES completion:nil];
         } else {
             block();
         }
@@ -52,7 +55,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.navigationItem.leftBarButtonItem =  [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+    
     self.title = [MQBundleUtil localizedStringForKey:@"pre_chat_list_title"];
+}
+
+- (void)dismiss {
+    if (self.cancelBlock) {
+        self.cancelBlock();
+    }
 }
 
 - (void)didReceiveMemoryWarning {

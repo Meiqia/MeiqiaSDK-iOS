@@ -117,18 +117,23 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     popRecognizer.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:popRecognizer];
     
-    [self presentUI];
-//    [chatViewService setClientOnline];
+//    [self presentUI];
+    [chatViewService setClientOnline];
 }
 
 - (void)presentUI {
     
+    __weak typeof(self) wself = self;
     MQPreChatFormListViewController *viewController =[MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^{
         [chatViewService setClientOnline];
+    } cancle:^{
+        __strong typeof (wself) sself = wself;
+        [self dismissViewControllerAnimated:NO completion:^{
+            [sself dismissChatViewController];
+        }];
     }];
     
     viewController.config = [MQChatViewConfig sharedConfig];
-    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -786,17 +791,23 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     UIButton *recorderBtn  = [[UIButton alloc] initWithFrame:rect];
     [recorderBtn setImage:[MQAssetUtil imageFromBundleWithName:@"micIcon"] forState:(UIControlStateNormal)];
     [recorderBtn addTarget:self action:@selector(showRecorder) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.chatInputBar.buttonGroupBar addButton:recorderBtn];
     
     UIButton *cameraBtn  = [[UIButton alloc] initWithFrame:rect];
     [cameraBtn setImage:[MQAssetUtil imageFromBundleWithName:@"cameraIcon"] forState:(UIControlStateNormal)];
     [cameraBtn addTarget:self action:@selector(camera) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.chatInputBar.buttonGroupBar addButton:cameraBtn];
     
     UIButton *imageRoll  = [[UIButton alloc] initWithFrame:rect];
     [imageRoll setImage:[MQAssetUtil imageFromBundleWithName:@"imageIcon"] forState:(UIControlStateNormal)];
     [imageRoll addTarget:self action:@selector(imageRoll) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.chatInputBar.buttonGroupBar addButton:imageRoll];
+    
+    if ([MQChatViewConfig sharedConfig].enableSendVoiceMessage) {
+        [self.chatInputBar.buttonGroupBar addButton:recorderBtn];
+    }
+    
+    if ([MQChatViewConfig sharedConfig].enableSendImageMessage) {
+        [self.chatInputBar.buttonGroupBar addButton:cameraBtn];
+        [self.chatInputBar.buttonGroupBar addButton:imageRoll];
+    }
 }
 
 - (BOOL)handleSendMessageAbility {

@@ -14,7 +14,7 @@
 @property (nonatomic, weak) MQChatViewConfig *config;
 
 
-+ (MQPreChatFormListViewController *)usePreChatFormIfNeededOnViewController:(UIViewController *)controller compeletion:(void(^)(void))block;
++ (MQPreChatFormListViewController *)usePreChatFormIfNeededOnViewController:(UIViewController *)controller compeletion:(void(^)(void))block cancle:(void(^)(void))cancelBlock;
 
 
 @end
