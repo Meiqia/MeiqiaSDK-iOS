@@ -386,7 +386,7 @@
  */
 + (void)evaluateBotMessage:(NSString *)messageId
                   isUseful:(BOOL)isUseful
-                completion:(void (^)(BOOL success, NSError *error))completion;
+                completion:(void (^)(BOOL success, NSString *text, NSError *error))completion;
 
 /**
  强制转人工
