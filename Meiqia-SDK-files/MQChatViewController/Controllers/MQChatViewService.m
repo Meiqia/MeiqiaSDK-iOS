@@ -1268,28 +1268,30 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)setCurrentInputtingText:(NSString *)inputtingText {
-#ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface setCurrentInputtingText:inputtingText];
-#endif
 }
 
 - (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId {
-#ifdef INCLUDE_MEIQIA_SDK
     /**
      对机器人消息做评价，分两步：
         1、调用评价接口；
         2、生成正在转接的本地消息；
         3、调用强制转接接口；
      */
-    [MQServiceToViewInterface evaluateBotMessage:messageId isUseful:isUseful completion:^(BOOL success, NSError *error) {
-    }];
-    // 若用户点击「无用」，生成转人工的状态
-    MQAgent *agent = [MQServiceToViewInterface getCurrentAgent];
-    if (!isUseful && agent.privilege == MQAgentPrivilegeBot) {
-        // 生成转人工的状态
-        [self addTipCellModelWithType:MQTipTypeBotRedirect];
-    }
-#endif
+    [MQServiceToViewInterface evaluateBotMessage:messageId
+                                        isUseful:isUseful
+                                      completion:^(BOOL success, NSString *text, NSError *error) {
+                                          // 根据企业的消息反馈，渲染一条消息气泡
+                                          if (text.length > 0) {
+                                              [self createLocalTextMessageWithText:text];
+                                          }
+                                          // 若用户点击「无用」，生成转人工的状态
+                                          MQAgent *agent = [MQServiceToViewInterface getCurrentAgent];
+                                          if (!isUseful && agent.privilege == MQAgentPrivilegeBot) {
+                                              // 生成转人工的状态
+                                              [self addTipCellModelWithType:MQTipTypeBotRedirect];
+                                          }
+                                      }];
     // 改变 botAnswerCellModel 的值
     for (id<MQCellModelProtocol> cellModel in self.cellModels) {
         if ([[cellModel getCellMessageId] isEqualToString:messageId]) {
