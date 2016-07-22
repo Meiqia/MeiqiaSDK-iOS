@@ -228,7 +228,6 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
     [[NSNotificationCenter defaultCenter] postNotificationName:MQChatViewKeyboardResignFirstResponderNotification object:nil];
     switch (actionSheet.tag) {
         case kMQBotMenuCellSelectedNumberActionSheetTag: {
-            NSLog(@"点击了一个数字");
             switch (buttonIndex) {
                 case 0:
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", actionSheet.title]]];
@@ -245,7 +244,6 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
             break;
         }
         case kMQBotMenuCellSelectedUrlActionSheetTag: {
-            NSLog(@"点击了一个url");
             switch (buttonIndex) {
                 case 0: {
                     if ([actionSheet.title rangeOfString:@"://"].location == NSNotFound) {
@@ -264,7 +262,6 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
             break;
         }
         case kMQBotMenuCellSelectedEmailActionSheetTag: {
-            NSLog(@"点击了一个email");
             switch (buttonIndex) {
                 case 0: {
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto://%@", actionSheet.title]]];
@@ -310,7 +307,6 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
 #pragma UIAlertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        NSLog(@"重新发送");
         [self.chatCellDelegate resendMessageInCell:self resendData:@{@"text" : textLabel.text}];
     }
 }

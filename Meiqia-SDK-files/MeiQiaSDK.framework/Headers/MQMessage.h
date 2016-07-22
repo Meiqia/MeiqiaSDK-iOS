@@ -21,7 +21,9 @@ typedef enum : NSUInteger {
     MQMessageActionTicketReply                  = 8,   //客服留言回复的消息
     MQMessageActionAgentUpdate                  = 9,    //客服的状态发生了改变
     MQMessageActionListedInBlackList            = 10,  //被客户加入到黑名单
-    MQMessageActionRemovedFromBlackList         = 11  //被客户从黑名单中移除
+    MQMessageActionRemovedFromBlackList         = 11,  //被客户从黑名单中移除
+    MQMessageActionQueueingAdd                  = 12,  //顾客被添加到等待客服队列
+    MQMessageActionQueueingRemoved              = 13,  //顾客从等待队列中移除
 } MQMessageAction;
 
 typedef enum : NSUInteger {
@@ -29,7 +31,8 @@ typedef enum : NSUInteger {
     MQMessageContentTypeImage                = 1,//图片
     MQMessageContentTypeVoice                = 2, //语音
     MQMessageContentTypeFile                 = 3, //文件传输
-    MQMessageContentTypeBot                  = 4  //机器人消息
+    MQMessageContentTypeBot                  = 4,  //机器人消息
+    MQMessageContentTypeRichText             = 5, //图文消息
 } MQMessageContentType;
 
 typedef enum : NSUInteger {

@@ -13,6 +13,7 @@
 #import "VoiceConverter.h"
 #import "MQAssetUtil.h"
 #import "MQVoiceCellModel.h"
+#import "MQImageUtil.h"
 
 @interface MQVoiceMessageCell()<MQChatAudioPlayerDelegate>
 
@@ -141,7 +142,7 @@
     //消息图片
     if (!voiceImageView.isAnimating) {
         if (cellModel.isLoadVoiceSuccess) {
-            voiceImageView.image = [MQAssetUtil voiceAnimationGreen3];
+            voiceImageView.image = [MQImageUtil convertImageColorWithImage:[MQAssetUtil voiceAnimationGreen3] toColor:[MQChatViewConfig sharedConfig].outgoingMsgTextColor];
             UIImage *animationImage1 = [MQAssetUtil voiceAnimationGreen1];
             UIImage *animationImage2 = [MQAssetUtil voiceAnimationGreen2];
             UIImage *animationImage3 = [MQAssetUtil voiceAnimationGreen3];
@@ -151,10 +152,12 @@
                 animationImage3 = [MQAssetUtil voiceAnimationGray3];
                 voiceImageView.image = [MQAssetUtil voiceAnimationGray3];
             }
+            
+
             voiceImageView.animationImages = [NSArray arrayWithObjects:
-                                              animationImage1,
-                                              animationImage2,
-                                              animationImage3,nil];
+                                              [MQImageUtil convertImageColorWithImage:animationImage1 toColor:[MQChatViewConfig sharedConfig].outgoingMsgTextColor],
+                                              [MQImageUtil convertImageColorWithImage:animationImage2 toColor:[MQChatViewConfig sharedConfig].outgoingMsgTextColor],
+                                              [MQImageUtil convertImageColorWithImage:animationImage3 toColor:[MQChatViewConfig sharedConfig].outgoingMsgTextColor],nil];
             voiceImageView.animationDuration = 1;
             voiceImageView.animationRepeatCount = 0;
         } else {
@@ -252,7 +255,6 @@
 #pragma UIAlertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        NSLog(@"重新发送");
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             //将voiceData写进文件
             NSString *wavPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];

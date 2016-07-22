@@ -22,23 +22,27 @@
 		</data>
 		<key>Headers/MQDefinition.h</key>
 		<data>
-		k3CbLFpcdgzfhO6EJYhbsfoWf24=
+		0mSRGyvmkJoXMC+kfLxG6sAb2hY=
 		</data>
 		<key>Headers/MQEnterprise.h</key>
 		<data>
 		OMMcAdAPckYVTV86grffCnpst0A=
 		</data>
+		<key>Headers/MQLog.h</key>
+		<data>
+		NM+PCEg/XJNRNMaPSfls54/IBP4=
+		</data>
 		<key>Headers/MQManager.h</key>
 		<data>
-		BhJyD5VldJo6AOfUTD9pTIKxEzM=
+		InnhTU6eBEPQUKoGZvnNNfIYRho=
 		</data>
 		<key>Headers/MQMessage.h</key>
 		<data>
-		NgBGTZRIyT8KmVgN417U3PHOb9k=
+		AD+VQFB05X7QB3vusVMoOvcZ3mA=
 		</data>
 		<key>Headers/MeiqiaSDK.h</key>
 		<data>
-		KLaYAs8X0xQeGceRl9Lw/R8qlTg=
+		XfJKtuyjG5b5VVU083CziH3HO8A=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -84,11 +88,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			k3CbLFpcdgzfhO6EJYhbsfoWf24=
+			0mSRGyvmkJoXMC+kfLxG6sAb2hY=
 			</data>
 			<key>hash2</key>
 			<data>
-			LrZVMlTMQW1zsCrfuAQUevT0OOZXmV1jqLiPeSzfD2A=
+			AbHGfejQUdu9yt3h4ozjHPtn/CUNl0hXKii7edmRhv0=
 			</data>
 		</dict>
 		<key>Headers/MQEnterprise.h</key>
@@ -102,37 +106,48 @@
 			BiS4bXse1NnypbMJWxrgHplilCNMpjXiVHg2s9OoO0c=
 			</data>
 		</dict>
+		<key>Headers/MQLog.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			NM+PCEg/XJNRNMaPSfls54/IBP4=
+			</data>
+			<key>hash2</key>
+			<data>
+			+fYSNWsMP41zZkiPM9TIPR+Jh8S9EVL9ipkLzrUJPu0=
+			</data>
+		</dict>
 		<key>Headers/MQManager.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			BhJyD5VldJo6AOfUTD9pTIKxEzM=
+			InnhTU6eBEPQUKoGZvnNNfIYRho=
 			</data>
 			<key>hash2</key>
 			<data>
-			tG762Q4eeC8zwRGrvXzkGi379Z8k5aewt07nlBAzV0U=
+			OOe9q1dWqVoH9KX54DGOVGlo7LaooiKbwEosfBIx0Vo=
 			</data>
 		</dict>
 		<key>Headers/MQMessage.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			NgBGTZRIyT8KmVgN417U3PHOb9k=
+			AD+VQFB05X7QB3vusVMoOvcZ3mA=
 			</data>
 			<key>hash2</key>
 			<data>
-			4MVCmTcI1I6NWU332BukHkRuC8CkAjoLtimLCuMwpK0=
+			K5OMYEXnBxjRiy9C2/d+JDpLBagO8h7aPSUIBpC/bcw=
 			</data>
 		</dict>
 		<key>Headers/MeiqiaSDK.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			KLaYAs8X0xQeGceRl9Lw/R8qlTg=
+			XfJKtuyjG5b5VVU083CziH3HO8A=
 			</data>
 			<key>hash2</key>
 			<data>
-			gFRmA+IeI1UrIpHDvVopfG2PZsFy+ADxRopLXW1Cd4k=
+			hjA4Kq3RVv3jsG9ZQXK5AGy9fegvMgHqfMF2BiYRdws=
 			</data>
 		</dict>
 	</dict>

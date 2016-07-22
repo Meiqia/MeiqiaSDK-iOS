@@ -13,11 +13,11 @@
 #import "MQServiceToViewInterface.h"
 #import "MQBundleUtil.h"
 #import "MQToast.h"
+#import <QuickLook/QuickLook.h>
 
-@interface MQFileDownloadCellModel()<UIDocumentInteractionControllerDelegate>
+@interface MQFileDownloadCellModel()<UIDocumentInteractionControllerDelegate, QLPreviewControllerDataSource>
 
 @property (nonatomic, strong) MQFileDownloadMessage *message;
-@property (nonatomic, strong) UIDocumentInteractionController *interactionController;
 @property (nonatomic, copy) NSString *downloadingURL;
 
 @end
@@ -133,11 +133,27 @@
 }
 
 - (void)openFile:(UIView *)sender {
-    NSLog(@"open file");
     NSURL *url = [NSURL fileURLWithPath:[self savedFilePath]];
-    self.interactionController = [UIDocumentInteractionController interactionControllerWithURL:url];
-    [self.interactionController setDelegate:self];
-    [self.interactionController presentOptionsMenuFromRect:CGRectZero inView:sender.superview animated:YES];
+    UIDocumentInteractionController *interactionController = [UIDocumentInteractionController interactionControllerWithURL:url];
+    [interactionController setDelegate:self];
+    [interactionController presentOptionsMenuFromRect:CGRectZero inView:sender.superview animated:YES];
+}
+
+- (void)previewFileFromController:(UIViewController *)controller {
+    QLPreviewController *previewController = [QLPreviewController new];
+    previewController.dataSource = self;
+    
+    [controller presentViewController:previewController animated:YES completion:nil];
+}
+
+#pragma mark - QLPreviewControllerDataSource
+
+- (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller {
+    return 1;
+}
+
+- (id <QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index {
+    return [NSURL fileURLWithPath:[self savedFilePath]];
 }
 
 #pragma mark - private

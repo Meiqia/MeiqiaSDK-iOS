@@ -34,7 +34,6 @@
          UIRemoteNotificationTypeSound];
     }
     
-    //main
 #error 请填写您的美洽 AppKey
     [MQManager initWithAppkey:@"请填写您的美洽 AppKey" completion:^(NSString *clientId, NSError *error) {
         if (!error) {

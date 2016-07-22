@@ -35,7 +35,7 @@ FOUNDATION_EXPORT const unsigned char TTTAttributedLabelVersionString[];
 /**
  Vertical alignment for text in a label whose bounds are larger than its text bounds
  */
-typedef NS_ENUM(NSInteger, TTTAttributedLabelVerticalAlignment) {
+typedef NS_ENUM(NSInteger, MEIQIA_TTTAttributedLabelVerticalAlignment) {
     TTTAttributedLabelVerticalAlignmentCenter   = 0,
     TTTAttributedLabelVerticalAlignmentTop      = 1,
     TTTAttributedLabelVerticalAlignmentBottom   = 2,
@@ -74,7 +74,7 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 @protocol TTTAttributedLabelDelegate;
 
 // Override UILabel @property to accept both NSString and NSAttributedString
-@protocol TTTAttributedLabel <NSObject>
+@protocol MEIQIA_TTTAttributedLabel <NSObject>
 @property (nonatomic, copy) IBInspectable id text;
 @end
 
@@ -253,7 +253,7 @@ IB_DESIGNABLE
 /**
  The vertical text alignment for the label, for when the frame size is greater than the text rect size. The vertical alignment is `TTTAttributedLabelVerticalAlignmentCenter` by default.
  */
-@property (nonatomic, assign) TTTAttributedLabelVerticalAlignment verticalAlignment;
+@property (nonatomic, assign) MEIQIA_TTTAttributedLabelVerticalAlignment verticalAlignment;
 
 ///--------------------------------------------
 /// @name Accessing Truncation Token Appearance

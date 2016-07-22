@@ -325,11 +325,10 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  @param customizedId 自定义id
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId {
-    [MQManager initWithAppkey:@"44e9a76b103e840a310a6e326c404f80" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"58767158dd91adf8410f7916f76b66e2" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
             [chatViewManager setLoginCustomizedId:customizedId];
-            [chatViewManager setScheduledAgentId:@"b51d1028f8fdfc0a708076e504d10c2f"];
             [chatViewManager pushMQChatViewControllerInViewController:self];
         }
     }];
@@ -617,7 +616,8 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewStyle setIncomingBubbleImage:incomingBubbleImage];
     [chatViewStyle setOutgoingBubbleImage:outgoingBubbleImage];
-    [chatViewStyle setIncomingBubbleColor:[UIColor yellowColor]];
+    [chatViewStyle setIncomingBubbleColor:[[UIColor yellowColor] colorWithAlphaComponent:0.3]];
+    [chatViewStyle setOutgoingBubbleColor:[[UIColor blueColor]colorWithAlphaComponent:0.7]];
     [chatViewStyle setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
@@ -655,12 +655,12 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewManager.chatViewStyle setPullRefreshColor:[UIColor redColor]];
 //    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor blueColor]];
 //    [chatViewManager.chatViewStyle setNavBarColor:[UIColor yellowColor]];
-
     
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.backgroundColor = [UIColor redColor];
     rightButton.frame = CGRectMake(10, 10, 20, 20);
     [chatViewManager.chatViewStyle setNavBarRightButton:rightButton];
+    [chatViewManager setClientInfo:@{@"avatar":@"https://avatars3.githubusercontent.com/u/1302?v=3&s=96"}];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -679,9 +679,13 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     lertButton.frame = CGRectMake(10, 10, 20, 20);
     [chatViewManager.chatViewStyle setNavBarLeftButton:lertButton];
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleDefault];
+    chatViewManager.chatViewStyle.navTitleColor = [UIColor yellowColor];
     
+//    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blueColor]}];
     [chatViewManager setNavTitleText:@"我是标题哦^.^"];
-    [chatViewManager pushMQChatViewControllerInViewController:self];
+    
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+    [chatViewManager presentMQChatViewControllerInViewController:self];
     
 }
 

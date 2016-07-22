@@ -13,7 +13,7 @@
 #import "MQAgent.h"
 #import "MQEnterprise.h"
 
-#define MQSDKVersion @"3.2.0"
+#define MQSDKVersion @"3.2.2"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -386,7 +386,7 @@
  */
 + (void)evaluateBotMessage:(NSString *)messageId
                   isUseful:(BOOL)isUseful
-                completion:(void (^)(BOOL success, NSError *error))completion;
+                completion:(void (^)(BOOL success, NSString *text, NSError *error))completion;
 
 /**
  强制转人工
@@ -417,7 +417,16 @@
 + (void)getEnterpriseConfigDataComplete:(void(^)(MQEnterprise *, NSError *))action;
 
 /**
- 获取客服邀请评价显示的文案
+ 开始显示聊天界面，如果自定义聊天界面，在聊天界面出现的时候调用，通知 SDK 进行初始化
+ */
++ (void)didStartChat;
+
+/**
+ 聊天结束，如果自定义聊天界面，在聊天界面消失的时候嗲用，通知 SDK 进行清理工作
+ */
++ (void)didEndChat;
+
+/* 获取客服邀请评价显示的文案
  */
 + (void)getEvaluationPromtTextComplete:(void(^)(NSString *, NSError *))action;
 
@@ -443,5 +452,23 @@
                               images:(NSArray *)images
                           clientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
                           completion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
+    切换本地用户为指定的自定义 id 用户, 回调的 clientId 如果为 nil 的话表示刷新失败，或者该用户不存在。
+ */
++ (void)refreshLocalClientWithCustomizedId:(NSString *)customizedId complete:(void(^)(NSString *clientId))action;
+
+/**
+ 获取当前用户在等待队列的位置
+ */
++ (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action;
+
+/**
+ 获取用户在等待队列中的位置，为 0 则表示没有在等待队列
+ */
++ (int)waitingInQueuePosition;
+
+
++ (NSError *)checkGlobalError;
 
 @end

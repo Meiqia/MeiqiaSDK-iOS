@@ -20,6 +20,7 @@
 #import "MQChatViewConfig.h"
 #import <MeiQiaSDK/MeiQiaSDK.h>
 #import "MQFileDownloadMessage.h"
+#import "MQRichTextMessage.h"
 
 /**
  *  该协议是UI层获取数据的委托方法
@@ -339,7 +340,7 @@
  */
 + (void)evaluateBotMessage:(NSString *)messageId
                   isUseful:(BOOL)isUseful
-                completion:(void (^)(BOOL success, NSError *error))completion;
+                completion:(void (^)(BOOL success, NSString *text, NSError *error))completion;
 
 //强制转人工
 - (void)forceRedirectHumanAgentWithSuccess:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
@@ -387,6 +388,33 @@
  获取当前企业的配置信息
  */
 + (void)getEnterpriseConfigInfoComplete:(void(^)(MQEnterprise *, NSError *))action;
+
+/**
+ 在准备显示聊天界面是调用
+ */
++ (void)prepareForChat;
+
+/**
+ 在聊天界面消失是调用
+ */
++ (void)completeChat;
+
+/**
+ 切换本地用户为指定的自定义 id 用户, 回调的 clientId 如果为 nil 的话表示刷新失败，或者该用户不存在。
+ */
++ (void)refreshLocalClientWithCustomizedId:(NSString *)customizedId complete:(void(^)(NSString *clientId))action;
+
+/**
+ 判断用户是否在等待
+ */
++ (int)waitingInQueuePosition;
+
+/**
+ 获取当前用户在等待队列的位置
+ */
++ (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action;
+
++ (NSError *)checkGlobalError;
 
 @end
 

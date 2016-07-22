@@ -69,7 +69,7 @@
         };
         recorder.receiveErrorBlock = ^(NSError *error){
             weakSelf.meterObserver.audioQueue = nil;
-            [[[UIAlertView alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"record_error"] message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"user_confirm", nil]show];
+            [[[UIAlertView alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"record_error"] message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"user_confirm"], nil]show];
         };
         
         recorder.bufferDurationSeconds = 0.25;

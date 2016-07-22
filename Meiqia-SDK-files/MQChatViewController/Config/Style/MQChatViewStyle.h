@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "UIColor+Hex.h"
+#import "UIColor+MQHex.h"
 
 //https://github.com/brynbellomy/FlatUIColors
 static NSString *const turquoise = @"1abc9c"; //青绿色

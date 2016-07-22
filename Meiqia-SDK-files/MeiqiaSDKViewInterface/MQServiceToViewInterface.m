@@ -135,6 +135,18 @@
             eventType = MQChatEventTypeAgentUpdate;
             break;
         }
+        case MQMessageActionQueueingRemoved:
+        {
+            eventContent = @"queue remove";
+            eventType = MQChatEventTypeQueueingRemoved;
+            break;
+        }
+        case MQMessageActionQueueingAdd:
+        {
+            eventContent = @"queue add";
+            eventType = MQChatEventTypeQueueingAdd;
+            break;
+        }
         default:
             break;
     }
@@ -156,10 +168,16 @@
             if ([[fromMessage.accessoryData objectForKey:@"content_robot"] count] > 0) {
                 NSString *subType = [fromMessage.accessoryData objectForKey:@"sub_type"] ?: @"";
                 if ([subType isEqualToString:@"evaluate"] || [subType isEqualToString:@"reply"] ||
-                    [subType isEqualToString:@"redirect"]) {
+                    [subType isEqualToString:@"redirect"] || [subType isEqualToString:@"queueing"]) {
                     // 机器人普通回答消息
-                    NSString *content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
-                    content = [MQManager convertToUnicodeWithEmojiAlias:content];
+                    NSString *content;
+                    if ([subType isEqualToString:@"queueing"]) {
+                        content = @"暂无空闲客服，您已进入排队等待。";
+                        subType = @"redirect";
+                    } else {
+                        content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                        content = [MQManager convertToUnicodeWithEmojiAlias:content];
+                    }
                     BOOL isEvaluated = [fromMessage.accessoryData objectForKey:@"is_evaluated"] ? [[fromMessage.accessoryData objectForKey:@"is_evaluated"] boolValue] : false;
                     MQBotAnswerMessage *botMessage = [[MQBotAnswerMessage alloc] initWithContent:content subType:subType isEvaluated:isEvaluated];
                     toMessage = botMessage;
@@ -215,6 +233,11 @@
         case MQMessageContentTypeFile: {
             MQFileDownloadMessage *fileDownloadMessage = [[MQFileDownloadMessage alloc] initWithDictionary:fromMessage.accessoryData];
             toMessage = fileDownloadMessage;
+            break;
+        }
+        case MQMessageContentTypeRichText: {
+            MQRichTextMessage *richTextMessage = [[MQRichTextMessage alloc] initWithDictionary:fromMessage.accessoryData];
+            toMessage = richTextMessage;
             break;
         }
         default:
@@ -566,6 +589,18 @@
     [MQManager markAllMessagesAsRead];
 }
 
++ (void)prepareForChat {
+    [MQManager didStartChat];
+}
+
++ (void)completeChat {
+    [MQManager didEndChat];
+}
+
++ (void)refreshLocalClientWithCustomizedId:(NSString *)customizedId complete:(void(^)(NSString *clientId))action {
+    [MQManager refreshLocalClientWithCustomizedId:customizedId complete:action];
+}
+
 + (void)clientDownloadFileWithMessageId:(NSString *)messageId
                           conversatioId:(NSString *)conversationId
                           andCompletion:(void(^)(NSString *url, NSError *error))action {
@@ -578,7 +613,7 @@
 
 + (void)evaluateBotMessage:(NSString *)messageId
                   isUseful:(BOOL)isUseful
-                completion:(void (^)(BOOL success, NSError *error))completion
+                completion:(void (^)(BOOL success, NSString *text, NSError *error))completion
 {
     [MQManager evaluateBotMessage:messageId isUseful:isUseful completion:completion];
 }
@@ -619,6 +654,11 @@
         if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
             [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
+    } else if ([self handleQueueingMessage:messages]) {
+        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
+        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
+            [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
+        }
     } else {
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
         
@@ -626,7 +666,13 @@
             [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
         }
     }
-    
+}
+
+- (BOOL)handleQueueingMessage:(NSArray<MQMessage *> *)messages {
+    if (messages.count == 1 && ([messages firstObject].action == MQMessageActionQueueingAdd || [messages firstObject].action == MQMessageActionQueueingRemoved)) {
+        return YES;
+    }
+    return NO;
 }
 
 - (BOOL)handleBlacklistMessage:(NSArray<MQMessage *> *)messages {
@@ -696,4 +742,15 @@
     [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
 }
 
++ (int)waitingInQueuePosition {
+    return [MQManager waitingInQueuePosition];
+}
+
++ (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action {
+    return [MQManager getClientQueuePositionComplete:action];
+}
+
++ (NSError *)checkGlobalError {
+    return [MQManager checkGlobalError];
+}
 @end

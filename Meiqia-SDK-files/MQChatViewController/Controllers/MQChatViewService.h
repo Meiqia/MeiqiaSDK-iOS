@@ -201,6 +201,16 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
  */
 - (void)forceRedirectToHumanAgent;
 
+/**
+ 保存用户输入的文字为草稿
+ */
+- (void)saveTextDraftIfNeeded:(UITextField *)tf;
+
+/**
+ 恢复用户保存的草稿
+ */
+- (void)fillTextDraftToFiledIfExists:(UITextField *)tf;
+
 #ifndef INCLUDE_MEIQIA_SDK
 /**
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
