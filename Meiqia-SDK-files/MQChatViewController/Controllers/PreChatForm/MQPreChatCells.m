@@ -99,6 +99,8 @@
         self.textField.textColor = [UIColor colorWithHexString:ebonyClay];
         self.textField.viewWidth = self.contentView.viewWidth - 20;
         self.textField.viewHeight = self.viewHeight;
+        self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         self.textField.delegate = self;
         [self.textField align:(ViewAlignmentMiddleLeft) relativeToPoint:CGPointMake(10, self.viewHeight / 2)];
         [self.contentView addSubview:self.textField];

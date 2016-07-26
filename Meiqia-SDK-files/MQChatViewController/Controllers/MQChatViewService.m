@@ -894,7 +894,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [sself getClientInfo];
     }];
     
-    [self afterClientOnline];
     
     // 判断是否是机器人客服，来改变右上角按钮
     agentType = completion ? agentType : @"";
@@ -910,6 +909,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         __strong typeof (wself) sself = wself;
         [sself scrollToButton];
     });
+    
+    [self afterClientOnline];
 }
 
 - (void)afterClientOnline {

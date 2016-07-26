@@ -11,17 +11,15 @@
 #import <MeiqiaSDK/MeiqiaSDK.h>
 #import "MQServiceToViewInterface.h"
 #import "NSArray+MQFunctional.h"
+#import "MQChatViewConfig.h"
 
 @implementation MQPreChatFormViewModel
 
 - (void)requestPreChatServeyDataIfNeed:(void(^)(MQPreChatData *data, NSError *error))block {
-    NSString *userDefinedClientId = [MQChatViewConfig sharedConfig].MQClientId;
-    NSString *userDefinedCostomId = [MQChatViewConfig sharedConfig].customizedId;
-    
     __weak typeof(self) wself = self;
-    [MQServiceToViewInterface requestPreChatServeyDataIfNeedWithClientId:userDefinedClientId customizId:userDefinedCostomId action:^(MQPreChatData *data, NSError *error) {
+    [MQServiceToViewInterface requestPreChatServeyDataIfNeedCompletion:^(MQPreChatData *data, NSError *error) {
         __strong typeof (wself) sself = wself;
-        sself.formData = data;
+        sself.formData = [self filterFormData:data];
         
         if (data.isUseCapcha) {
             MQPreChatFormItem *captchaItem = [MQPreChatFormItem new];
@@ -36,6 +34,38 @@
     }];
 }
 
+- (MQPreChatData *)filterFormData:(MQPreChatData *)formData {
+    
+    if ([formData.menu.status isEqualToString:@"close"] && [formData.form.status isEqualToString:@"close"]) {
+        return nil;
+    } else {
+        NSMutableArray *filteredMenuItens = [NSMutableArray new];
+        NSString *groupId = [MQChatViewConfig sharedConfig].scheduledGroupId;
+        NSString *agentId = [MQChatViewConfig sharedConfig].scheduledAgentId;
+        
+        [formData.menu.menuItems enumerateObjectsUsingBlock:^(MQPreChatMenuItem *menuItem, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSString *target = nil;
+            if ([menuItem targetKind]) {
+                if ([[menuItem target] isEqualToString:@"group"]) {
+                    target = groupId;
+                } else if ([[menuItem target] isEqualToString:@"agent"]) {
+                    target = agentId;
+                }
+            }
+            if (target) {
+                if ([target isEqualToString:menuItem.target]) {
+                    [filteredMenuItens addObject:menuItem];
+                }
+            } else {
+                [filteredMenuItens addObject:menuItem];
+            }
+        }];
+        formData.menu.menuItems = filteredMenuItens;
+    }
+    
+    return formData;
+}
+
 - (void)setValue:(id)value forFieldIndex:(NSInteger)fieldIndex {
     NSString *filedName = [(MQPreChatFormItem *)self.formData.form.formItems[fieldIndex] filedName];
     if (value) {
@@ -43,7 +73,7 @@
     } else {
         [self.filledFieldValue removeObjectForKey:filedName];
     }
-    MQInfo(@"valued changed: %@", self.filledFieldValue);
+//    MQInfo(@"valued changed: %@", self.filledFieldValue);
 }
 
 - (NSMutableDictionary *)filledFieldValue {
@@ -65,7 +95,9 @@
     [MQServiceToViewInterface getCaptchaComplete:^(NSString *token, UIImage *image) {
         __strong typeof (wself) sself = wself;
         sself.captchaToken = token;
-        [self.filledFieldValue setObject:token forKey:kCaptchaToken];
+        if (token) {
+            [sself.filledFieldValue setObject:token forKey:kCaptchaToken];
+        }
         block(image);
     }];
 }
@@ -75,7 +107,19 @@
     
     if (unsatisfiedIndexs.count == 0) {
         //do submition
+        
         [MQServiceToViewInterface submitPreChatForm:self.filledFieldValue completion:^(id r, NSError *e) {
+            
+            if (e.userInfo[@"com.alamofire.serialization.response.error.data"]) {
+                NSData *data = e.userInfo[@"com.alamofire.serialization.response.error.data"];
+                NSDictionary *info = [MQJSONHelper createWithJSONString:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+                if ([info isKindOfClass:[NSDictionary class]]) {
+                    if (info[@"captcha_needed"]) {
+                        e = [NSError errorWithDomain:@"验证码错误" code:0 userInfo:nil];
+                    }
+                }
+            }
+            
             return block(r, e);
         }];
     } else {

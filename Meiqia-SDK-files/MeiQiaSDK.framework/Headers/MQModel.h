@@ -25,13 +25,18 @@
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 
-- (NSString *)JSONString:(id)jsonObj;
-
-- (id)objWithJSON:(NSString *)jsonString;
+- (NSString *)outputJSON;
 
 - (NSDictionary *)fromServerMapping;
 
 - (NSDictionary *)toDBMapping;
 
+@end
+
+@interface MQModel (TransformData)
+
+- (NSString *)JSONString:(id)jsonObj;
+
+- (id)objWithJSON:(NSString *)jsonString;
 
 @end

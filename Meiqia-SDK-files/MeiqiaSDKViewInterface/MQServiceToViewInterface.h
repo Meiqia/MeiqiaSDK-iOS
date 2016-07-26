@@ -417,7 +417,7 @@
 /**
  
  */
-+ (void)requestPreChatServeyDataIfNeedWithClientId:(NSString *)clientId customizId:(NSString *)customizId action:(void(^)(MQPreChatData *data, NSError *error))block;
++ (void)requestPreChatServeyDataIfNeedCompletion:(void(^)(MQPreChatData *data, NSError *error))block;
 
 /**
  获取验证码

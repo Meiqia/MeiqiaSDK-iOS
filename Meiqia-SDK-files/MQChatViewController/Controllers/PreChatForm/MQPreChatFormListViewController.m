@@ -17,17 +17,17 @@
 @interface MQPreChatFormListViewController ()
 
 @property (nonatomic, strong) MQPreChatFormViewModel *viewModel;
-@property (nonatomic, strong) void(^completionBlock)(void);
-@property (nonatomic, strong) void(^cancelBlock)(void);
+@property (nonatomic, copy) void(^completeBlock)(NSDictionary *userInfo);
+@property (nonatomic, copy) void(^cancelBlock)(void);
 
 @end
 
 @implementation MQPreChatFormListViewController
 
-+ (MQPreChatFormListViewController *)usePreChatFormIfNeededOnViewController:(UIViewController *)controller compeletion:(void(^)(void))block cancle:(void(^)(void))cancelBlock {
++ (MQPreChatFormListViewController *)usePreChatFormIfNeededOnViewController:(UIViewController *)controller compeletion:(void(^)(NSDictionary *userInfo))block cancle:(void(^)(void))cancelBlock {
     
     MQPreChatFormListViewController *preChatViewController = [MQPreChatFormListViewController new];
-    preChatViewController.completionBlock = block;
+    preChatViewController.completeBlock = block;
     preChatViewController.cancelBlock = cancelBlock;
     
     [preChatViewController.viewModel requestPreChatServeyDataIfNeed:^(MQPreChatData *data, NSError *error) {
@@ -37,7 +37,7 @@
             nav.navigationBar.tintColor = controller.navigationController.navigationBar.tintColor;
             [controller presentViewController:nav animated:YES completion:nil];
         } else {
-            block();
+            block(nil);
         }
     }];
     
@@ -69,14 +69,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (MQPreChatFormListViewController *)appendPreChatWithConfig:(MQChatViewConfig *)config on:(UIView*)view completion:(CompleteBlock)block {
-    self.completionBlock = block;
-    self.config = config;
-    
-    [view addSubview:self.view];
-    return self;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -118,8 +110,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MQPreChatSubmitViewController *submitViewController = [MQPreChatSubmitViewController new];
     submitViewController.formData = self.viewModel.formData;
-    submitViewController.completeBlock = self.completionBlock;
-    submitViewController.config = self.config;
+    submitViewController.completeBlock = self.completeBlock;
     submitViewController.selectedMenuItem = self.viewModel.formData.menu.menuItems[indexPath.row];
     [self.navigationController pushViewController:submitViewController animated:YES];
 }

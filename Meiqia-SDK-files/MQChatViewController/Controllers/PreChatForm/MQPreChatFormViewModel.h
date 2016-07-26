@@ -11,7 +11,7 @@
 
 @interface MQPreChatFormViewModel : NSObject
 
-typedef void(^CompleteBlock)(void);
+typedef void(^CompleteBlock)(NSDictionary *userInfo);
 
 @property (nonatomic, strong) MQPreChatData *formData;
 @property (nonatomic, copy) NSString *captchaToken;

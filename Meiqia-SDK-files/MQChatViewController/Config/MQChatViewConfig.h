@@ -137,6 +137,7 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @property (nonatomic, copy) UIColor *eventTextColor;
 @property (nonatomic, copy) UIColor *redirectAgentNameColor;
 @property (nonatomic, copy) UIColor *navTitleColor;
+
 @property (nonatomic, copy) UIColor *navBarTintColor;
 @property (nonatomic, copy) UIColor *navBarColor;
 @property (nonatomic, copy) UIColor *pullRefreshColor;

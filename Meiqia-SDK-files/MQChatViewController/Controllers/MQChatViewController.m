@@ -72,7 +72,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #endif
     [MQCustomizedUIText reset];
     
-    [MQServiceToViewInterface completeChat];
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -117,23 +116,38 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     popRecognizer.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:popRecognizer];
     
-//    [self presentUI];
-    [chatViewService setClientOnline];
+    [self presentUI];
+//    [chatViewService setClientOnline];
 }
 
 - (void)presentUI {
     
     __weak typeof(self) wself = self;
-    MQPreChatFormListViewController *viewController =[MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^{
+    [MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^(NSDictionary *userInfo){
+        NSString *targetType = userInfo[@"targetType"];
+        NSString *target = userInfo[@"target"];
+        NSString *menu = userInfo[@"menu"];
+        
+        if ([targetType isEqualToString:@"agent"]) {
+            [MQChatViewConfig sharedConfig].scheduledAgentId = target;
+        } else if ([targetType isEqualToString:@"group"]) {
+            [MQChatViewConfig sharedConfig].scheduledGroupId = target;
+        }
+        
+        if ([menu length] > 0) {
+            NSMutableArray *m = [[MQChatViewConfig sharedConfig].preSendMessages mutableCopy] ?: [NSMutableArray new];
+            [m addObject:menu];
+            [MQChatViewConfig sharedConfig].preSendMessages = m;
+        }
+        
         [chatViewService setClientOnline];
     } cancle:^{
         __strong typeof (wself) sself = wself;
-        [self dismissViewControllerAnimated:NO completion:^{
+        [sself dismissViewControllerAnimated:NO completion:^{
             [sself dismissChatViewController];
         }];
     }];
     
-    viewController.config = [MQChatViewConfig sharedConfig];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -149,6 +163,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
     
     [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
+    
+    [MQServiceToViewInterface completeChat];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

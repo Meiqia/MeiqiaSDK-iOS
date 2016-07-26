@@ -203,15 +203,15 @@
         [sself hideLoadingIndicator];
         if (e == nil) {
             [sself dismissViewControllerAnimated:YES completion:^{
-                [sself setupConfigInfo];
                 if (sself.completeBlock) {
-                    sself.completeBlock();
+                    sself.completeBlock([sself createUserInfo]);
                 }
             }];
         } else {
             if (e.code != 1) {
                 [self resetCaptchaCellIfExists];
             }
+            
             [MQToast showToast:e.localizedDescription duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
         }
     }];
@@ -248,15 +248,11 @@ static UIBarButtonItem *rightBarButtonItemCache = nil;
 }
 
 //
-- (void)setupConfigInfo {
+- (NSDictionary *)createUserInfo {
     NSString *target = self.selectedMenuItem.target;
     NSString *targetType = self.selectedMenuItem.targetKind;
     
-    if ([targetType isEqualToString:@"agent"]) {
-        self.config.scheduledAgentId = target;
-    } else if ([targetType isEqualToString:@"group"]) {
-        self.config.scheduledGroupId = target;
-    }
+    return @{@"target":target, @"targetType":targetType, @"menu":[self.selectedMenuItem desc]};
 }
 
 
