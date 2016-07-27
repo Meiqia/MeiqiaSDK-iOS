@@ -4,6 +4,10 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>.DS_Store</key>
+		<data>
+		3y++sUAKzaCQmjLBz2v0kvESHgc=
+		</data>
 		<key>Headers/JSONHelper.h</key>
 		<data>
 		VD2DS4zL5PIfgpvLYzQW1q0rMkI=
@@ -30,7 +34,7 @@
 		</data>
 		<key>Headers/MQManager.h</key>
 		<data>
-		vK0vL/9cSkXuDtkn3OGeq7Dijto=
+		InnhTU6eBEPQUKoGZvnNNfIYRho=
 		</data>
 		<key>Headers/MQMessage.h</key>
 		<data>
@@ -117,11 +121,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			vK0vL/9cSkXuDtkn3OGeq7Dijto=
+			InnhTU6eBEPQUKoGZvnNNfIYRho=
 			</data>
 			<key>hash2</key>
 			<data>
-			+hYxgGFGeuBzOozgWhdAXEvUxBF2aew6uz1RZbi1QhE=
+			OOe9q1dWqVoH9KX54DGOVGlo7LaooiKbwEosfBIx0Vo=
 			</data>
 		</dict>
 		<key>Headers/MQMessage.h</key>
