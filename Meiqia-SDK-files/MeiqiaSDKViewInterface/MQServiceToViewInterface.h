@@ -424,6 +424,8 @@
  */
 + (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block;
 
++ (void)getCaptchaWithURLComplete:(void (^)(NSString *token, NSString *url))block;
+
 + (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id,NSError *))block;
 
 

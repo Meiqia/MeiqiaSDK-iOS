@@ -762,6 +762,10 @@
     [MQManager getCaptchaComplete:block];
 }
 
++ (void)getCaptchaWithURLComplete:(void (^)(NSString *token, NSString *url))block {
+    [MQManager getCaptchaURLComplete:block];
+}
+
 + (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id,NSError *))block {
     [MQManager submitPreChatForm:formData completion:block];
 }

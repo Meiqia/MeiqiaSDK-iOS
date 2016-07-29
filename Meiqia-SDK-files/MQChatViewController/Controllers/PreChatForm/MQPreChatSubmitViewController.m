@@ -16,6 +16,8 @@
 #pragma mark -
 #pragma mark -
 
+#define HEIGHT_SECTION_HEADER 40
+
 @interface MQPreChatSubmitViewController ()
 
 @property (nonatomic, strong) MQPreChatFormViewModel *viewModel;
@@ -59,7 +61,7 @@
     
     MQPreChatSectionHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass([MQPreChatSectionHeaderView class])];
     
-    header.viewSize = CGSizeMake(tableView.viewWidth, 40);
+    header.viewSize = CGSizeMake(tableView.viewWidth, HEIGHT_SECTION_HEADER);
     header.viewOrigin = CGPointZero;
     header.formItem = self.viewModel.formData.form.formItems[section];
     
@@ -67,11 +69,11 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40;
+    return HEIGHT_SECTION_HEADER;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 1;
+    return 1; //means hide it
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -158,14 +160,14 @@
     
     if (formItem.type == MQPreChatFormItemInputTypeSingleSelection) {
         [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:(UITableViewScrollPositionNone)];
-        [self.viewModel setValue:@(indexPath.row) forFieldIndex:indexPath.section];
+        [self.viewModel setValue:formItem.choices[indexPath.row] forFieldIndex:indexPath.section];
     }else if (formItem.type == MQPreChatFormItemInputTypeMultipleSelection) {
         [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:(UITableViewScrollPositionNone)];
         
         NSArray *selectedRowsInCurrentSection = [[[tableView indexPathsForSelectedRows] filter:^BOOL(NSIndexPath *i) {
             return i.section == indexPath.section;
         }] map:^id(NSIndexPath *i) {
-            return @(i.row);
+            return formItem.choices[i.row];
         }];
         [self.viewModel setValue:selectedRowsInCurrentSection forFieldIndex:indexPath.section];
     }
@@ -212,7 +214,7 @@
                 [self resetCaptchaCellIfExists];
             }
             
-            [MQToast showToast:e.localizedDescription duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
+            [MQToast showToast:e.domain duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
         }
     }];
     
