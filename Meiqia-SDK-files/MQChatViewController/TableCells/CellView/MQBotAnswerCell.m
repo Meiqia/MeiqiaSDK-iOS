@@ -164,7 +164,7 @@ static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
     }
     //判断文字是否居中显示
     CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:cellModel.cellText textHeight:cellModel.textLabelFrame.size.height];
-    if (cellModel.textLabelFrame.size.width > messageTextWidth && ![cellModel.messageSubType isEqualToString:@"redirect"]) {
+    if (cellModel.textLabelFrame.size.width > messageTextWidth && ![cellModel.normalSubTypes containsObject:cellModel.messageSubType]) {
         textLabel.textAlignment = NSTextAlignmentCenter;
     }
     
@@ -246,7 +246,7 @@ static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
         evaluateDoneBtn.hidden = true;
         replyBtn.frame = cellModel.replyBtnFrame;
         replyBtn.hidden = false;
-    } else if ([cellModel.messageSubType isEqualToString:@"redirect"]) {
+    } else if ([cellModel.normalSubTypes containsObject:cellModel.messageSubType]) {
         evaluateUpperLine.hidden = true;
         evaluateMiddleLine.hidden = true;
         positiveBtn.hidden = true;

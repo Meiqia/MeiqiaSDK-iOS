@@ -869,6 +869,9 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 
 # 更新日志
 
+**v3.2.4 2016 年 08 月 1 日**
+* 增加机器人未识别手动转人工
+
 **v3.2.3 2016 年 07 月 22 日**
 * 增加机器人自定义回复文案
 

@@ -162,13 +162,13 @@
 
 + (MQBaseMessage *)convertToSendMessageWithMessage:(MQMessage *)fromMessage {
     MQBaseMessage *toMessage;
+    NSArray *normalTypes = @[@"evaluate", @"reply", @"redirect", @"queueing", @"manual_redirect"];
     switch (fromMessage.contentType) {
         case MQMessageContentTypeBot: {
             //判断是否是机器人消息
             if ([[fromMessage.accessoryData objectForKey:@"content_robot"] count] > 0) {
                 NSString *subType = [fromMessage.accessoryData objectForKey:@"sub_type"] ?: @"";
-                if ([subType isEqualToString:@"evaluate"] || [subType isEqualToString:@"reply"] ||
-                    [subType isEqualToString:@"redirect"] || [subType isEqualToString:@"queueing"]) {
+                if ([normalTypes containsObject:subType]) {
                     // 机器人普通回答消息
                     NSString *content;
                     if ([subType isEqualToString:@"queueing"]) {

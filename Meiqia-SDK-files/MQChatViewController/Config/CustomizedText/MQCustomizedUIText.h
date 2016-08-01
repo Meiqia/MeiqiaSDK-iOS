@@ -61,6 +61,7 @@ typedef NS_ENUM(NSUInteger, MQUITextKey) {
     
     MQUITextKeyNoAgentAvailableTip,
     MQUITextKeyBotRedirectTip,
+    MQUITextKeyBotManualRedirectTip,
     
     MQUITextKeyClientIsOnlining,
     MQUITextKeySendTooFast

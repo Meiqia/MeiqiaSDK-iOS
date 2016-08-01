@@ -92,7 +92,10 @@
 "message_tips_online_failed_listed_in_black_list" = "對不起，當前客服系統暫時無法使用。";
 
 "reply_tip_text"        = "抱歉，當前沒有客服在線，您可以給我們 留言";
+
 "bot_redirect_tip_text"  = "很抱歉您不滿意機器人的回答，您可以嘗試 轉人工";
+
+"bot_manual_redirect_tip_text" = "您的問題如果需要人工支持，可以 轉人工";
 
 "cannot_text_client_is_onlining"  = "正在為您分配客服，請稍後重發。";
 
