@@ -130,8 +130,13 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
     if (self = [super init]) {
         self.tipType = tipType;
         self.date = [NSDate date];
-        self.tipText = [MQBundleUtil localizedStringForKey:
-                        tipType == MQTipTypeReply ? @"reply_tip_text" : @"bot_redirect_tip_text"];
+        if (tipType == MQTipTypeReply) {
+            self.tipText = [MQBundleUtil localizedStringForKey:@"reply_tip_text"];
+        } else if (tipType == MQTipTypeBotRedirect) {
+            self.tipText = [MQBundleUtil localizedStringForKey:@"bot_redirect_tip_text"];
+        } else if (tipType == MQTipTypeBotManualRedirect) {
+            self.tipText = [MQBundleUtil localizedStringForKey:@"bot_manual_redirect_tip_text"];
+        }
         self.enableLinesDisplay = false;
         
         //tip frame
