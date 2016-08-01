@@ -17,9 +17,6 @@
 #import "MEIQIA_TTTAttributedLabel.h"
 #import "MQChatEmojize.h"
 #import "MQServiceToViewInterface.h"
-#ifndef INCLUDE_MEIQIA_SDK
-#import "UIImageView+WebCache.h"
-#endif
 
 static CGFloat const kMQBotAnswerEvaluateBtnHeight = 40.0;
 static CGFloat const kMQBotAnswerEvaluateUpperLineLeftOffset = 7.5;
@@ -163,6 +160,10 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
  */
 @property (nonatomic, readwrite, copy) NSString *messageSubType;
 
+/**
+ * @brief 普通类型的集合
+ */
+@property (nonatomic, readwrite, copy) NSArray *normalSubTypes;
 
 @end
 
@@ -173,6 +174,7 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
                                      delegate:(id<MQCellModelDelegate>)delegator
 {
     if (self = [super init]) {
+        self.normalSubTypes = @[@"redirect", @"manual_redirect"];
         self.messageSubType = message.subType;
         self.isEvaluated = message.isEvaluated;
         self.messageId = message.messageId;
@@ -263,7 +265,7 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
         CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;
         //气泡宽度
         CGFloat bubbleWidth = messageTextWidth + kMQCellBubbleToTextHorizontalLargerSpacing + kMQCellBubbleToTextHorizontalSmallerSpacing;
-        if (![message.subType isEqualToString:@"redirect"]) {
+        if (![self.normalSubTypes containsObject:self.messageSubType]) {
             bubbleHeight += kMQBotAnswerEvaluateBtnHeight;
             bubbleWidth = bubbleWidth < kMQBotAnswerEvaluateBubbleMinWidth ? kMQBotAnswerEvaluateBubbleMinWidth : bubbleWidth;
             messageTextWidth = bubbleWidth - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing;
@@ -439,7 +441,7 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
     CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;
     //气泡宽度
     CGFloat bubbleWidth = messageTextWidth + kMQCellBubbleToTextHorizontalLargerSpacing + kMQCellBubbleToTextHorizontalSmallerSpacing;
-    if (![self.messageSubType isEqualToString:@"redirect"]) {
+    if (![self.normalSubTypes containsObject:self.messageSubType]) {
         bubbleHeight += kMQBotAnswerEvaluateBtnHeight;
         bubbleWidth = bubbleWidth < kMQBotAnswerEvaluateBubbleMinWidth ? kMQBotAnswerEvaluateBubbleMinWidth : bubbleWidth;
         messageTextWidth = bubbleWidth - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing;

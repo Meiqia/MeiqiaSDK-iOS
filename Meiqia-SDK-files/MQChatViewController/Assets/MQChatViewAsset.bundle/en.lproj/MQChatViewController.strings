@@ -93,7 +93,9 @@
 
 "reply_tip_text"        = "Sorry, no agents available. You can give us a message";
 
-"bot_redirect_tip_text"  = "I am sorry the reply of robot did not solve your problem. You can redirect to an agent.";
+"bot_redirect_tip_text"  = "I am sorry the reply of robot did not solve your problem. Tap here to redirect to an agent.";
+
+"bot_manual_redirect_tip_text" = "If you need help, tap here to redirect to an agent.";
 
 "cannot_text_client_is_onlining"  = "Allocating an agent for you. Please resend later.";
 
