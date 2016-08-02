@@ -30,7 +30,7 @@
             data.form.formItems = [data.form.formItems arrayByAddingObject:captchaItem];
         }
         
-        block(data, error);
+        block(sself.formData, error);
     }];
 }
 
