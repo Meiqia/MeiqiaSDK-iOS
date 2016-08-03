@@ -15,7 +15,7 @@
 - (NSDictionary *)toDBMapping;
 
 @optional
-- (BOOL)transformWithKey:(NSString *)key value:(id)value;
+- (id)transformWithKey:(NSString *)key value:(id)value;
 
 @end
 
