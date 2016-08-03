@@ -59,6 +59,7 @@ static NSMutableDictionary * customizedTextMap;
         
         @(MQUITextKeyNoAgentAvailableTip) : @"reply_tip_text",
         @(MQUITextKeyBotRedirectTip) : @"bot_redirect_tip_text",
+        @(MQUITextKeyBotManualRedirectTip) : @"bot_manual_redirect_tip_text",
         
         @(MQUITextKeyFileDownloadOverdue) : @"file_download_file_is_expired",
         @(MQUITextKeyFileDownloadCancel) : @"file_download_canceld",

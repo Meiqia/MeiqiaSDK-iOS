@@ -16,6 +16,7 @@ typedef NS_ENUM(NSUInteger, MQTipType) {
     MQTipTypeRedirect,
     MQTipTypeReply,
     MQTipTypeBotRedirect,
+    MQTipTypeBotManualRedirect,
     MQTipTypeWaitingInQueue
 };
 

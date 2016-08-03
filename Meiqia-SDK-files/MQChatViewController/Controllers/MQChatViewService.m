@@ -759,7 +759,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
     // 判断 table 中是否出现「转人工」或「留言」，如果出现过，并不在最后一个 cell，则将之移到底部
     MQTipsCellModel *tipModel = nil;
-    if (tipType == MQTipTypeReply || tipType == MQTipTypeBotRedirect) {
+    if (tipType == MQTipTypeReply || tipType == MQTipTypeBotRedirect || tipType == MQTipTypeBotManualRedirect) {
         for (id<MQCellModelProtocol> model in self.cellModels) {
             if ([model isKindOfClass:[MQTipsCellModel class]]) {
                 MQTipsCellModel *cellModel = (MQTipsCellModel *)model;
@@ -788,7 +788,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     for (id<MQCellModelProtocol> model in self.cellModels) {
         if ([model isKindOfClass:[MQTipsCellModel class]]) {
             MQTipsCellModel *cellModel = (MQTipsCellModel *)model;
-            if (cellModel.tipType == MQTipTypeReply || cellModel.tipType == MQTipTypeBotRedirect) {
+            if (cellModel.tipType == MQTipTypeReply || cellModel.tipType == MQTipTypeBotRedirect || cellModel.tipType == MQTipTypeBotManualRedirect) {
                 continue;
             }
         }
@@ -1142,14 +1142,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
     }
     
-    //若收到 socket 消息为机器人强制转人工，则调用强制转人工方法
+    //若收到 socket 消息为机器人
     if ([messages count] == 1 && [[messages firstObject] isKindOfClass:[MQBotAnswerMessage class]]) {
+        //调用强制转人工方法
         if ([((MQBotAnswerMessage *)[messages firstObject]).subType isEqualToString:@"redirect"]) {
             __weak typeof(self)wself = self;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 __strong typeof(wself)sself = wself;
                 [sself forceRedirectToHumanAgent];
             });
+        }
+        //渲染手段转人工
+        if ([((MQBotAnswerMessage *)[messages firstObject]).subType isEqualToString:@"manual_redirect"]) {
+            [self addTipCellModelWithType:MQTipTypeBotManualRedirect];
         }
     }
     //等待 0.1 秒，等待 tableView 更新后再滑动到底部，优化体验

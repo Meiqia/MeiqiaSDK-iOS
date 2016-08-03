@@ -161,6 +161,10 @@
  */
 @property (nonatomic, readonly, copy) NSString *messageSubType;
 
+/**
+ * @brief 普通类型的集合
+ */
+@property (nonatomic, readonly, copy) NSArray *normalSubTypes;
 
 /**
  *  根据MQMessage内容来生成cell model

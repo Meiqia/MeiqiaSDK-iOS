@@ -91,7 +91,8 @@
             [self.chatCellDelegate didTapReplyBtn];
         }
     }
-    if ([tipsLabel.text isEqualToString:[MQBundleUtil localizedStringForKey:@"bot_redirect_tip_text"]]) {
+    NSArray *botRedirectArray = @[[MQBundleUtil localizedStringForKey:@"bot_redirect_tip_text"], [MQBundleUtil localizedStringForKey:@"bot_manual_redirect_tip_text"]];
+    if ([botRedirectArray containsObject:tipsLabel.text]) {
         if ([self.chatCellDelegate respondsToSelector:@selector(didTapBotRedirectBtn)]) {
             [self.chatCellDelegate didTapBotRedirectBtn];
         }
