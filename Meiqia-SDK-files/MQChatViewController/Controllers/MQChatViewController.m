@@ -30,10 +30,11 @@
 #import "MQRecorderView.h"
 #import "MQMessageFormViewManager.h"
 #import "MQPreChatFormListViewController.h"
+#import "MQAGEmojiKeyBoardView.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate, MQAGEmojiKeyboardViewDelegate, MQAGEmojiKeyboardViewDataSource>
 
 @end
 
@@ -47,6 +48,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @property (nonatomic, strong) MQKeyboardController *keyboardController;
 @property (nonatomic, strong) MQRecordView *recordView;
 @property (nonatomic, strong) MQRecorderView *displayRecordView;//只用来显示
+@property (nonatomic, strong) MQAGEmojiKeyboardView *emojiView;
 
 @end
 
@@ -816,6 +818,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [imageRoll setImage:[MQAssetUtil imageFromBundleWithName:@"imageIcon"] forState:(UIControlStateNormal)];
     [imageRoll addTarget:self action:@selector(imageRoll) forControlEvents:(UIControlEventTouchUpInside)];
     
+    UIButton *emoji  = [[UIButton alloc] initWithFrame:rect];
+    [emoji setImage:[MQAssetUtil imageFromBundleWithName:@"emoji"] forState:(UIControlStateNormal)];
+    [emoji addTarget:self action:@selector(emoji) forControlEvents:(UIControlEventTouchUpInside)];
+    
     if ([MQChatViewConfig sharedConfig].enableSendVoiceMessage) {
         [self.chatInputBar.buttonGroupBar addButton:recorderBtn];
     }
@@ -824,6 +830,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         [self.chatInputBar.buttonGroupBar addButton:cameraBtn];
         [self.chatInputBar.buttonGroupBar addButton:imageRoll];
     }
+    
+    [self.chatInputBar.buttonGroupBar addButton:emoji];
 }
 
 - (BOOL)handleSendMessageAbility {
@@ -855,6 +863,17 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)imageRoll {
     if ([self handleSendMessageAbility]) {
         [self sendImageWithSourceType:(UIImagePickerControllerSourceTypePhotoLibrary)];
+    }
+}
+
+- (void)emoji {
+    if ([self handleSendMessageAbility]) {
+        if (self.chatInputBar.isFirstResponder) {
+            [self.chatInputBar resignFirstResponder];
+        }else{
+            self.chatInputBar.inputView = self.emojiView;
+            [self.chatInputBar becomeFirstResponder];
+        }
     }
 }
 
@@ -932,6 +951,97 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)recordCanceld {
     [self cancelRecord:CGPointZero];
+}
+
+#pragma mark - emoji delegate and datasource
+
+- (void)emojiKeyBoardView:(MQAGEmojiKeyboardView *)emojiKeyBoardView didUseEmoji:(NSString *)emoji {
+    
+}
+
+- (void)emojiKeyBoardViewDidPressBackSpace:(MQAGEmojiKeyboardView *)emojiKeyBoardView {
+    
+}
+
+- (UIImage *)emojiKeyboardView:(MQAGEmojiKeyboardView *)emojiKeyboardView imageForSelectedCategory:(MQAGEmojiKeyboardViewCategoryImage)category {
+    NSString *imageName = @"";
+    switch (category) {
+        case MQAGEmojiKeyboardViewCategoryImageRecent:
+            imageName = @"AGEmojiFlags";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageFace:
+            imageName = @"AGEmojiPeople";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageBell:
+            imageName = @"AGEmojiObjects";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageFlower:
+            imageName = @"AGEmojiAnimals";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageCar:
+            imageName = @"AGEmojiPlaces";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageCharacters:
+            imageName = @"AGEmojiSymbols";
+            break;
+    }
+    UIImage *img = [UIImage imageNamed:imageName];
+    [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    return img;
+}
+
+- (UIImage *)emojiKeyboardView:(MQAGEmojiKeyboardView *)emojiKeyboardView imageForNonSelectedCategory:(MQAGEmojiKeyboardViewCategoryImage)category {
+    NSString *imageName = @"";
+    switch (category) {
+        case MQAGEmojiKeyboardViewCategoryImageRecent:
+            imageName = @"AGEmojiFlags";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageFace:
+            imageName = @"AGEmojiPeople";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageBell:
+            imageName = @"AGEmojiObjects";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageFlower:
+            imageName = @"AGEmojiAnimals";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageCar:
+            imageName = @"AGEmojiPlaces";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageCharacters:
+            imageName = @"AGEmojiSymbols";
+            break;
+    }
+    UIImage *img = [UIImage imageNamed:imageName];
+    [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    return img;
+}
+
+- (UIImage *)backSpaceButtonImageForEmojiKeyboardView:(MQAGEmojiKeyboardView *)emojiKeyboardView {
+    UIImage *img = [self randomImage];
+    [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    return img;
+}
+
+- (UIImage *)randomImage {
+    CGSize size = CGSizeMake(30, 10);
+    UIGraphicsBeginImageContextWithOptions(size , NO, 0);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    UIColor *fillColor = [UIColor blueColor];
+    CGContextSetFillColorWithColor(context, [fillColor CGColor]);
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    CGContextFillRect(context, rect);
+    
+    fillColor = [UIColor blueColor];
+    CGContextSetFillColorWithColor(context, [fillColor CGColor]);
+    CGFloat xxx = 3;
+    rect = CGRectMake(xxx, xxx, size.width - 2 * xxx, size.height - 2 * xxx);
+    CGContextFillRect(context, rect);
+    
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
 }
 
 #pragma mark -
@@ -1060,5 +1170,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
 }
 
+- (MQAGEmojiKeyboardView *)emojiView {
+    if (!_emojiView) {
+        _emojiView = [[MQAGEmojiKeyboardView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 216) dataSource:self];
+        _emojiView.delegate = self;
+        _emojiView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    }
+    return _emojiView;
+}
 
 @end
