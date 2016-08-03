@@ -76,4 +76,17 @@
   return image;
 }
 
+- (UIImage *)addContentInsect:(UIEdgeInsets)insect {
+    CGSize currentSize =  self.size;
+    
+    CGRect renderRect = CGRectMake(insect.left, insect.top, currentSize.width - insect.left - insect.right, currentSize.height - insect.top - insect.bottom);
+    
+    UIGraphicsBeginImageContextWithOptions(currentSize, NO, 0);
+    [self drawInRect:renderRect];
+    UIImage * image  = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
 @end

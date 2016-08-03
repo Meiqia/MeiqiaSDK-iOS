@@ -19,4 +19,6 @@
 
 + (UIImage *)getBlackGradientWithRect:(CGRect)rect;
 
+- (UIImage *)addContentInsect:(UIEdgeInsets)insect;
+
 @end

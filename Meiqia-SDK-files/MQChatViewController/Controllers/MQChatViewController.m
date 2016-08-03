@@ -956,92 +956,16 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #pragma mark - emoji delegate and datasource
 
 - (void)emojiKeyBoardView:(MQAGEmojiKeyboardView *)emojiKeyBoardView didUseEmoji:(NSString *)emoji {
-    
+    MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
+    textField.text = [textField.text stringByAppendingString:emoji];
 }
 
 - (void)emojiKeyBoardViewDidPressBackSpace:(MQAGEmojiKeyboardView *)emojiKeyBoardView {
-    
-}
-
-- (UIImage *)emojiKeyboardView:(MQAGEmojiKeyboardView *)emojiKeyboardView imageForSelectedCategory:(MQAGEmojiKeyboardViewCategoryImage)category {
-    NSString *imageName = @"";
-    switch (category) {
-        case MQAGEmojiKeyboardViewCategoryImageRecent:
-            imageName = @"AGEmojiFlags";
-            break;
-        case MQAGEmojiKeyboardViewCategoryImageFace:
-            imageName = @"AGEmojiPeople";
-            break;
-        case MQAGEmojiKeyboardViewCategoryImageBell:
-            imageName = @"AGEmojiObjects";
-            break;
-        case MQAGEmojiKeyboardViewCategoryImageFlower:
-            imageName = @"AGEmojiAnimals";
-            break;
-        case MQAGEmojiKeyboardViewCategoryImageCar:
-            imageName = @"AGEmojiPlaces";
-            break;
-        case MQAGEmojiKeyboardViewCategoryImageCharacters:
-            imageName = @"AGEmojiSymbols";
-            break;
+    MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
+    if (textField.text.length > 0) {
+        NSRange lastRange = [textField.text rangeOfComposedCharacterSequenceAtIndex:([textField.text length] - 1)];
+        textField.text = [textField.text stringByReplacingCharactersInRange:lastRange withString:@""];
     }
-    UIImage *img = [UIImage imageNamed:imageName];
-    [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    return img;
-}
-
-- (UIImage *)emojiKeyboardView:(MQAGEmojiKeyboardView *)emojiKeyboardView imageForNonSelectedCategory:(MQAGEmojiKeyboardViewCategoryImage)category {
-    NSString *imageName = @"";
-    switch (category) {
-        case MQAGEmojiKeyboardViewCategoryImageRecent:
-            imageName = @"AGEmojiFlags";
-            break;
-        case MQAGEmojiKeyboardViewCategoryImageFace:
-            imageName = @"AGEmojiPeople";
-            break;
-        case MQAGEmojiKeyboardViewCategoryImageBell:
-            imageName = @"AGEmojiObjects";
-            break;
-        case MQAGEmojiKeyboardViewCategoryImageFlower:
-            imageName = @"AGEmojiAnimals";
-            break;
-        case MQAGEmojiKeyboardViewCategoryImageCar:
-            imageName = @"AGEmojiPlaces";
-            break;
-        case MQAGEmojiKeyboardViewCategoryImageCharacters:
-            imageName = @"AGEmojiSymbols";
-            break;
-    }
-    UIImage *img = [UIImage imageNamed:imageName];
-    [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    return img;
-}
-
-- (UIImage *)backSpaceButtonImageForEmojiKeyboardView:(MQAGEmojiKeyboardView *)emojiKeyboardView {
-    UIImage *img = [self randomImage];
-    [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    return img;
-}
-
-- (UIImage *)randomImage {
-    CGSize size = CGSizeMake(30, 10);
-    UIGraphicsBeginImageContextWithOptions(size , NO, 0);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    UIColor *fillColor = [UIColor blueColor];
-    CGContextSetFillColorWithColor(context, [fillColor CGColor]);
-    CGRect rect = CGRectMake(0, 0, size.width, size.height);
-    CGContextFillRect(context, rect);
-    
-    fillColor = [UIColor blueColor];
-    CGContextSetFillColorWithColor(context, [fillColor CGColor]);
-    CGFloat xxx = 3;
-    rect = CGRectMake(xxx, xxx, size.width - 2 * xxx, size.height - 2 * xxx);
-    CGContextFillRect(context, rect);
-    
-    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return img;
 }
 
 #pragma mark -

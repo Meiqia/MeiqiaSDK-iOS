@@ -9,6 +9,7 @@
 #import "MQAGEmojiKeyBoardView.h"
 #import "MQAGEmojiPageView.h"
 #import "UIImage+MQGenerate.h"
+#import "MQAssetUtil.h"
 
 static const CGFloat ButtonWidth = 45;
 static const CGFloat ButtonHeight = 37;
@@ -69,7 +70,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
     for (MQAGEmojiKeyboardViewCategoryImage i = MQAGEmojiKeyboardViewCategoryImageRecent;
          i <= MQAGEmojiKeyboardViewCategoryImageCharacters;
          ++i) {
-      [array addObject:[self.dataSource emojiKeyboardView:self imageForSelectedCategory:i]];
+      [array addObject:[self segImageWithCategory:i]];
     }
   });
   return array;
@@ -83,7 +84,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
     for (MQAGEmojiKeyboardViewCategoryImage i = MQAGEmojiKeyboardViewCategoryImageRecent;
          i <= MQAGEmojiKeyboardViewCategoryImageCharacters;
          ++i) {
-      [array addObject:[self.dataSource emojiKeyboardView:self imageForNonSelectedCategory:i]];
+        [array addObject:[self segImageUnselectedWithCategory:i]];
     }
   });
   return array;
@@ -126,9 +127,9 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
     self.segmentsBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
       self.segmentsBar.tintColor = [UIColor lightGrayColor];
       [self.segmentsBar setDividerImage:[UIImage new] forLeftSegmentState:(UIControlStateNormal) rightSegmentState:(UIControlStateNormal) barMetrics:(UIBarMetricsDefault)];
-      [self.segmentsBar setBackgroundImage:[UIImage EllipseImageWithColor:[UIColor whiteColor] andSize:CGSizeMake(1, 1)] forState:UIControlStateNormal barMetrics:(UIBarMetricsDefault)];
-      [self.segmentsBar setBackgroundImage:[UIImage EllipseImageWithColor:self.segmentsBar.tintColor andSize:CGSizeMake(1, 1)] forState:UIControlStateSelected barMetrics:(UIBarMetricsDefault)];
-      [self.segmentsBar setContentMode:(UIViewContentModeCenter)];
+      [self.segmentsBar setBackgroundImage:[UIImage EllipseImageWithColor:[UIColor colorWithRed:242/255.0 green:242/255.0 blue:247/255.0 alpha:1] andSize:CGSizeMake(1, 1)] forState:UIControlStateNormal barMetrics:(UIBarMetricsDefault)];
+      [self.segmentsBar setBackgroundImage:[UIImage EllipseImageWithColor:[UIColor whiteColor] andSize:CGSizeMake(1, 1)] forState:UIControlStateSelected barMetrics:(UIBarMetricsDefault)];
+      [self.segmentsBar setContentMode:(UIViewContentModeScaleAspectFit)];
     [self.segmentsBar addTarget:self
                          action:@selector(categoryChangedViaSegmentsBar:)
                forControlEvents:UIControlEventValueChanged];
@@ -139,7 +140,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
                                           0,
                                           CGRectGetWidth(self.bounds),
                                           30);
-    [self addSubview:self.segmentsBar];
+      [self addSubview:self.segmentsBar];
 
     self.pageControl = [[UIPageControl alloc] init];
     self.pageControl.hidesForSinglePage = YES;
@@ -184,6 +185,59 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 
   }
   return self;
+}
+
+- (UIImage *)segImageWithCategory:(MQAGEmojiKeyboardViewCategoryImage)category {
+    NSString *imageName = @"";
+    switch (category) {
+        case MQAGEmojiKeyboardViewCategoryImageRecent:
+            imageName = @"AGEmojiFlags";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageFace:
+            imageName = @"AGEmojiPeople";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageBell:
+            imageName = @"AGEmojiObjects";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageFlower:
+            imageName = @"AGEmojiAnimals";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageCar:
+            imageName = @"AGEmojiPlaces";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageCharacters:
+            imageName = @"AGEmojiSymbols";
+            break;
+    }
+    UIImage *img = [[UIImage imageNamed:imageName] addContentInsect:UIEdgeInsetsMake(7, 7, 7, 7)];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    return img;
+}
+
+- (UIImage *)segImageUnselectedWithCategory:(MQAGEmojiKeyboardViewCategoryImage)category {
+    NSString *imageName = @"";
+    switch (category) {
+        case MQAGEmojiKeyboardViewCategoryImageRecent:
+            imageName = @"AGEmojiFlags";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageFace:
+            imageName = @"AGEmojiPeople";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageBell:
+            imageName = @"AGEmojiObjects";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageFlower:
+            imageName = @"AGEmojiAnimals";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageCar:
+            imageName = @"AGEmojiPlaces";
+            break;
+        case MQAGEmojiKeyboardViewCategoryImageCharacters:
+            imageName = @"AGEmojiSymbols";
+            break;
+    }
+    UIImage *img = [[UIImage imageNamed:imageName] addContentInsect:UIEdgeInsetsMake(7, 7, 7, 7)];
+    return img;
 }
 
 - (void)layoutSubviews {
@@ -280,7 +334,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
                                     CGRectGetWidth(self.emojiPagesScrollView.bounds),
                                     CGRectGetHeight(self.emojiPagesScrollView.bounds));
   MQAGEmojiPageView *pageView = [[MQAGEmojiPageView alloc] initWithFrame: pageViewFrame
-                                                backSpaceButtonImage:[self.dataSource backSpaceButtonImageForEmojiKeyboardView:self]
+                                                backSpaceButtonImage:[MQAssetUtil imageFromBundleWithName:@"MQFileCancel"]
                                                           buttonSize:CGSizeMake(ButtonWidth, ButtonHeight)
                                                                 rows:rows
                                                              columns:columns];
