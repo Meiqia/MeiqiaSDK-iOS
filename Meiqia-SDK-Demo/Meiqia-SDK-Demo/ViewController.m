@@ -161,7 +161,6 @@ static int indicator_tag = 10;
     [chatViewManager setLoginCustomizedId:@"xxxxjjxjjx"];
     [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectEnterprise];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
-        
     [self removeIndecatorForView:basicFunctionBtn];
     
     [chatViewManager setRecordMode:MQRecordModeDuckOther];

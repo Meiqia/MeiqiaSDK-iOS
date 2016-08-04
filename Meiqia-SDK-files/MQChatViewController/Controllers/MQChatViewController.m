@@ -831,7 +831,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         [self.chatInputBar.buttonGroupBar addButton:imageRoll];
     }
     
-    [self.chatInputBar.buttonGroupBar addButton:emoji];
+    if ([MQChatViewConfig sharedConfig].enableSendEmoji) {
+        [self.chatInputBar.buttonGroupBar addButton:emoji];
+    }
+    
 }
 
 - (BOOL)handleSendMessageAbility {

@@ -739,7 +739,14 @@
 }
 
 + (void)submitMessageFormWithMessage:(NSString *)message images:(NSArray *)images clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
-    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
+//    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
+    [MQManager submitTicketForm:message userInfo:clientInfo completion:^(MQTicket *ticket, NSError *e) {
+        if (e) {
+            completion(NO, e);
+        } else {
+            completion(YES, nil);
+        }
+    }];
 }
 
 + (int)waitingInQueuePosition {

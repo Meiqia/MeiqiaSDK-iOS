@@ -8,78 +8,7 @@
 
 #import "MQChatEmojize.h"
 
-static NSDictionary *_emojiAliases;
-static NSDictionary *_emojiToStrAliases;
-
 @implementation MQChatEmojize
-
-- (NSString *)emojizedStringWithString:(NSString *)string
-{
-    return [self emojizedStringWithString:string];
-}
-
-- (NSString *)emojiToStringWithString:(NSString *)string
-{
-    return [self emojiToStringWithString:string];
-}
-
-+ (NSString *)emojiToStringWithString:(NSString*)text
-{
-    if (!self) return @"";
-    
-    __block NSString* temp = text;
-    [text enumerateSubstringsInRange:NSMakeRange(0, [text length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
-        NSString *code = self.emojiToStringAliases[substring];
-        if (code) {
-            temp = [temp stringByReplacingOccurrencesOfString:substring withString:code];
-        }
-    }];
-    return temp;
-}
-
-+ (NSString *)emojizedStringWithString:(NSString *)text
-{
-    if (!text)
-        return @"";
-    
-    static dispatch_once_t onceToken;
-    static NSRegularExpression *regex = nil;
-    dispatch_once(&onceToken, ^{
-        regex = [[NSRegularExpression alloc] initWithPattern:@"(:[a-z0-9-+_]+:)" options:NSRegularExpressionCaseInsensitive error:NULL];
-    });
-    
-    __block NSString *resultText = text;
-    NSRange matchingRange = NSMakeRange(0, [resultText length]);
-    [regex enumerateMatchesInString:resultText options:NSMatchingReportCompletion range:matchingRange usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-        if (result && ([result resultType] == NSTextCheckingTypeRegularExpression) && !(flags & NSMatchingInternalError)) {
-            NSRange range = result.range;
-            if (range.location != NSNotFound) {
-                NSString *code = [text substringWithRange:range];
-                NSString *unicode = self.emojiAliases[code];
-                if (unicode) {
-                    resultText = [resultText stringByReplacingOccurrencesOfString:code withString:unicode];
-                }
-            }
-        }
-    }];
-    return resultText;
-}
-
-+ (NSDictionary *)emojiAliases {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _emojiAliases = EMOJI_HASH;
-    });
-    return _emojiAliases;
-}
-
-+ (NSDictionary *)emojiToStringAliases {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _emojiToStrAliases= [[NSDictionary alloc] initWithObjects:[EMOJI_HASH allKeys] forKeys:[EMOJI_HASH allValues]];
-    });
-    return _emojiToStrAliases;
-}
 
 + (BOOL)stringContainsEmoji:(NSString *)string
 {

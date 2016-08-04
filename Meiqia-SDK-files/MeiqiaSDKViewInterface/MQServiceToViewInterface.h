@@ -432,7 +432,10 @@
  */
 + (NSError *)checkGlobalError;
 
-
+/**
+ 转换 emoji 别名为 Unicode
+ */
++ (NSString *)convertToUnicodeWithEmojiAlias:(NSString *)text;
 
 
 @end

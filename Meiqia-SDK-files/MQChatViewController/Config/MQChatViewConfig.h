@@ -77,6 +77,7 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @property (nonatomic, assign) BOOL enableEventDispaly;
 @property (nonatomic, assign) BOOL enableSendVoiceMessage;
 @property (nonatomic, assign) BOOL enableSendImageMessage;
+@property (nonatomic, assign) BOOL enableSendEmoji;
 @property (nonatomic, assign) BOOL enableMessageImageMask;
 @property (nonatomic, assign) BOOL enableMessageSound;
 @property (nonatomic, assign) BOOL enableTopPullRefresh;

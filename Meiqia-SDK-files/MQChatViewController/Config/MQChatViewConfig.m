@@ -62,6 +62,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.enableEventDispaly      = false;
     self.enableSendVoiceMessage  = true;
     self.enableSendImageMessage  = true;
+    self.enableSendEmoji         = true;
     self.enableMessageImageMask  = true;
     self.enableMessageSound      = true;
     self.enableTopPullRefresh    = false;

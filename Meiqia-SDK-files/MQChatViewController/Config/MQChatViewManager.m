@@ -210,6 +210,10 @@
     chatViewConfig.enableSendImageMessage = enable;
 }
 
+- (void)enableSendEmoji:(BOOL)enable {
+    chatViewConfig.enableSendEmoji = enable;
+}
+
 - (void)enableShowNewMessageAlert:(BOOL)enable {
     chatViewConfig.enableShowNewMessageAlert = enable;
 }

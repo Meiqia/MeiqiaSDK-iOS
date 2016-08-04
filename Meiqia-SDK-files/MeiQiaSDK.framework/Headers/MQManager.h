@@ -14,6 +14,7 @@
 #import "MQEnterprise.h"
 #import "MQPreChatData.h"
 
+
 #define MQSDKVersion @"3.2.5"
 
 @protocol MQManagerDelegate <NSObject>
@@ -31,6 +32,8 @@
  *
  * 开发者可以通过MQManager中提供的接口，对SDK进行配置；
  */
+
+@class MQTicket;
 @interface MQManager : NSObject
 
 /**
@@ -491,6 +494,11 @@
  提交用户填写的讯前表单数据
  */
 + (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id, NSError *))block;
+
+/**
+ 提交用户填写的留言工单
+ */
++ (void)submitTicketForm:(NSString *)content userInfo:(NSDictionary *)usreInfo completion:(void(^)(MQTicket *ticket, NSError *))block;
 
 
 @end

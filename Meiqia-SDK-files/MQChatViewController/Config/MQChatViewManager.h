@@ -160,6 +160,13 @@
  */
 - (void)enableSendImageMessage:(BOOL)enable;
 
+
+/**
+ * 是否支持表情键盘
+ * @param
+ */
+- (void)enableSendEmoji:(BOOL)enable;
+
 /**
  *  客服聊天界面打开时，收到新消息，是否显示收到新消息提示；默认支持
  *
