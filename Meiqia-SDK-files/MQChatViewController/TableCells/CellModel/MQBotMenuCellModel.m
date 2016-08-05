@@ -156,12 +156,18 @@
         self.date = message.date;
         self.cellHeight = 44.0;
         self.delegate = delegator;
+        
+        self.avatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
+        if (message.fromType == MQChatMessageOutgoing) {
+            self.avatarImage = [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage;
+        }
+        
         if (message.userAvatarImage) {
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
             self.avatarPath = message.userAvatarPath;
             //这里使用美洽接口下载多媒体消息的图片，开发者也可以替换成自己的图片缓存策略
-#ifdef INCLUDE_MEIQIA_SDK
+
             [MQServiceToViewInterface downloadMediaWithUrlString:message.userAvatarPath progress:^(float progress) {
             } completion:^(NSData *mediaData, NSError *error) {
                 if (mediaData && !error) {
@@ -176,24 +182,6 @@
                     }
                 }
             }];
-#else
-            __block UIImageView *tempImageView = [UIImageView new];
-            [tempImageView sd_setImageWithURL:[NSURL URLWithString:message.userAvatarPath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                
-                self.avatarImage = tempImageView.image.copy;
-                if (self.delegate) {
-                    if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
-                        //通知ViewController去刷新tableView
-                        [self.delegate didUpdateCellDataWithMessageId:self.messageId];
-                    }
-                }
-            }];
-#endif
-        } else {
-            self.avatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
-            if (message.fromType == MQChatMessageOutgoing) {
-                self.avatarImage = [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage;
-            }
         }
         
         //文字最大宽度

@@ -93,7 +93,6 @@ static NSString * const kMessageFormMessageKey = @"message";
         tipLabel.hidden = NO;
         [self initFormContainer];
         [self refreshFrame];
-
     } else {
         [MQMessageFormViewService getMessageFormConfigComplete:^(MQEnterpriseConfig *config, NSError *error) {
             if (config.intro.length > 0) {
@@ -289,7 +288,6 @@ static NSString * const kMessageFormMessageKey = @"message";
     [self showActivityIndicatorView];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
-#ifdef INCLUDE_MEIQIA_SDK
     [MQMessageFormViewService submitMessageFormWithMessage:message images:[messageFormImageView getImages] clientInfo:dict completion:^(BOOL success, NSError *error) {
         // 为了让用户得到「提交中」的体验，停顿 1 秒再取消 indicator view
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -303,7 +301,6 @@ static NSString * const kMessageFormMessageKey = @"message";
             }
         });
     }];
-#endif
 }
 
 /**

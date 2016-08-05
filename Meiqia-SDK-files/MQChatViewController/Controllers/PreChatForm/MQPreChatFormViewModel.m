@@ -111,13 +111,18 @@
     if (block == nil) return;
     
     __weak typeof(self) wself = self;
-    [MQServiceToViewInterface getCaptchaComplete:^(NSString *token, UIImage *image) {
-        __strong typeof (wself) sself = wself;
-        sself.captchaToken = token;
-        if (token) {
-            [sself.filledFieldValue setObject:token forKey:kCaptchaToken];
+    [MQServiceToViewInterface getCaptchaWithURLComplete:^(NSString *token, NSString *url) {
+        if (url.length > 0) {
+            [MQServiceToViewInterface downloadMediaWithUrlString:url progress:nil completion:^(NSData *mediaData, NSError *error) {
+                UIImage *image = [UIImage imageWithData:mediaData];
+                __strong typeof (wself) sself = wself;
+                sself.captchaToken = token;
+                if (token) {
+                    [sself.filledFieldValue setObject:token forKey:kCaptchaToken];
+                }
+                block(image);
+            }];
         }
-        block(image);
     }];
 }
 
