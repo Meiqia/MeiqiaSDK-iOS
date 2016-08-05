@@ -31,7 +31,7 @@
     return self;
 }
 
-// 绑定 UI 完成后，加载数据
+//加载 UI 需要的数据，完成后通过 UI 绑定的 block 更新 UI
 - (void)load {
     if (self.modelChanges) {
         self.modelChanges(self.message.summary, self.message.thumbnail, self.message.content);

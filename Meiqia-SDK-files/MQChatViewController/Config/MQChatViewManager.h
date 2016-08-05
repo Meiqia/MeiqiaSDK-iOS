@@ -160,6 +160,13 @@
  */
 - (void)enableSendImageMessage:(BOOL)enable;
 
+
+/**
+ * 是否支持表情键盘
+ * @param
+ */
+- (void)enableSendEmoji:(BOOL)enable;
+
 /**
  *  客服聊天界面打开时，收到新消息，是否显示收到新消息提示；默认支持
  *
@@ -451,9 +458,13 @@
 - (void)setEventTextColor:(UIColor *)textColor;
 
 /**
+ * 设置顾客的自定义信息, overwrite 表示强制覆盖工作台的相同字段
+ */
+- (void)setClientInfo:(NSDictionary *)clientInfo overwrite:(BOOL)overwrite;
+/**
  *  设置顾客的自定义信息
  *
- *  @param clientInfo 顾客的自定义信息
+ *  @param clientInfo 顾客的自定义信息，这个信息只有第一次调用的时候起作用。
  */
 - (void)setClientInfo:(NSDictionary *)clientInfo;
 

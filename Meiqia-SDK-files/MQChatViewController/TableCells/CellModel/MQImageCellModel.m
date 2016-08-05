@@ -13,6 +13,7 @@
 #import "MQImageUtil.h"
 #import "MQServiceToViewInterface.h"
 #import "MQImageViewerViewController.h"
+#import "UIViewController+MQHieriachy.h"
 #ifndef INCLUDE_MEIQIA_SDK
 #import "UIImageView+WebCache.h"
 #endif
@@ -386,7 +387,7 @@
     }];
     
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    [viewerVC showOn:[UIApplication sharedApplication].keyWindow.rootViewController fromRectArray:[NSArray arrayWithObject:[NSValue valueWithCGRect:rect]]];
+    [viewerVC showOn:[UIViewController topMostViewController] fromRectArray:[NSArray arrayWithObject:[NSValue valueWithCGRect:rect]]];
 }
 
 @end

@@ -29,10 +29,12 @@
 #import "MQImageUtil.h"
 #import "MQRecorderView.h"
 #import "MQMessageFormViewManager.h"
+#import "MQPreChatFormListViewController.h"
+#import "MQAGEmojiKeyBoardView.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate, MQAGEmojiKeyboardViewDelegate, MQAGEmojiKeyboardViewDataSource>
 
 @end
 
@@ -46,6 +48,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @property (nonatomic, strong) MQKeyboardController *keyboardController;
 @property (nonatomic, strong) MQRecordView *recordView;
 @property (nonatomic, strong) MQRecorderView *displayRecordView;//只用来显示
+@property (nonatomic, strong) MQAGEmojiKeyboardView *emojiView;
 
 @end
 
@@ -71,7 +74,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #endif
     [MQCustomizedUIText reset];
     
-    [MQServiceToViewInterface completeChat];
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -115,6 +117,39 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
     popRecognizer.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:popRecognizer];
+    
+    [self presentUI];
+//    [chatViewService setClientOnline];
+}
+
+- (void)presentUI {
+    
+    __weak typeof(self) wself = self;
+    [MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^(NSDictionary *userInfo){
+        NSString *targetType = userInfo[@"targetType"];
+        NSString *target = userInfo[@"target"];
+        NSString *menu = userInfo[@"menu"];
+        
+        if ([targetType isEqualToString:@"agent"]) {
+            [MQChatViewConfig sharedConfig].scheduledAgentId = target;
+        } else if ([targetType isEqualToString:@"group"]) {
+            [MQChatViewConfig sharedConfig].scheduledGroupId = target;
+        }
+        
+        if ([menu length] > 0) {
+            NSMutableArray *m = [[MQChatViewConfig sharedConfig].preSendMessages mutableCopy] ?: [NSMutableArray new];
+            [m addObject:menu];
+            [MQChatViewConfig sharedConfig].preSendMessages = m;
+        }
+        
+        [chatViewService setClientOnline];
+    } cancle:^{
+        __strong typeof (wself) sself = wself;
+        [sself dismissViewControllerAnimated:NO completion:^{
+            [sself dismissChatViewController];
+        }];
+    }];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -130,6 +165,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
     
     [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
+    
+    [MQServiceToViewInterface completeChat];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -772,17 +809,32 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     UIButton *recorderBtn  = [[UIButton alloc] initWithFrame:rect];
     [recorderBtn setImage:[MQAssetUtil imageFromBundleWithName:@"micIcon"] forState:(UIControlStateNormal)];
     [recorderBtn addTarget:self action:@selector(showRecorder) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.chatInputBar.buttonGroupBar addButton:recorderBtn];
     
     UIButton *cameraBtn  = [[UIButton alloc] initWithFrame:rect];
     [cameraBtn setImage:[MQAssetUtil imageFromBundleWithName:@"cameraIcon"] forState:(UIControlStateNormal)];
     [cameraBtn addTarget:self action:@selector(camera) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.chatInputBar.buttonGroupBar addButton:cameraBtn];
     
     UIButton *imageRoll  = [[UIButton alloc] initWithFrame:rect];
     [imageRoll setImage:[MQAssetUtil imageFromBundleWithName:@"imageIcon"] forState:(UIControlStateNormal)];
     [imageRoll addTarget:self action:@selector(imageRoll) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.chatInputBar.buttonGroupBar addButton:imageRoll];
+    
+    UIButton *emoji  = [[UIButton alloc] initWithFrame:rect];
+    [emoji setImage:[MQAssetUtil imageFromBundleWithName:@"emoji"] forState:(UIControlStateNormal)];
+    [emoji addTarget:self action:@selector(emoji) forControlEvents:(UIControlEventTouchUpInside)];
+    
+    if ([MQChatViewConfig sharedConfig].enableSendVoiceMessage) {
+        [self.chatInputBar.buttonGroupBar addButton:recorderBtn];
+    }
+    
+    if ([MQChatViewConfig sharedConfig].enableSendImageMessage) {
+        [self.chatInputBar.buttonGroupBar addButton:cameraBtn];
+        [self.chatInputBar.buttonGroupBar addButton:imageRoll];
+    }
+    
+    if ([MQChatViewConfig sharedConfig].enableSendEmoji) {
+        [self.chatInputBar.buttonGroupBar addButton:emoji];
+    }
+    
 }
 
 - (BOOL)handleSendMessageAbility {
@@ -814,6 +866,17 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)imageRoll {
     if ([self handleSendMessageAbility]) {
         [self sendImageWithSourceType:(UIImagePickerControllerSourceTypePhotoLibrary)];
+    }
+}
+
+- (void)emoji {
+    if ([self handleSendMessageAbility]) {
+        if (self.chatInputBar.isFirstResponder) {
+            [self.chatInputBar resignFirstResponder];
+        }else{
+            self.chatInputBar.inputView = self.emojiView;
+            [self.chatInputBar becomeFirstResponder];
+        }
     }
 }
 
@@ -891,6 +954,21 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)recordCanceld {
     [self cancelRecord:CGPointZero];
+}
+
+#pragma mark - emoji delegate and datasource
+
+- (void)emojiKeyBoardView:(MQAGEmojiKeyboardView *)emojiKeyBoardView didUseEmoji:(NSString *)emoji {
+    MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
+    textField.text = [textField.text stringByAppendingString:emoji];
+}
+
+- (void)emojiKeyBoardViewDidPressBackSpace:(MQAGEmojiKeyboardView *)emojiKeyBoardView {
+    MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
+    if (textField.text.length > 0) {
+        NSRange lastRange = [textField.text rangeOfComposedCharacterSequenceAtIndex:([textField.text length] - 1)];
+        textField.text = [textField.text stringByReplacingCharactersInRange:lastRange withString:@""];
+    }
 }
 
 #pragma mark -
@@ -1019,5 +1097,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
 }
 
+- (MQAGEmojiKeyboardView *)emojiView {
+    if (!_emojiView) {
+        _emojiView = [[MQAGEmojiKeyboardView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 216) dataSource:self];
+        _emojiView.delegate = self;
+        _emojiView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    }
+    return _emojiView;
+}
 
 @end

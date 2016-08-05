@@ -55,7 +55,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 @implementation MQChatViewService {
 #ifdef INCLUDE_MEIQIA_SDK
-//    BOOL isThereNoAgent;   //用来判断当前是否没有客服
     BOOL addedNoAgentTip;  //是否已经说明了没有客服标记
     BOOL didSetOnline;     //用来判断顾客是否尝试登陆了
 #endif
@@ -66,9 +65,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (instancetype)init {
     if (self = [super init]) {
         self.cellModels = [[NSMutableArray alloc] init];
-#ifdef INCLUDE_MEIQIA_SDK
-        [self setClientOnline];
-//        isThereNoAgent  = false;
         addedNoAgentTip = false;
         didSetOnline    = false;
         self.isShowBotRedirectBtn = false;
@@ -78,7 +74,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanTimer) name:MQ_NOTIFICATION_CHAT_END object:nil];
         
         self.positionCheckTimer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(checkAndUpdateWaitingQueueStatus) userInfo:nil repeats:YES];
-#endif
         currentViewMessageIdSet = [NSMutableSet new];
     }
     return self;
@@ -825,7 +820,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #pragma 顾客上线的逻辑
 //上线
 - (void)setClientOnline {
-    if (self.clientStatus == MQClientStatusOnlining) {
+    if (self.clientStatus == MQClientStatusOnlining || self.clientStatus == MQClientStatusPendingOnPreChatForm) {
         return;
     }
     
@@ -899,7 +894,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [sself getClientInfo];
     }];
     
-    [self afterClientOnline];
     
     // 判断是否是机器人客服，来改变右上角按钮
     agentType = completion ? agentType : @"";
@@ -915,6 +909,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         __strong typeof (wself) sself = wself;
         [sself scrollToButton];
     });
+    
+    [self afterClientOnline];
 }
 
 - (void)afterClientOnline {

@@ -110,7 +110,10 @@
 		E4036E0F1D0FE5170065D5A5 /* MQRichTextMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E4036E0E1D0FE5170065D5A5 /* MQRichTextMessage.m */; };
 		E4036E1B1D10F7240065D5A5 /* MQWindowUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E4036E1A1D10F7240065D5A5 /* MQWindowUtil.m */; };
 		E4036E1F1D110C6B0065D5A5 /* MQWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4036E1E1D110C6B0065D5A5 /* MQWebViewController.m */; };
+		E40C2C7B1D2B710300744577 /* testdata.txt in Resources */ = {isa = PBXBuildFile; fileRef = E40C2C7A1D2B710300744577 /* testdata.txt */; };
 		E41863381CCF163D009FB370 /* MQCustomizedUIText.m in Sources */ = {isa = PBXBuildFile; fileRef = E41863371CCF163D009FB370 /* MQCustomizedUIText.m */; };
+		E426A9F81D2396DA002AA08C /* MQPreChatFormListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9F71D2396DA002AA08C /* MQPreChatFormListViewController.m */; };
+		E426A9FB1D239711002AA08C /* MQPreChatSubmitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */; };
 		E45CA11F1CC60828000B8917 /* MeiQiaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */; };
 		E45CA1241CC79431000B8917 /* NSArray+MQFunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = E45CA1231CC79431000B8917 /* NSArray+MQFunctional.m */; };
 		E45CA12D1CCA33EF000B8917 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E45CA12C1CCA33EF000B8917 /* libsqlite3.tbd */; };
@@ -118,17 +121,32 @@
 		E45D6D5F1CB504DB00F5881E /* MQFileDownloadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E45D6D5E1CB504DB00F5881E /* MQFileDownloadCell.m */; };
 		E45D6D621CB510D300F5881E /* MQFileDownloadMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E45D6D611CB510D300F5881E /* MQFileDownloadMessage.m */; };
 		E47BA69F1D003F8700358AB4 /* NSNull+MQSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = E47BA69E1D003F8700358AB4 /* NSNull+MQSafe.m */; };
+		E4851FB61D2CAB5D00955837 /* MQPreChatFormViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E4851FB51D2CAB5D00955837 /* MQPreChatFormViewModel.m */; };
+		E48521501D2E627100955837 /* MQPreChatCells.m in Sources */ = {isa = PBXBuildFile; fileRef = E485214F1D2E627100955837 /* MQPreChatCells.m */; };
 		E488BF7F1CA2608800753736 /* UIView+MQLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E488BF7E1CA2608800753736 /* UIView+MQLayout.m */; };
 		E48C70701D1D4DA900BFEA80 /* MQTabInputContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6B01CED5ABE00295D50 /* MQTabInputContentView.m */; };
 		E49C7BBF1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C7BBE1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m */; };
 		E4A533E51C9F90DD0053BC88 /* MQAnimatorPush.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E01C9F90DD0053BC88 /* MQAnimatorPush.m */; };
 		E4A533E61C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E21C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m */; };
 		E4A533E71C9F90DD0053BC88 /* MQTransitioningAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533E41C9F90DD0053BC88 /* MQTransitioningAnimation.m */; };
+		E4A83E691D38948400F6B722 /* UIViewController+MQHieriachy.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A83E681D38948400F6B722 /* UIViewController+MQHieriachy.m */; };
 		E4BCB3C81CABDCAA006B7F1B /* MQChatViewStyleGreen.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCB3C71CABDCAA006B7F1B /* MQChatViewStyleGreen.m */; };
 		E4BCB3CB1CABDF33006B7F1B /* MQChatViewStyleDark.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCB3CA1CABDF33006B7F1B /* MQChatViewStyleDark.m */; };
 		E4D3CA7A1CAA862C0002C25B /* MQChatViewStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3CA791CAA862C0002C25B /* MQChatViewStyle.m */; };
 		E4D3CAA61CABBFEF0002C25B /* MQChatViewStyleBlue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3CAA51CABBFEF0002C25B /* MQChatViewStyleBlue.m */; };
 		E4D3CAA91CABC2AA0002C25B /* UIColor+MQHex.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3CAA81CABC2AA0002C25B /* UIColor+MQHex.m */; };
+		E4D46C611D51969F00C3030E /* MQAGEmojiKeyBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D46C5E1D51969F00C3030E /* MQAGEmojiKeyBoardView.m */; };
+		E4D46C621D51969F00C3030E /* MQAGEmojiPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D46C601D51969F00C3030E /* MQAGEmojiPageView.m */; };
+		E4D46C641D5196A900C3030E /* MQEmojisList.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C631D5196A900C3030E /* MQEmojisList.plist */; };
+		E4D46C6D1D51A21F00C3030E /* AGEmojiActivity.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C651D51A21F00C3030E /* AGEmojiActivity.png */; };
+		E4D46C6E1D51A21F00C3030E /* AGEmojiAnimals.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C661D51A21F00C3030E /* AGEmojiAnimals.png */; };
+		E4D46C6F1D51A21F00C3030E /* AGEmojiFlags.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C671D51A21F00C3030E /* AGEmojiFlags.png */; };
+		E4D46C701D51A21F00C3030E /* AGEmojiFood.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C681D51A21F00C3030E /* AGEmojiFood.png */; };
+		E4D46C711D51A21F00C3030E /* AGEmojiObjects.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C691D51A21F00C3030E /* AGEmojiObjects.png */; };
+		E4D46C721D51A21F00C3030E /* AGEmojiPeople.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C6A1D51A21F00C3030E /* AGEmojiPeople.png */; };
+		E4D46C731D51A21F00C3030E /* AGEmojiPlaces.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C6B1D51A21F00C3030E /* AGEmojiPlaces.png */; };
+		E4D46C741D51A21F00C3030E /* AGEmojiSymbols.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C6C1D51A21F00C3030E /* AGEmojiSymbols.png */; };
+		E4D46C771D51AD8200C3030E /* UIImage+MQGenerate.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D46C761D51AD8200C3030E /* UIImage+MQGenerate.m */; };
 		E4FED6B41CED5ABE00295D50 /* MQRecorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6A81CED5ABE00295D50 /* MQRecorderView.m */; };
 		E4FED6B51CED5ABE00295D50 /* MQButtonGroupBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6AA1CED5ABE00295D50 /* MQButtonGroupBar.m */; };
 		E4FED6B71CED5ABE00295D50 /* MQInputContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6AE1CED5ABE00295D50 /* MQInputContentView.m */; };
@@ -359,8 +377,13 @@
 		E4036E1A1D10F7240065D5A5 /* MQWindowUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQWindowUtil.m; sourceTree = "<group>"; };
 		E4036E1D1D110C6B0065D5A5 /* MQWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQWebViewController.h; sourceTree = "<group>"; };
 		E4036E1E1D110C6B0065D5A5 /* MQWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQWebViewController.m; sourceTree = "<group>"; };
+		E40C2C7A1D2B710300744577 /* testdata.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testdata.txt; sourceTree = "<group>"; };
 		E41863361CCF163D009FB370 /* MQCustomizedUIText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCustomizedUIText.h; sourceTree = "<group>"; };
 		E41863371CCF163D009FB370 /* MQCustomizedUIText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCustomizedUIText.m; sourceTree = "<group>"; };
+		E426A9F61D2396DA002AA08C /* MQPreChatFormListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MQPreChatFormListViewController.h; path = ../PreChatForm/MQPreChatFormListViewController.h; sourceTree = "<group>"; };
+		E426A9F71D2396DA002AA08C /* MQPreChatFormListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MQPreChatFormListViewController.m; path = ../PreChatForm/MQPreChatFormListViewController.m; sourceTree = "<group>"; };
+		E426A9F91D239711002AA08C /* MQPreChatSubmitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MQPreChatSubmitViewController.h; path = ../PreChatForm/MQPreChatSubmitViewController.h; sourceTree = "<group>"; };
+		E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MQPreChatSubmitViewController.m; path = ../PreChatForm/MQPreChatSubmitViewController.m; sourceTree = "<group>"; };
 		E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MeiQiaSDK.framework; path = "../Meiqia-SDK-files/MeiQiaSDK.framework"; sourceTree = "<group>"; };
 		E45CA1201CC628D8000B8917 /* MQChatAudioTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MQChatAudioTypes.h; sourceTree = "<group>"; };
 		E45CA1221CC79431000B8917 /* NSArray+MQFunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MQFunctional.h"; sourceTree = "<group>"; };
@@ -374,6 +397,10 @@
 		E45D6D611CB510D300F5881E /* MQFileDownloadMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQFileDownloadMessage.m; sourceTree = "<group>"; };
 		E47BA69B1CFFE42F00358AB4 /* NSNull+MQSafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+MQSafe.h"; sourceTree = "<group>"; };
 		E47BA69E1D003F8700358AB4 /* NSNull+MQSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+MQSafe.m"; sourceTree = "<group>"; };
+		E4851FB41D2CAB5D00955837 /* MQPreChatFormViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPreChatFormViewModel.h; sourceTree = "<group>"; };
+		E4851FB51D2CAB5D00955837 /* MQPreChatFormViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPreChatFormViewModel.m; sourceTree = "<group>"; };
+		E485214E1D2E627100955837 /* MQPreChatCells.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPreChatCells.h; sourceTree = "<group>"; };
+		E485214F1D2E627100955837 /* MQPreChatCells.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPreChatCells.m; sourceTree = "<group>"; };
 		E488BF7D1CA2608800753736 /* UIView+MQLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MQLayout.h"; sourceTree = "<group>"; };
 		E488BF7E1CA2608800753736 /* UIView+MQLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MQLayout.m"; sourceTree = "<group>"; };
 		E49C7BBD1C96A8D3003027E8 /* UIViewController+MQOrientationFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MQOrientationFix.h"; sourceTree = "<group>"; };
@@ -384,6 +411,8 @@
 		E4A533E21C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQShareTransitioningDelegateImpl.m; sourceTree = "<group>"; };
 		E4A533E31C9F90DD0053BC88 /* MQTransitioningAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTransitioningAnimation.h; sourceTree = "<group>"; };
 		E4A533E41C9F90DD0053BC88 /* MQTransitioningAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTransitioningAnimation.m; sourceTree = "<group>"; };
+		E4A83E671D38948400F6B722 /* UIViewController+MQHieriachy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MQHieriachy.h"; sourceTree = "<group>"; };
+		E4A83E681D38948400F6B722 /* UIViewController+MQHieriachy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MQHieriachy.m"; sourceTree = "<group>"; };
 		E4BCB3C61CABDCAA006B7F1B /* MQChatViewStyleGreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatViewStyleGreen.h; sourceTree = "<group>"; };
 		E4BCB3C71CABDCAA006B7F1B /* MQChatViewStyleGreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatViewStyleGreen.m; sourceTree = "<group>"; };
 		E4BCB3C91CABDF33006B7F1B /* MQChatViewStyleDark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatViewStyleDark.h; sourceTree = "<group>"; };
@@ -394,6 +423,21 @@
 		E4D3CAA51CABBFEF0002C25B /* MQChatViewStyleBlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatViewStyleBlue.m; sourceTree = "<group>"; };
 		E4D3CAA71CABC2AA0002C25B /* UIColor+MQHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MQHex.h"; sourceTree = "<group>"; };
 		E4D3CAA81CABC2AA0002C25B /* UIColor+MQHex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+MQHex.m"; sourceTree = "<group>"; };
+		E4D46C5D1D51969F00C3030E /* MQAGEmojiKeyBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQAGEmojiKeyBoardView.h; sourceTree = "<group>"; };
+		E4D46C5E1D51969F00C3030E /* MQAGEmojiKeyBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQAGEmojiKeyBoardView.m; sourceTree = "<group>"; };
+		E4D46C5F1D51969F00C3030E /* MQAGEmojiPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQAGEmojiPageView.h; sourceTree = "<group>"; };
+		E4D46C601D51969F00C3030E /* MQAGEmojiPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQAGEmojiPageView.m; sourceTree = "<group>"; };
+		E4D46C631D5196A900C3030E /* MQEmojisList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MQEmojisList.plist; sourceTree = "<group>"; };
+		E4D46C651D51A21F00C3030E /* AGEmojiActivity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiActivity.png; sourceTree = "<group>"; };
+		E4D46C661D51A21F00C3030E /* AGEmojiAnimals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiAnimals.png; sourceTree = "<group>"; };
+		E4D46C671D51A21F00C3030E /* AGEmojiFlags.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiFlags.png; sourceTree = "<group>"; };
+		E4D46C681D51A21F00C3030E /* AGEmojiFood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiFood.png; sourceTree = "<group>"; };
+		E4D46C691D51A21F00C3030E /* AGEmojiObjects.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiObjects.png; sourceTree = "<group>"; };
+		E4D46C6A1D51A21F00C3030E /* AGEmojiPeople.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiPeople.png; sourceTree = "<group>"; };
+		E4D46C6B1D51A21F00C3030E /* AGEmojiPlaces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiPlaces.png; sourceTree = "<group>"; };
+		E4D46C6C1D51A21F00C3030E /* AGEmojiSymbols.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiSymbols.png; sourceTree = "<group>"; };
+		E4D46C751D51AD8200C3030E /* UIImage+MQGenerate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+MQGenerate.h"; sourceTree = "<group>"; };
+		E4D46C761D51AD8200C3030E /* UIImage+MQGenerate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MQGenerate.m"; sourceTree = "<group>"; };
 		E4FED6A71CED5ABE00295D50 /* MQRecorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQRecorderView.h; sourceTree = "<group>"; };
 		E4FED6A81CED5ABE00295D50 /* MQRecorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQRecorderView.m; sourceTree = "<group>"; };
 		E4FED6A91CED5ABE00295D50 /* MQButtonGroupBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQButtonGroupBar.h; sourceTree = "<group>"; };
@@ -518,6 +562,7 @@
 		CC330FE21C33F7EA0088E648 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E426A9F51D237C04002AA08C /* PreChatForm */,
 				CC330FE31C33F7EA0088E648 /* MQChatViewController.h */,
 				CC330FE41C33F7EA0088E648 /* MQChatViewController.m */,
 				CC330FE51C33F7EA0088E648 /* MQChatViewService.h */,
@@ -830,6 +875,7 @@
 		CC868F1A1C7AFFF200BFA68D /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				E4D46C5C1D51969F00C3030E /* AGEmojiKeyboard */,
 				CC6873611C895E70000A1E63 /* VoiceConvert */,
 				CC868F1B1C7AFFF200BFA68D /* CustomIOSAlertView */,
 				CC868F1E1C7AFFF200BFA68D /* FBDigitalFont */,
@@ -989,6 +1035,7 @@
 		CCE9D1081C1812F6004E862E /* Meiqia-SDK-Demo */ = {
 			isa = PBXGroup;
 			children = (
+				E40C2C7A1D2B710300744577 /* testdata.txt */,
 				CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */,
 				CCE9D14B1C1813BE004E862E /* DevelopViewController.h */,
 				CCE9D14C1C1813BE004E862E /* DevelopViewController.m */,
@@ -1054,6 +1101,21 @@
 			path = MQWebView;
 			sourceTree = "<group>";
 		};
+		E426A9F51D237C04002AA08C /* PreChatForm */ = {
+			isa = PBXGroup;
+			children = (
+				E426A9F61D2396DA002AA08C /* MQPreChatFormListViewController.h */,
+				E426A9F71D2396DA002AA08C /* MQPreChatFormListViewController.m */,
+				E426A9F91D239711002AA08C /* MQPreChatSubmitViewController.h */,
+				E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */,
+				E4851FB41D2CAB5D00955837 /* MQPreChatFormViewModel.h */,
+				E4851FB51D2CAB5D00955837 /* MQPreChatFormViewModel.m */,
+				E485214E1D2E627100955837 /* MQPreChatCells.h */,
+				E485214F1D2E627100955837 /* MQPreChatCells.m */,
+			);
+			path = PreChatForm;
+			sourceTree = "<group>";
+		};
 		E44777D21CCF07F6004BA3C3 /* CustomizedText */ = {
 			isa = PBXGroup;
 			children = (
@@ -1079,6 +1141,8 @@
 		E49C7BBC1C96A8B9003027E8 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				E4D46C751D51AD8200C3030E /* UIImage+MQGenerate.h */,
+				E4D46C761D51AD8200C3030E /* UIImage+MQGenerate.m */,
 				E49C7BBD1C96A8D3003027E8 /* UIViewController+MQOrientationFix.h */,
 				E49C7BBE1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m */,
 				E488BF7D1CA2608800753736 /* UIView+MQLayout.h */,
@@ -1089,6 +1153,8 @@
 				E45CA1231CC79431000B8917 /* NSArray+MQFunctional.m */,
 				E47BA69B1CFFE42F00358AB4 /* NSNull+MQSafe.h */,
 				E47BA69E1D003F8700358AB4 /* NSNull+MQSafe.m */,
+				E4A83E671D38948400F6B722 /* UIViewController+MQHieriachy.h */,
+				E4A83E681D38948400F6B722 /* UIViewController+MQHieriachy.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1114,6 +1180,26 @@
 				E4D3CA791CAA862C0002C25B /* MQChatViewStyle.m */,
 			);
 			path = Style;
+			sourceTree = "<group>";
+		};
+		E4D46C5C1D51969F00C3030E /* AGEmojiKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				E4D46C651D51A21F00C3030E /* AGEmojiActivity.png */,
+				E4D46C661D51A21F00C3030E /* AGEmojiAnimals.png */,
+				E4D46C671D51A21F00C3030E /* AGEmojiFlags.png */,
+				E4D46C681D51A21F00C3030E /* AGEmojiFood.png */,
+				E4D46C691D51A21F00C3030E /* AGEmojiObjects.png */,
+				E4D46C6A1D51A21F00C3030E /* AGEmojiPeople.png */,
+				E4D46C6B1D51A21F00C3030E /* AGEmojiPlaces.png */,
+				E4D46C6C1D51A21F00C3030E /* AGEmojiSymbols.png */,
+				E4D46C631D5196A900C3030E /* MQEmojisList.plist */,
+				E4D46C5D1D51969F00C3030E /* MQAGEmojiKeyBoardView.h */,
+				E4D46C5E1D51969F00C3030E /* MQAGEmojiKeyBoardView.m */,
+				E4D46C5F1D51969F00C3030E /* MQAGEmojiPageView.h */,
+				E4D46C601D51969F00C3030E /* MQAGEmojiPageView.m */,
+			);
+			path = AGEmojiKeyboard;
 			sourceTree = "<group>";
 		};
 		E4FED6A51CED5ABE00295D50 /* FunctionView */ = {
@@ -1260,11 +1346,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4D46C721D51A21F00C3030E /* AGEmojiPeople.png in Resources */,
+				E4D46C711D51A21F00C3030E /* AGEmojiObjects.png in Resources */,
 				CCE9D1191C1812F6004E862E /* LaunchScreen.storyboard in Resources */,
+				E4D46C641D5196A900C3030E /* MQEmojisList.plist in Resources */,
+				E4D46C6E1D51A21F00C3030E /* AGEmojiAnimals.png in Resources */,
+				E4D46C6F1D51A21F00C3030E /* AGEmojiFlags.png in Resources */,
+				E4D46C701D51A21F00C3030E /* AGEmojiFood.png in Resources */,
 				CCE9D1161C1812F6004E862E /* Assets.xcassets in Resources */,
 				CC3310951C33F7EA0088E648 /* MQChatViewAsset.bundle in Resources */,
+				E4D46C6D1D51A21F00C3030E /* AGEmojiActivity.png in Resources */,
 				CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */,
+				E4D46C731D51A21F00C3030E /* AGEmojiPlaces.png in Resources */,
+				E40C2C7B1D2B710300744577 /* testdata.txt in Resources */,
 				CCE9D1141C1812F6004E862E /* Main.storyboard in Resources */,
+				E4D46C741D51A21F00C3030E /* AGEmojiSymbols.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1293,7 +1389,9 @@
 				CC84A8B71CEC7D790097C99E /* MQMessageFormViewService.m in Sources */,
 				CC84A8B61CEC7D790097C99E /* MQMessageFormViewController.m in Sources */,
 				CC68736A1C895E70000A1E63 /* wav.mm in Sources */,
+				E4D46C771D51AD8200C3030E /* UIImage+MQGenerate.m in Sources */,
 				E4036E1B1D10F7240065D5A5 /* MQWindowUtil.m in Sources */,
+				E426A9F81D2396DA002AA08C /* MQPreChatFormListViewController.m in Sources */,
 				CC3310B71C33F7EA0088E648 /* MQStringSizeUtil.m in Sources */,
 				E45CA1241CC79431000B8917 /* NSArray+MQFunctional.m in Sources */,
 				E4A533E61C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */,
@@ -1314,14 +1412,17 @@
 				CC3310A81C33F7EA0088E648 /* MQImageMessageCell.m in Sources */,
 				E41863381CCF163D009FB370 /* MQCustomizedUIText.m in Sources */,
 				CC84A8B91CEC7D790097C99E /* MQMessageFormTextView.m in Sources */,
+				E4D46C611D51969F00C3030E /* MQAGEmojiKeyBoardView.m in Sources */,
 				CC33109E1C33F7EA0088E648 /* MQTextMessage.m in Sources */,
 				CC68736B1C895E70000A1E63 /* VoiceConverter.mm in Sources */,
 				CC3310971C33F7EA0088E648 /* MQChatViewManager.m in Sources */,
 				CC3310A91C33F7EA0088E648 /* MQMessageDateCell.m in Sources */,
 				CC33109A1C33F7EA0088E648 /* MQChatViewTableDataSource.m in Sources */,
+				E4851FB61D2CAB5D00955837 /* MQPreChatFormViewModel.m in Sources */,
 				CC868F881C7AFFF200BFA68D /* MEIQIA_AmrRecordWriter.m in Sources */,
 				CC868F9C1C7AFFF200BFA68D /* MEIQIA_TTTAttributedLabel.m in Sources */,
 				CC3310E11C33F7EA0088E648 /* MQToast.m in Sources */,
+				E48521501D2E627100955837 /* MQPreChatCells.m in Sources */,
 				CC3310DD1C33F7EA0088E648 /* MQChatTableView.m in Sources */,
 				CC84A8BF1CEC801E0097C99E /* MQBotAnswerCellModel.m in Sources */,
 				CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */,
@@ -1329,6 +1430,7 @@
 				E45D6D5C1CB504A100F5881E /* MQFileDownloadCellModel.m in Sources */,
 				CC3310AF1C33F7EA0088E648 /* MQChatAudioPlayer.m in Sources */,
 				CC868F891C7AFFF200BFA68D /* MEIQIA_CafRecordWriter.m in Sources */,
+				E4D46C621D51969F00C3030E /* MQAGEmojiPageView.m in Sources */,
 				CC3310E01C33F7EA0088E648 /* MQRecordView.m in Sources */,
 				E4FED6B51CED5ABE00295D50 /* MQButtonGroupBar.m in Sources */,
 				E4FED6B41CED5ABE00295D50 /* MQRecorderView.m in Sources */,
@@ -1342,6 +1444,7 @@
 				CC3310B51C33F7EA0088E648 /* MQDateFormatterUtil.m in Sources */,
 				CC68736E1C895EE6000A1E63 /* MQEvaluationResultCellModel.m in Sources */,
 				CC84A8B41CEC7D790097C99E /* MQMessageFormViewManager.m in Sources */,
+				E426A9FB1D239711002AA08C /* MQPreChatSubmitViewController.m in Sources */,
 				CC868F7C1C7AFFF200BFA68D /* MEIQIA_FBBitmapFontView.m in Sources */,
 				CC3310A51C33F7EA0088E648 /* MQVoiceCellModel.m in Sources */,
 				E47BA69F1D003F8700358AB4 /* NSNull+MQSafe.m in Sources */,
@@ -1354,6 +1457,7 @@
 				CC3310AE1C33F7EA0088E648 /* MQBundleUtil.m in Sources */,
 				E49C7BBF1C96A8D3003027E8 /* UIViewController+MQOrientationFix.m in Sources */,
 				E4036E091D0FE2A50065D5A5 /* MQRichTextViewModel.m in Sources */,
+				E4A83E691D38948400F6B722 /* UIViewController+MQHieriachy.m in Sources */,
 				CC3310B21C33F7EA0088E648 /* MQChatEmojize.m in Sources */,
 				CC3310981C33F7EA0088E648 /* MQChatViewController.m in Sources */,
 				CC84A8BA1CEC7D790097C99E /* MQMessageFormImageView.m in Sources */,

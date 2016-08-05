@@ -734,12 +734,19 @@
     [MQManager getIsShowRedirectHumanButtonComplete:action];
 }
 
-+ (void)getMessageFormIntroComplete:(void (^)(NSString *, NSError *))action {
-    [MQManager getMessageFormIntroComplete:action];
++ (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action {
+    [MQManager getMessageFormConfigComplete:action];
 }
 
 + (void)submitMessageFormWithMessage:(NSString *)message images:(NSArray *)images clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
-    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
+//    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
+    [MQManager submitTicketForm:message userInfo:clientInfo completion:^(MQTicket *ticket, NSError *e) {
+        if (e) {
+            completion(NO, e);
+        } else {
+            completion(YES, nil);
+        }
+    }];
 }
 
 + (int)waitingInQueuePosition {
@@ -750,7 +757,28 @@
     return [MQManager getClientQueuePositionComplete:action];
 }
 
++ (void)requestPreChatServeyDataIfNeedCompletion:(void(^)(MQPreChatData *data, NSError *error))block {
+//    NSString *testJSONString = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"testdata" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
+//    id obj = [MQJSONHelper createWithJSONString:testJSONString];
+//    block([[MQPreChatData alloc] initWithDictionary:obj],nil);
+    
+    [MQManager requestPreChatServeyDataIfNeedCompletion:block];
+}
+
++ (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block {
+    [MQManager getCaptchaComplete:block];
+}
+
++ (void)getCaptchaWithURLComplete:(void (^)(NSString *token, NSString *url))block {
+    [MQManager getCaptchaURLComplete:block];
+}
+
++ (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id,NSError *))block {
+    [MQManager submitPreChatForm:formData completion:block];
+}
+
 + (NSError *)checkGlobalError {
     return [MQManager checkGlobalError];
 }
+
 @end

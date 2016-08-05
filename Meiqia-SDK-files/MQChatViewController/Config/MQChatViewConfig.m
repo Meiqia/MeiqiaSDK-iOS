@@ -62,6 +62,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.enableEventDispaly      = false;
     self.enableSendVoiceMessage  = true;
     self.enableSendImageMessage  = true;
+    self.enableSendEmoji         = true;
     self.enableMessageImageMask  = true;
     self.enableMessageSound      = true;
     self.enableTopPullRefresh    = false;
@@ -80,6 +81,8 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     
     self.incomingMsgSoundFileName       = @"MQNewMessageRing.mp3";
     self.outgoingMsgSoundFileName       = @"MQSendMessageRing.mp3";
+    
+    self.preSendMessages = nil;
     
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK

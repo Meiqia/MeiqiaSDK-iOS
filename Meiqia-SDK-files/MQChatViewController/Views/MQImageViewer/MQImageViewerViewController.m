@@ -31,7 +31,7 @@
 @implementation MQImageViewerViewController
 
 - (void)showOn:(UIViewController *)controller fromRectArray:(NSArray *)rectArray {
-    [[[[UIApplication sharedApplication]windows]objectAtIndex:0]addSubview:self.view];
+    [controller.view addSubview:self.view];
     [controller addChildViewController:self];
     [self didMoveToParentViewController:controller];
     

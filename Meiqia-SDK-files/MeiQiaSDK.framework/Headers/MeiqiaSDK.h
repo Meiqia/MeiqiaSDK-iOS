@@ -11,6 +11,6 @@
 #import "MQEnterprise.h"
 #import "MQManager.h"
 #import "MQMessage.h"
-#import "JSONHelper.h"
+#import "MQJSONHelper.h"
 #import "MQDateUtil.h"
 #import "MQLog.h"
