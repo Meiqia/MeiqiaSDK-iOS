@@ -64,7 +64,16 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
+    if (self.valueChangedAction) {
+        self.valueChangedAction(textField.text);
+    }
     return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    if (self.valueChangedAction) {
+        self.valueChangedAction(textField.text);
+    }
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -104,6 +113,9 @@
 
 - (void)fillTextWithButtonTitle:(UIButton *)sender {
     self.textField.text = [sender titleForState:(UIControlStateNormal)];
+    if (self.valueChangedAction) {
+        self.valueChangedAction(self.textField.text);
+    }
 }
 
 @end

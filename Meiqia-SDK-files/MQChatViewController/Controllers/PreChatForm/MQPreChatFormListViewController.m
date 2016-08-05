@@ -31,7 +31,7 @@
     preChatViewController.cancelBlock = cancelBlock;
     
     [preChatViewController.viewModel requestPreChatServeyDataIfNeed:^(MQPreChatData *data, NSError *error) {
-        if (data) {
+        if (data && (data.form.formItems.count + data.menu.menuItems.count) > 0) {
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:preChatViewController];
             nav.navigationBar.barTintColor = controller.navigationController.navigationBar.barTintColor;
             nav.navigationBar.tintColor = controller.navigationController.navigationBar.tintColor;
@@ -47,6 +47,9 @@
 - (instancetype)init {
     if (self = [super initWithStyle:(UITableViewStyleGrouped)]) {
         self.viewModel = [MQPreChatFormViewModel new];
+        if (self.viewModel.formData.menu.menuItems.count == 0) {
+            [self gotoFormViewControllerWithSelectedMenuIndexPath:nil];
+        }
     }
     return self;
 }
@@ -108,11 +111,26 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    MQPreChatSubmitViewController *submitViewController = [MQPreChatSubmitViewController new];
-    submitViewController.formData = self.viewModel.formData;
-    submitViewController.completeBlock = self.completeBlock;
-    submitViewController.selectedMenuItem = self.viewModel.formData.menu.menuItems[indexPath.row];
-    [self.navigationController pushViewController:submitViewController animated:YES];
+    [self gotoFormViewControllerWithSelectedMenuIndexPath:indexPath];
 }
 
+- (void)gotoFormViewControllerWithSelectedMenuIndexPath:(NSIndexPath *)indexPath {
+    MQPreChatSubmitViewController *submitViewController = [MQPreChatSubmitViewController new];
+    MQPreChatMenuItem *selectedMenu = self.viewModel.formData.menu.menuItems[indexPath.row];
+    submitViewController.formData = self.viewModel.formData;
+    submitViewController.completeBlock = self.completeBlock;
+    if (indexPath) {
+        submitViewController.selectedMenuItem = selectedMenu;
+    }
+    
+    if (self.viewModel.formData.form.formItems.count == 0) {
+        if (self.completeBlock) {
+            NSString *target = selectedMenu.target;
+            NSString *targetType = selectedMenu.targetKind;
+            self.completeBlock(@{@"target":target, @"targetType":targetType, @"menu":selectedMenu});
+        }
+    } else {
+        [self.navigationController pushViewController:submitViewController animated:YES];
+    }
+}
 @end

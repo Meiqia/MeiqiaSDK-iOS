@@ -21,7 +21,7 @@
         __strong typeof (wself) sself = wself;
         sself.formData = [self filterFormData:data];
         
-        if (data.isUseCapcha) {
+        if (data.isUseCapcha.boolValue) {
             MQPreChatFormItem *captchaItem = [MQPreChatFormItem new];
             captchaItem.type = MQPreChatFormItemInputTypeCaptcha;
             captchaItem.displayName = @"验证码";
@@ -61,6 +61,16 @@
             }
         }];
         formData.menu.menuItems = filteredMenuItens;
+        
+        if (formData.hasSubmittedForm) {
+            NSMutableArray *filteredFormItems = [NSMutableArray new];
+            [formData.form.formItems enumerateObjectsUsingBlock:^(MQPreChatFormItem *formItem, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (![formItem isIgnoreReturnCustomer].boolValue) {
+                    [filteredFormItems addObject:formItem];
+                }
+            }];
+            formData.form.formItems = filteredFormItems;
+        }
     }
     
     return formData;
