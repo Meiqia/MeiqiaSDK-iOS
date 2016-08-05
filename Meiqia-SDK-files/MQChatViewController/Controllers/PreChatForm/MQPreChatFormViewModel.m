@@ -76,6 +76,25 @@
 //    MQInfo(@"valued changed: %@", self.filledFieldValue);
 }
 
+- (UIKeyboardType)keyboardtypeForType:(NSString *)type {
+    static dispatch_once_t onceToken;
+    static NSDictionary *map;
+    dispatch_once(&onceToken, ^{
+        map = @{
+                @"qq":@(UIKeyboardTypeNumberPad),
+                @"weibo":@(UIKeyboardTypeDefault),
+                @"age":@(UIKeyboardTypeNumberPad),
+                @"email":@(UIKeyboardTypeEmailAddress),
+                @"tel":@(UIKeyboardTypePhonePad),
+                @"wechat":@(UIKeyboardTypeDefault),
+                @"name":@(UIKeyboardTypeDefault),
+                @"gender":@(-1),
+                };
+    });
+    
+    return (UIKeyboardType)[map[type] intValue];
+}
+
 - (NSMutableDictionary *)filledFieldValue {
     if (!_filledFieldValue) {
         _filledFieldValue = [NSMutableDictionary new];

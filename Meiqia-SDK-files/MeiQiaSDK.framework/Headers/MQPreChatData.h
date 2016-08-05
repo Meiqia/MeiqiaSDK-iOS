@@ -25,6 +25,7 @@ typedef NS_ENUM(NSUInteger, MQPreChatFormItemInputType) {
 
 @property (nonatomic, strong) NSNumber *version;
 @property (nonatomic, strong) NSNumber *isUseCapcha;
+@property (nonatomic, strong) NSNumber *hasSubmittedForm;
 @property (nonatomic, strong) MQPreChatMenu *menu;
 @property (nonatomic, strong) MQPreChatForm *form;
 

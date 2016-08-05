@@ -734,8 +734,8 @@
     [MQManager getIsShowRedirectHumanButtonComplete:action];
 }
 
-+ (void)getMessageFormIntroComplete:(void (^)(NSString *, NSError *))action {
-    [MQManager getMessageFormIntroComplete:action];
++ (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action {
+    [MQManager getMessageFormConfigComplete:action];
 }
 
 + (void)submitMessageFormWithMessage:(NSString *)message images:(NSArray *)images clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {

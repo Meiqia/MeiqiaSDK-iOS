@@ -67,6 +67,45 @@
     return YES;
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    
+    if ((int)textField.keyboardType == -1) { //gender
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 50)];
+        view.backgroundColor = [UIColor redColor];
+        textField.inputAccessoryView = [self genderButtonsView];
+    } else {
+        textField.inputAccessoryView = nil;
+    }
+    
+    return YES;
+}
+
+- (UIView *)genderButtonsView {
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
+    view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:247/255.0 alpha:1];
+    UIButton *maleButton = [self createButtonWithTitle:@"男"];
+    UIButton *femalButton = [self createButtonWithTitle:@"女"];
+    CGRect rect = femalButton.frame;
+    rect.origin.x = 60;
+    femalButton.frame = rect;
+    [view addSubview:maleButton];
+    [view addSubview:femalButton];
+    
+    return view;
+}
+
+- (UIButton *)createButtonWithTitle:(NSString *)title {
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
+    [button setTitle:title forState:(UIControlStateNormal)];
+    [button setTitleColor:[UIColor darkGrayColor] forState:(UIControlStateNormal)];
+    [button addTarget:self action:@selector(fillTextWithButtonTitle:) forControlEvents:(UIControlEventTouchUpInside)];
+    return button;
+}
+
+- (void)fillTextWithButtonTitle:(UIButton *)sender {
+    self.textField.text = [sender titleForState:(UIControlStateNormal)];
+}
+
 @end
 
 #pragma mark -

@@ -103,16 +103,24 @@
 
 "cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
 
-"send_to_fast"  = "您发送的太快啦，请休息一下吧~";"leave_a_message" = "留言";
+"send_to_fast"  = "您发送的太快啦，请休息一下吧~";
+"leave_a_message" = "留言";
 "submit" = "提交";
 "leave_a_message_placeholder" = "请输入你的留言";
 "param_not_allow_null" = "%@ 不允许为空";
+"contact_at_lease_enter_one" = "请至少填写一种联系方式";
 "submit_failure" = "提交失败";
 "add_picture" = "添加图片";
 "tel" = "电话";
 "tel_placeholder" = "请输入你的电话";
 "email" = "邮箱";
 "email_placeholder" = "请输入你的邮箱";
+"qq" = "QQ";
+"qq_placeholder" = "请输入你的 qq 号";
+"wechat" = "微信";
+"wechat_placeholder" = "请输入你的微信号";
+"name" = "姓名";
+"name_placeholder" = "请输入姓名";
 
 "wating_in_queue_tip_text" = "请稍等，前面还有%d个访客，您也可以选择给我们 留言";
 

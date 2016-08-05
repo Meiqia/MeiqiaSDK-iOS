@@ -30,4 +30,6 @@ typedef void(^CompleteBlock)(NSDictionary *userInfo);
 
 - (id)valueForFieldIndex:(NSInteger)fieldIndex;
 
+- (UIKeyboardType)keyboardtypeForType:(NSString *)type;
+
 @end

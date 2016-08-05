@@ -83,7 +83,7 @@
         case MQPreChatFormItemInputTypeSingleLineText:
         {
             MQPrechatSingleLineTextCell *scell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(MQPrechatSingleLineTextCell.class) forIndexPath:indexPath];
-            
+            scell.textField.keyboardType = [self.viewModel keyboardtypeForType:formItem.filedName];
             //记录用户输入
             [scell setValueChangedAction:^(NSString *newString) {
                 __strong typeof (wself) sself = wself;

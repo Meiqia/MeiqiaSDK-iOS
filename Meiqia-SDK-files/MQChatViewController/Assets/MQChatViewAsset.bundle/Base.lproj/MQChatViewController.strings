@@ -109,12 +109,19 @@
 "submit" = "提交";
 "leave_a_message_placeholder" = "请输入你的留言";
 "param_not_allow_null" = "%@ 不允许为空";
+"contact_at_lease_enter_one" = "请至少填写一种联系方式";
 "submit_failure" = "提交失败";
 "add_picture" = "添加图片";
 "tel" = "电话";
 "tel_placeholder" = "请输入你的电话";
 "email" = "邮箱";
 "email_placeholder" = "请输入你的邮箱";
+"qq" = "QQ";
+"qq_placeholder" = "请输入你的 qq 号";
+"wechat" = "微信";
+"wechat_placeholder" = "请输入你的微信号";
+"name" = "姓名";
+"name_placeholder" = "请输入";
 
 "wating_in_queue_tip_text" = "请稍等，前面还有%d个访客，您也可以选择给我们 留言";
 

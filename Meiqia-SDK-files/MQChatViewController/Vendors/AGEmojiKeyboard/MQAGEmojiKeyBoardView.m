@@ -44,7 +44,8 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 }
 
 - (NSString *)categoryNameAtIndex:(NSUInteger)index {
-  NSArray *categoryList = @[segmentRecentName, @"People", @"Objects", @"Nature", @"Places", @"Symbols"];
+//  NSArray *categoryList = @[segmentRecentName, @"People", @"Objects", @"Nature", @"Places", @"Symbols"];
+    NSArray *categoryList = @[@"People", @"Objects", @"Nature", @"Places", @"Symbols"];
   return categoryList[index];
 }
 
@@ -52,7 +53,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
   if ([self.dataSource respondsToSelector:@selector(defaultCategoryForEmojiKeyboardView:)]) {
     return [self.dataSource defaultCategoryForEmojiKeyboardView:self];
   }
-  return MQAGEmojiKeyboardViewCategoryImageRecent;
+  return MQAGEmojiKeyboardViewCategoryImageFace;
 }
 
 - (NSUInteger)recentEmojisMaintainedCount {
@@ -67,7 +68,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     array = [NSMutableArray array];
-    for (MQAGEmojiKeyboardViewCategoryImage i = MQAGEmojiKeyboardViewCategoryImageRecent;
+    for (MQAGEmojiKeyboardViewCategoryImage i = MQAGEmojiKeyboardViewCategoryImageFace;
          i <= MQAGEmojiKeyboardViewCategoryImageCharacters;
          ++i) {
       [array addObject:[self segImageWithCategory:i]];
@@ -81,7 +82,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     array = [NSMutableArray array];
-    for (MQAGEmojiKeyboardViewCategoryImage i = MQAGEmojiKeyboardViewCategoryImageRecent;
+    for (MQAGEmojiKeyboardViewCategoryImage i = MQAGEmojiKeyboardViewCategoryImageFace;
          i <= MQAGEmojiKeyboardViewCategoryImageCharacters;
          ++i) {
         [array addObject:[self segImageUnselectedWithCategory:i]];
@@ -190,9 +191,9 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 - (UIImage *)segImageWithCategory:(MQAGEmojiKeyboardViewCategoryImage)category {
     NSString *imageName = @"";
     switch (category) {
-        case MQAGEmojiKeyboardViewCategoryImageRecent:
-            imageName = @"AGEmojiFlags";
-            break;
+//        case MQAGEmojiKeyboardViewCategoryImageRecent:
+//            imageName = @"AGEmojiFlags";
+//            break;
         case MQAGEmojiKeyboardViewCategoryImageFace:
             imageName = @"AGEmojiPeople";
             break;
@@ -217,9 +218,9 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 - (UIImage *)segImageUnselectedWithCategory:(MQAGEmojiKeyboardViewCategoryImage)category {
     NSString *imageName = @"";
     switch (category) {
-        case MQAGEmojiKeyboardViewCategoryImageRecent:
-            imageName = @"AGEmojiFlags";
-            break;
+//        case MQAGEmojiKeyboardViewCategoryImageRecent:
+//            imageName = @"AGEmojiFlags";
+//            break;
         case MQAGEmojiKeyboardViewCategoryImageFace:
             imageName = @"AGEmojiPeople";
             break;

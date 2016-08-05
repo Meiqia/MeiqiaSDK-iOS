@@ -779,8 +779,8 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 //        [customMessageFormInputModelArray addObject:commentMessageFormInputModel];
 //        [customMessageFormInputModelArray addObject:weiboMessageFormInputModel];
     
-    [messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
-    [messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
+//    [messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
+//    [messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
     
     [messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
 }

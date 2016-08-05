@@ -368,7 +368,7 @@
 /**
  获取留言表单引导文案
  */
-+ (void)getMessageFormIntroComplete:(void(^)(NSString *, NSError *))action;
++ (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action;
 
 /**
  *  提交留言表单

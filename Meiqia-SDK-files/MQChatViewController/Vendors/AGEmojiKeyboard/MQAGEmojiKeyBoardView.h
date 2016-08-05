@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, MQAGEmojiKeyboardViewCategoryImage) {
-  MQAGEmojiKeyboardViewCategoryImageRecent,
+//  MQAGEmojiKeyboardViewCategoryImageRecent,
   MQAGEmojiKeyboardViewCategoryImageFace,
   MQAGEmojiKeyboardViewCategoryImageBell,
   MQAGEmojiKeyboardViewCategoryImageFlower,
