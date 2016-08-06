@@ -242,9 +242,11 @@ static UIBarButtonItem *rightBarButtonItemCache = nil;
     if (self.viewModel.formData.isUseCapcha) {
         [self.viewModel requestCaptchaComplete:^(UIImage *image) {
             MQPreChatCaptchaCell *captchaCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.viewModel.formData.form.formItems.count - 1]];
-            captchaCell.textField.text = @"";
-            [self.viewModel setValue:nil forFieldIndex:self.viewModel.formData.form.formItems.count - 1];
-            [captchaCell.refreshCapchaButton setImage:image forState:UIControlStateNormal];
+            if ([captchaCell isKindOfClass:[MQPreChatCaptchaCell class]]) {
+                captchaCell.textField.text = @"";
+                [self.viewModel setValue:nil forFieldIndex:self.viewModel.formData.form.formItems.count - 1];
+                [captchaCell.refreshCapchaButton setImage:image forState:UIControlStateNormal];
+            }
         }];
     }
 }
