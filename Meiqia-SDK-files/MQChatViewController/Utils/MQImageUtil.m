@@ -48,7 +48,7 @@
     float outputScale = MAX(widthScale, heightScale);
     
     if (outputScale > 1) {
-        return [self.class scaleImage:image toNewSize:CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(1.0/outputScale, 1.0/outputScale))];
+        return [self.class scaleImage:image toNewSize:CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(scale/outputScale, scale/outputScale))];
     } else {
         return image;
     }

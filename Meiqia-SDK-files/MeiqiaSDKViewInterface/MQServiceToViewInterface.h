@@ -21,6 +21,7 @@
 #import <MeiQiaSDK/MeiQiaSDK.h>
 #import "MQFileDownloadMessage.h"
 #import "MQRichTextMessage.h"
+#import "MQBotRichTextMessage.h"
 
 /**
  *  该协议是UI层获取数据的委托方法

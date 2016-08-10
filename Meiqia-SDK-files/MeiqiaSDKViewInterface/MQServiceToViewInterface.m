@@ -205,7 +205,23 @@
                     toMessage = botMessage;
                     break;
                 } else if ([subType isEqualToString:@"message"]) {
-                    NSString *content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                    id content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"rich_text"];
+                    if (content) {
+                        MQBotRichTextMessage *botRichTextMessage;
+                        if ([content isKindOfClass:[NSDictionary class]]) {
+                            botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:content];
+                        } else {
+                            botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:@{@"content":content}];
+                        }
+                        botRichTextMessage.questionId = fromMessage.accessoryData[@"question_id"];
+                        toMessage = botRichTextMessage;
+                        
+                        BOOL isEvaluated = [fromMessage.accessoryData objectForKey:@"is_evaluated"] ? [[fromMessage.accessoryData objectForKey:@"is_evaluated"] boolValue] : false;
+                        botRichTextMessage.isEvaluated = isEvaluated;
+                        break;
+                    } else {
+                        content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                    }
                     content = [MQManager convertToUnicodeWithEmojiAlias:content];
                     MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:content];
                     toMessage = textMessage;

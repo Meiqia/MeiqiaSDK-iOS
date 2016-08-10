@@ -12,6 +12,9 @@
 #import "DevelopViewController.h"
 #import <MeiQiaSDK/MeiQiaSDK.h>
 #import "NSArray+MQFunctional.h"
+#import "MQBundleUtil.h"
+#import "MQAssetUtil.h"
+#import "MQImageUtil.h"
 
 static CGFloat const kMQButtonVerticalSpacing   = 16.0;
 static CGFloat const kMQButtonHeight            = 42.0;
@@ -149,6 +152,9 @@ static int indicator_tag = 10;
 }
 
 #pragma 最基本功能
+
+
+
 - (void)didTapBasicFunctionBtn:(UIButton *)button {
     //基本功能 - 在线客服
     
@@ -159,13 +165,13 @@ static int indicator_tag = 10;
     [chatViewManager setClientInfo:@{@"name":@"SDK 3.2.3 测试"}];
     [chatViewManager pushMQChatViewControllerInViewController:self];
     [chatViewManager setLoginCustomizedId:@"xxxxjjxjjx"];
+//    [chatViewManager setPreSendMessages:@[@"message1", @"message2"]];
     [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectEnterprise];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
     [self removeIndecatorForView:basicFunctionBtn];
     
     [chatViewManager setRecordMode:MQRecordModeDuckOther];
     [chatViewManager setPlayMode:MQPlayModeMixWithOther];
-    
 }
 
 #pragma 开发者的高级功能，其中有调用美洽SDK的API接口

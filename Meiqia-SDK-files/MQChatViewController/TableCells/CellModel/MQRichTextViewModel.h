@@ -18,6 +18,8 @@
 @property (nonatomic, copy) void(^avatarLoaded)(UIImage *);
 @property (nonatomic, copy) void(^iconLoaded)(UIImage *);
 @property (nonatomic, copy) void(^modelChanges)(NSString *summary, NSString *iconPath, NSString *content);
+@property (nonatomic, copy) void(^botEvaluateDidTapUseful)(NSString *);
+@property (nonatomic, copy) void(^botEvaluateDidTapUseless)(NSString *);
 
 //暴露给 UI 的模型数据
 @property (nonatomic, copy) NSString *url;
@@ -26,6 +28,8 @@
 @property (nonatomic, copy) NSString *iconPath;
 @property (nonatomic, strong) UIImage *avartarImage;
 @property (nonatomic, strong) UIImage *iconImage;
+
+@property (nonatomic, assign) BOOL isEvaluated;
 
 - (void)openFrom:(UIViewController *)cv;
 

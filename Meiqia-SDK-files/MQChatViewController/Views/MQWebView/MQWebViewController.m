@@ -11,7 +11,6 @@
 
 @interface MQWebViewController()<UIWebViewDelegate>
 
-@property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) UIActivityIndicatorView *indicator;
 @property (nonatomic, strong) NSValue *backBarTitleOffset;
 

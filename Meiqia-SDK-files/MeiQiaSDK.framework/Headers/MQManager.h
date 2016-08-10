@@ -97,6 +97,16 @@
            completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**
+ * 开发者自定义当前顾客的信息，用于展示给客服，强制更新
+ *
+ * @param clientInfo 顾客的信息
+ * @warning 需要顾客先上线，再上传顾客信息。如果开发者使用美洽的开源界面，不需要调用此接口，使用 MQChatViewManager 中的 setClientInfo 配置用户自定义信息即可。
+ * @warning 如果开发者使用「开源聊天界面」的接口来上线，则需要监听 MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION「顾客成功上线」的广播（见 MQDefinition.h），再调用此接口
+ */
++ (void)updateClientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
+           completion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
  *  设置顾客的头像
  *
  *  @param avatarImage 头像Image

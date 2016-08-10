@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "MQChatBaseCell.h"
+#import "MQBotEvaluatable.h"
 
 @interface MQRichTextViewCell : MQChatBaseCell
 
+- (void)botEvaluateDidTapUsefulWithMessageId:(NSString *)messageId;
+
+- (void)botEvaluateDidTapUselessWithMessageId:(NSString *)messageId;
 
 @end

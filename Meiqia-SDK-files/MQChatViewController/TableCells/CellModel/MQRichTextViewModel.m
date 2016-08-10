@@ -12,6 +12,8 @@
 #import "MQServiceToViewInterface.h"
 #import "MQWebViewController.h"
 #import "MQAssetUtil.h"
+#import "MQBotWebViewController.h"
+#import "MQBotRichTextMessage.h"
 
 @interface MQRichTextViewModel()
 
@@ -60,7 +62,17 @@
 }
 
 - (void)openFrom:(UINavigationController *)cv {
-    MQWebViewController *webViewController = [MQWebViewController new];
+    
+    MQWebViewController *webViewController;
+    if ([self.message isKindOfClass:[MQBotRichTextMessage class]]) {
+        webViewController = [MQBotWebViewController new];
+        [(MQBotWebViewController *)webViewController setMessage:(MQBotRichTextMessage *)self.message];
+        [(MQBotWebViewController *)webViewController setBotEvaluateDidTapUseful:self.botEvaluateDidTapUseful];
+        [(MQBotWebViewController *)webViewController setBotEvaluateDidTapUseless:self.botEvaluateDidTapUseless];
+    } else {
+        webViewController = [MQWebViewController new];
+    }
+    
     webViewController.contentHTML = self.content;
     webViewController.title = @"图文消息";
     [cv pushViewController:webViewController animated:YES];
@@ -69,6 +81,12 @@
 
 #pragma mark - 
 
+- (void)didEvaluate {
+    self.isEvaluated = true;
+    if ([self.message isKindOfClass:[MQBotRichTextMessage class]]) {
+        [(MQBotRichTextMessage *)self.message setIsEvaluated:self.isEvaluated];
+    }
+}
 
 - (CGFloat)getCellHeight {
     if (self.cellHeight) {

@@ -975,11 +975,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)sendPreSendMessages {
-    for (id messageContent in [MQChatViewConfig sharedConfig].preSendMessages) {
-        if ([messageContent isKindOfClass:NSString.class]) {
-            [self sendTextMessageWithContent:messageContent];
-        } else if ([messageContent isKindOfClass:UIImage.class]) {
-            [self sendImageMessageWithImage:messageContent];
+    if ([MQServiceToViewInterface getCurrentAgentStatus] == MQChatAgentStatusOnDuty) {
+        for (id messageContent in [MQChatViewConfig sharedConfig].preSendMessages) {
+            if ([messageContent isKindOfClass:NSString.class]) {
+                [self sendTextMessageWithContent:messageContent];
+            } else if ([messageContent isKindOfClass:UIImage.class]) {
+                [self sendImageMessageWithImage:messageContent];
+            }
         }
     }
 }
