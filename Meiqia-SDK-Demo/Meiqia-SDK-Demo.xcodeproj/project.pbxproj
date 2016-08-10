@@ -115,6 +115,7 @@
 		E426A9F81D2396DA002AA08C /* MQPreChatFormListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9F71D2396DA002AA08C /* MQPreChatFormListViewController.m */; };
 		E426A9FB1D239711002AA08C /* MQPreChatSubmitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */; };
 		E43228451D58926800FDA410 /* MQBotRichTextMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E43228441D58926800FDA410 /* MQBotRichTextMessage.m */; };
+		E44A5EA51D5AF47D000481E8 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E44A5EA41D5AF47D000481E8 /* Accelerate.framework */; };
 		E45CA11F1CC60828000B8917 /* MeiQiaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */; };
 		E45CA1241CC79431000B8917 /* NSArray+MQFunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = E45CA1231CC79431000B8917 /* NSArray+MQFunctional.m */; };
 		E45CA12D1CCA33EF000B8917 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E45CA12C1CCA33EF000B8917 /* libsqlite3.tbd */; };
@@ -389,6 +390,7 @@
 		E43228431D58926800FDA410 /* MQBotRichTextMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQBotRichTextMessage.h; sourceTree = "<group>"; };
 		E43228441D58926800FDA410 /* MQBotRichTextMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQBotRichTextMessage.m; sourceTree = "<group>"; };
 		E44A5EA11D5AD524000481E8 /* MQBotEvaluatable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQBotEvaluatable.h; sourceTree = "<group>"; };
+		E44A5EA41D5AF47D000481E8 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MeiQiaSDK.framework; path = "../Meiqia-SDK-files/MeiQiaSDK.framework"; sourceTree = "<group>"; };
 		E45CA1201CC628D8000B8917 /* MQChatAudioTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MQChatAudioTypes.h; sourceTree = "<group>"; };
 		E45CA1221CC79431000B8917 /* NSArray+MQFunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MQFunctional.h"; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E44A5EA51D5AF47D000481E8 /* Accelerate.framework in Frameworks */,
 				E45CA12D1CCA33EF000B8917 /* libsqlite3.tbd in Frameworks */,
 				CCE9D1481C18139E004E862E /* MobileCoreServices.framework in Frameworks */,
 				CC868F861C7AFFF200BFA68D /* libopencore-amrnb.a in Frameworks */,
@@ -1091,6 +1094,7 @@
 		CCE9D13C1C181368004E862E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E44A5EA41D5AF47D000481E8 /* Accelerate.framework */,
 				E45CA12C1CCA33EF000B8917 /* libsqlite3.tbd */,
 				E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */,
 				CCE9D1471C18139E004E862E /* MobileCoreServices.framework */,

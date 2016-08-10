@@ -29,21 +29,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self becomeFirstResponder];
-}
-
-- (BOOL)canBecomeFirstResponder {
-    return self.message.questionId.integerValue > 0;
-}
-
-- (UIView *)inputAccessoryView {
     
-    UIEdgeInsets inescts = self.webView.scrollView.contentInset;
-    [self.webView.scrollView setContentInset:UIEdgeInsetsMake(inescts.top, inescts.left, HeightButtonView, inescts.right)];
-    if (!self.message.isEvaluated) {
-        return [self createEvaluateView];
-    } else {
-        return [self createEvaluatedView];
+    if (self.message.questionId.integerValue > 0) {
+        UIEdgeInsets inescts = self.webView.scrollView.contentInset;
+        [self.webView.scrollView setContentInset:UIEdgeInsetsMake(inescts.top, inescts.left, HeightButtonView, inescts.right)];
+        
+        UIView *view;
+        if (!self.message.isEvaluated) {
+            view = [self createEvaluateView];
+        } else {
+            view = [self createEvaluatedView];
+        }
+        
+        [view align:(ViewAlignmentBottomLeft) relativeToPoint:self.view.leftBottomCorner];
+        [self.view addSubview:view];
     }
 }
 
@@ -110,10 +109,6 @@
     }
     
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)resetUIAsEvaluated {
-
 }
 
 @end
