@@ -51,7 +51,7 @@ static NSString *const concrete = @"95A5A6";
 static NSString *const asbestos = @"7F8C8D";
 static NSString *const pumice = @"D2D7D3";
 static NSString *const lynch = @"6C7A89";
-
+static NSString *const chatbg = @"ECECEE";
 
 static NSString *const MQBlueColor = @"17c7d1";
 static NSString *const MQSilverColor = @"c6cbd0";
