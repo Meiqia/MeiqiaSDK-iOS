@@ -28,7 +28,7 @@
 #import "MQCustomizedUIText.h"
 #import "MQImageUtil.h"
 #import "MQRecorderView.h"
-#import "MQMessageFormViewManager.h"
+// #import "MQMessageFormViewManager.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
@@ -981,8 +981,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 #pragma 美洽留言的界面
 - (void)showMQMessageForm {
-    MQMessageFormViewManager *formManager = [[MQMessageFormViewManager alloc] init];
-    [formManager pushMQMessageFormViewControllerInViewController:self];
+    // MQMessageFormViewManager *formManager = [[MQMessageFormViewManager alloc] init];
+    // [formManager pushMQMessageFormViewControllerInViewController:self];
 }
 
 /**
