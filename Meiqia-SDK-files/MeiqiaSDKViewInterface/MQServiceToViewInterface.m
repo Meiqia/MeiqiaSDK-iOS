@@ -774,11 +774,34 @@
 }
 
 + (void)requestPreChatServeyDataIfNeedCompletion:(void(^)(MQPreChatData *data, NSError *error))block {
-//    NSString *testJSONString = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"testdata" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
-//    id obj = [MQJSONHelper createWithJSONString:testJSONString];
-//    block([[MQPreChatData alloc] initWithDictionary:obj],nil);
+    NSString *clientId = [MQChatViewConfig sharedConfig].MQClientId;
+    NSString *customId = [MQChatViewConfig sharedConfig].customizedId;
     
-    [MQManager requestPreChatServeyDataIfNeedCompletion:block];
+    NSString *trackId;
+    if (clientId.length > 0) {
+        trackId = clientId;
+    }
+    
+    BOOL shouldSend = YES;
+    if (customId.length > 0) {
+        if ([customId isEqualToString:[MQManager getCurrentCustomizedId]]) {
+            trackId = nil; //使用缓存中的 trackId
+        } else {
+            shouldSend = NO;
+            
+            [MQManager bindCustomizedId:customId completion:^(NSString *clientId, NSError *error) {
+                if (error) {
+                    block(nil, error);
+                } else {
+                    [MQManager requestPreChatServeyDataIfNeedWithTrackId:clientId completion:block];
+                }
+            }];
+        }
+    }
+    
+    if (shouldSend) {
+        [MQManager requestPreChatServeyDataIfNeedWithTrackId:trackId completion:block];
+    }
 }
 
 + (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block {

@@ -32,7 +32,17 @@
     
     [preChatViewController.viewModel requestPreChatServeyDataIfNeed:^(MQPreChatData *data, NSError *error) {
         if (data && (data.form.formItems.count + data.menu.menuItems.count) > 0) {
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:preChatViewController];
+            UINavigationController *nav;
+            if ([data.menu.status isEqualToString:@"close"] || data.menu.menuItems.count == 0) {
+                MQPreChatSubmitViewController *submitViewController = [MQPreChatSubmitViewController new];
+                submitViewController.formData = data;
+                submitViewController.completeBlock = block;
+                submitViewController.cancelBlock = cancelBlock;
+                nav = [[UINavigationController alloc] initWithRootViewController:submitViewController];
+            } else {
+                nav = [[UINavigationController alloc] initWithRootViewController:preChatViewController];
+            }
+            
             nav.navigationBar.barTintColor = controller.navigationController.navigationBar.barTintColor;
             nav.navigationBar.tintColor = controller.navigationController.navigationBar.tintColor;
             [controller presentViewController:nav animated:YES completion:nil];
@@ -47,9 +57,6 @@
 - (instancetype)init {
     if (self = [super initWithStyle:(UITableViewStyleGrouped)]) {
         self.viewModel = [MQPreChatFormViewModel new];
-        if (self.viewModel.formData.menu.menuItems.count == 0) {
-            [self gotoFormViewControllerWithSelectedMenuIndexPath:nil];
-        }
     }
     return self;
 }
@@ -111,10 +118,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self gotoFormViewControllerWithSelectedMenuIndexPath:indexPath];
+    [self gotoFormViewControllerWithSelectedMenuIndexPath:indexPath animated:YES];
 }
 
-- (void)gotoFormViewControllerWithSelectedMenuIndexPath:(NSIndexPath *)indexPath {
+- (void)gotoFormViewControllerWithSelectedMenuIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
     MQPreChatSubmitViewController *submitViewController = [MQPreChatSubmitViewController new];
     MQPreChatMenuItem *selectedMenu = self.viewModel.formData.menu.menuItems[indexPath.row];
     submitViewController.formData = self.viewModel.formData;
@@ -123,14 +130,16 @@
         submitViewController.selectedMenuItem = selectedMenu;
     }
     
-    if (self.viewModel.formData.form.formItems.count == 0) {
-        if (self.completeBlock) {
-            NSString *target = selectedMenu.target;
-            NSString *targetType = selectedMenu.targetKind;
-            self.completeBlock(@{@"target":target, @"targetType":targetType, @"menu":selectedMenu});
-        }
+    if (self.viewModel.formData.form.formItems.count == 0 || [self.viewModel.formData.form.status isEqualToString:@"close"]) {
+        [self dismissViewControllerAnimated:YES completion:^{            
+            if (self.completeBlock) {
+                NSString *target = selectedMenu.target;
+                NSString *targetType = selectedMenu.targetKind;
+                self.completeBlock(@{@"target":target, @"targetType":targetType, @"menu":selectedMenu.desc});
+            }
+        }];
     } else {
-        [self.navigationController pushViewController:submitViewController animated:YES];
+        [self.navigationController pushViewController:submitViewController animated:animated];
     }
 }
 @end

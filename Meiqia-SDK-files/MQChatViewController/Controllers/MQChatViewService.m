@@ -953,6 +953,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self reloadChatTableView];
         [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
         [self.positionCheckTimer invalidate];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self sendPreSendMessages];
+        });
     }
 }
 
@@ -983,6 +987,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [self sendImageMessageWithImage:messageContent];
             }
         }
+        
+        [MQChatViewConfig sharedConfig].preSendMessages = nil;
     }
 }
 

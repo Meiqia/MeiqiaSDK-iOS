@@ -73,7 +73,7 @@
     [self.indicator stopAnimating];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(nullable NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [self.indicator stopAnimating];
 }
 

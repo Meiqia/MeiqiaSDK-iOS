@@ -284,6 +284,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     //开启同步消息
     [chatViewManager enableSyncServerMessage:true];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
+    [chatViewManager setScheduleLogicWithRule:(MQChatScheduleRulesRedirectNone)];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -325,7 +326,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  @param customizedId 自定义id
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId {
-    [MQManager initWithAppkey:@"58767158dd91adf8410f7916f76b66e2" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"fb64f27367846ceb944862a03113ed03" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
             [chatViewManager setLoginCustomizedId:customizedId];

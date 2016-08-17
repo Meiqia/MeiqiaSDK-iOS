@@ -389,7 +389,6 @@
 		E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MQPreChatSubmitViewController.m; path = ../PreChatForm/MQPreChatSubmitViewController.m; sourceTree = "<group>"; };
 		E43228431D58926800FDA410 /* MQBotRichTextMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQBotRichTextMessage.h; sourceTree = "<group>"; };
 		E43228441D58926800FDA410 /* MQBotRichTextMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQBotRichTextMessage.m; sourceTree = "<group>"; };
-		E44A5EA11D5AD524000481E8 /* MQBotEvaluatable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQBotEvaluatable.h; sourceTree = "<group>"; };
 		E44A5EA41D5AF47D000481E8 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MeiQiaSDK.framework; path = "../Meiqia-SDK-files/MeiQiaSDK.framework"; sourceTree = "<group>"; };
 		E45CA1201CC628D8000B8917 /* MQChatAudioTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MQChatAudioTypes.h; sourceTree = "<group>"; };
@@ -678,7 +677,6 @@
 				E45D6D5E1CB504DB00F5881E /* MQFileDownloadCell.m */,
 				E4036E0A1D0FE2C10065D5A5 /* MQRichTextViewCell.h */,
 				E4036E0B1D0FE2C10065D5A5 /* MQRichTextViewCell.m */,
-				E44A5EA11D5AD524000481E8 /* MQBotEvaluatable.h */,
 			);
 			path = CellView;
 			sourceTree = "<group>";

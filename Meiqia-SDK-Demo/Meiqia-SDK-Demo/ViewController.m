@@ -165,8 +165,9 @@ static int indicator_tag = 10;
     [chatViewManager setClientInfo:@{@"name":@"SDK 3.2.3 测试"}];
     [chatViewManager pushMQChatViewControllerInViewController:self];
     [chatViewManager setLoginCustomizedId:@"xxxxjjxjjx"];
-//    [chatViewManager setPreSendMessages:@[@"message1", @"message2"]];
-    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectEnterprise];
+  //  [chatViewManager setPreSendMessages:@[@"message1"]];
+ //   [chatViewManager setScheduledAgentId:@"f60d269236231a6fa5c1b0d4848c4569"];
+    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
     [self removeIndecatorForView:basicFunctionBtn];
     

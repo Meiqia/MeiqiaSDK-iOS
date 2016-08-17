@@ -13,6 +13,7 @@
 @interface MQPreChatSubmitViewController : UITableViewController
 
 @property (nonatomic, copy) void(^completeBlock)(NSDictionary *userInfo);
+@property (nonatomic, copy) void(^cancelBlock)(void);
 
 @property (nonatomic, strong) MQPreChatData *formData;
 @property (nonatomic, strong) MQPreChatMenuItem *selectedMenuItem;

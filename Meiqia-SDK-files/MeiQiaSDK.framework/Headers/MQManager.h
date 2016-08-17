@@ -69,6 +69,11 @@
 + (void)initWithAppkey:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error))completion;
 
 /**
+ 将用户自定义 id 美洽绑定，获取一个绑定后的美洽 clientId
+ */
++ (void)bindCustomizedId:(NSString *)customizedId completion:(void(^)(NSString *clientId, NSError *error))block;
+
+/**
  * 设置指定分配的客服或客服组。
  *
  * @param agentId                指定分配的客服id，可为空
@@ -170,6 +175,12 @@
  *  
  */
 + (NSString *)getCurrentClientId;
+
+
+/**
+ 当前的顾客自定义 id
+ */
++ (NSString *)getCurrentCustomizedId;
 
 /**
  *  获取当前顾客的顾客信息
@@ -488,7 +499,7 @@
 /**
  根据当前的用户 id， 或者自定义用户 id，首先判断需不需要显示询前表单：如果当前对话未结束，则需要显示，这时发起请求，从服务器获取表单数据，返回的结果根据用户指定的 agent token， group token（如果有），将数据过滤之后返回。
  */
-+ (void)requestPreChatServeyDataIfNeedCompletion:(void(^)(MQPreChatData *data, NSError *error))block;
++ (void)requestPreChatServeyDataIfNeedWithTrackId:(NSString *)trackId completion:(void(^)(MQPreChatData *data, NSError *error))block;
 
 /**
  获取验证码图片和 token

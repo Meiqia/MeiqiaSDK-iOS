@@ -12,6 +12,7 @@
 #import "NSArray+MQFunctional.h"
 #import "MQPreChatCells.h"
 #import "MQToast.h"
+#import "MQAssetUtil.h"
 
 #pragma mark -
 #pragma mark -
@@ -36,12 +37,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if ([self.navigationController.viewControllers firstObject] == self) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+    }
+    
     self.title = @"请填写以下问题";
     
     self.viewModel = [MQPreChatFormViewModel new];
     self.viewModel.formData = self.formData;
 
     self.tableView.allowsMultipleSelection = YES;
+    
+    if (self.viewModel.formData.form.title.length > 0) {
+        self.title = self.viewModel.formData.form.title;
+    }
     
     [self.tableView registerClass:[MQPreChatMultiLineTextCell class] forCellReuseIdentifier:NSStringFromClass([MQPreChatMultiLineTextCell class])];
     [self.tableView registerClass:[MQPrechatSingleLineTextCell class] forCellReuseIdentifier:NSStringFromClass([MQPrechatSingleLineTextCell class])];
@@ -51,6 +60,12 @@
     
     UIBarButtonItem *submit = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:(UIBarButtonItemStylePlain) target:self action:@selector(submitAction)];
     self.navigationItem.rightBarButtonItem = submit;
+}
+
+- (void)dismiss {
+    if (self.cancelBlock) {
+        self.cancelBlock();
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,14 +116,14 @@
         case MQPreChatFormItemInputTypeSingleSelection:
             cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(MQPreChatSelectionCell.class) forIndexPath:indexPath];
             cell.textLabel.text = formItem.choices[indexPath.row];
-            [cell setSelected:([@(indexPath.row) isEqual:[self.viewModel valueForFieldIndex:indexPath.section]]) animated:NO];
+            [cell setSelected:([cell.textLabel.text isEqualToString:[self.viewModel valueForFieldIndex:indexPath.section]]) animated:NO];
             break;
         case MQPreChatFormItemInputTypeMultipleSelection:
             cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(MQPreChatSelectionCell.class) forIndexPath:indexPath];
             cell.textLabel.text = formItem.choices[indexPath.row];
             
             if ([[self.viewModel valueForFieldIndex:indexPath.section] respondsToSelector:@selector(containsObject:)]) {
-                [cell setSelected:[[self.viewModel valueForFieldIndex:indexPath.section] containsObject:@(indexPath.row)] animated:NO];
+                [cell setSelected:[[self.viewModel valueForFieldIndex:indexPath.section] containsObject:cell.textLabel.text] animated:NO];
             }
             break;
         case MQPreChatFormItemInputTypeCaptcha:{
@@ -253,10 +268,14 @@ static UIBarButtonItem *rightBarButtonItemCache = nil;
 
 //
 - (NSDictionary *)createUserInfo {
-    NSString *target = self.selectedMenuItem.target;
-    NSString *targetType = self.selectedMenuItem.targetKind;
-    
-    return @{@"target":target, @"targetType":targetType, @"menu":[self.selectedMenuItem desc]};
+    if (self.selectedMenuItem) {
+        NSString *target = self.selectedMenuItem.target;
+        NSString *targetType = self.selectedMenuItem.targetKind;
+        
+        return @{@"target":target, @"targetType":targetType, @"menu":[self.selectedMenuItem desc]};
+    } else {
+        return nil;
+    }
 }
 
 
