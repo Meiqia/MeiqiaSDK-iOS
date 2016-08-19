@@ -1025,7 +1025,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if (!_keyboardController) {
         _keyboardController = [[MQKeyboardController alloc] initWithResponders:@[self.chatInputBar.contentView, self.chatInputBar] contextView:self.view panGestureRecognizer:self.chatTableView.panGestureRecognizer delegate:self];
         _keyboardController.keyboardTriggerPoint = CGPointMake(0, self.constaintInputBarHeight.constant);
-        _keyboardController.delegate = self;
     }
     return _keyboardController;
 }

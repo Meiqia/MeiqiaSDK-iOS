@@ -178,7 +178,7 @@
                 [MQServiceToViewInterface downloadMediaWithUrlString:message.imagePath progress:^(float progress) {
                 } completion:^(NSData *mediaData, NSError *error) {
                     if (mediaData && !error) {
-                        self.image = [MQImageUtil resizeImage:[UIImage imageWithData:mediaData] maxSize:[UIScreen mainScreen].bounds.size];
+                        self.image = [UIImage imageWithData:mediaData];
                         [self setModelsWithContentImage:self.image cellFromType:message.fromType cellWidth:cellWidth];
                     } else {
                         self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;

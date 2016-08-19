@@ -290,9 +290,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  * 发送“用户正在输入”的消息
  */
 - (void)sendUserInputtingWithContent:(NSString *)content {
-#ifdef INCLUDE_MEIQIA_SDK
-    [MQServiceToViewInterface sendClientInputtingWithContent:content];
-#endif
+    //[MQServiceToViewInterface sendClientInputtingWithContent:content];
 }
 
 /**
