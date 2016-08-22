@@ -633,7 +633,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 ### 监听聊天界面显示和消失
 
 * `MQ_NOTIFICATION_CHAT_BEGIN` 在聊天界面出现的时候发送
-*  `MQ_NOTIFICATION_CHAT_END` 在聊天界面消失时发送
+* `MQ_NOTIFICATION_CHAT_END` 在聊天界面消失时发送
 
 
 ### 用户排队
@@ -866,6 +866,19 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 ## 编译中出现 undefined symbols
 
 请开发者检查 App Target - Build Settings - Search Path - Framework Search Path 或 Library Search Path 当中是否没有美洽的项目。
+
+Vendors - 用到的第三方开源库
+---
+以下是该 Library 用到的第三方开源代码，如果开发者的项目中用到了相同的库，需要删除一份，避免类名冲突：
+
+第三方开源库 | Tag 版本 | 说明
+----- | ----- | -----
+VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪位童鞋找到来源后，请更新下文档~
+[MLAudioRecorder](https://github.com/molon/MLAudioRecorder) | master | 边录边转码，播放网络音频 Button (本地缓存)，实时语音。**注意**，由于该开源项目中的 [lame.framework](https://github.com/molon/MLAudioRecorder/tree/master/MLRecorder/MLAudioRecorder/mp3_en_de/lame.framework) 不支持 `bitCode` ，所以我们去掉了该项目中有关 MP3 的文件；
+[GrowingTextView](https://github.com/HansPinckaers/GrowingTextView) | 1.1 | 随文字改变高度的的 textView，用于本项目中的聊天输入框；
+[TTTAttributedLabel](https://github.com/TTTAttributedLabel/TTTAttributedLabel) |  | 支持多种效果的 Lable，用于本项目中的聊天气泡的文字 Label；
+[CustomIOSAlertView](https://github.com/wimagguc/ios-custom-alertview) | 自定义 | 自定义的 AlertView，用于显示本项目的评价弹出框；**注意**，我们队该开源项目进行了修改，增加了按钮之间的分隔线条、判断当前是否已经有 AlertView 在显示、以及键盘弹出时界面 frame 计算，该修改版本可以见 [CustomIOSAlertView](https://github.com/ijinmao/ios-custom-alertview)；
+[AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 更新日志
 

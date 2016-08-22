@@ -776,32 +776,8 @@
 + (void)requestPreChatServeyDataIfNeedCompletion:(void(^)(MQPreChatData *data, NSError *error))block {
     NSString *clientId = [MQChatViewConfig sharedConfig].MQClientId;
     NSString *customId = [MQChatViewConfig sharedConfig].customizedId;
-    
-    NSString *trackId;
-    if (clientId.length > 0) {
-        trackId = clientId;
-    }
-    
-    BOOL shouldSend = YES;
-    if (customId.length > 0) {
-        if ([customId isEqualToString:[MQManager getCurrentCustomizedId]]) {
-            trackId = nil; //使用缓存中的 trackId
-        } else {
-            shouldSend = NO;
-            
-            [MQManager bindCustomizedId:customId completion:^(NSString *clientId, NSError *error) {
-                if (error) {
-                    block(nil, error);
-                } else {
-                    [MQManager requestPreChatServeyDataIfNeedWithTrackId:clientId completion:block];
-                }
-            }];
-        }
-    }
-    
-    if (shouldSend) {
-        [MQManager requestPreChatServeyDataIfNeedWithTrackId:trackId completion:block];
-    }
+
+    [MQManager requestPreChatServeyDataIfNeedWithClientId:clientId customizedId:customId completion:block];
 }
 
 + (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block {
