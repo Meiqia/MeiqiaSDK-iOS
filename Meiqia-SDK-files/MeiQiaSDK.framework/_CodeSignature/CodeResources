@@ -4,10 +4,6 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Headers/JSONHelper.h</key>
-		<data>
-		VD2DS4zL5PIfgpvLYzQW1q0rMkI=
-		</data>
 		<key>Headers/MQAgent.h</key>
 		<data>
 		ttI9v29Le3urck6tnoiRrKJnkGg=
@@ -34,7 +30,7 @@
 		</data>
 		<key>Headers/MQManager.h</key>
 		<data>
-		JI0URKdTE0ZOltkEMdNc19d0uZU=
+		hzsqOI8Dtr0E56JlgZ1TtFSCcpo=
 		</data>
 		<key>Headers/MQMessage.h</key>
 		<data>
@@ -58,22 +54,15 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		lhxQoLz2XmfrRE3E/IIQc/u8nFE=
+		deg8kmzCexw4zyn6tNxUh9FPoPo=
+		</data>
+		<key>Modules/module.modulemap</key>
+		<data>
+		sZ3a7z4z64r0cBXQzzTbnktvt4k=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Headers/JSONHelper.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			VD2DS4zL5PIfgpvLYzQW1q0rMkI=
-			</data>
-			<key>hash2</key>
-			<data>
-			QsuALAnEwhrbgmdLbxcr1qWD3wbHYweoKjxoOkWUMCM=
-			</data>
-		</dict>
 		<key>Headers/MQAgent.h</key>
 		<dict>
 			<key>hash</key>
@@ -144,11 +133,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			JI0URKdTE0ZOltkEMdNc19d0uZU=
+			hzsqOI8Dtr0E56JlgZ1TtFSCcpo=
 			</data>
 			<key>hash2</key>
 			<data>
-			RmZt5pt+UfCiKtcCsW7eBSAJ5KXtTspHZD0XreTWyHU=
+			yrjTg0sJ9dV+HhkCu4DUV2UwQZDAzxZvo/TsoOgTag4=
 			</data>
 		</dict>
 		<key>Headers/MQMessage.h</key>
@@ -204,6 +193,17 @@
 			<key>hash2</key>
 			<data>
 			NOEUxUU3XL7qzizia5uIUEQCIRPli6hRVugUOx2JxLw=
+			</data>
+		</dict>
+		<key>Modules/module.modulemap</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			sZ3a7z4z64r0cBXQzzTbnktvt4k=
+			</data>
+			<key>hash2</key>
+			<data>
+			vQfXP99XSjaQ2kFyEWzt1hiigqPejqknFPRYJ5VvlDs=
 			</data>
 		</dict>
 	</dict>
