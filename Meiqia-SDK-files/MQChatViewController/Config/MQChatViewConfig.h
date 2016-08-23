@@ -77,6 +77,7 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @property (nonatomic, assign) BOOL enableEventDispaly;
 @property (nonatomic, assign) BOOL enableSendVoiceMessage;
 @property (nonatomic, assign) BOOL enableSendImageMessage;
+@property (nonatomic, assign) BOOL enableSendEmoji;
 @property (nonatomic, assign) BOOL enableMessageImageMask;
 @property (nonatomic, assign) BOOL enableMessageSound;
 @property (nonatomic, assign) BOOL enableTopPullRefresh;
@@ -137,6 +138,7 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @property (nonatomic, copy) UIColor *eventTextColor;
 @property (nonatomic, copy) UIColor *redirectAgentNameColor;
 @property (nonatomic, copy) UIColor *navTitleColor;
+
 @property (nonatomic, copy) UIColor *navBarTintColor;
 @property (nonatomic, copy) UIColor *navBarColor;
 @property (nonatomic, copy) UIColor *pullRefreshColor;

@@ -10,12 +10,12 @@
 
 @implementation UIColor(MQHex)
 
-+ (UIColor *)colorWithHex:(long)hexColor
++ (UIColor *)colorWithHexWithLong:(long)hexColor
 {
-    return [self colorWithHex:hexColor alpha:1.0];
+    return [self colorWithHexWithLong:hexColor alpha:1.0];
 }
 
-+ (UIColor *)colorWithHex:(long)hexColor alpha:(CGFloat)a
++ (UIColor *)colorWithHexWithLong:(long)hexColor alpha:(CGFloat)a
 {
     float red = ((float)((hexColor & 0xFF0000) >> 16))/255.0;
     float green = ((float)((hexColor & 0xFF00) >> 8))/255.0;
@@ -29,7 +29,7 @@
     NSScanner *scanner = [NSScanner scannerWithString:removeSharpMarkhexString];
     unsigned result = 0;
     [scanner scanHexInt:&result];
-    return [self.class colorWithHex:result];
+    return [self.class colorWithHexWithLong:result];
 }
 
 + (UIColor *)getDarkerColorFromColor1:(UIColor *)color1 color2:(UIColor *)color2 {

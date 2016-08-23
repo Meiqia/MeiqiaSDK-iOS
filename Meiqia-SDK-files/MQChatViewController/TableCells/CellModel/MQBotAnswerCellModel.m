@@ -196,7 +196,7 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
             [contentAttributes setObject:(__bridge id)[MQChatViewConfig sharedConfig].incomingMsgTextColor.CGColor forKey:(__bridge id)kCTForegroundColorAttributeName];
         }
         self.cellTextAttributes = [[NSDictionary alloc] initWithDictionary:contentAttributes];
-        self.cellText = [[NSAttributedString alloc] initWithString:message.content attributes:self.cellTextAttributes];
+        self.cellText = [[NSAttributedString alloc] initWithString:message.content ?: @"" attributes:self.cellTextAttributes];
         self.date = message.date;
         self.cellHeight = 44.0;
         self.delegate = delegator;

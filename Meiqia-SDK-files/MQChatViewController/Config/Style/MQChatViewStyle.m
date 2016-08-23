@@ -61,10 +61,10 @@
         self.outgoingMsgTextColor   = [UIColor whiteColor];
         self.eventTextColor         = [UIColor grayColor];
         self.pullRefreshColor       = nil;//[UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
-        self.btnTextColor            = [UIColor colorWithHex:0x3E8BFF];
+        self.btnTextColor            = [UIColor colorWithHexWithLong:0x3E8BFF];
         self.redirectAgentNameColor = [UIColor blueColor];
         self.navBarColor            = nil;//[UIColor colorWithHexString:MQBlueColor];
-        self.navBarTintColor        = [UIColor colorWithHex:0x3E8BFF];
+        self.navBarTintColor        = [UIColor colorWithHexWithLong:0x3E8BFF];
         self.incomingBubbleColor    = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:247/255.0 alpha:1];
         self.outgoingBubbleColor    = [UIColor colorWithRed:22/255.0 green:199/255.0 blue:209/255.0 alpha:1];
         self.navTitleColor          = nil;//[UIColor whiteColor];

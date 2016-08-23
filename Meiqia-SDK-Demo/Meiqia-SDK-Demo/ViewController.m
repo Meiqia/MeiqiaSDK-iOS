@@ -12,6 +12,9 @@
 #import "DevelopViewController.h"
 #import <MeiQiaSDK/MeiQiaSDK.h>
 #import "NSArray+MQFunctional.h"
+#import "MQBundleUtil.h"
+#import "MQAssetUtil.h"
+#import "MQImageUtil.h"
 
 static CGFloat const kMQButtonVerticalSpacing   = 16.0;
 static CGFloat const kMQButtonHeight            = 42.0;
@@ -41,6 +44,8 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 
     [self initAppIcon];
     [self initFunctionButtons];
+    
+    
     
 //    [[UINavigationBar appearance] setTranslucent:YES];
     
@@ -149,6 +154,9 @@ static int indicator_tag = 10;
 }
 
 #pragma 最基本功能
+
+
+
 - (void)didTapBasicFunctionBtn:(UIButton *)button {
     //基本功能 - 在线客服
     
@@ -156,18 +164,17 @@ static int indicator_tag = 10;
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
 
-    [chatViewManager setClientInfo:@{@"name":@"SDK 3.2.2 测试"}];
+    [chatViewManager setClientInfo:@{@"name":@"SDK 3.3.0 测试"}];
     [chatViewManager pushMQChatViewControllerInViewController:self];
-    [chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectEnterprise];
+    [chatViewManager setLoginCustomizedId:@"xxxxjjxjjx"];
+  //  [chatViewManager setPreSendMessages:@[@"message1"]];
+ //   [chatViewManager setScheduledAgentId:@"f60d269236231a6fa5c1b0d4848c4569"];
+    //[chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
-        
     [self removeIndecatorForView:basicFunctionBtn];
     
     [chatViewManager setRecordMode:MQRecordModeDuckOther];
     [chatViewManager setPlayMode:MQPlayModeMixWithOther];
-    
-    [[UINavigationBar appearance] setTranslucent:NO];
-    
 }
 
 #pragma 开发者的高级功能，其中有调用美洽SDK的API接口

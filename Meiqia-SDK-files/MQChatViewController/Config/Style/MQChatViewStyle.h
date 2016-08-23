@@ -11,50 +11,50 @@
 #import "UIColor+MQHex.h"
 
 //https://github.com/brynbellomy/FlatUIColors
-static NSString *const turquoise = @"1abc9c"; //青绿色
-static NSString *const greenSea  = @"16a085"; //海绿色
-static NSString *const mediumTurquoise = @"4ECDC4"; //中青绿色
-static NSString *const lightSeaGreen = @"1BA39C"; // 浅海绿色
-static NSString *const emerald  = @"2ecc71"; //绿宝石
-static NSString *const nephritis = @"27ae60";
-static NSString *const gossip = @"87D37C";
-static NSString *const salem = @"1E824C";
-static NSString *const peterRiver = @"3498D8";
-static NSString *const belizeHole = @"2980b9";
-static NSString *const riptide = @"86E2D5";
-static NSString *const dodgerBlue = @"19B5FE";
-static NSString *const amethyst = @"9b59b6";
-static NSString *const wisteria = @"8e44ad";
-static NSString *const lightWisteria = @"BE90D4";
-static NSString *const plum = @"913D88";
-static NSString *const wetAsphalt = @"34495e";
-static NSString *const midnightBlue = @"2C3E50";
-static NSString *const hoki = @"67809F";
-static NSString *const ebonyClay = @"22313F";
-static NSString *const sunflower = @"F1C40F";
-static NSString *const tangerine = @"F39C12";
-static NSString *const confetti = @"E9D460";
-static NSString *const capeHoney = @"FDE3A7";
-static NSString *const carrot = @"E67E22";
-static NSString *const pumpkin = @"D35400";
-static NSString *const ecstasy = @"F9690E";
-static NSString *const jaffa = @"F27935";
-static NSString *const alizarin = @"E74C3C";
-static NSString *const pomegranate = @"C0392B";
-static NSString *const monza = @"CF000F";
-static NSString *const thunderbird = @"D91E18";
-static NSString *const clouds = @"ECF0F1";
-static NSString *const silver = @"BDC3C7";
-static NSString *const gallery = @"EEEEEE";
-static NSString *const iron = @"DADFE1";
-static NSString *const concrete = @"95A5A6";
-static NSString *const asbestos = @"7F8C8D";
-static NSString *const pumice = @"D2D7D3";
-static NSString *const lynch = @"6C7A89";
+static NSString *const turquoise = @"#1abc9c"; //青绿色
+static NSString *const greenSea  = @"#16a085"; //海绿色
+static NSString *const mediumTurquoise = @"#4ECDC4"; //中青绿色
+static NSString *const lightSeaGreen = @"#1BA39C"; // 浅海绿色
+static NSString *const emerald  = @"#2ecc71"; //绿宝石
+static NSString *const nephritis = @"#27ae60";
+static NSString *const gossip = @"#87D37C";
+static NSString *const salem = @"#1E824C";
+static NSString *const peterRiver = @"#3498D8";
+static NSString *const belizeHole = @"#2980b9";
+static NSString *const riptide = @"#86E2D5";
+static NSString *const dodgerBlue = @"#19B5FE";
+static NSString *const amethyst = @"#9b59b6";
+static NSString *const wisteria = @"#8e44ad";
+static NSString *const lightWisteria = @"#BE90D4";
+static NSString *const plum = @"#913D88";
+static NSString *const wetAsphalt = @"#34495e";
+static NSString *const midnightBlue = @"#2C3E50";
+static NSString *const hoki = @"#67809F";
+static NSString *const ebonyClay = @"#22313F";
+static NSString *const sunflower = @"#F1C40F";
+static NSString *const tangerine = @"#F39C12";
+static NSString *const confetti = @"#E9D460";
+static NSString *const capeHoney = @"#FDE3A7";
+static NSString *const carrot = @"#E67E22";
+static NSString *const pumpkin = @"#D35400";
+static NSString *const ecstasy = @"#F9690E";
+static NSString *const jaffa = @"#F27935";
+static NSString *const alizarin = @"#E74C3C";
+static NSString *const pomegranate = @"#C0392B";
+static NSString *const monza = @"#CF000F";
+static NSString *const thunderbird = @"#D91E18";
+static NSString *const clouds = @"#ECF0F1";
+static NSString *const silver = @"#BDC3C7";
+static NSString *const gallery = @"#EEEEEE";
+static NSString *const iron = @"#DADFE1";
+static NSString *const concrete = @"#95A5A6";
+static NSString *const asbestos = @"#7F8C8D";
+static NSString *const pumice = @"#D2D7D3";
+static NSString *const lynch = @"#6C7A89";
 
 
-static NSString *const MQBlueColor = @"17c7d1";
-static NSString *const MQSilverColor = @"c6cbd0";
+static NSString *const MQBlueColor = @"#17c7d1";
+static NSString *const MQSilverColor = @"#c6cbd0";
 
 typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
     MQChatViewStyleTypeDefault,

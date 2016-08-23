@@ -56,7 +56,7 @@ typedef enum : NSUInteger {
     MQMessageSendStatusSending               = 2 //发送中
 } MQMessageSendStatus;
 
-@interface MQMessage : NSObject <NSCopying>
+@interface MQMessage : MQModel <NSCopying>
 
 /** 消息id */
 @property (nonatomic, copy  ) NSString             *messageId;
@@ -119,6 +119,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) id accessoryData;
 
 + (instancetype)createBlacklistMessageWithAction:(NSString *)action;
+
+- (NSString *)stringFromContentType;
 
 //- (id)initMessageWithData:(NSDictionary *)data;
 

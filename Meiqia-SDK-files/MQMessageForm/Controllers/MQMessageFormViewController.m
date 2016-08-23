@@ -40,6 +40,8 @@ static NSString * const kMessageFormMessageKey = @"message";
     
     UIView *translucentView;
     UIActivityIndicatorView *activityIndicatorView;
+    
+    BOOL contactAllRequired;
 }
 
 - (instancetype)initWithConfig:(MQMessageFormConfig *)config {
@@ -60,10 +62,9 @@ static NSString * const kMessageFormMessageKey = @"message";
     [self setNavBar];
     [self initScrollView];
     [self initTipLabel];
-    [self initFormContainer];
-    [self initMQMessageFormImageView];
+//    [self initMQMessageFormImageView];
     
-    [self handleLeaveMessageIntro];
+    [self handleLeaveMessageConfig];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tap];
@@ -86,23 +87,34 @@ static NSString * const kMessageFormMessageKey = @"message";
     [self.view addSubview:scrollView];
 }
 
-- (void)handleLeaveMessageIntro {
+- (void)handleLeaveMessageConfig {
     if (messageFormConfig.leaveMessageIntro && messageFormConfig.leaveMessageIntro.length > 0) {
         tipLabel.text = messageFormConfig.leaveMessageIntro;
         tipLabel.hidden = NO;
+        [self initFormContainer];
         [self refreshFrame];
     } else {
-#ifdef INCLUDE_MEIQIA_SDK
-        [MQMessageFormViewService getMessageFormIntroComplete:^(NSString *intro, NSError *error) {
-            if (intro && intro.length > 0) {
-                tipLabel.text = intro;
+        [MQMessageFormViewService getMessageFormConfigComplete:^(MQEnterpriseConfig *config, NSError *error) {
+            if (config.intro.length > 0) {
+                tipLabel.text = config.intro;
                 tipLabel.hidden = NO;
             } else {
                 tipLabel.hidden = YES;
             }
+            
+            contactAllRequired = ![config.ticketContactFillInRule isEqualToString:@"single"];
+            
+            NSMutableArray *filedModels = [NSMutableArray new];
+            [config.ticketContactFields enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                MQMessageFormInputModel *model = [self createInputFieldWithKey:obj];
+                model.isRequired = contactAllRequired;
+                [filedModels addObject:model];
+            }];
+            messageFormConfig.customMessageFormInputModelArray = filedModels;
+            
+            [self initFormContainer];
             [self refreshFrame];
         }];
-#endif
     }
 }
 
@@ -142,7 +154,7 @@ static NSString * const kMessageFormMessageKey = @"message";
     [self refreshMessageFormImageViewFrame];
     
     scrollView.frame = CGRectMake(0, 0, viewSize.width, viewSize.height);
-    [scrollView setContentSize:CGSizeMake(viewSize.width, CGRectGetMaxY(messageFormImageView.frame) + kMQMessageFormSpacing)];
+    [scrollView setContentSize:CGSizeMake(viewSize.width, CGRectGetMaxY(formContainer.frame) + kMQMessageFormSpacing)];
     
     if (translucentView) {
         translucentView.frame = CGRectMake(0, 0, viewSize.width, viewSize.height);
@@ -171,26 +183,11 @@ static NSString * const kMessageFormMessageKey = @"message";
     [messageFormInputModelArray addObject:messageMessageFormInputModel];
     
     // 如果用户配置了自定义输入信息，则使用用户配置的。否则默认添加邮件和手机
-    if (messageFormConfig.customMessageFormInputModelArray && messageFormConfig.customMessageFormInputModelArray.count > 0) {
+    if (messageFormConfig.customMessageFormInputModelArray.count > 0) {
         [messageFormInputModelArray addObjectsFromArray:messageFormConfig.customMessageFormInputModelArray];
     } else {
-        MQMessageFormInputModel *emailMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-        emailMessageFormInputModel.tip = [MQBundleUtil localizedStringForKey:@"email"];
-        emailMessageFormInputModel.key = @"email";
-        emailMessageFormInputModel.isSingleLine = YES;
-        emailMessageFormInputModel.placeholder = [MQBundleUtil localizedStringForKey:@"email_placeholder"];
-        emailMessageFormInputModel.isRequired = YES;
-        emailMessageFormInputModel.keyboardType = UIKeyboardTypeEmailAddress;
-        [messageFormInputModelArray addObject:emailMessageFormInputModel];
-        
-        MQMessageFormInputModel *telMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-        telMessageFormInputModel.tip = [MQBundleUtil localizedStringForKey:@"tel"];
-        telMessageFormInputModel.key = @"tel";
-        telMessageFormInputModel.isSingleLine = YES;
-        telMessageFormInputModel.placeholder = [MQBundleUtil localizedStringForKey:@"tel_placeholder"];
-        telMessageFormInputModel.isRequired = NO;
-        telMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
-        [messageFormInputModelArray addObject:telMessageFormInputModel];
+        [messageFormInputModelArray addObject:[self createInputFieldWithKey:@"email"]];        
+        [messageFormInputModelArray addObject:[self createInputFieldWithKey:@"tel"]];
     }
     
     formContainer = [[UIView alloc] init];
@@ -205,6 +202,34 @@ static NSString * const kMessageFormMessageKey = @"message";
     
     [self refreshFormContainerFrame];
     [scrollView addSubview:formContainer];
+}
+
+- (MQMessageFormInputModel *)createInputFieldWithKey:(NSString *)key {
+    MQMessageFormInputModel *telMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    telMessageFormInputModel.tip = [MQBundleUtil localizedStringForKey:key];
+    telMessageFormInputModel.key = key;
+    telMessageFormInputModel.isSingleLine = YES;
+    telMessageFormInputModel.placeholder = [MQBundleUtil localizedStringForKey:[NSString stringWithFormat:@"%@_placeholder",key]];
+    telMessageFormInputModel.isRequired = NO;
+    telMessageFormInputModel.keyboardType = [self keyboardWithInputFieldKey:key];
+    
+    return telMessageFormInputModel;
+}
+
+- (UIKeyboardType)keyboardWithInputFieldKey:(NSString *)key {
+    static dispatch_once_t onceToken;
+    static NSDictionary *map;
+    dispatch_once(&onceToken, ^{
+        map = @{
+                @"qq":@(UIKeyboardTypeNumberPad),
+                @"email":@(UIKeyboardTypeEmailAddress),
+                @"tel":@(UIKeyboardTypePhonePad),
+                @"wechat":@(UIKeyboardTypeDefault),
+                @"name":@(UIKeyboardTypeDefault)
+                };
+    });
+    
+    return (UIKeyboardType)[map[key] intValue];
 }
 
 - (void)refreshFormContainerFrame {
@@ -235,6 +260,7 @@ static NSString * const kMessageFormMessageKey = @"message";
 }
 
 - (void)tapSubmitBtn:(id)sender {
+    int valueCharCount = 0;
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:messageFormInputModelArray.count];
     for (int i = 0; i < messageFormInputModelArray.count; i++) {
         MQMessageFormInputModel *model = [messageFormInputModelArray objectAtIndex:i];
@@ -243,7 +269,16 @@ static NSString * const kMessageFormMessageKey = @"message";
             [MQToast showToast:[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"param_not_allow_null"], model.tip] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
             return;
         }
+        
+        if ([[messageFormConfig.customMessageFormInputModelArray valueForKey:@"key"] containsObject:model.key]) {
+            valueCharCount += text.length;
+        }
         [dict setObject:text forKey:model.key];
+    }
+    
+    if (!contactAllRequired && valueCharCount == 0) {
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"contact_at_lease_enter_one"] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
+        return;
     }
     
     NSString *message = [dict objectForKey:kMessageFormMessageKey];
@@ -253,7 +288,6 @@ static NSString * const kMessageFormMessageKey = @"message";
     [self showActivityIndicatorView];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
-#ifdef INCLUDE_MEIQIA_SDK
     [MQMessageFormViewService submitMessageFormWithMessage:message images:[messageFormImageView getImages] clientInfo:dict completion:^(BOOL success, NSError *error) {
         // 为了让用户得到「提交中」的体验，停顿 1 秒再取消 indicator view
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -267,7 +301,6 @@ static NSString * const kMessageFormMessageKey = @"message";
             }
         });
     }];
-#endif
 }
 
 /**

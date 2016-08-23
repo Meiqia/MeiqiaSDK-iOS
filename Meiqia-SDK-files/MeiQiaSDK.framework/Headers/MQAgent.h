@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MQModel.h"
 
 typedef enum : NSUInteger {
     MQAgentStatusOnline   = 0,  //客服在线
@@ -20,7 +21,7 @@ typedef enum : NSUInteger {
     MQAgentPrivilegeNone  = 999   //None
 } MQAgentPrivilege;
 
-@interface MQAgent : NSObject <NSCopying>
+@interface MQAgent : MQModel <NSCopying>
 
 /** 客服id */
 @property (nonatomic, strong) NSString         *agentId;
@@ -63,4 +64,5 @@ typedef enum : NSUInteger {
 
 // 转换 agent type
 - (NSString *)convertPrivilegeToString;
+
 @end

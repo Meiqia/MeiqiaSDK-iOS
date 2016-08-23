@@ -170,12 +170,30 @@
                 NSString *subType = [fromMessage.accessoryData objectForKey:@"sub_type"] ?: @"";
                 if ([normalTypes containsObject:subType]) {
                     // 机器人普通回答消息
-                    NSString *content;
+                    id content;
                     if ([subType isEqualToString:@"queueing"]) {
                         content = @"暂无空闲客服，您已进入排队等待。";
                         subType = @"redirect";
                     } else {
-                        content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                        content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"rich_text"];
+                        if (content) {
+                            MQBotRichTextMessage *botRichTextMessage;
+                            if ([content isKindOfClass:[NSDictionary class]]) {
+                                botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:content];
+                            } else {
+                                botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:@{@"content":content}];
+                            }
+                            botRichTextMessage.thumbnail = fromMessage.accessoryData[@"thumbnail"];
+                            botRichTextMessage.summary = fromMessage.accessoryData[@"thumbnail"];
+                            botRichTextMessage.questionId = fromMessage.accessoryData[@"question_id"];
+                            toMessage = botRichTextMessage;
+                            
+                            BOOL isEvaluated = [fromMessage.accessoryData objectForKey:@"is_evaluated"] ? [[fromMessage.accessoryData objectForKey:@"is_evaluated"] boolValue] : false;
+                            botRichTextMessage.isEvaluated = isEvaluated;
+                            break;
+                        } else {
+                            content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                        }
                         content = [MQManager convertToUnicodeWithEmojiAlias:content];
                     }
                     BOOL isEvaluated = [fromMessage.accessoryData objectForKey:@"is_evaluated"] ? [[fromMessage.accessoryData objectForKey:@"is_evaluated"] boolValue] : false;
@@ -205,7 +223,25 @@
                     toMessage = botMessage;
                     break;
                 } else if ([subType isEqualToString:@"message"]) {
-                    NSString *content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                    id content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"rich_text"];
+                    if (content) {
+                        MQBotRichTextMessage *botRichTextMessage;
+                        if ([content isKindOfClass:[NSDictionary class]]) {
+                            botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:content];
+                        } else {
+                            botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:@{@"content":content}];
+                        }
+                        botRichTextMessage.thumbnail = fromMessage.accessoryData[@"thumbnail"];
+                        botRichTextMessage.summary = fromMessage.accessoryData[@"thumbnail"];
+                        botRichTextMessage.questionId = fromMessage.accessoryData[@"question_id"];
+                        toMessage = botRichTextMessage;
+                        
+                        BOOL isEvaluated = [fromMessage.accessoryData objectForKey:@"is_evaluated"] ? [[fromMessage.accessoryData objectForKey:@"is_evaluated"] boolValue] : false;
+                        botRichTextMessage.isEvaluated = isEvaluated;
+                        break;
+                    } else {
+                        content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                    }
                     content = [MQManager convertToUnicodeWithEmojiAlias:content];
                     MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:content];
                     toMessage = textMessage;
@@ -734,12 +770,19 @@
     [MQManager getIsShowRedirectHumanButtonComplete:action];
 }
 
-+ (void)getMessageFormIntroComplete:(void (^)(NSString *, NSError *))action {
-    [MQManager getMessageFormIntroComplete:action];
++ (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action {
+    [MQManager getMessageFormConfigComplete:action];
 }
 
 + (void)submitMessageFormWithMessage:(NSString *)message images:(NSArray *)images clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
-    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
+//    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
+    [MQManager submitTicketForm:message userInfo:clientInfo completion:^(MQTicket *ticket, NSError *e) {
+        if (e) {
+            completion(NO, e);
+        } else {
+            completion(YES, nil);
+        }
+    }];
 }
 
 + (int)waitingInQueuePosition {
@@ -750,7 +793,27 @@
     return [MQManager getClientQueuePositionComplete:action];
 }
 
++ (void)requestPreChatServeyDataIfNeedCompletion:(void(^)(MQPreChatData *data, NSError *error))block {
+    NSString *clientId = [MQChatViewConfig sharedConfig].MQClientId;
+    NSString *customId = [MQChatViewConfig sharedConfig].customizedId;
+
+    [MQManager requestPreChatServeyDataIfNeedWithClientId:clientId customizedId:customId completion:block];
+}
+
++ (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block {
+    [MQManager getCaptchaComplete:block];
+}
+
++ (void)getCaptchaWithURLComplete:(void (^)(NSString *token, NSString *url))block {
+    [MQManager getCaptchaURLComplete:block];
+}
+
++ (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id,NSError *))block {
+    [MQManager submitPreChatForm:formData completion:block];
+}
+
 + (NSError *)checkGlobalError {
     return [MQManager checkGlobalError];
 }
+
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JSONHelper:NSObject
+@interface MQJSONHelper:NSObject
 
 + (NSString *)JSONStringWith:(id)obj;
 

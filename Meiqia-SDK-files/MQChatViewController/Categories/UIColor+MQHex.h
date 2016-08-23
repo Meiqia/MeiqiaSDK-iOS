@@ -11,9 +11,9 @@
 
 @interface UIColor(MQHex)
 
-+ (UIColor *)colorWithHex:(long)hexColor alpha:(CGFloat)a;
++ (UIColor *)colorWithHexWithLong:(long)hexColor alpha:(CGFloat)a;
 
-+ (UIColor *)colorWithHex:(long)hexColor;
++ (UIColor *)colorWithHexWithLong:(long)hexColor;
 
 + (UIColor *)colorWithHexString:(NSString *)hexString;
 

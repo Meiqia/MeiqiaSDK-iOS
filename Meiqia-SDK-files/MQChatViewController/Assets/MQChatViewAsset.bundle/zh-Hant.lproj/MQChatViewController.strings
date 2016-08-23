@@ -104,11 +104,24 @@
 "submit" = "提交";
 "leave_a_message_placeholder" = "請輸入你的留言";
 "param_not_allow_null" = "%@ 不允許為空";
+"contact_at_lease_enter_one" = "請至少填寫一種聯繫方式";
 "submit_failure" = "提交失敗";
 "add_picture" = "添加圖片";
 "tel" = "電話";
 "tel_placeholder" = "請輸入你的電話";
 "email" = "郵箱";
 "email_placeholder" = "請輸入您的郵箱";
+"qq" = "QQ";
+"qq_placeholder" = "請輸入您的 QQ 號";
+"wechat" = "微信";
+"wechat_placeholder" = "請輸入您的微信號";
+"name" = "姓名";
+"name_placeholder" = "請輸入姓名";
 
 "wating_in_queue_tip_text" = "請稍等，前面還有%d個訪客，您也可以選擇給我們 留言";
+
+//询前表单
+"pre_chat_list_title" = "客服支持";
+"pre_chat_form_title" =  "請填寫以下內容";
+"pre_chat_form_mutiple_selection_label" = "(多選)";
+"pre_chat_form_black_alert_label" = "紅色文字的地方為必填項，請填寫完整";
