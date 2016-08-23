@@ -140,15 +140,6 @@
 		E4D3CAA91CABC2AA0002C25B /* UIColor+MQHex.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3CAA81CABC2AA0002C25B /* UIColor+MQHex.m */; };
 		E4D46C611D51969F00C3030E /* MQAGEmojiKeyBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D46C5E1D51969F00C3030E /* MQAGEmojiKeyBoardView.m */; };
 		E4D46C621D51969F00C3030E /* MQAGEmojiPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D46C601D51969F00C3030E /* MQAGEmojiPageView.m */; };
-		E4D46C641D5196A900C3030E /* MQEmojisList.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C631D5196A900C3030E /* MQEmojisList.plist */; };
-		E4D46C6D1D51A21F00C3030E /* AGEmojiActivity.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C651D51A21F00C3030E /* AGEmojiActivity.png */; };
-		E4D46C6E1D51A21F00C3030E /* AGEmojiAnimals.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C661D51A21F00C3030E /* AGEmojiAnimals.png */; };
-		E4D46C6F1D51A21F00C3030E /* AGEmojiFlags.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C671D51A21F00C3030E /* AGEmojiFlags.png */; };
-		E4D46C701D51A21F00C3030E /* AGEmojiFood.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C681D51A21F00C3030E /* AGEmojiFood.png */; };
-		E4D46C711D51A21F00C3030E /* AGEmojiObjects.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C691D51A21F00C3030E /* AGEmojiObjects.png */; };
-		E4D46C721D51A21F00C3030E /* AGEmojiPeople.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C6A1D51A21F00C3030E /* AGEmojiPeople.png */; };
-		E4D46C731D51A21F00C3030E /* AGEmojiPlaces.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C6B1D51A21F00C3030E /* AGEmojiPlaces.png */; };
-		E4D46C741D51A21F00C3030E /* AGEmojiSymbols.png in Resources */ = {isa = PBXBuildFile; fileRef = E4D46C6C1D51A21F00C3030E /* AGEmojiSymbols.png */; };
 		E4D46C771D51AD8200C3030E /* UIImage+MQGenerate.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D46C761D51AD8200C3030E /* UIImage+MQGenerate.m */; };
 		E4FED6B41CED5ABE00295D50 /* MQRecorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6A81CED5ABE00295D50 /* MQRecorderView.m */; };
 		E4FED6B51CED5ABE00295D50 /* MQButtonGroupBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FED6AA1CED5ABE00295D50 /* MQButtonGroupBar.m */; };
@@ -435,15 +426,6 @@
 		E4D46C5E1D51969F00C3030E /* MQAGEmojiKeyBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQAGEmojiKeyBoardView.m; sourceTree = "<group>"; };
 		E4D46C5F1D51969F00C3030E /* MQAGEmojiPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQAGEmojiPageView.h; sourceTree = "<group>"; };
 		E4D46C601D51969F00C3030E /* MQAGEmojiPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQAGEmojiPageView.m; sourceTree = "<group>"; };
-		E4D46C631D5196A900C3030E /* MQEmojisList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MQEmojisList.plist; sourceTree = "<group>"; };
-		E4D46C651D51A21F00C3030E /* AGEmojiActivity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiActivity.png; sourceTree = "<group>"; };
-		E4D46C661D51A21F00C3030E /* AGEmojiAnimals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiAnimals.png; sourceTree = "<group>"; };
-		E4D46C671D51A21F00C3030E /* AGEmojiFlags.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiFlags.png; sourceTree = "<group>"; };
-		E4D46C681D51A21F00C3030E /* AGEmojiFood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiFood.png; sourceTree = "<group>"; };
-		E4D46C691D51A21F00C3030E /* AGEmojiObjects.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiObjects.png; sourceTree = "<group>"; };
-		E4D46C6A1D51A21F00C3030E /* AGEmojiPeople.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiPeople.png; sourceTree = "<group>"; };
-		E4D46C6B1D51A21F00C3030E /* AGEmojiPlaces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiPlaces.png; sourceTree = "<group>"; };
-		E4D46C6C1D51A21F00C3030E /* AGEmojiSymbols.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AGEmojiSymbols.png; sourceTree = "<group>"; };
 		E4D46C751D51AD8200C3030E /* UIImage+MQGenerate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+MQGenerate.h"; sourceTree = "<group>"; };
 		E4D46C761D51AD8200C3030E /* UIImage+MQGenerate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MQGenerate.m"; sourceTree = "<group>"; };
 		E4FED6A71CED5ABE00295D50 /* MQRecorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQRecorderView.h; sourceTree = "<group>"; };
@@ -1199,15 +1181,6 @@
 		E4D46C5C1D51969F00C3030E /* AGEmojiKeyboard */ = {
 			isa = PBXGroup;
 			children = (
-				E4D46C651D51A21F00C3030E /* AGEmojiActivity.png */,
-				E4D46C661D51A21F00C3030E /* AGEmojiAnimals.png */,
-				E4D46C671D51A21F00C3030E /* AGEmojiFlags.png */,
-				E4D46C681D51A21F00C3030E /* AGEmojiFood.png */,
-				E4D46C691D51A21F00C3030E /* AGEmojiObjects.png */,
-				E4D46C6A1D51A21F00C3030E /* AGEmojiPeople.png */,
-				E4D46C6B1D51A21F00C3030E /* AGEmojiPlaces.png */,
-				E4D46C6C1D51A21F00C3030E /* AGEmojiSymbols.png */,
-				E4D46C631D5196A900C3030E /* MQEmojisList.plist */,
 				E4D46C5D1D51969F00C3030E /* MQAGEmojiKeyBoardView.h */,
 				E4D46C5E1D51969F00C3030E /* MQAGEmojiKeyBoardView.m */,
 				E4D46C5F1D51969F00C3030E /* MQAGEmojiPageView.h */,
@@ -1360,21 +1333,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4D46C721D51A21F00C3030E /* AGEmojiPeople.png in Resources */,
-				E4D46C711D51A21F00C3030E /* AGEmojiObjects.png in Resources */,
 				CCE9D1191C1812F6004E862E /* LaunchScreen.storyboard in Resources */,
-				E4D46C641D5196A900C3030E /* MQEmojisList.plist in Resources */,
-				E4D46C6E1D51A21F00C3030E /* AGEmojiAnimals.png in Resources */,
-				E4D46C6F1D51A21F00C3030E /* AGEmojiFlags.png in Resources */,
-				E4D46C701D51A21F00C3030E /* AGEmojiFood.png in Resources */,
 				CCE9D1161C1812F6004E862E /* Assets.xcassets in Resources */,
 				CC3310951C33F7EA0088E648 /* MQChatViewAsset.bundle in Resources */,
-				E4D46C6D1D51A21F00C3030E /* AGEmojiActivity.png in Resources */,
 				CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */,
-				E4D46C731D51A21F00C3030E /* AGEmojiPlaces.png in Resources */,
 				E40C2C7B1D2B710300744577 /* testdata.txt in Resources */,
 				CCE9D1141C1812F6004E862E /* Main.storyboard in Resources */,
-				E4D46C741D51A21F00C3030E /* AGEmojiSymbols.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

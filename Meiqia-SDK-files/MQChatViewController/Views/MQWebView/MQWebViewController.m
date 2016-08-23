@@ -22,6 +22,7 @@
     self.webView = [UIWebView new];
     self.webView.delegate = self;
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
     
     [self.view addSubview:self.webView];
     

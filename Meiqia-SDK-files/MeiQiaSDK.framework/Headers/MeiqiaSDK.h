@@ -14,3 +14,4 @@
 #import "MQJSONHelper.h"
 #import "MQDateUtil.h"
 #import "MQLog.h"
+#import "MQPreChatData.h"

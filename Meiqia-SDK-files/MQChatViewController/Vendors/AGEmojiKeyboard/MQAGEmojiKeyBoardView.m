@@ -36,9 +36,9 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 - (NSDictionary *)emojis {
   if (!_emojis) {
     NSBundle *selfBundle = [NSBundle bundleForClass:[self class]];
-    NSString *plistPath = [selfBundle pathForResource:@"MQEmojisList"
-                                               ofType:@"plist"];
-    _emojis = [[NSDictionary dictionaryWithContentsOfFile:plistPath] copy];
+      NSString * fileRootPath = [[selfBundle bundlePath] stringByAppendingString:@"/MQChatViewAsset.bundle"];
+      NSString * filePath = [fileRootPath stringByAppendingString:@"/MQEmojisList.plist"];
+    _emojis = [[NSDictionary dictionaryWithContentsOfFile:filePath] copy];
   }
   return _emojis;
 }
@@ -210,7 +210,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
             imageName = @"AGEmojiSymbols";
             break;
     }
-    UIImage *img = [[UIImage imageNamed:imageName] addContentInsect:UIEdgeInsetsMake(7, 7, 7, 7)];
+    UIImage *img = [[MQAssetUtil imageFromBundleWithName:imageName] addContentInsect:UIEdgeInsetsMake(7, 7, 7, 7)];
     img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     return img;
 }
@@ -237,7 +237,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
             imageName = @"AGEmojiSymbols";
             break;
     }
-    UIImage *img = [[UIImage imageNamed:imageName] addContentInsect:UIEdgeInsetsMake(7, 7, 7, 7)];
+    UIImage *img = [[MQAssetUtil imageFromBundleWithName:imageName] addContentInsect:UIEdgeInsetsMake(7, 7, 7, 7)];
     return img;
 }
 

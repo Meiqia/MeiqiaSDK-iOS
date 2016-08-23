@@ -170,12 +170,30 @@
                 NSString *subType = [fromMessage.accessoryData objectForKey:@"sub_type"] ?: @"";
                 if ([normalTypes containsObject:subType]) {
                     // 机器人普通回答消息
-                    NSString *content;
+                    id content;
                     if ([subType isEqualToString:@"queueing"]) {
                         content = @"暂无空闲客服，您已进入排队等待。";
                         subType = @"redirect";
                     } else {
-                        content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                        content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"rich_text"];
+                        if (content) {
+                            MQBotRichTextMessage *botRichTextMessage;
+                            if ([content isKindOfClass:[NSDictionary class]]) {
+                                botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:content];
+                            } else {
+                                botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:@{@"content":content}];
+                            }
+                            botRichTextMessage.thumbnail = fromMessage.accessoryData[@"thumbnail"];
+                            botRichTextMessage.summary = fromMessage.accessoryData[@"thumbnail"];
+                            botRichTextMessage.questionId = fromMessage.accessoryData[@"question_id"];
+                            toMessage = botRichTextMessage;
+                            
+                            BOOL isEvaluated = [fromMessage.accessoryData objectForKey:@"is_evaluated"] ? [[fromMessage.accessoryData objectForKey:@"is_evaluated"] boolValue] : false;
+                            botRichTextMessage.isEvaluated = isEvaluated;
+                            break;
+                        } else {
+                            content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
+                        }
                         content = [MQManager convertToUnicodeWithEmojiAlias:content];
                     }
                     BOOL isEvaluated = [fromMessage.accessoryData objectForKey:@"is_evaluated"] ? [[fromMessage.accessoryData objectForKey:@"is_evaluated"] boolValue] : false;
@@ -213,6 +231,8 @@
                         } else {
                             botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:@{@"content":content}];
                         }
+                        botRichTextMessage.thumbnail = fromMessage.accessoryData[@"thumbnail"];
+                        botRichTextMessage.summary = fromMessage.accessoryData[@"thumbnail"];
                         botRichTextMessage.questionId = fromMessage.accessoryData[@"question_id"];
                         toMessage = botRichTextMessage;
                         
