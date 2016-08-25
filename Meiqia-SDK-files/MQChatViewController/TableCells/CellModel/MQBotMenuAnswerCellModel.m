@@ -9,6 +9,7 @@
 #import "MQBotMenuAnswerCellModel.h"
 #import "MQBotAnswerMessage.h"
 #import "MQBotMenuAnswerCell.h"
+#import "MQBotMenuCellModel.h" //
 
 @interface MQBotMenuAnswerCellModel()
 
@@ -22,6 +23,10 @@
  
     if (self = [super init]) {
         self.message = message;
+        self.menuFootnote = kMQBotMenuTipText;
+        self.menuTitle = message.menu.content;
+        self.menus = message.menu.menu;
+        self.avatarURL = message.userAvatarPath;
     }
     
     return self;
@@ -32,7 +37,11 @@
 
 - (CGFloat)getCellHeight {
 
-    return 80;
+    if (self.provoideCellHeight) {
+        return self.provoideCellHeight();
+    } else {
+        return 80;
+    }
 }
 
 /**
