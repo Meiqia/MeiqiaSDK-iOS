@@ -10,6 +10,7 @@
 #import "MQBotAnswerMessage.h"
 #import "MQBotMenuAnswerCell.h"
 #import "MQBotMenuCellModel.h" //
+#import "MQServiceToViewInterface.h"
 
 @interface MQBotMenuAnswerCellModel()
 
@@ -23,10 +24,23 @@
  
     if (self = [super init]) {
         self.message = message;
+        self.content = message.content;
+        self.messageId = message.messageId;
         self.menuFootnote = kMQBotMenuTipText;
         self.menuTitle = message.menu.content;
         self.menus = message.menu.menu;
-        self.avatarURL = message.userAvatarPath;
+        self.isEvaluated = message.isEvaluated;
+        
+        __weak typeof(self)wself = self;
+        [MQServiceToViewInterface downloadMediaWithUrlString:message.userAvatarPath progress:nil completion:^(NSData *mediaData, NSError *error) {
+            if (mediaData) {
+                __strong typeof (wself) sself = wself;
+                sself.avatarImage = [UIImage imageWithData:mediaData];
+                if (sself.avatarLoaded) {
+                    sself.avatarLoaded(sself.avatarImage);
+                }
+            }
+        }];
     }
     
     return self;
@@ -40,7 +54,7 @@
     if (self.provoideCellHeight) {
         return self.provoideCellHeight();
     } else {
-        return 80;
+        return 200;
     }
 }
 
@@ -78,6 +92,10 @@
 
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
     
+}
+
+- (void)didEvaluate {
+    self.isEvaluated = YES;
 }
 
 @end

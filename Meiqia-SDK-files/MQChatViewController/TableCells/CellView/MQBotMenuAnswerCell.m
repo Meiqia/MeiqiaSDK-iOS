@@ -11,9 +11,19 @@
 #import "MQImageUtil.h"
 #import "UIView+MQLayout.h"
 #import "MQBotMenuAnswerCellModel.h"
+#import "MQChatViewConfig.h"
+#import "UIImage+MQGenerate.h"
+#import "MQStringSizeUtil.h"
 
 #define TAG_MENUS 10
 #define TAG_EVALUATE 11
+#define HEIHGT_VIEW_EVALUATE 40
+#define FONT_SIZE_CONTENT 16
+#define FONT_SIZE_MENU_TITLE 13
+#define FONT_SIZE_MENU 15
+#define FONT_SIZE_MENU_FOOTNOTE 12
+#define FONT_SIZE_EVALUATE_BUTTON 14
+#define SPACE_INTERNAL_VERTICAL 15
 
 @interface MQBotMenuAnswerCell()
 
@@ -27,7 +37,7 @@
 @property (nonatomic, strong) UIView *evaluatedView;
 
 @property (nonatomic, assign) CGFloat currentCellWidth;
-@property (nonatomic, assign) CGFloat currentBubbleWidth;
+@property (nonatomic, assign) CGFloat currentContentWidth;
 
 @end
 
@@ -56,6 +66,22 @@
         __strong typeof (wself) sself = wself;
         return sself.contentView.viewHeight;
     };
+    
+    if (self.cellModel.avatarImage) {
+        self.avatarImageView.image = self.cellModel.avatarImage;
+    } else {
+        [self.cellModel setAvatarLoaded:^(UIImage *avatar) {
+            __strong typeof (wself) sself = wself;
+            if (avatar) {
+                sself.avatarImageView.image = avatar;
+            }
+        }];
+    }
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self updateUI];
 }
 
 - (void)updateUI {
@@ -64,53 +90,93 @@
     [self.itemsView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.avatarImageView.viewRightEdge + kMQCellAvatarToBubbleSpacing, self.avatarImageView.viewY)];
     
     self.itemsView.viewWidth = self.contentView.viewWidth - kMQCellBubbleMaxWidthToEdgeSpacing - self.avatarImageView.viewRightEdge;
+    self.currentCellWidth = self.contentView.viewWidth;
+    self.currentContentWidth = self.itemsView.viewWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarToHorizontalEdgeSpacing;
     
     self.contentLabel.text = self.cellModel.content;
-    self.contentLabel.viewWidth = self.itemsView.viewWidth;
+    self.contentLabel.viewWidth = self.currentContentWidth;
     [self.contentLabel sizeToFit];
-    [self.contentLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointZero];
+    [self.contentLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToHorizontalEdgeSpacing)];
     
     self.menuTitleLabel.text = self.cellModel.menuTitle;
-    self.menuTitleLabel.viewWidth = self.itemsView.viewWidth;
+    self.menuTitleLabel.viewWidth = self.currentContentWidth;
     [self.menuTitleLabel sizeToFit];
-    [self.menuTitleLabel align:(ViewAlignmentTopLeft) relativeToPoint:self.contentLabel.leftBottomCorner];
+    [self.menuTitleLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(self.contentLabel.leftBottomCorner.x, self.contentLabel.leftBottomCorner.y + SPACE_INTERNAL_VERTICAL)];
     
     //recreate menus view
     UIView *menusView = [self menusView:self.cellModel.menus];
     [[self.itemsView viewWithTag:menusView.tag] removeFromSuperview];
     [self.itemsView addSubview:menusView];
-    [menusView align:(ViewAlignmentTopLeft) relativeToPoint:self.menuTitleLabel.leftBottomCorner];
+    [menusView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(self.menuTitleLabel.leftBottomCorner.x, self.menuTitleLabel.leftBottomCorner.y + SPACE_INTERNAL_VERTICAL)];
     
     self.menuFootnoteLabel.text = self.cellModel.menuFootnote;
-    self.menuFootnoteLabel.viewWidth = self.itemsView.viewWidth;
+    self.menuFootnoteLabel.viewWidth = self.currentContentWidth;
     [self.menuFootnoteLabel sizeToFit];
     [self.menuFootnoteLabel align:(ViewAlignmentTopLeft) relativeToPoint:menusView.leftBottomCorner];
     
     //recreate evaluate view
     UIView *evaluateView = [self evaluateRelatedView];
     [[self.itemsView viewWithTag:evaluateView.tag] removeFromSuperview];
-    [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:self.menuFootnoteLabel.leftBottomCorner];
+    [self.itemsView addSubview:evaluateView];
+    [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.menuFootnoteLabel.leftBottomCorner.y + SPACE_INTERNAL_VERTICAL)];
     
     self.itemsView.viewHeight = evaluateView.viewBottomEdge;
     self.contentView.viewHeight = self.itemsView.viewBottomEdge;
+    self.viewHeight = self.contentView.viewHeight;
 }
+
+- (void)updateEvaluateViewAnimatedComplete:(void(^)(void))action {
+    self.cellModel.isEvaluated = YES;
+    
+    UIView *oldView = [self.itemsView viewWithTag:TAG_EVALUATE];
+    
+    UIView *newView = [self evaluateRelatedView];
+    newView.alpha = 0.0;
+    newView.frame = oldView.frame;
+    [self.itemsView addSubview:newView];
+    
+    [UIView animateKeyframesWithDuration:0.3 delay:0.0 options:0 animations:^{
+        [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.5 animations:^{
+            oldView.alpha = 0.0;
+        }];
+        
+        [UIView addKeyframeWithRelativeStartTime:0.5 relativeDuration:0.5 animations:^{
+            newView.alpha = 1.0;
+        }];
+    } completion:^(BOOL finished) {
+        [oldView removeFromSuperview];
+        if (action) {
+            action();
+        }
+    }];
+}
+
+#pragma mark - dynamic views
 
 - (UIView *)menusView:(NSArray *)menus {
     UIView *container = [UIView new];
     container.tag = TAG_MENUS;
-    container.viewWidth = self.currentBubbleWidth;
+    container.viewWidth = self.currentContentWidth;
+    container.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     CGFloat topOffset = 0;
     for (NSString *menuTitle in menus) {
-        UIButton *menu = [UIButton new];
+        UIButton *menu = [UIButton buttonWithType:(UIButtonTypeCustom)];
         menu.viewWidth = container.viewWidth;
+        menu.titleLabel.numberOfLines = 0;
+        menu.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        menu.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [menu setTitle:menuTitle forState:(UIControlStateNormal)];
-        [menu sizeToFit];
+        [menu setContentHorizontalAlignment:(UIControlContentHorizontalAlignmentLeft)];
+        [menu.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_MENU]];
         [menu addTarget:self action:@selector(menuTapped:) forControlEvents:(UIControlEventTouchUpInside)];
-        [container addSubview:menu];
+        [menu setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
         [menu align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(0, topOffset)];
+        [container addSubview:menu];
+        menu.viewHeight = [MQStringSizeUtil getHeightForText:menuTitle withFont:[UIFont systemFontOfSize:FONT_SIZE_MENU] andWidth:container.viewWidth];
         
-        topOffset += menu.viewHeight;
+        topOffset += menu.viewHeight + SPACE_INTERNAL_VERTICAL;
+        
     }
     
     container.viewHeight = topOffset;
@@ -118,55 +184,125 @@
 }
 
 - (UIView *)evaluateRelatedView {
+    UIView *view;
     if (self.cellModel.isEvaluated) {
-        if (self.evaluatedView.superview) {
+        if (self.evaluateView.superview) {
             [self.evaluateView removeFromSuperview];
         }
-        return self.evaluatedView;
+        view = self.evaluatedView;
     } else {
         if (self.evaluatedView.superview) {
             [self.evaluatedView removeFromSuperview];
         }
-        return self.evaluateView;
+        view = self.evaluateView;
     }
+    
+    view.tag = TAG_EVALUATE;
+    return view;
 }
 
 #pragma mark - actions
 
 - (void)menuTapped:(UIButton *)menu {
     NSString *didTapMenuText = menu.titleLabel.text;
+    
     if ([self.chatCellDelegate respondsToSelector:@selector(didTapMenuWithText:)]) {
         [self.chatCellDelegate didTapMenuWithText:didTapMenuText];
     }
 }
 
 - (void)didTapPositive {
-    if ([self.chatCellDelegate respondsToSelector:@selector(evaluateBotAnswer:messageId:)]) {
-        [self.chatCellDelegate evaluateBotAnswer:true messageId:self.cellModel.messageId];
-    }
+    
+    [self updateEvaluateViewAnimatedComplete:^{
+        if ([self.chatCellDelegate respondsToSelector:@selector(evaluateBotAnswer:messageId:)]) {
+            [self.chatCellDelegate evaluateBotAnswer:true messageId:self.cellModel.messageId];
+        }
+    }];
 }
 
 - (void)didTapNegative {
-    if ([self.chatCellDelegate respondsToSelector:@selector(evaluateBotAnswer:messageId:)]) {
-        [self.chatCellDelegate evaluateBotAnswer:false messageId:self.cellModel.messageId];
-    }
+    [self updateEvaluateViewAnimatedComplete:^{
+        if ([self.chatCellDelegate respondsToSelector:@selector(evaluateBotAnswer:messageId:)]) {
+            [self.chatCellDelegate evaluateBotAnswer:false messageId:self.cellModel.messageId];
+        }
+    }];
 }
 
 #pragma mark - lazy load
 
 - (UIView *)evaluateView {
-    if (!_evaluateView) {
+//    if (!_evaluateView) {
         _evaluateView = [UIView new];
-        _evaluatedView.tag = TAG_EVALUATE;
-    }
+        _evaluateView.viewWidth = self.itemsView.viewWidth - 8;
+        _evaluateView.viewHeight = HEIHGT_VIEW_EVALUATE;
+        _evaluateView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        UIView *lineH = [UIView new];
+        lineH.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
+        lineH.viewHeight = 0.5;
+        lineH.viewWidth = _evaluateView.viewWidth;
+        lineH.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        UIButton *usefulButton = [UIButton new];
+        usefulButton.viewWidth = _evaluateView.viewWidth / 2 - 0.5;
+        usefulButton.viewHeight = _evaluateView.viewHeight - 0.5;
+        usefulButton.viewY = 0.5;
+        [usefulButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
+        usefulButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
+        [usefulButton setTitle:@"有用" forState:(UIControlStateNormal)];
+        [usefulButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
+        [usefulButton addTarget:self action:@selector(didTapPositive) forControlEvents:(UIControlEventTouchUpInside)];
+        
+        UIView *lineV = [UIView new];
+        lineV.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
+        lineV.viewHeight = HEIHGT_VIEW_EVALUATE;
+        lineV.viewWidth = 0.5;
+        [lineV align:(ViewAlignmentTopLeft) relativeToPoint:usefulButton.rightTopCorner];
+        lineV.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        
+        UIButton *uselessButton = [UIButton new];
+        [uselessButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
+        [uselessButton setTitle:@"没用" forState:(UIControlStateNormal)];
+        [uselessButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
+        [uselessButton addTarget:self action:@selector(didTapNegative) forControlEvents:(UIControlEventTouchUpInside)];
+        uselessButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin;
+        uselessButton.viewWidth = _evaluateView.viewWidth / 2;
+        uselessButton.viewHeight = _evaluateView.viewHeight - 0.5;
+        uselessButton.viewY = 0.5;
+        [uselessButton align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(usefulButton.viewRightEdge + 0.5, usefulButton.viewY)];
+        
+        [_evaluateView addSubview:lineH];
+        [_evaluateView addSubview:lineV];
+        [_evaluateView addSubview:usefulButton];
+        [_evaluateView addSubview:uselessButton];
+//    }
     return _evaluateView;
 }
 
 - (UIView *)evaluatedView {
-    if (!_evaluatedView) {
+//    if (!_evaluatedView) {
         _evaluatedView = [UIView new];
-        _evaluatedView.tag = TAG_EVALUATE;
-    }
+        _evaluatedView.viewWidth = self.itemsView.viewWidth - 8;
+        _evaluatedView.viewHeight = HEIHGT_VIEW_EVALUATE;
+        _evaluatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        UIView *lineH = [UIView new];
+        lineH.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
+        lineH.viewHeight = 0.5;
+        lineH.viewWidth = _evaluatedView.viewWidth;
+        lineH.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        [_evaluatedView addSubview:lineH];
+        
+        UIButton *button = [UIButton new];
+        button.viewWidth = _evaluatedView.viewWidth;
+        button.viewHeight = _evaluatedView.viewHeight - 0.5;
+        button.viewY = 0.5;
+        [button setTitleColor:[UIColor lightGrayColor] forState:(UIControlStateNormal)];
+        [button.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
+        [button setTitle:@"已提交" forState:(UIControlStateNormal)];
+        [button setAutoresizingMask:(UIViewAutoresizingFlexibleWidth)];
+        [_evaluatedView addSubview:button];
+//    }
     return _evaluatedView;
 }
 
@@ -174,8 +310,8 @@
     if (!_contentLabel) {
         _contentLabel = [UILabel new];
         _contentLabel.numberOfLines = 0;
-        _contentLabel.font = [UIFont systemFontOfSize:16];
-        _contentLabel.textColor = [UIColor darkGrayColor];
+        _contentLabel.font = [UIFont systemFontOfSize:FONT_SIZE_CONTENT];
+        _contentLabel.textColor = [MQChatViewConfig sharedConfig].incomingMsgTextColor;
     }
     return _contentLabel;
 }
@@ -184,7 +320,7 @@
     if (!_menuTitleLabel) {
         _menuTitleLabel = [UILabel new];
         _menuTitleLabel.numberOfLines = 0;
-        _menuTitleLabel.font = [UIFont systemFontOfSize:14];
+        _menuTitleLabel.font = [UIFont systemFontOfSize:FONT_SIZE_MENU_TITLE];
         _menuTitleLabel.textColor = [UIColor grayColor];
     }
     return _menuTitleLabel;
@@ -194,7 +330,7 @@
     if (!_menuFootnoteLabel) {
         _menuFootnoteLabel = [UILabel new];
         _menuFootnoteLabel.numberOfLines = 0;
-        _menuFootnoteLabel.font = [UIFont systemFontOfSize:14];
+        _menuFootnoteLabel.font = [UIFont systemFontOfSize:FONT_SIZE_MENU_FOOTNOTE];
         _menuFootnoteLabel.textColor = [UIColor grayColor];
     }
     return _menuFootnoteLabel;

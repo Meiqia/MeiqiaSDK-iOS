@@ -61,15 +61,15 @@
             embedMenuMessage = [self getEmbedMenuBotMessage:data[@"content_robot"][1]];
             content = [[data objectForKey:@"content_robot"] firstObject][@"text"];
             content = [MQManager convertToUnicodeWithEmojiAlias:content];
+        }
+        
+        MQBaseMessage *message = [self tryToGetRichTextMessage:data];
+        if (message && embedMenuMessage == nil) {
+            //如果是富文本cell，直接返回
+            return message;
         } else {
-            MQBaseMessage *message = [self tryToGetRichTextMessage:data];
-            if (message) {
-                //如果是富文本cell，直接返回
-                return message;
-            } else {
-                content = [[data objectForKey:@"content_robot"] firstObject][@"text"];
-                content = [MQManager convertToUnicodeWithEmojiAlias:content];
-            }
+            content = [[data objectForKey:@"content_robot"] firstObject][@"text"];
+            content = [MQManager convertToUnicodeWithEmojiAlias:content];
         }
     }
     BOOL isEvaluated = [data objectForKey:@"is_evaluated"] ? [[data objectForKey:@"is_evaluated"] boolValue] : false;
