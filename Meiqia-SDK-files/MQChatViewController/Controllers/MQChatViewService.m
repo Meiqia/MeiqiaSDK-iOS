@@ -31,6 +31,7 @@
 #import "MQFileDownloadCellModel.h"
 #import "MQServiceToViewInterface.h"
 #import <MeiQiaSDK/MeiqiaSDK.h>
+#import "MQBotMenuAnswerCellModel.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -616,7 +617,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         } else if ([message isKindOfClass:[MQRichTextMessage class]]) {
             cellModel = [[MQRichTextViewModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
         }else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
-            cellModel = [[MQBotAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            if ([(MQBotAnswerMessage *)message menu] == nil) {
+                cellModel = [[MQBotAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            } else {
+                cellModel = [[MQBotMenuAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            }
         } else if ([message isKindOfClass:[MQBotMenuMessage class]]) {
             cellModel = [[MQBotMenuCellModel alloc] initCellModelWithMessage:(MQBotMenuMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQEventMessage class]]) {
