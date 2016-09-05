@@ -47,7 +47,7 @@ static NSString * const kMQMessageFormImageViewCellHeaderID = @"MQMessageFormIma
         [self registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kMQMessageFormImageViewCellHeaderID];
 
         images = [NSMutableArray new];
-        [images addObject:[MQMessageFormConfig sharedConfig].messageFormViewStyle.addImage];
+        [images addObject:[MQMessageFormConfig sharedConfig].messageFormViewStyle.addImage ?: [UIImage imageNamed:[MQAssetUtil resourceWithName:@"MQMessageFormAddIcon"]]];
     }
     return self;
 }

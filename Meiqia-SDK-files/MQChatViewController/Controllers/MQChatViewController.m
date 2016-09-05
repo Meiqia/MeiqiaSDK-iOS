@@ -114,9 +114,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self addObserver];
 #endif
     
-    UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
-    popRecognizer.edges = UIRectEdgeLeft;
-    [self.view addGestureRecognizer:popRecognizer];
+    if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypePush) {
+        UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
+        popRecognizer.edges = UIRectEdgeLeft;
+        [self.view addGestureRecognizer:popRecognizer];
+    }
     
     [self presentUI];
 //    [chatViewService setClientOnline];
