@@ -274,31 +274,50 @@
         //匹配消息文字中的正则
         //数字正则匹配
         NSMutableDictionary *numberRegexDic = [[NSMutableDictionary alloc] init];
-        for (NSString *numberRegex in [MQChatViewConfig sharedConfig].numberRegexs) {
-            NSRange range = [message.content rangeOfString:numberRegex options:NSRegularExpressionSearch];
-            if (range.location != NSNotFound) {
-                [numberRegexDic setValue:[NSValue valueWithRange:range] forKey:[message.content substringWithRange:range]];
+        for (NSString *linkRegex in [MQChatViewConfig sharedConfig].numberRegexs) {
+            NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:linkRegex options:(NSRegularExpressionCaseInsensitive) error:nil];
+            NSArray *matchResults = [regex matchesInString:message.content options:0 range:NSMakeRange(0, message.content.length)];
+            for (NSTextCheckingResult *matchedResult in matchResults) {
+                if (matchedResult.range.location != NSNotFound) {
+                    [numberRegexDic setValue:[NSValue valueWithRange:matchedResult.range] forKey:[message.content substringWithRange:matchedResult.range]];
+                }
             }
         }
         self.numberRangeDic = numberRegexDic;
         //链接正则匹配
         NSMutableDictionary *linkRegexDic = [[NSMutableDictionary alloc] init];
         for (NSString *linkRegex in [MQChatViewConfig sharedConfig].linkRegexs) {
-            NSRange range = [message.content rangeOfString:linkRegex options:NSRegularExpressionSearch];
-            if (range.location != NSNotFound) {
-                [linkRegexDic setValue:[NSValue valueWithRange:range] forKey:[message.content substringWithRange:range]];
+            NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:linkRegex options:(NSRegularExpressionCaseInsensitive) error:nil];
+            NSArray *matchResults = [regex matchesInString:message.content options:0 range:NSMakeRange(0, message.content.length)];
+            for (NSTextCheckingResult *matchedResult in matchResults) {
+                if (matchedResult.range.location != NSNotFound) {
+                    [linkRegexDic setValue:[NSValue valueWithRange:matchedResult.range] forKey:[message.content substringWithRange:matchedResult.range]];
+                }
             }
         }
         self.linkNumberRangeDic = linkRegexDic;
         //email正则匹配
         NSMutableDictionary *emailRegexDic = [[NSMutableDictionary alloc] init];
-        for (NSString *emailRegex in [MQChatViewConfig sharedConfig].emailRegexs) {
-            NSRange range = [message.content rangeOfString:emailRegex options:NSRegularExpressionSearch];
-            if (range.location != NSNotFound) {
-                [emailRegexDic setValue:[NSValue valueWithRange:range] forKey:[message.content substringWithRange:range]];
+        for (NSString *linkRegex in [MQChatViewConfig sharedConfig].emailRegexs) {
+            NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:linkRegex options:(NSRegularExpressionCaseInsensitive) error:nil];
+            NSArray *matchResults = [regex matchesInString:message.content options:0 range:NSMakeRange(0, message.content.length)];
+            for (NSTextCheckingResult *matchedResult in matchResults) {
+                if (matchedResult.range.location != NSNotFound) {
+                    [emailRegexDic setValue:[NSValue valueWithRange:matchedResult.range] forKey:[message.content substringWithRange:matchedResult.range]];
+                }
             }
         }
         self.emailNumberRangeDic = emailRegexDic;
+        
+        NSMutableDictionary *tempLinkNumberRangDic = [self.linkNumberRangeDic mutableCopy];
+        for ( NSString *email in self.emailNumberRangeDic.allKeys) {
+            for (NSString *link in self.linkNumberRangeDic.allKeys) {
+                if ([email rangeOfString:link].length != 0) {
+                    [tempLinkNumberRangDic removeObjectForKey:link];
+                }
+            }
+        }
+        self.linkNumberRangeDic = tempLinkNumberRangDic;
     }
     return self;
 }

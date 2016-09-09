@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "MQChatBaseCell.h"
-
+#import "MQEmbededWebView.h"
 
 @interface MQWebViewBubbleCell : MQChatBaseCell
+
+
 
 @end

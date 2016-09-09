@@ -32,6 +32,9 @@
 #import "MQServiceToViewInterface.h"
 #import <MeiQiaSDK/MeiqiaSDK.h>
 #import "MQBotMenuAnswerCellModel.h"
+#import "MQWebViewBubbleCellModel.h"
+#import "MQBotWebViewBubbleAnswerCellModel.h"
+#import "MQCustomizedUIText.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -76,6 +79,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         
         self.positionCheckTimer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(checkAndUpdateWaitingQueueStatus) userInfo:nil repeats:YES];
         currentViewMessageIdSet = [NSMutableSet new];
+        
+//        [self sendFakeMessage];
     }
     return self;
 }
@@ -95,6 +100,23 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
         [self setClientOnline];
     }
+}
+
+- (void)sendFakeMessage {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        while (true) {
+            MQTextMessage *message = [MQTextMessage new];
+            message.isHTML = YES;
+            message.content = @"<ui><li><a href='action'><img src='http://news.mydrivers.com/img/20160905/s_c9fe9b944f7246fa87069893cfdd61b5.jpg'/></a></li><li>2</li><li>3</li></ui>";
+            message.date = [NSDate new];
+            message.userAvatarPath = @"https://avatars2.githubusercontent.com/u/1792574?v=3&s=40";
+            [NSThread sleepForTimeInterval:2];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self didReceiveNewMessages:@[message]];
+            });
+       }
+    });
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
@@ -615,7 +637,15 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         } else if ([message isKindOfClass:[MQFileDownloadMessage class]]) {
             cellModel = [[MQFileDownloadCellModel alloc] initCellModelWithMessage:(MQFileDownloadMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQRichTextMessage class]]) {
-            cellModel = [[MQRichTextViewModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            if ([message isKindOfClass:[MQBotRichTextMessage class]]) {
+                if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+                    cellModel = [[MQBotWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                } else {
+                    cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                }
+            } else {
+                cellModel = [[MQRichTextViewModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            }
         }else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
             if ([(MQBotAnswerMessage *)message menu] == nil) {
                 cellModel = [[MQBotAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
@@ -931,6 +961,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [self addTipCellModelWithType:MQTipTypeReply];
         }
     }
+    
+    [MQServiceToViewInterface getEnterpriseConfigInfoComplete:^(MQEnterprise *enterprise, NSError *e) {
+        [MQCustomizedUIText setCustomiedTextForKey:(MQUITextKeyNoAgentTip) text:enterprise.configInfo.intro];
+    }];
 }
 
 - (void)checkAndUpdateWaitingQueueStatus {

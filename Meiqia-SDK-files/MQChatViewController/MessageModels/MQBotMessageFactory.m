@@ -148,6 +148,8 @@
         botRichTextMessage.summary = data[@"thumbnail"];
         botRichTextMessage.questionId = data[@"question_id"];
         
+        botRichTextMessage.subType = data[@"sub_type"];
+        
         BOOL isEvaluated = [data objectForKey:@"is_evaluated"] ? [[data objectForKey:@"is_evaluated"] boolValue] : false;
         botRichTextMessage.isEvaluated = isEvaluated;
         return botRichTextMessage;

@@ -512,14 +512,6 @@
     chatViewConfig.enableEvaluationButton = enable;
 }
 
-- (void)setClientInfo:(NSDictionary *)clientInfo overwrite:(BOOL)overwrite {
-    if (overwrite) {
-        NSMutableDictionary *dic = [clientInfo mutableCopy];
-        dic[@"overwrite"] = [NSNumber numberWithBool:YES];
-        [self setClientInfo:dic];
-    }
-}
-
 - (void)setClientInfo:(NSDictionary *)clientInfo {
     if (!clientInfo) {
         return;

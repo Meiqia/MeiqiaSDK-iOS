@@ -313,6 +313,19 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.view endEditing:true];
 }
 
+- (void)reloadCellAsContentUpdated:(UITableViewCell *)cell {
+    [self.chatTableView beginUpdates];
+    [self.chatTableView endUpdates];
+    
+    if (cell.viewBottomEdge >= self.chatTableView.contentSize.height) {
+        if (!self.chatTableView.isDragging && !self.chatTableView.tracking && !self.chatTableView.decelerating ) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self scrollTableViewToBottom];
+            });
+        }
+    }
+}
+
 //下拉刷新，获取以前的消息
 - (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
