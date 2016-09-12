@@ -53,7 +53,7 @@
 #pragma mark -
 
 - (void)didEvaluate {
-    
+    self.isEvaluated = YES;
 }
 
 - (CGFloat)getCellHeight {

@@ -13,9 +13,9 @@
 @interface MQBotMenuAnswerCellModel : NSObject <MQCellModelProtocol>
 
 @property (nonatomic, strong) NSArray *menus;
-@property (nonatomic, strong) NSString *menuTitle;
-@property (nonatomic, strong) NSString *menuFootnote;
-@property (nonatomic, strong) NSString *content;
+@property (nonatomic, copy) NSString *menuTitle;
+@property (nonatomic, copy) NSString *menuFootnote;
+@property (nonatomic, copy) NSString *content;
 @property (nonatomic, assign) BOOL isEvaluated;
 @property (nonatomic, copy) NSString *messageId;
 @property (nonatomic, strong) UIImage *avatarImage;

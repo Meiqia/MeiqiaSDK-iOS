@@ -78,9 +78,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanTimer) name:MQ_NOTIFICATION_CHAT_END object:nil];
         
         self.positionCheckTimer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(checkAndUpdateWaitingQueueStatus) userInfo:nil repeats:YES];
-        currentViewMessageIdSet = [NSMutableSet new];
-        
-//        [self sendFakeMessage];
+        currentViewMessageIdSet = [NSMutableSet new];        
     }
     return self;
 }
@@ -100,23 +98,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
         [self setClientOnline];
     }
-}
-
-- (void)sendFakeMessage {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        while (true) {
-            MQTextMessage *message = [MQTextMessage new];
-            message.isHTML = YES;
-            message.content = @"<ui><li><a href='action'><img src='http://news.mydrivers.com/img/20160905/s_c9fe9b944f7246fa87069893cfdd61b5.jpg'/></a></li><li>2</li><li>3</li></ui>";
-            message.date = [NSDate new];
-            message.userAvatarPath = @"https://avatars2.githubusercontent.com/u/1792574?v=3&s=40";
-            [NSThread sleepForTimeInterval:2];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self didReceiveNewMessages:@[message]];
-            });
-       }
-    });
 }
 
 #ifdef INCLUDE_MEIQIA_SDK

@@ -495,9 +495,12 @@
         NSLog(@"美洽 SDK：上传自定义信息不能为空。");
         completion(false, nil);
     }
-    [MQManager setClientInfo:clientInfo completion:^(BOOL success, NSError *error) {
-        completion(success, error);
-    }];
+    
+    if ([MQChatViewConfig sharedConfig].updateClientInfoUseOverride) {
+        [MQManager updateClientInfo:clientInfo completion:completion];
+    } else {
+        [MQManager setClientInfo:clientInfo completion:completion];
+    }
 }
 
 + (void)updateClientInfoWithDictionary:(NSDictionary *)clientInfo

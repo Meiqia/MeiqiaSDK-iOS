@@ -92,6 +92,8 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.scheduleRule                   = 0;
     self.clientInfo                     = nil;
     
+    self.updateClientInfoUseOverride = NO;
+    
 #endif
 }
 

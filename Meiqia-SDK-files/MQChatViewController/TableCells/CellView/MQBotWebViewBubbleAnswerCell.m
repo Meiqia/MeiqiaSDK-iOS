@@ -31,6 +31,7 @@
 @property (nonatomic, strong) MQBotWebViewBubbleAnswerCellModel *viewModel;
 @property (nonatomic, strong) UIView *evaluateView;
 @property (nonatomic, strong) UIView *evaluatedView;
+@property (nonatomic, assign) BOOL manuallySetToEvaluated;
 
 @end
 
@@ -48,7 +49,7 @@
 }
 
 - (void)updateCellWithCellModel:(id<MQCellModelProtocol>)model {
-    
+    self.manuallySetToEvaluated = NO;
     self.viewModel = model;
     
     __weak typeof(self) wself = self;
@@ -131,7 +132,7 @@
 }
 
 - (void)updateEvaluateViewAnimatedComplete:(void(^)(void))action {
-    self.viewModel.isEvaluated = YES;
+    self.manuallySetToEvaluated = YES;
     
     UIView *oldView = [self.itemsView viewWithTag:TAG_EVALUATE];
     
@@ -158,7 +159,7 @@
 
 - (UIView *)evaluateRelatedView {
     UIView *view;
-    if (self.viewModel.isEvaluated) {
+    if (self.viewModel.isEvaluated || self.manuallySetToEvaluated) {
         if (self.evaluateView.superview) {
             [self.evaluateView removeFromSuperview];
         }
@@ -172,10 +173,6 @@
     
     view.tag = TAG_EVALUATE;
     return view;
-}
-
-- (void)resetWebView {
-    _contentWebView = nil;
 }
 
 #pragma - lazy

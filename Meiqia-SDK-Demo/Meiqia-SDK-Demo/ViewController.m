@@ -164,7 +164,7 @@ static int indicator_tag = 10;
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
 
-    [chatViewManager setClientInfo:@{@"name":@"SDK 3.3.1 测试"}];
+    [chatViewManager setClientInfo:@{@"name":@"updated"} override:YES];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 //    [chatViewManager setLoginCustomizedId:@"xxxxjjxjjx"];
   //  [chatViewManager setPreSendMessages:@[@"message1"]];

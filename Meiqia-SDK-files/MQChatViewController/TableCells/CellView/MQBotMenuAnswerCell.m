@@ -38,6 +38,7 @@
 
 @property (nonatomic, assign) CGFloat currentCellWidth;
 @property (nonatomic, assign) CGFloat currentContentWidth;
+@property (nonatomic, assign) BOOL manuallySetToEvaluated;
 
 @end
 
@@ -56,7 +57,7 @@
 }
 
 - (void)updateCellWithCellModel:(id<MQCellModelProtocol>)model {
-
+    self.manuallySetToEvaluated = NO;
     self.cellModel = model;
     
     [self updateUI];
@@ -126,7 +127,7 @@
 }
 
 - (void)updateEvaluateViewAnimatedComplete:(void(^)(void))action {
-    self.cellModel.isEvaluated = YES;
+    self.manuallySetToEvaluated = YES;
     
     UIView *oldView = [self.itemsView viewWithTag:TAG_EVALUATE];
     
@@ -185,7 +186,7 @@
 
 - (UIView *)evaluateRelatedView {
     UIView *view;
-    if (self.cellModel.isEvaluated) {
+    if (self.cellModel.isEvaluated || self.manuallySetToEvaluated) {
         if (self.evaluateView.superview) {
             [self.evaluateView removeFromSuperview];
         }
