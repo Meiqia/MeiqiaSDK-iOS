@@ -1322,8 +1322,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     // 改变 botAnswerCellModel 的值
     for (id<MQCellModelProtocol> cellModel in self.cellModels) {
         if ([[cellModel getCellMessageId] isEqualToString:messageId]) {
-            MQBotAnswerCellModel *model = (MQBotAnswerCellModel *)cellModel;
-            [model didEvaluate];
+            if ([cellModel respondsToSelector:@selector(didEvaluate)]) {
+                [cellModel didEvaluate];
+            }
+            
         }
     }
 }
