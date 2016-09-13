@@ -326,7 +326,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  @param customizedId 自定义id
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId {
-    [MQManager initWithAppkey:@"fb64f27367846ceb944862a03113ed03" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"b40eb2f8792ce17de91797f5bf9a439d" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
             [chatViewManager setLoginCustomizedId:customizedId];

@@ -31,7 +31,6 @@ Pod::Spec.new do |s|
     ss.vendored_frameworks = 'Meiqia-SDK-files/MeiQiaSDK.framework'
     ss.libraries  =  'sqlite3', 'icucore', 'stdc++'
     #ss.vendored_frameworks = 'Meiqia-SDK-files/MeiQiaSDK.framework'
-    ss.public_header_files = "Meiqia-SDK-files/MeiQiaSDK.framework/Headers/*.{h}"
     ss.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "${PODS_ROOT}/Meiqia/Meiqia-SDK-files"}
   end
   s.subspec 'MQChatViewController' do |ss|

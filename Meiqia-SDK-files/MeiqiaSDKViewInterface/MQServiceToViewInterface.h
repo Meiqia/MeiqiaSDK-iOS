@@ -269,6 +269,14 @@
                          completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**
+ *  更新顾客信息
+ *
+ *  @param clientInfo 顾客信息
+ */
++ (void)updateClientInfoWithDictionary:(NSDictionary *)clientInfo
+                         completion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
  *  缓存当前的输入文字
  *
  *  @param inputtingText 输入文字

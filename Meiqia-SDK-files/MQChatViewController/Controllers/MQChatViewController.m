@@ -114,9 +114,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self addObserver];
 #endif
     
-    UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
-    popRecognizer.edges = UIRectEdgeLeft;
-    [self.view addGestureRecognizer:popRecognizer];
+    if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypePush) {
+        UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
+        popRecognizer.edges = UIRectEdgeLeft;
+        [self.view addGestureRecognizer:popRecognizer];
+    }
     
     [self presentUI];
 //    [chatViewService setClientOnline];
@@ -309,6 +311,19 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #pragma MQChatTableViewDelegate
 - (void)didTapChatTableView:(UITableView *)tableView {
     [self.view endEditing:true];
+}
+
+- (void)reloadCellAsContentUpdated:(UITableViewCell *)cell {
+    [self.chatTableView beginUpdates];
+    [self.chatTableView endUpdates];
+    
+    if (cell.viewBottomEdge >= self.chatTableView.contentSize.height) {
+        if (!self.chatTableView.isDragging && !self.chatTableView.tracking && !self.chatTableView.decelerating ) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self scrollTableViewToBottom];
+            });
+        }
+    }
 }
 
 //下拉刷新，获取以前的消息

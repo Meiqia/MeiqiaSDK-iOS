@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MQBaseMessage.h"
 
+@class MQBotMenuMessage;
 @interface MQBotAnswerMessage : MQBaseMessage
 
 /** 消息content */
@@ -19,6 +20,8 @@
 
 /** 机器人消息是否评价 */
 @property (nonatomic, assign) BOOL isEvaluated;
+
+@property (nonatomic, strong) MQBotMenuMessage *menu;
 
 
 /**

@@ -31,6 +31,10 @@
 #import "MQFileDownloadCellModel.h"
 #import "MQServiceToViewInterface.h"
 #import <MeiQiaSDK/MeiqiaSDK.h>
+#import "MQBotMenuAnswerCellModel.h"
+#import "MQWebViewBubbleCellModel.h"
+#import "MQBotWebViewBubbleAnswerCellModel.h"
+#import "MQCustomizedUIText.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -74,7 +78,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanTimer) name:MQ_NOTIFICATION_CHAT_END object:nil];
         
         self.positionCheckTimer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(checkAndUpdateWaitingQueueStatus) userInfo:nil repeats:YES];
-        currentViewMessageIdSet = [NSMutableSet new];
+        currentViewMessageIdSet = [NSMutableSet new];        
     }
     return self;
 }
@@ -614,9 +618,21 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         } else if ([message isKindOfClass:[MQFileDownloadMessage class]]) {
             cellModel = [[MQFileDownloadCellModel alloc] initCellModelWithMessage:(MQFileDownloadMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQRichTextMessage class]]) {
-            cellModel = [[MQRichTextViewModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            if ([message isKindOfClass:[MQBotRichTextMessage class]]) {
+                if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+                    cellModel = [[MQBotWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                } else {
+                    cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                }
+            } else {
+                cellModel = [[MQRichTextViewModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            }
         }else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
-            cellModel = [[MQBotAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            if ([(MQBotAnswerMessage *)message menu] == nil) {
+                cellModel = [[MQBotAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            } else {
+                cellModel = [[MQBotMenuAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            }
         } else if ([message isKindOfClass:[MQBotMenuMessage class]]) {
             cellModel = [[MQBotMenuCellModel alloc] initCellModelWithMessage:(MQBotMenuMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQEventMessage class]]) {
@@ -926,6 +942,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [self addTipCellModelWithType:MQTipTypeReply];
         }
     }
+    
+    [MQServiceToViewInterface getEnterpriseConfigInfoComplete:^(MQEnterprise *enterprise, NSError *e) {
+        [MQCustomizedUIText setCustomiedTextForKey:(MQUITextKeyNoAgentTip) text:enterprise.configInfo.intro];
+    }];
 }
 
 - (void)checkAndUpdateWaitingQueueStatus {
@@ -1302,8 +1322,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     // 改变 botAnswerCellModel 的值
     for (id<MQCellModelProtocol> cellModel in self.cellModels) {
         if ([[cellModel getCellMessageId] isEqualToString:messageId]) {
-            MQBotAnswerCellModel *model = (MQBotAnswerCellModel *)cellModel;
-            [model didEvaluate];
+            if ([cellModel respondsToSelector:@selector(didEvaluate)]) {
+                [cellModel didEvaluate];
+            }
+            
         }
     }
 }

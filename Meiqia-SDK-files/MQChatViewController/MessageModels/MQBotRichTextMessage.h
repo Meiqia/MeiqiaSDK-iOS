@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) NSNumber *questionId;
 @property (nonatomic, assign) BOOL isEvaluated;
+@property (nonatomic, copy) NSString *subType;
 
 @end

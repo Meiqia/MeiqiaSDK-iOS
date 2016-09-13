@@ -458,9 +458,13 @@
 - (void)setEventTextColor:(UIColor *)textColor;
 
 /**
- * 设置顾客的自定义信息, overwrite 表示强制覆盖工作台的相同字段
+ *  设置顾客的自定义信息
+ *
+ *  @param clientInfo 顾客的自定义信息
+    @param override 是否强制更新，如果不设置此值为 YES，设置只有第一次有效。
  */
-- (void)setClientInfo:(NSDictionary *)clientInfo overwrite:(BOOL)overwrite;
+- (void)setClientInfo:(NSDictionary *)clientInfo override:(BOOL)override;
+
 /**
  *  设置顾客的自定义信息
  *

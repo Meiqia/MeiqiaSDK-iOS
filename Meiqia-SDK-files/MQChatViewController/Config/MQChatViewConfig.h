@@ -88,6 +88,7 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @property (nonatomic, assign) BOOL isPushChatView;
 @property (nonatomic, assign) BOOL enableEvaluationButton;
 @property (nonatomic, assign) BOOL enableVoiceRecordBlurView;
+@property (nonatomic, assign) BOOL updateClientInfoUseOverride;
 
 @property (nonatomic, strong) UIImage *incomingDefaultAvatarImage;
 @property (nonatomic, strong) UIImage *outgoingDefaultAvatarImage;

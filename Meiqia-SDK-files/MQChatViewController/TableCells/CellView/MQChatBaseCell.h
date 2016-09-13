@@ -70,6 +70,11 @@
  */
 - (void)didTapBotRedirectBtn;
 
+/**
+ 重新加载制定 cell
+ */
+- (void)reloadCellAsContentUpdated:(UITableViewCell *)cell;
+
 @end
 
 
