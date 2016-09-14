@@ -33,6 +33,14 @@
     return self;
 }
 
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+    if (action == @selector(copy:)) {
+        return NO;
+    }
+    return [super canPerformAction:action withSender:sender];
+}
+
 - (void)loadHTML:(NSString *)html WithCompletion:(void(^)(CGFloat))block {
     self.viewHeight = 60;
     [self loadHTMLString:html baseURL:nil];
