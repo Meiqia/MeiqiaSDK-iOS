@@ -87,7 +87,7 @@ framework中的文件 | 说明
 
 ```
 
-pod 'Meiqia', '~> 3.2.5'
+pod 'Meiqia', '~> 3.3.1'
 ```
 
 接着安装美洽 pod 即可：
@@ -827,7 +827,7 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 原因是美洽将 SDK 中使用的开源库 [opencore-amr](http://sourceforge.net/projects/opencore-amr/) 针对支持Bitcode而重新编译了一次，但这并不影响SDK在iOS 6中的使用。如果你介意，并且不会使用 Bitcode，可以将美洽SDK中使用 `opencore-amr` 替换为老版本：[传送门](https://github.com/molon/MLAudioRecorder/tree/master/MLRecorder/MLAudioRecorder/amr_en_de/lib)
 
 ## 美洽静态库的文件大小太大
-因为美洽静态库包含5个平台（armv7、armv7s、arm64、i386、x86_64）+ Bitcode。但这并不代表会严重影响编译后的宿主 App 大小，实际上，这只会增加宿主 App 100kb 左右大小。
+因为美洽静态库包含5个平台（armv7、arm64、i386、x86_64）+ Bitcode。但这并不代表会严重影响编译后的宿主 App 大小，实际上，这只会增加宿主 App 100kb 左右大小。
 
 ## 键盘弹起后输入框和键盘之间有偏移
 请检查是否使用了第三方开源库[IQKeyboardManager](https://github.com/hackiftekhar/IQKeyboardManager)，该开源库会和判断输入框的逻辑冲突。
@@ -881,6 +881,12 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 更新日志
+
+**v3.3.1 2016 年 09 月 18 日** 
+
+* 增加机器人回复的图文聊天气泡
+* 合并机器人回复图文气泡和评价按钮
+* 修复已知问题
 
 **v3.3.0 2016 年 08 月 19 日**
 
