@@ -84,6 +84,10 @@ static NSMutableDictionary * customizedTextMap;
 }
 
 + (void)setCustomiedTextForKey:(MQUITextKey)key text:(NSString *)string {
+    if (string.length == 0) {
+        return;
+    }
+    
     [customizedTextMap setObject:string forKey:[keyTextMap objectForKey:@(key)]];
 }
 
