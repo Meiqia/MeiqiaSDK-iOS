@@ -17,6 +17,7 @@
 ///TODO: 稍后用这个状态替换目前的本地状态变量
 typedef NS_ENUM(NSUInteger, MQClientStatus) {
     MQClientStatusOffLine = 0,
+    MQClientStatusPendingOnPreChatForm,
     MQClientStatusOnlining,
     MQClientStatusOnline,
 };
@@ -211,11 +212,17 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
  */
 - (void)fillTextDraftToFiledIfExists:(UITextField *)tf;
 
+/**
+ 手动上线当前顾客
+ */
+- (void)setClientOnline;
+
 #ifndef INCLUDE_MEIQIA_SDK
 /**
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
  */
 - (void)loadLastMessage;
+
 
 #else
 

@@ -12,6 +12,8 @@
 #import "MQServiceToViewInterface.h"
 #import "MQWebViewController.h"
 #import "MQAssetUtil.h"
+#import "MQBotWebViewController.h"
+#import "MQBotRichTextMessage.h"
 
 @interface MQRichTextViewModel()
 
@@ -31,7 +33,7 @@
     return self;
 }
 
-// 绑定 UI 完成后，加载数据
+//加载 UI 需要的数据，完成后通过 UI 绑定的 block 更新 UI
 - (void)load {
     if (self.modelChanges) {
         self.modelChanges(self.message.summary, self.message.thumbnail, self.message.content);
@@ -60,7 +62,17 @@
 }
 
 - (void)openFrom:(UINavigationController *)cv {
-    MQWebViewController *webViewController = [MQWebViewController new];
+    
+    MQWebViewController *webViewController;
+    if ([self.message isKindOfClass:[MQBotRichTextMessage class]]) {
+        webViewController = [MQBotWebViewController new];
+        [(MQBotWebViewController *)webViewController setMessage:(MQBotRichTextMessage *)self.message];
+        [(MQBotWebViewController *)webViewController setBotEvaluateDidTapUseful:self.botEvaluateDidTapUseful];
+        [(MQBotWebViewController *)webViewController setBotEvaluateDidTapUseless:self.botEvaluateDidTapUseless];
+    } else {
+        webViewController = [MQWebViewController new];
+    }
+    
     webViewController.contentHTML = self.content;
     webViewController.title = @"图文消息";
     [cv pushViewController:webViewController animated:YES];
@@ -69,6 +81,12 @@
 
 #pragma mark - 
 
+- (void)didEvaluate {
+    self.isEvaluated = true;
+    if ([self.message isKindOfClass:[MQBotRichTextMessage class]]) {
+        [(MQBotRichTextMessage *)self.message setIsEvaluated:self.isEvaluated];
+    }
+}
 
 - (CGFloat)getCellHeight {
     if (self.cellHeight) {

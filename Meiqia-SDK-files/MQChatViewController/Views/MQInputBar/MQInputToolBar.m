@@ -181,7 +181,7 @@
     //绘制顶部的边线
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineCap(context, kCGLineCapSquare);
-    CGContextSetLineWidth(context, 1.0);
+    CGContextSetLineWidth(context, 0.5);
     CGContextSetRGBStrokeColor(context, 198/255.0, 203/255.0, 208/255.0, 1.0);
     CGContextMoveToPoint(context, 0, 0);
     CGContextAddLineToPoint(context, rect.size.width, 0);

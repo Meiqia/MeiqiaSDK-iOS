@@ -11,6 +11,7 @@
 #import "MQBundleUtil.h"
 #import "MQChatFileUtil.h"
 #import "NSArray+MQFunctional.h"
+#import "MQBotMessageFactory.h"
 
 #pragma 该文件的作用是：开源聊天界面调用美洽 SDK 接口的中间层，目的是剥离开源界面中的美洽业务逻辑。这样就能让该聊天界面用于非美洽项目中，开发者只需要实现 `MQServiceToViewInterface` 中的方法，即可将自己项目的业务逻辑和该聊天界面对接。
 
@@ -162,56 +163,10 @@
 
 + (MQBaseMessage *)convertToSendMessageWithMessage:(MQMessage *)fromMessage {
     MQBaseMessage *toMessage;
-    NSArray *normalTypes = @[@"evaluate", @"reply", @"redirect", @"queueing", @"manual_redirect"];
     switch (fromMessage.contentType) {
         case MQMessageContentTypeBot: {
             //判断是否是机器人消息
-            if ([[fromMessage.accessoryData objectForKey:@"content_robot"] count] > 0) {
-                NSString *subType = [fromMessage.accessoryData objectForKey:@"sub_type"] ?: @"";
-                if ([normalTypes containsObject:subType]) {
-                    // 机器人普通回答消息
-                    NSString *content;
-                    if ([subType isEqualToString:@"queueing"]) {
-                        content = @"暂无空闲客服，您已进入排队等待。";
-                        subType = @"redirect";
-                    } else {
-                        content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
-                        content = [MQManager convertToUnicodeWithEmojiAlias:content];
-                    }
-                    BOOL isEvaluated = [fromMessage.accessoryData objectForKey:@"is_evaluated"] ? [[fromMessage.accessoryData objectForKey:@"is_evaluated"] boolValue] : false;
-                    MQBotAnswerMessage *botMessage = [[MQBotAnswerMessage alloc] initWithContent:content subType:subType isEvaluated:isEvaluated];
-                    toMessage = botMessage;
-                    break;
-                } else if ([subType isEqualToString:@"menu"]) {
-                    // 机器人菜单消息
-                    NSString *content = @"";
-                    NSMutableArray *menu = [NSMutableArray new];
-                    NSArray *contentRobot = [fromMessage.accessoryData objectForKey:@"content_robot"] ?: [NSArray new];
-                    for (NSInteger i=0; i < [contentRobot count]; i++) {
-                        NSDictionary *subContent = [contentRobot objectAtIndex:i];
-                        if (i == 0 && [[subContent objectForKey:@"type"] isEqualToString:@"text"]) {
-                            content = [subContent objectForKey:@"text"];
-                        } else if ([[subContent objectForKey:@"type"] isEqualToString:@"menu"]) {
-                            NSArray *items = [subContent objectForKey:@"items"];
-                            for (NSDictionary *item in items) {
-                                NSString *menuTitle = [item objectForKey:@"text"];
-                                menuTitle = [MQManager convertToUnicodeWithEmojiAlias:menuTitle];
-                                [menu addObject:menuTitle];
-                            }
-                        }
-                    }
-                    content = [MQManager convertToUnicodeWithEmojiAlias:content];
-                    MQBotMenuMessage *botMessage = [[MQBotMenuMessage alloc] initWithContent:content menu:menu];
-                    toMessage = botMessage;
-                    break;
-                } else if ([subType isEqualToString:@"message"]) {
-                    NSString *content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
-                    content = [MQManager convertToUnicodeWithEmojiAlias:content];
-                    MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:content];
-                    toMessage = textMessage;
-                    break;
-                }
-            }
+            toMessage = [MQBotMessageFactory createBotMessageWithMessage:fromMessage];
             break;
         }
         case MQMessageContentTypeText: {
@@ -540,7 +495,21 @@
         NSLog(@"美洽 SDK：上传自定义信息不能为空。");
         completion(false, nil);
     }
-    [MQManager setClientInfo:clientInfo completion:^(BOOL success, NSError *error) {
+    
+    if ([MQChatViewConfig sharedConfig].updateClientInfoUseOverride) {
+        [MQManager updateClientInfo:clientInfo completion:completion];
+    } else {
+        [MQManager setClientInfo:clientInfo completion:completion];
+    }
+}
+
++ (void)updateClientInfoWithDictionary:(NSDictionary *)clientInfo
+                            completion:(void (^)(BOOL success, NSError *error))completion {
+    if (!clientInfo) {
+        NSLog(@"美洽 SDK：上传自定义信息不能为空。");
+        completion(false, nil);
+    }
+    [MQManager updateClientInfo:clientInfo completion:^(BOOL success, NSError *error) {
         completion(success, error);
     }];
 }
@@ -734,12 +703,19 @@
     [MQManager getIsShowRedirectHumanButtonComplete:action];
 }
 
-+ (void)getMessageFormIntroComplete:(void (^)(NSString *, NSError *))action {
-    [MQManager getMessageFormIntroComplete:action];
++ (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action {
+    [MQManager getMessageFormConfigComplete:action];
 }
 
 + (void)submitMessageFormWithMessage:(NSString *)message images:(NSArray *)images clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
-    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
+//    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
+    [MQManager submitTicketForm:message userInfo:clientInfo completion:^(MQTicket *ticket, NSError *e) {
+        if (e) {
+            completion(NO, e);
+        } else {
+            completion(YES, nil);
+        }
+    }];
 }
 
 + (int)waitingInQueuePosition {
@@ -750,7 +726,27 @@
     return [MQManager getClientQueuePositionComplete:action];
 }
 
++ (void)requestPreChatServeyDataIfNeedCompletion:(void(^)(MQPreChatData *data, NSError *error))block {
+    NSString *clientId = [MQChatViewConfig sharedConfig].MQClientId;
+    NSString *customId = [MQChatViewConfig sharedConfig].customizedId;
+
+    [MQManager requestPreChatServeyDataIfNeedWithClientId:clientId customizedId:customId completion:block];
+}
+
++ (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block {
+    [MQManager getCaptchaComplete:block];
+}
+
++ (void)getCaptchaWithURLComplete:(void (^)(NSString *token, NSString *url))block {
+    [MQManager getCaptchaURLComplete:block];
+}
+
++ (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id,NSError *))block {
+    [MQManager submitPreChatForm:formData completion:block];
+}
+
 + (NSError *)checkGlobalError {
     return [MQManager checkGlobalError];
 }
+
 @end

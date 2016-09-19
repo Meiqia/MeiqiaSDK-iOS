@@ -11,7 +11,6 @@
 
 @interface MQWebViewController()<UIWebViewDelegate>
 
-@property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) UIActivityIndicatorView *indicator;
 @property (nonatomic, strong) NSValue *backBarTitleOffset;
 
@@ -23,6 +22,7 @@
     self.webView = [UIWebView new];
     self.webView.delegate = self;
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
     
     [self.view addSubview:self.webView];
     
@@ -74,7 +74,7 @@
     [self.indicator stopAnimating];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(nullable NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [self.indicator stopAnimating];
 }
 

@@ -72,6 +72,11 @@ static NSMutableDictionary * customizedTextMap;
         
         @(MQUITextKeyClientIsOnlining) : @"cannot_text_client_is_onlining",
         @(MQUITextKeySendTooFast) : @"send_to_fast",
+        
+        @(MQUITextKeyPreChatListTitle) : @"pre_chat_list_title",
+        @(MQUITextKeyPreChatFormTitle) : @"pre_chat_form_title",
+        @(MQUITextKeyPreChatFormMultipleSelectionLabel) : @"pre_chat_form_mutiple_selection_label",
+        @(MQUITextKeyPreChatFormBlankAlertLabel) : @"pre_chat_form_black_alert_label",
         };
     
     

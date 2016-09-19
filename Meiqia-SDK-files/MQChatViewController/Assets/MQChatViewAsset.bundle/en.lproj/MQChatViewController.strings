@@ -104,11 +104,24 @@
 "submit" = "submit";
 "leave_a_message_placeholder" = "Please enter your message";
 "param_not_allow_null" = "%@ can not be empty";
+"contact_at_lease_enter_one" = "Please enter at lease one contact info";
 "submit_failure" = "Submit failed";
 "add_picture" = "Add picture";
 "tel" = "Phone";
 "tel_placeholder" = "Please enter your phone number";
 "email" = "Email";
 "email_placeholder" = "Please enter your email";
+"qq" = "QQ";
+"qq_placeholder" = "Please enter your QQ number";
+"wechat" = "WeChat";
+"wechat_placeholder" = "Please enter your WeChat account";
+"name" = "Name";
+"name_placeholder" = "Please enter your name";
 
 "wating_in_queue_tip_text" = "please hold on, %d visitors in front, of you can leave a message";
+
+//询前表单
+"pre_chat_list_title" = "Client Support";
+"pre_chat_form_title" =  "Please fill those blanks";
+"pre_chat_form_mutiple_selection_label" = "(multiple)";
+"pre_chat_form_black_alert_label" = "Please complete the red blank";

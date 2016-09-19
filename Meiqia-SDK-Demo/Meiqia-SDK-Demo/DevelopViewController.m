@@ -284,6 +284,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     //开启同步消息
     [chatViewManager enableSyncServerMessage:true];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
+    [chatViewManager setScheduleLogicWithRule:(MQChatScheduleRulesRedirectNone)];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -325,7 +326,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  @param customizedId 自定义id
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId {
-    [MQManager initWithAppkey:@"58767158dd91adf8410f7916f76b66e2" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"b40eb2f8792ce17de91797f5bf9a439d" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
             [chatViewManager setLoginCustomizedId:customizedId];
@@ -694,6 +695,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [chatViewManager setChatViewStyle:[MQChatViewStyle blueStyle]];
+    [chatViewManager.chatViewStyle setNavBackButtonImage:[UIImage imageNamed:@"ijinmaoAvatar"]];
     
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
@@ -778,8 +780,8 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 //        [customMessageFormInputModelArray addObject:commentMessageFormInputModel];
 //        [customMessageFormInputModelArray addObject:weiboMessageFormInputModel];
     
-    [messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
-    [messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
+//    [messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
+//    [messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
     
     [messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
 }

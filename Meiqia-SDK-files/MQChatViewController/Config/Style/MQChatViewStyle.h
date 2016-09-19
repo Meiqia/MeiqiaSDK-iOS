@@ -10,12 +10,12 @@
 #import <UIKit/UIKit.h>
 #import "UIColor+MQHex.h"
 
-//https://github.com/brynbellomy/FlatUIColors
-static NSString *const turquoise = @"1abc9c"; //青绿色
-static NSString *const greenSea  = @"16a085"; //海绿色
-static NSString *const mediumTurquoise = @"4ECDC4"; //中青绿色
+// https://github.com/brynbellomy/FlatUIColors
+static NSString *const turquoise = @"1abc9c"; // 青绿色
+static NSString *const greenSea  = @"16a085"; // 海绿色
+static NSString *const mediumTurquoise = @"4ECDC4"; // 中青绿色
 static NSString *const lightSeaGreen = @"1BA39C"; // 浅海绿色
-static NSString *const emerald  = @"2ecc71"; //绿宝石
+static NSString *const emerald  = @"2ecc71"; // 绿宝石
 static NSString *const nephritis = @"27ae60";
 static NSString *const gossip = @"87D37C";
 static NSString *const salem = @"1E824C";
@@ -56,7 +56,8 @@ static NSString *const chatbg = @"ECECEE";
 static NSString *const MQBlueColor = @"17c7d1";
 static NSString *const MQSilverColor = @"c6cbd0";
 
-typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
+typedef NS_ENUM (NSUInteger, MQChatViewStyleType)
+{
     MQChatViewStyleTypeDefault,
     MQChatViewStyleTypeBlue,
     MQChatViewStyleTypeGreen,
@@ -118,7 +119,7 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
 @property (nonatomic, copy) UIColor *navBarColor;
 
 /**
- 导航栏背景图片
+ * 导航栏背景图片
  */
 @property (nonatomic, strong) UIImage *navBarBackgroundImage;
 /**
@@ -241,12 +242,12 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
  */
 @property (nonatomic, strong) UIColor *backgroundColor;
 
-+ (instancetype)defaultStyle;
++ (instancetype) defaultStyle;
 
-+ (instancetype)blueStyle;
++ (instancetype) blueStyle;
 
-+ (instancetype)darkStyle;
++ (instancetype) darkStyle;
 
-+ (instancetype)greenStyle;
++ (instancetype) greenStyle;
 
 @end

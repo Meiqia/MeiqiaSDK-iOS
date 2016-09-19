@@ -12,8 +12,10 @@
 #import "MQDefinition.h"
 #import "MQAgent.h"
 #import "MQEnterprise.h"
+#import "MQPreChatData.h"
 
-#define MQSDKVersion @"3.2.2"
+
+#define MQSDKVersion @"3.3.1"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -30,6 +32,8 @@
  *
  * 开发者可以通过MQManager中提供的接口，对SDK进行配置；
  */
+
+@class MQTicket;
 @interface MQManager : NSObject
 
 /**
@@ -90,6 +94,16 @@
  * @warning 如果开发者使用「开源聊天界面」的接口来上线，则需要监听 MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION「顾客成功上线」的广播（见 MQDefinition.h），再调用此接口
  */
 + (void)setClientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
+           completion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
+ * 开发者自定义当前顾客的信息，用于展示给客服，强制更新
+ *
+ * @param clientInfo 顾客的信息
+ * @warning 需要顾客先上线，再上传顾客信息。如果开发者使用美洽的开源界面，不需要调用此接口，使用 MQChatViewManager 中的 setClientInfo 配置用户自定义信息即可。
+ * @warning 如果开发者使用「开源聊天界面」的接口来上线，则需要监听 MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION「顾客成功上线」的广播（见 MQDefinition.h），再调用此接口
+ */
++ (void)updateClientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
            completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**
@@ -156,6 +170,12 @@
  *  
  */
 + (NSString *)getCurrentClientId;
+
+
+/**
+ 当前的顾客自定义 id
+ */
++ (NSString *)getCurrentCustomizedId;
 
 /**
  *  获取当前顾客的顾客信息
@@ -438,7 +458,7 @@
 /**
  获取留言表单引导文案
  */
-+ (void)getMessageFormIntroComplete:(void(^)(NSString *, NSError *))action;
++ (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action;
 
 /**
  *  提交留言表单
@@ -470,5 +490,31 @@
 
 
 + (NSError *)checkGlobalError;
+
+/**
+ 根据当前的用户 id， 或者自定义用户 id，首先判断需不需要显示询前表单：如果当前对话未结束，则需要显示，这时发起请求，从服务器获取表单数据，返回的结果根据用户指定的 agent token， group token（如果有），将数据过滤之后返回。
+ */
++ (void)requestPreChatServeyDataIfNeedWithClientId:(NSString *)clientIdIn customizedId:(NSString *)customizedIdIn completion:(void(^)(MQPreChatData *data, NSError *error))block;
+
+/**
+ 获取验证码图片和 token
+ */
++ (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block;
+
+/**
+ 获取验证码图片和 token
+ */
++ (void)getCaptchaURLComplete:(void(^)(NSString *token, NSString *imageURL))block;
+
+/**
+ 提交用户填写的讯前表单数据
+ */
++ (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id, NSError *))block;
+
+/**
+ 提交用户填写的留言工单
+ */
++ (void)submitTicketForm:(NSString *)content userInfo:(NSDictionary *)usreInfo completion:(void(^)(MQTicket *ticket, NSError *))block;
+
 
 @end

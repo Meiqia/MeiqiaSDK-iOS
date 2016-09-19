@@ -9,6 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = "Meiqia"
   s.version          = "3.2.2"
+
   s.summary          = "美洽官方 SDK for iOS"
   s.description      = "美洽官方的 iOS SDK"
 
@@ -16,8 +17,9 @@ Pod::Spec.new do |s|
   s.license          = 'MIT'
   s.author           = { "ijinmao" => "340052204@qq.com" }
   s.source           = { :git => "https://github.com/Uhouzz/MeiqiaSDK-iOS.git", :tag => "v3.2.2" }
-  s.social_media_url = "https://meiqia.com"
 
+  s.social_media_url = "https://meiqia.com"
+  s.documentation_url = "https://github.com/Meiqia/MeiqiaSDK-iOS/wiki"
   s.platform     = :ios, '6.0'
   s.requires_arc = true
 
@@ -28,15 +30,17 @@ Pod::Spec.new do |s|
   # s.vendored_frameworks = 'Meiqia-SDK-files/MeiQiaSDK.framework'
   s.subspec 'MeiqiaSDK' do |ss|
     ss.frameworks =  'AVFoundation', 'CoreTelephony', 'SystemConfiguration', 'MobileCoreServices'
-    ss.libraries  =  'sqlite3', 'icucore'
     ss.vendored_frameworks = 'Meiqia-SDK-files/MeiQiaSDK.framework'
+    ss.libraries  =  'sqlite3', 'icucore', 'stdc++'
+    #ss.vendored_frameworks = 'Meiqia-SDK-files/MeiQiaSDK.framework'
+    ss.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "${PODS_ROOT}/Meiqia/Meiqia-SDK-files"}
   end
   s.subspec 'MQChatViewController' do |ss|
     ss.dependency 'Meiqia/MeiqiaSDK'
-    ss.source_files = 'Meiqia-SDK-files/MeiqiaSDKViewInterface/*.{h,m}', 'Meiqia-SDK-files/MQChatViewController/**/*.{h,m,mm,cpp}'
+    ss.source_files = 'Meiqia-SDK-files/MeiqiaSDKViewInterface/*.{h,m}', 'Meiqia-SDK-files/MQChatViewController/**/*.{h,m,mm,cpp}', 'Meiqia-SDK-files/MQMessageForm/**/*.{h,m}'
     ss.vendored_libraries = 'Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrnb.a', 'Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrwb.a'
-    ss.preserve_path = '**/libopencore-amrnb.a', '**/libopencore-amrwb.a'
-    ss.xcconfig = { "LIBRARY_SEARCH_PATHS" => "\"$(PODS_ROOT)/**\"" }
+    #ss.preserve_path = '**/libopencore-amrnb.a', '**/libopencore-amrwb.a'
+    ss.xcconfig = { "LIBRARY_SEARCH_PATHS" => "\"$(PODS_ROOT)/Meiqia/Meiqia-SDK-files\"" }
     ss.resources = 'Meiqia-SDK-files/MQChatViewController/Assets/MQChatViewAsset.bundle'
   end
   

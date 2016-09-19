@@ -87,7 +87,7 @@ framework中的文件 | 说明
 
 ```
 
-pod 'Meiqia', '~> 3.2.2'
+pod 'Meiqia', '~> 3.3.1'
 ```
 
 接着安装美洽 pod 即可：
@@ -633,7 +633,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 ### 监听聊天界面显示和消失
 
 * `MQ_NOTIFICATION_CHAT_BEGIN` 在聊天界面出现的时候发送
-*  `MQ_NOTIFICATION_CHAT_END` 在聊天界面消失时发送
+* `MQ_NOTIFICATION_CHAT_END` 在聊天界面消失时发送
 
 
 ### 用户排队
@@ -827,7 +827,7 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 原因是美洽将 SDK 中使用的开源库 [opencore-amr](http://sourceforge.net/projects/opencore-amr/) 针对支持Bitcode而重新编译了一次，但这并不影响SDK在iOS 6中的使用。如果你介意，并且不会使用 Bitcode，可以将美洽SDK中使用 `opencore-amr` 替换为老版本：[传送门](https://github.com/molon/MLAudioRecorder/tree/master/MLRecorder/MLAudioRecorder/amr_en_de/lib)
 
 ## 美洽静态库的文件大小太大
-因为美洽静态库包含5个平台（armv7、armv7s、arm64、i386、x86_64）+ Bitcode。但这并不代表会严重影响编译后的宿主 App 大小，实际上，这只会增加宿主 App 100kb 左右大小。
+因为美洽静态库包含5个平台（armv7、arm64、i386、x86_64）+ Bitcode。但这并不代表会严重影响编译后的宿主 App 大小，实际上，这只会增加宿主 App 100kb 左右大小。
 
 ## 键盘弹起后输入框和键盘之间有偏移
 请检查是否使用了第三方开源库[IQKeyboardManager](https://github.com/hackiftekhar/IQKeyboardManager)，该开源库会和判断输入框的逻辑冲突。
@@ -867,30 +867,65 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 
 请开发者检查 App Target - Build Settings - Search Path - Framework Search Path 或 Library Search Path 当中是否没有美洽的项目。
 
+Vendors - 用到的第三方开源库
+---
+以下是该 Library 用到的第三方开源代码，如果开发者的项目中用到了相同的库，需要删除一份，避免类名冲突：
+
+第三方开源库 | Tag 版本 | 说明
+----- | ----- | -----
+VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪位童鞋找到来源后，请更新下文档~
+[MLAudioRecorder](https://github.com/molon/MLAudioRecorder) | master | 边录边转码，播放网络音频 Button (本地缓存)，实时语音。**注意**，由于该开源项目中的 [lame.framework](https://github.com/molon/MLAudioRecorder/tree/master/MLRecorder/MLAudioRecorder/mp3_en_de/lame.framework) 不支持 `bitCode` ，所以我们去掉了该项目中有关 MP3 的文件；
+[GrowingTextView](https://github.com/HansPinckaers/GrowingTextView) | 1.1 | 随文字改变高度的的 textView，用于本项目中的聊天输入框；
+[TTTAttributedLabel](https://github.com/TTTAttributedLabel/TTTAttributedLabel) |  | 支持多种效果的 Lable，用于本项目中的聊天气泡的文字 Label；
+[CustomIOSAlertView](https://github.com/wimagguc/ios-custom-alertview) | 自定义 | 自定义的 AlertView，用于显示本项目的评价弹出框；**注意**，我们队该开源项目进行了修改，增加了按钮之间的分隔线条、判断当前是否已经有 AlertView 在显示、以及键盘弹出时界面 frame 计算，该修改版本可以见 [CustomIOSAlertView](https://github.com/ijinmao/ios-custom-alertview)；
+[AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
+
 # 更新日志
 
+**v3.3.1 2016 年 09 月 18 日** 
+
+* 增加机器人回复的图文聊天气泡
+* 合并机器人回复图文气泡和评价按钮
+* 修复已知问题
+
+**v3.3.0 2016 年 08 月 19 日**
+
+* 增加工单支持
+* 增加询前表单
+* 增加机器人图文消息支持
+* 增加表情键盘
+* **移除 iOS 6 支持**
+* demo 工程处理了 iOS 10 中图片和相机申请权限的崩溃
+* 修复已知问题
+
 **v3.2.4 2016 年 08 月 1 日**
+
 * 增加机器人未识别手动转人工
 
 **v3.2.3 2016 年 07 月 22 日**
+
 * 增加机器人自定义回复文案
 
 **v3.2.2 2016 年 07 月 5 日**
+
 * 增加图文消息显示的支持
 * 修复部分问题
 * 优化界面
 
 **v3.2.1 2016 年 06 月 20 日**
+
 * 支持排队功能
 * 更新聊天输入界面
 * 增加接收文件预览功能
 * 修复问题
 
 **v3.2.0 2016 年 05 月 30 日**
+
 * 增加机器人客服
 * 增加留言表单
 
 **v3.1.9 2016 年 05 月 13 日**
+
 * 聊天界面增加可交互转场动画
 * 发送消息失败后，会提示客服下线
 * 聊天界面优化

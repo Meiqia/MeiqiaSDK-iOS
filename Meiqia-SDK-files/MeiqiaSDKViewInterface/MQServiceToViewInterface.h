@@ -21,6 +21,7 @@
 #import <MeiQiaSDK/MeiQiaSDK.h>
 #import "MQFileDownloadMessage.h"
 #import "MQRichTextMessage.h"
+#import "MQBotRichTextMessage.h"
 
 /**
  *  该协议是UI层获取数据的委托方法
@@ -268,6 +269,14 @@
                          completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**
+ *  更新顾客信息
+ *
+ *  @param clientInfo 顾客信息
+ */
++ (void)updateClientInfoWithDictionary:(NSDictionary *)clientInfo
+                         completion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
  *  缓存当前的输入文字
  *
  *  @param inputtingText 输入文字
@@ -368,7 +377,7 @@
 /**
  获取留言表单引导文案
  */
-+ (void)getMessageFormIntroComplete:(void(^)(NSString *, NSError *))action;
++ (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action;
 
 /**
  *  提交留言表单
@@ -414,7 +423,31 @@
  */
 + (void)getClientQueuePositionComplete:(void (^)(NSInteger position, NSError *error))action;
 
+/**
+ 
+ */
++ (void)requestPreChatServeyDataIfNeedCompletion:(void(^)(MQPreChatData *data, NSError *error))block;
+
+/**
+ 获取验证码
+ */
++ (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block;
+
++ (void)getCaptchaWithURLComplete:(void (^)(NSString *token, NSString *url))block;
+
++ (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id,NSError *))block;
+
+
+/**
+ 判断上一步操作是否失败
+ */
 + (NSError *)checkGlobalError;
+
+/**
+ 转换 emoji 别名为 Unicode
+ */
++ (NSString *)convertToUnicodeWithEmojiAlias:(NSString *)text;
+
 
 @end
 

@@ -210,6 +210,10 @@
     chatViewConfig.enableSendImageMessage = enable;
 }
 
+- (void)enableSendEmoji:(BOOL)enable {
+    chatViewConfig.enableSendEmoji = enable;
+}
+
 - (void)enableShowNewMessageAlert:(BOOL)enable {
     chatViewConfig.enableShowNewMessageAlert = enable;
 }
@@ -506,6 +510,14 @@
 
 - (void)enableEvaluationButton:(BOOL)enable {
     chatViewConfig.enableEvaluationButton = enable;
+}
+
+- (void)setClientInfo:(NSDictionary *)clientInfo override:(BOOL)override {
+    if (!clientInfo) {
+        return;
+    }
+    chatViewConfig.updateClientInfoUseOverride = override;
+    chatViewConfig.clientInfo = clientInfo;
 }
 
 - (void)setClientInfo:(NSDictionary *)clientInfo {
