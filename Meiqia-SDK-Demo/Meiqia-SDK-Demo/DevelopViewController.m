@@ -15,6 +15,7 @@
 #import "MQMessageFormViewManager.h"
 
 #define MQ_DEMO_ALERTVIEW_TAG 3000
+#define MQ_DEMO_ALERTVIEW_TAG_APPKEY 4000
 
 typedef enum : NSUInteger {
     MQSDKDemoManagerClientId = 0,
@@ -30,7 +31,7 @@ static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount";
 
 
-@interface DevelopViewController ()<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
+@interface DevelopViewController ()<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, UIActionSheetDelegate>
 
 @end
 
@@ -73,7 +74,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                              @"查看当前 SDK 版本号",
                              @"当前的美洽顾客 id 为：(点击复制该顾客 id )",
                              @"显示当前未读的消息数",
-                             @"留言表单"],
+                             @"留言表单",
+                             @"切换 appKey 上线",
+                             ],
                          @[
                              @"自定义主题 1",
                              @"自定义主题 2",
@@ -192,6 +195,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
             case 15:
                 [self messageForm];
                 break;
+            case 16:
+                [self switchAppKey];
+                break;
             default:
                 break;
         }
@@ -231,6 +237,37 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 }
 
 #pragma UITableViewDataSource
+- (void)switchAppKey {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"已注册的 app key 列表" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:nil];
+    [actionSheet addButtonWithTitle:@"新建"];
+    
+    for (NSString *appKey in [MQManager getLocalAppKeys]) {
+        [actionSheet addButtonWithTitle:appKey];
+    }
+
+    [actionSheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        return;
+    } else if (buttonIndex == 1) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"新建 app key" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        alertView.tag = MQ_DEMO_ALERTVIEW_TAG_APPKEY;
+        [alertView show];
+    } else {
+        NSString *selectedAppkey = [MQManager getLocalAppKeys][buttonIndex - 2];
+        
+        [MQManager initWithAppkey:selectedAppkey completion:^(NSString *clientId, NSError *error) {
+            if (!error) {
+                MQChatViewManager *chatViewManager = [MQChatViewManager new];
+                [chatViewManager pushMQChatViewControllerInViewController:self];
+            }
+        }];
+    }
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return [sectionHeaders count];
 }
@@ -560,6 +597,14 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
             case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerEndConversation:
                 [self endCurrentConversation];
                 break;
+            case MQ_DEMO_ALERTVIEW_TAG_APPKEY: {
+                [MQManager initWithAppkey:[alertView textFieldAtIndex:0].text completion:^(NSString *clientId, NSError *error) {
+                    if (!error) {
+                        MQChatViewManager *chatViewManager = [MQChatViewManager new];
+                        [chatViewManager pushMQChatViewControllerInViewController:self];
+                    }
+                }];
+            }
             default:
                 break;
         }

@@ -69,6 +69,11 @@
 + (void)initWithAppkey:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error))completion;
 
 /**
+    获取本地初始化过的 app key
+ */
++ (NSArray *)getLocalAppKeys;
+
+/**
  * 设置指定分配的客服或客服组。
  *
  * @param agentId                指定分配的客服id，可为空

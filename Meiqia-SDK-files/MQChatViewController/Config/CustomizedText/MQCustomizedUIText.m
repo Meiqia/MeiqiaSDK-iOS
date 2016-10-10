@@ -77,6 +77,8 @@ static NSMutableDictionary * customizedTextMap;
         @(MQUITextKeyPreChatFormTitle) : @"pre_chat_form_title",
         @(MQUITextKeyPreChatFormMultipleSelectionLabel) : @"pre_chat_form_mutiple_selection_label",
         @(MQUITextKeyPreChatFormBlankAlertLabel) : @"pre_chat_form_black_alert_label",
+        
+        @(MQUITextKeyQueuePosition) : @"wating_in_queue_tip_text",
         };
     
     
