@@ -15,6 +15,7 @@
 #import "MQBundleUtil.h"
 #import "MQAssetUtil.h"
 #import "MQImageUtil.h"
+#import "MQToast.h"
 
 static CGFloat const kMQButtonVerticalSpacing   = 16.0;
 static CGFloat const kMQButtonHeight            = 42.0;
@@ -95,6 +96,7 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
             return message.fromType != MQMessageFromTypeClient;
         }] count];
         
+        [MQToast showToast:@"New message from '%@'" duration:2 window:self.view.window];
         NSLog(@"unreade message count: %lu",(unsigned long)count);
     }];
 }

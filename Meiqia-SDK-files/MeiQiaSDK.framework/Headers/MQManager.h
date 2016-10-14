@@ -74,6 +74,16 @@
 + (NSArray *)getLocalAppKeys;
 
 /**
+ 获取当前使用的 app key
+ */
++ (NSString *)getCurrentAppKey;
+
+/**
+ 获取消息所对应的企业 appkey
+ */
++ (NSString *)appKeyForMessage:(MQMessage *)message;
+
+/**
  * 设置指定分配的客服或客服组。
  *
  * @param agentId                指定分配的客服id，可为空
@@ -466,6 +476,11 @@
 + (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action;
 
 /**
+ 获取 ticket 类别
+ */
++ (void)getTicketCategoryComplete:(void(^)(NSArray *categories))action;
+
+/**
  *  提交留言表单
  *
  *  @param message 留言消息
@@ -519,7 +534,7 @@
 /**
  提交用户填写的留言工单
  */
-+ (void)submitTicketForm:(NSString *)content userInfo:(NSDictionary *)usreInfo completion:(void(^)(MQTicket *ticket, NSError *))block;
++ (void)submitTicketForm:(NSString *)content userInfo:(NSDictionary *)userInfo completion:(void(^)(MQTicket *ticket, NSError *))block;
 
 
 @end

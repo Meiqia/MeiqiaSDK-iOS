@@ -13,6 +13,7 @@
 #import "MQToast.h"
 #import "MQMessageFormInputModel.h"
 #import "MQMessageFormViewManager.h"
+#import "NSArray+MQFunctional.h"
 
 #define MQ_DEMO_ALERTVIEW_TAG 3000
 #define MQ_DEMO_ALERTVIEW_TAG_APPKEY 4000
@@ -113,6 +114,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     
     //在聊天界面外，监听是否收到了客服消息
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMQMessages:) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -135,6 +137,14 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     configTableView.delegate = self;
     configTableView.dataSource = self;
     [self.view addSubview:configTableView];
+}
+
+- (void)didReceiveNewMQMessages:(NSNotification *)notification {
+    
+    NSArray *messages = [notification userInfo][@"messages"];
+    if (self.view.window) {
+        [MQToast showToast:[NSString stringWithFormat:@"New message from '%@': %@",[MQManager appKeyForMessage:[messages firstObject]],[[messages firstObject] content]] duration:2 window:self.view.window];
+    }
 }
 
 #pragma UITableViewDelegate
@@ -713,12 +723,18 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 /**
  *  开发者这样可修改导航栏颜色、导航栏左右键、取消图片消息的mask效果
  */
+
+- (void)showAlert {
+    [[[UIAlertView alloc] initWithTitle:@"test" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+}
+
 - (void)chatViewStyle6 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.backgroundColor = [UIColor redColor];
     rightButton.frame = CGRectMake(10, 10, 20, 20);
     [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor redColor]];
+    [rightButton addTarget: self action:@selector(showAlert) forControlEvents:(UIControlEventTouchUpInside)];
     [chatViewManager.chatViewStyle setNavBarRightButton:rightButton];
     UIButton *lertButton = [UIButton buttonWithType:UIButtonTypeCustom];
     lertButton.backgroundColor = [UIColor blueColor];
@@ -831,14 +847,14 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
 }
 
-#pragma 监听收到美洽聊天消息的广播
-- (void)didReceiveNewMQMessages:(NSNotification *)notification {
-    NSArray *messages = [notification.userInfo objectForKey:@"messages"];
-    for (MQMessage *message in messages) {
-        NSLog(@"messge content = %@", message.content);
-    }
-    NSLog(@"在聊天界面外，监听到了收到客服消息的广播");
-}
+//#pragma 监听收到美洽聊天消息的广播
+//- (void)didReceiveNewMQMessages:(NSNotification *)notification {
+//    NSArray *messages = [notification.userInfo objectForKey:@"messages"];
+//    for (MQMessage *message in messages) {
+//        NSLog(@"messge content = %@", message.content);
+//    }
+//    NSLog(@"在聊天界面外，监听到了收到客服消息的广播");
+//}
 
 
 @end

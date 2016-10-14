@@ -100,7 +100,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
 }
 
-#ifdef INCLUDE_MEIQIA_SDK
 - (void)socketStatusChanged:(NSNotification *)notification {
     static BOOL shouldHandleSocketConnectNotification = NO; //当第一次进入的时候，会收到 socket 连上的消息，但是这个时候并不应该执行重新上线的逻辑，重新上线的逻辑必须是 socket 断开之后才有必要去执行的，这个标志的作用就是在 socket 有过断开的情况才去执行。
     if ([[notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE] isEqualToString:SOCKET_STATUS_CONNECTED] && shouldHandleSocketConnectNotification) {
@@ -111,8 +110,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     } else if([[notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE] isEqualToString:SOCKET_STATUS_DISCONNECTED]){
         shouldHandleSocketConnectNotification = YES;
     }
+    
+    if ([notification.userInfo[@"reason"] isEqualToString:@"autoconnect fail"]) {
+        [self.delegate showToastViewWithContent:@"网络故障"];
+    }
 }
-#endif
 
 #pragma 增加cellModel并刷新tableView
 - (void)addCellModelAndReloadTableViewWithModel:(id<MQCellModelProtocol>)cellModel {
