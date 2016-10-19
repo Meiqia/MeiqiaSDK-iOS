@@ -96,7 +96,6 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
             return message.fromType != MQMessageFromTypeClient;
         }] count];
         
-        [MQToast showToast:@"New message from '%@'" duration:2 window:self.view.window];
         NSLog(@"unreade message count: %lu",(unsigned long)count);
     }];
 }

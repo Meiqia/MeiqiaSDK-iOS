@@ -1014,7 +1014,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 //获取顾客信息
 - (void)getClientInfo {
-    NSDictionary *clientInfo = [MQServiceToViewInterface getCurrentClientInfo];
+    NSDictionary *clientInfo = [MQChatViewConfig sharedConfig].clientInfo;//[MQServiceToViewInterface getCurrentClientInfo];
     if ([[clientInfo objectForKey:@"avatar"] length] == 0) {
         return ;
     }
@@ -1141,12 +1141,24 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)didReceiveNewMessages:(NSArray *)messages {
 
+    BOOL needsResort = NO;
+    if ([[[messages firstObject] date] compare:[[self.cellModels lastObject] getCellDate]] == NSOrderedAscending) {
+        needsResort = YES;
+    }
+    
     //转换message to cellModel，并缓存
     if (messages.count == 0 || !didSetOnline) {
         return;
     } else if ([self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:false] == 0) {
         return;
     }
+    
+    if (needsResort) {
+        [self.cellModels sortUsingComparator:^NSComparisonResult(id<MQCellModelProtocol>  _Nonnull obj1,  id<MQCellModelProtocol> _Nonnull obj2) {
+            return [[obj1 getCellDate] compare:[obj2 getCellDate]];
+        }];
+    }
+    
     //eventMessage不响铃声
     if (messages.count > 1 || ![[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
         [self playReceivedMessageSound];

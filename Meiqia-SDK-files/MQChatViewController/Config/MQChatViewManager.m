@@ -32,33 +32,27 @@
 - (instancetype)init {
     if (self = [super init]) {
         chatViewConfig = [MQChatViewConfig sharedConfig];
+        chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
     return self;
 }
 
 - (MQChatViewController *)pushMQChatViewControllerInViewController:(UIViewController *)viewController {
-    if (chatViewConfig) {
-        chatViewConfig = [MQChatViewConfig sharedConfig];
-    }
-    if (!chatViewController) {
-        chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
-    }
-    
     [self presentOnViewController:viewController transiteAnimation:MQTransiteAnimationTypePush];
     return chatViewController;
 }
 
 - (MQChatViewController *)presentMQChatViewControllerInViewController:(UIViewController *)viewController {
-    if (chatViewConfig) {
-        chatViewConfig = [MQChatViewConfig sharedConfig];
-    }
     chatViewConfig.isPushChatView = false;
-    if (!chatViewController) {
-        chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
-    }
     
     [self presentOnViewController:viewController transiteAnimation:MQTransiteAnimationTypeDefault];
     return chatViewController;
+}
+
+- (UIViewController *)createMQChatViewController {
+    UIViewController *viewController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
+    [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:nil isPresentModalView:false];
+    return viewController;
 }
 
 - (void)presentOnViewController:(UIViewController *)rootViewController transiteAnimation:(MQTransiteAnimationType)animation {
@@ -131,12 +125,7 @@
     
     //导航栏右键
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
-        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
         [[MQChatViewConfig sharedConfig].navBarRightButton addTarget:viewController action:@selector(didSelectNavigationRightButton) forControlEvents:UIControlEventTouchUpInside];
-#pragma clang diagnostic pop
-        viewController.navigationItem.rightBarButtonItem = rightItem;
     }
     
     //导航栏标题

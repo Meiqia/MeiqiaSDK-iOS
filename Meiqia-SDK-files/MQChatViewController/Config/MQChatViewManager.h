@@ -63,6 +63,11 @@
 - (MQChatViewController *)presentMQChatViewControllerInViewController:(UIViewController *)viewController;
 
 /**
+ 创建一个美洽聊天界面的 viewControler
+ */
+- (UIViewController *)createMQChatViewController;
+
+/**
  * 将客服聊天界面移除
  */
 - (void)disappearMQChatViewController;

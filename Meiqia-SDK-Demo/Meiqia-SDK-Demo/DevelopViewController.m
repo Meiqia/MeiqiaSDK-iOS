@@ -17,6 +17,7 @@
 
 #define MQ_DEMO_ALERTVIEW_TAG 3000
 #define MQ_DEMO_ALERTVIEW_TAG_APPKEY 4000
+#define MQ_DEMO_ALERTVIEW_TAG_PRESENDMSG 4001
 
 typedef enum : NSUInteger {
     MQSDKDemoManagerClientId = 0,
@@ -76,6 +77,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                              @"当前的美洽顾客 id 为：(点击复制该顾客 id )",
                              @"显示当前未读的消息数",
                              @"留言表单",
+                             @"预发送消息上线",
                              @"切换 appKey 上线",
                              ],
                          @[
@@ -141,10 +143,10 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 
 - (void)didReceiveNewMQMessages:(NSNotification *)notification {
     
-    NSArray *messages = [notification userInfo][@"messages"];
-    if (self.view.window) {
-        [MQToast showToast:[NSString stringWithFormat:@"New message from '%@': %@",[MQManager appKeyForMessage:[messages firstObject]],[[messages firstObject] content]] duration:2 window:self.view.window];
-    }
+//    NSArray *messages = [notification userInfo][@"messages"];
+//    if (self.view.window) {
+//        [MQToast showToast:[NSString stringWithFormat:@"New message from '%@': %@",[MQManager appKeyForMessage:[messages firstObject]],[[messages firstObject] content]] duration:2 window:self.view.window];
+//    }
 }
 
 #pragma UITableViewDelegate
@@ -206,6 +208,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                 [self messageForm];
                 break;
             case 16:
+                [self presentMessageAndOnline];
+                break;
+            case 17:
                 [self switchAppKey];
                 break;
             default:
@@ -256,6 +261,13 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     }
 
     [actionSheet showInView:self.view];
+}
+
+- (void)presentMessageAndOnline {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入预发送消息" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alertView.tag = MQ_DEMO_ALERTVIEW_TAG_PRESENDMSG;
+    [alertView show];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -355,6 +367,13 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewManager setLoginMQClientId:clientId];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
     [chatViewManager presentMQChatViewControllerInViewController:self];
+}
+
+- (void)setClientOnlineWithPresendMessage:(NSString *)messageString {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager setPreSendMessages:@[messageString]];
+    [chatViewManager presentMQChatViewControllerInViewController:self];
+
 }
 
 /**
@@ -615,6 +634,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                     }
                 }];
             }
+            case MQ_DEMO_ALERTVIEW_TAG_PRESENDMSG: {
+                [self setClientOnlineWithPresendMessage:[alertView textFieldAtIndex:0].text];
+            }
             default:
                 break;
         }
@@ -756,7 +778,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [chatViewManager setChatViewStyle:[MQChatViewStyle blueStyle]];
-    [chatViewManager.chatViewStyle setNavBackButtonImage:[UIImage imageNamed:@"ijinmaoAvatar"]];
+//    [chatViewManager.chatViewStyle setNavBackButtonImage:[UIImage imageNamed:@"ijinmaoAvatar"]];
     
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
