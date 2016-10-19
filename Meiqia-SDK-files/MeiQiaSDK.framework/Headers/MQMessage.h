@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "MQAgent.h"
 
+#define QUEUEING_SYMBOL 999
+
 typedef enum : NSUInteger {
     MQMessageActionMessage                      = 0,   //普通消息 (message)
     MQMessageActionInitConversation             = 1,   //初始化对话 (init_conv)

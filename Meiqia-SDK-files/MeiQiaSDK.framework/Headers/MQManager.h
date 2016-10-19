@@ -15,7 +15,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.3.1"
+#define MQSDKVersion @"3.3.2"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -479,6 +479,16 @@
  获取 ticket 类别
  */
 + (void)getTicketCategoryComplete:(void(^)(NSArray *categories))action;
+
+/**
+ 获取从指定日期开始的所有工单消息
+ */
++ (void)getTicketsFromDate:(NSDate *)date complete:(void(^)(NSArray *, NSError *))action;
+
+/**
+ 创建或者追加工单，如果此用户已经发过工单，并且工单没有结束，新消息会追加到工单上
+ */
++ (void)createOrAppendTicketWithMessage:(MQMessage *)message clientInfo:(NSDictionary *)info completion:(void(^)(MQTicket *ticket, NSError *))block;
 
 /**
  *  提交留言表单
