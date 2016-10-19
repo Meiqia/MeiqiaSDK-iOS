@@ -115,6 +115,7 @@
 		E426A9F81D2396DA002AA08C /* MQPreChatFormListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9F71D2396DA002AA08C /* MQPreChatFormListViewController.m */; };
 		E426A9FB1D239711002AA08C /* MQPreChatSubmitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */; };
 		E43228451D58926800FDA410 /* MQBotRichTextMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E43228441D58926800FDA410 /* MQBotRichTextMessage.m */; };
+		E44008BB1DAB4528003842E7 /* MQMessageFormCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E44008BA1DAB4528003842E7 /* MQMessageFormCategoryViewController.m */; };
 		E44A5EA51D5AF47D000481E8 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E44A5EA41D5AF47D000481E8 /* Accelerate.framework */; };
 		E45CA11F1CC60828000B8917 /* MeiQiaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */; };
 		E45CA1241CC79431000B8917 /* NSArray+MQFunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = E45CA1231CC79431000B8917 /* NSArray+MQFunctional.m */; };
@@ -388,6 +389,8 @@
 		E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MQPreChatSubmitViewController.m; path = ../PreChatForm/MQPreChatSubmitViewController.m; sourceTree = "<group>"; };
 		E43228431D58926800FDA410 /* MQBotRichTextMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQBotRichTextMessage.h; sourceTree = "<group>"; };
 		E43228441D58926800FDA410 /* MQBotRichTextMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQBotRichTextMessage.m; sourceTree = "<group>"; };
+		E44008B91DAB4528003842E7 /* MQMessageFormCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormCategoryViewController.h; sourceTree = "<group>"; };
+		E44008BA1DAB4528003842E7 /* MQMessageFormCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormCategoryViewController.m; sourceTree = "<group>"; };
 		E44A5EA41D5AF47D000481E8 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MeiQiaSDK.framework; path = "../Meiqia-SDK-files/MeiQiaSDK.framework"; sourceTree = "<group>"; };
 		E45CA1201CC628D8000B8917 /* MQChatAudioTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MQChatAudioTypes.h; sourceTree = "<group>"; };
@@ -861,6 +864,8 @@
 				CC84A8A51CEC7D790097C99E /* MQMessageFormViewController.m */,
 				CC84A8A61CEC7D790097C99E /* MQMessageFormViewService.h */,
 				CC84A8A71CEC7D790097C99E /* MQMessageFormViewService.m */,
+				E44008B91DAB4528003842E7 /* MQMessageFormCategoryViewController.h */,
+				E44008BA1DAB4528003842E7 /* MQMessageFormCategoryViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1410,6 +1415,7 @@
 				E4D46C771D51AD8200C3030E /* UIImage+MQGenerate.m in Sources */,
 				E4036E1B1D10F7240065D5A5 /* MQWindowUtil.m in Sources */,
 				E426A9F81D2396DA002AA08C /* MQPreChatFormListViewController.m in Sources */,
+				E44008BB1DAB4528003842E7 /* MQMessageFormCategoryViewController.m in Sources */,
 				CC3310B71C33F7EA0088E648 /* MQStringSizeUtil.m in Sources */,
 				E45CA1241CC79431000B8917 /* NSArray+MQFunctional.m in Sources */,
 				E4A533E61C9F90DD0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */,
@@ -1679,6 +1685,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = T9YSHM8D7E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(SRCROOT)/../Meiqia-SDK-files",
@@ -1708,6 +1715,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = T9YSHM8D7E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(SRCROOT)/../Meiqia-SDK-files",

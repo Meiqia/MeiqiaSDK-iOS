@@ -97,7 +97,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     sendTime = [NSDate timeIntervalSinceReferenceDate];
     self.view.backgroundColor = [MQChatViewConfig sharedConfig].chatViewStyle.backgroundColor ?: [UIColor colorWithWhite:0.95 alpha:1];
-    [self setNavBar];
+//    [self setNavBar];
     [self initChatTableView];
     [self initInputBar];
     [self layoutViews];
@@ -342,25 +342,25 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 #pragma 编辑导航栏 - Demo用到的收取消息按钮
-- (void)setNavBar {
-    if ([MQChatViewConfig sharedConfig].didSetStatusBarStyle) {
-        [UIApplication sharedApplication].statusBarStyle = [MQChatViewConfig sharedConfig].statusBarStyle;
-    }
-    if ([MQChatViewConfig sharedConfig].navBarRightButton) {
-        return;
-    }
-#ifndef INCLUDE_MEIQIA_SDK
-    UIBarButtonItem *loadMessageButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"收取消息" style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
-    loadMessageButtonItem.tintColor = [UIColor redColor];
-    self.navigationItem.rightBarButtonItem = loadMessageButtonItem;
-    if (![MQChatViewConfig sharedConfig].enableEvaluationButton) {
-        return;
-    }
-    UIBarButtonItem *rightNavButtonItem = [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
-    rightNavButtonItem.tintColor = chatViewConfig.chatViewStyle.btnTextColor;
-    self.navigationItem.rightBarButtonItem = rightNavButtonItem;
-#endif
-}
+//- (void)setNavBar {
+//    if ([MQChatViewConfig sharedConfig].didSetStatusBarStyle) {
+//        [UIApplication sharedApplication].statusBarStyle = [MQChatViewConfig sharedConfig].statusBarStyle;
+//    }
+//    if ([MQChatViewConfig sharedConfig].navBarRightButton) {
+//        return;
+//    }
+//#ifndef INCLUDE_MEIQIA_SDK
+//    UIBarButtonItem *loadMessageButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"收取消息" style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
+//    loadMessageButtonItem.tintColor = [UIColor redColor];
+//    self.navigationItem.rightBarButtonItem = loadMessageButtonItem;
+//    if (![MQChatViewConfig sharedConfig].enableEvaluationButton) {
+//        return;
+//    }
+//    UIBarButtonItem *rightNavButtonItem = [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
+//    rightNavButtonItem.tintColor = chatViewConfig.chatViewStyle.btnTextColor;
+//    self.navigationItem.rightBarButtonItem = rightNavButtonItem;
+//#endif
+//}
 
 - (void)tapNavigationRightBtn:(id)sender {
     [self showEvaluationAlertView];
@@ -443,33 +443,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     // 隐藏 loading
     [self dismissActivityIndicatorView];
     
-    if ([MQChatViewConfig sharedConfig].navBarRightButton) {
-        return;
+    if ([agentType isEqualToString:@"bot"] && chatViewService.isShowBotRedirectBtn) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_redirect_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRedirectBtn:)];
+    } else if ([MQChatViewConfig sharedConfig].navBarRightButton) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
+    } else {
+        self.navigationItem.rightBarButtonItem =  [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
     }
-    NSString *titleKey = nil;
-    SEL navBtnSelector = nil;
-    if ([agentType isEqualToString:@"bot"]) {
-        if (chatViewService.isShowBotRedirectBtn) {
-            titleKey = @"meiqia_redirect_sheet";
-            navBtnSelector = @selector(tapNavigationRedirectBtn:);
-        }
-    } else if ([agentType isEqualToString:@"agent"] || [agentType isEqualToString:@"admin"]) {
-        if ([MQChatViewConfig sharedConfig].enableEvaluationButton) {
-            titleKey = @"meiqia_evaluation_sheet";
-            navBtnSelector = @selector(tapNavigationRightBtn:);
-        }
-    }
-    // 判断是否隐藏右导航栏按钮
-    if (!navBtnSelector) {
-        self.navigationItem.rightBarButtonItem = nil;
-        return;
-    }
-    NSString *title = [MQBundleUtil localizedStringForKey:titleKey];
-    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:title]) {
-        return;
-    }
-    UIBarButtonItem *rightNavButtonItem = [[UIBarButtonItem alloc]initWithTitle:title style:(UIBarButtonItemStylePlain) target:self action:navBtnSelector];
-    self.navigationItem.rightBarButtonItem = rightNavButtonItem;
 }
 
 - (void)didReceiveMessage {
@@ -503,6 +483,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 -(void)sendImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
+    
     NSString *mediaPermission = [MQChatDeviceUtil isDeviceSupportImageSourceType:(int)sourceType];
     if (!mediaPermission) {
         return;

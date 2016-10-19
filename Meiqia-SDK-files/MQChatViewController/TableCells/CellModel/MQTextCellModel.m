@@ -118,6 +118,7 @@
  */
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
 
+@property (nonatomic, strong) TTTAttributedLabel *textLabelForHeightCalculation;
 
 @end
 
@@ -128,6 +129,9 @@
                                      delegate:(id<MQCellModelDelegate>)delegator
 {
     if (self = [super init]) {
+        self.textLabelForHeightCalculation = [TTTAttributedLabel new];
+        self.textLabelForHeightCalculation.numberOfLines = 0;
+
         self.messageId = message.messageId;
         self.sendStatus = message.sendStatus;
         NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -155,8 +159,6 @@
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
             self.avatarPath = message.userAvatarPath;
-            //这里使用美洽接口下载多媒体消息的图片，开发者也可以替换成自己的图片缓存策略
-#ifdef INCLUDE_MEIQIA_SDK
             [MQServiceToViewInterface downloadMediaWithUrlString:message.userAvatarPath progress:^(float progress) {
             } completion:^(NSData *mediaData, NSError *error) {
                 if (mediaData && !error) {
@@ -171,19 +173,6 @@
                     }
                 }
             }];
-#else
-            __block UIImageView *tempImageView = [UIImageView new];
-            [tempImageView sd_setImageWithURL:[NSURL URLWithString:message.userAvatarPath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                
-                self.avatarImage = tempImageView.image.copy;
-                if (self.delegate) {
-                    if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
-                        //通知ViewController去刷新tableView
-                        [self.delegate didUpdateCellDataWithMessageId:self.messageId];
-                    }
-                }
-            }];
-#endif
         } else {
             self.avatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
             if (message.fromType == MQChatMessageOutgoing) {
@@ -194,7 +183,10 @@
         //文字最大宽度
         CGFloat maxLabelWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
         //文字高度
-        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
+//        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
+        self.textLabelForHeightCalculation.attributedText = self.cellText;
+        CGFloat messageTextHeight = [self.textLabelForHeightCalculation sizeThatFits:CGSizeMake(maxLabelWidth, MAXFLOAT)].height;
+
         //判断文字中是否有emoji
         if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
             NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];

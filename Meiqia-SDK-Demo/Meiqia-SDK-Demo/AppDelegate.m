@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <MeiQiaSDK/MQManager.h>
+#import "MQServiceToViewInterface.h"
 
 @interface AppDelegate ()
 
@@ -41,6 +42,10 @@
         } else {
             NSLog(@"error:%@",error);
         }
+        
+        [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+            NSLog(@">> unread message count: %d", (int)messages.count);
+        }];
     }];
     
     return YES;

@@ -15,7 +15,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.3.1"
+#define MQSDKVersion @"3.3.2"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -67,6 +67,21 @@
  * @param completion 如果初始化成功，将会返回clientId，并且error为nil；如果初始化失败，clientId为空，会返回error
  */
 + (void)initWithAppkey:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error))completion;
+
+/**
+    获取本地初始化过的 app key
+ */
++ (NSArray *)getLocalAppKeys;
+
+/**
+ 获取当前使用的 app key
+ */
++ (NSString *)getCurrentAppKey;
+
+/**
+ 获取消息所对应的企业 appkey
+ */
++ (NSString *)appKeyForMessage:(MQMessage *)message;
 
 /**
  * 设置指定分配的客服或客服组。
@@ -461,6 +476,21 @@
 + (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action;
 
 /**
+ 获取 ticket 类别
+ */
++ (void)getTicketCategoryComplete:(void(^)(NSArray *categories))action;
+
+/**
+ 获取从指定日期开始的所有工单消息
+ */
++ (void)getTicketsFromDate:(NSDate *)date complete:(void(^)(NSArray *, NSError *))action;
+
+/**
+ 创建或者追加工单，如果此用户已经发过工单，并且工单没有结束，新消息会追加到工单上
+ */
++ (void)createOrAppendTicketWithMessage:(MQMessage *)message clientInfo:(NSDictionary *)info completion:(void(^)(MQTicket *ticket, NSError *))block;
+
+/**
  *  提交留言表单
  *
  *  @param message 留言消息
@@ -514,7 +544,7 @@
 /**
  提交用户填写的留言工单
  */
-+ (void)submitTicketForm:(NSString *)content userInfo:(NSDictionary *)usreInfo completion:(void(^)(MQTicket *ticket, NSError *))block;
++ (void)submitTicketForm:(NSString *)content userInfo:(NSDictionary *)userInfo completion:(void(^)(MQTicket *ticket, NSError *))block;
 
 
 @end

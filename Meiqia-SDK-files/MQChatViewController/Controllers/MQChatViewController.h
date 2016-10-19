@@ -46,6 +46,8 @@
  */
 - (void)dismissChatViewController;
 
+- (void)didSelectNavigationRightButton;
+
 #ifdef INCLUDE_MEIQIA_SDK
 /**
  *  聊天界面的委托方法
