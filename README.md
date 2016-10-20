@@ -81,6 +81,7 @@ framework中的文件 | 说明
 - SystemConfiguration.framework
 - MobileCoreServices.framework
 - QuickLook.framework
+
 # CocoaPods 导入
 
 在 Podfile 中加入：
@@ -881,6 +882,18 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 更新日志
+
+**v3.3.2 2016 年 10 月 19 日** 
+
+* 增加留言表单中工单类型选择。
+* 多企业支持切换。
+* 增加工单相关接口。
+* 修复问题:
+	- 偶发的文字截断 
+	- 用户设置上传之后立刻获取无法获取到。
+	- 留言表单返回按钮的图片没有自动获取聊天界面用户设置的自定义图片。
+	- 导航栏右侧按钮，如果是自定义按钮，在分配机器人是没有显示转接人工，并且转接客服之后消失。
+	- 增加 socket 连接无法连接时的消息轮询机制，确保消息不丢失。
 
 **v3.3.1 2016 年 09 月 18 日** 
 
