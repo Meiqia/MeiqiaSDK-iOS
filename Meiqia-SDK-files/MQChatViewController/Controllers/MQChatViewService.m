@@ -903,14 +903,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //更新客服聊天界面标题
     [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
     
-    //上传顾客信息
-    [self setCurrentClientInfoWithCompletion:^(BOOL success) {
-        //获取顾客信息
-        __strong typeof (wself) sself = wself;
-        [sself getClientInfo];
-    }];
-    
-    
     // 判断是否是机器人客服，来改变右上角按钮
     agentType = completion ? agentType : @"";
     if ([self.delegate respondsToSelector:@selector(changeNavReightBtnWithAgentType:)]) {
@@ -926,10 +918,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [sself scrollToButton];
     });
     
+    
     [self afterClientOnline];
 }
 
 - (void)afterClientOnline {
+    __weak typeof(self) wself = self;
+    //上传顾客信息
+    [self setCurrentClientInfoWithCompletion:^(BOOL success) {
+        //获取顾客信息
+        __strong typeof (wself) sself = wself;
+        [sself getClientInfo];
+    }];
+    
     [self sendPreSendMessages];
     
     int position = [MQServiceToViewInterface waitingInQueuePosition];
@@ -1014,14 +1015,20 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 //获取顾客信息
 - (void)getClientInfo {
-    NSDictionary *clientInfo = [MQChatViewConfig sharedConfig].clientInfo;//[MQServiceToViewInterface getCurrentClientInfo];
-    if ([[clientInfo objectForKey:@"avatar"] length] == 0) {
-        return ;
+    NSDictionary *localClientInfo = [MQChatViewConfig sharedConfig].clientInfo;
+    NSDictionary *remoteClientInfo = [MQServiceToViewInterface getCurrentClientInfo];
+    NSString *avatarPath = [localClientInfo objectForKey:@"avatar"];
+    if ([avatarPath length] == 0) {
+        avatarPath = remoteClientInfo[@"avatar"];
+        if (avatarPath.length == 0) {
+            return;
+        }
     }
     
-    [MQServiceToViewInterface downloadMediaWithUrlString:[clientInfo objectForKey:@"avatar"] progress:^(float progress) {
+    [MQServiceToViewInterface downloadMediaWithUrlString:avatarPath progress:^(float progress) {
     } completion:^(NSData *mediaData, NSError *error) {
         [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage = [UIImage imageWithData:mediaData];
+        [self refreshOutgoingAvatarWithImage:[MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage];
     }];
 }
 
