@@ -25,6 +25,11 @@
  */
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)message;
 
+/**
+ 在状态改变的时候调用，如果新状态是上线，__messages__ 可能会有数据
+ */
+- (void)stateChanged:(MQState)newState fromState:(MQState)oldState agent:(MQAgent *)agent messages:(NSArray *)messages;
+
 @end
 
 /**
@@ -35,6 +40,13 @@
 
 @class MQTicket;
 @interface MQManager : NSObject
+
+/**
+ * 注册状态观察者在状态改变的时候调用
+ */
++ (void)addStateObserverWithBlock:(StateChangeBlock)block withKey:(NSString *)key;
+
++ (void)removeStateChangeObserverWithKey:(NSString *)key;
 
 /**
  *  开启美洽服务
@@ -484,11 +496,6 @@
  获取从指定日期开始的所有工单消息
  */
 + (void)getTicketsFromDate:(NSDate *)date complete:(void(^)(NSArray *, NSError *))action;
-
-/**
- 创建或者追加工单，如果此用户已经发过工单，并且工单没有结束，新消息会追加到工单上
- */
-+ (void)createOrAppendTicketWithMessage:(MQMessage *)message clientInfo:(NSDictionary *)info completion:(void(^)(MQTicket *ticket, NSError *))block;
 
 /**
  *  提交留言表单

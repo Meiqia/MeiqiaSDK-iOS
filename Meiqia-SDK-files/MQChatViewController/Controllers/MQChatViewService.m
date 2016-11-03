@@ -66,19 +66,36 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     NSMutableSet *currentViewMessageIdSet;
 }
 
-- (instancetype)init {
+- (instancetype)initWithDelegate:(id<MQChatViewServiceDelegate>)delegate errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate {
     if (self = [super init]) {
         self.cellModels = [[NSMutableArray alloc] init];
         addedNoAgentTip = false;
         didSetOnline    = false;
-        self.isShowBotRedirectBtn = false;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(socketStatusChanged:) name:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backFromBackground) name:UIApplicationWillEnterForegroundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanTimer) name:MQ_NOTIFICATION_CHAT_END object:nil];
         
         self.positionCheckTimer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(checkAndUpdateWaitingQueueStatus) userInfo:nil repeats:YES];
-        currentViewMessageIdSet = [NSMutableSet new];        
+        currentViewMessageIdSet = [NSMutableSet new];
+        
+        __weak typeof(self) wself = self;
+        [MQManager addStateObserverWithBlock:^(MQState oldState, MQState newState, NSDictionary *value, NSError *error) {
+            __strong typeof (wself) sself = wself;
+            MQAgent *agent = value[@"agent"];
+            NSString *agentType = [agent convertPrivilegeToString];
+            
+            [sself updateChatTitleWithAgent:agent state:newState];
+            
+            if (![agentType isEqualToString:@"bot"] && agentType.length > 0) {
+                [sself removeBotTipCellModels];
+            }
+        } withKey:@"MQChatViewService"];
+        
+        self.delegate = delegate;
+        self.errorDelegate = errorDelegate;
+        
+        [self updateChatTitleWithAgent:nil state:MQStateAllocatingAgent];
     }
     return self;
 }
@@ -92,6 +109,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [MQManager removeStateChangeObserverWithKey:@"MQChatViewService"];
 }
 
 - (void)backFromBackground {
@@ -126,14 +144,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  * 获取更多历史聊天消息
  */
 - (void)startGettingHistoryMessages {
-#ifdef INCLUDE_MEIQIA_SDK
     NSDate *firstMessageDate = [self getFirstServiceCellModelDate];
     if ([MQChatViewConfig sharedConfig].enableSyncServerMessage) {
         [MQServiceToViewInterface getServerHistoryMessagesWithMsgDate:firstMessageDate messagesNumber:kMQChatGetHistoryMessageNumber successDelegate:self errorDelegate:self.errorDelegate];
     } else {
         [MQServiceToViewInterface getDatabaseHistoryMessagesWithMsgDate:firstMessageDate messagesNumber:kMQChatGetHistoryMessageNumber delegate:self];
     }
-#endif
 }
 
 /**
@@ -163,18 +179,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
     [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
-#ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId delegate:self];
-#else
-    //模仿发送成功
-    __weak typeof(self) wself = self;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        __strong typeof (wself) sself = wself;
-        cellModel.sendStatus = MQChatMessageSendStatusSuccess;
-        [sself playSendedMessageSound];
-        [sself reloadChatTableView];
-    });
-#endif
 }
 
 /**
@@ -189,12 +194,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId delegate:self];
 #else
     //模仿发送成功
-    __weak typeof(self) wself = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        __strong typeof (wself) sself = wself;
         cellModel.sendStatus = MQChatMessageSendStatusSuccess;
-        [sself playSendedMessageSound];
-        [sself reloadChatTableView];
+        [self playSendedMessageSound];
+        [self reloadChatTableView];
     });
 #endif
 }
@@ -208,10 +211,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     NSData *wavData = [self convertToWAVDataWithAMRFilePath:filePath];
     MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:wavData];
     [self sendVoiceMessageWithWAVData:wavData voiceMessage:message];
-#ifdef INCLUDE_MEIQIA_SDK
     NSData *amrData = [NSData dataWithContentsOfFile:filePath];
     [MQServiceToViewInterface sendAudioMessage:amrData messageId:message.messageId delegate:self];
-#endif
 }
 
 /**
@@ -224,12 +225,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifndef INCLUDE_MEIQIA_SDK
     //模仿发送成功
-    __weak typeof(self) wself = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        __strong typeof (wself) sself = wself;
         cellModel.sendStatus = MQChatMessageSendStatusSuccess;
-        [sself playSendedMessageSound];
-        [sself reloadChatTableView];
+        [self playSendedMessageSound];
+        [self reloadChatTableView];
     });
 #endif
 }
@@ -662,7 +661,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [self checkAndUpdateWaitingQueueStatus];
             } else if (eventMessage.eventType == MQChatEventTypeAgentUpdate) {
                 //客服状态发生改变
-                [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
+                //[self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
             } else if ([MQChatViewConfig sharedConfig].enableEventDispaly) {
                 if (eventMessage.eventType == MQChatEventTypeAgentInputting) {
                     if (self.delegate) {
@@ -855,7 +854,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     __weak typeof(self) weakSelf = self;
     [self.serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
-        [strongSelf handleClientOnlineWithAgentName:agentName agentType:agentType receivedMessages:receivedMessages completeStatus:completion];
+        [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
     } receiveMessageDelegate:self];
 }
 
@@ -863,13 +862,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     __weak typeof(self) weakSelf = self;
     [self.serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
-        [strongSelf handleClientOnlineWithAgentName:agentName agentType:agentType receivedMessages:receivedMessages completeStatus:completion];
+        [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
     } receiveMessageDelegate:self];
 }
 
-- (void)handleClientOnlineWithAgentName:(NSString *)agentName
-                              agentType:(NSString *)agentType
-                       receivedMessages:(NSArray *)receivedMessages
+- (void)handleClientOnlineWithRreceivedMessages:(NSArray *)receivedMessages
                          completeStatus:(BOOL)completion
 {
     // 设置顾客已上线
@@ -878,46 +875,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     // 设置顾客的状态
     self.clientStatus = MQClientStatusOnline;
     
-    // 查看客服的状态
-    MQChatAgentStatus agentStatus = [MQServiceToViewInterface getCurrentAgentStatus];
-    if (!completion) {
-        //没有分配到客服
-        agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length > 0 ? agentName : @"no_agent_title"];
-        agentStatus = MQChatAgentStatusOffLine;
-    }
-    
-    // 获取企业的配置
-    __weak typeof(self) wself = self;
-    
-    [MQServiceToViewInterface getIsShowRedirectHumanButtonComplete:^(BOOL isShow, NSError *error) {
-        __strong typeof (wself) sself = wself;
-        sself.isShowBotRedirectBtn = isShow;
-        [sself updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
-    }];
-    
-    // 若是分配到了人工客服，则清除当前界面的「转人工」「留言」的 tipCell
-    if (![agentType isEqualToString:@"bot"] && agentType.length > 0) {
-        [self removeBotTipCellModels];
-    }
-    
-    //更新客服聊天界面标题
-    [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
-    
-    // 判断是否是机器人客服，来改变右上角按钮
-    agentType = completion ? agentType : @"";
-    if ([self.delegate respondsToSelector:@selector(changeNavReightBtnWithAgentType:)]) {
-        [self.delegate changeNavReightBtnWithAgentType:agentType];
-    }
-    
     if (receivedMessages) {
         [self saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
     }
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        __strong typeof (wself) sself = wself;
-        [sself scrollToButton];
+        [self scrollToButton];
     });
-    
     
     [self afterClientOnline];
 }
@@ -955,24 +919,20 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //如果之前在排队中，则继续查询
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
         MQInfo(@"check wating queue position")
-        __weak typeof(self) wself = self;
         [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
-            __strong typeof(wself)sself = wself;
             if (position > 0) {
-                [sself addWaitingInQueueTipWithPosition:(int)position];
+                [self addWaitingInQueueTipWithPosition:(int)position];
                 MQInfo(@"now you are at %d in waiting queue", (int)position);
             } else {
-                [sself removeWaitingInQueueCellModels];
-                [sself removeBotTipCellModels];
-                [sself reloadChatTableView];
+                [self removeWaitingInQueueCellModels];
+                [self removeBotTipCellModels];
+                [self reloadChatTableView];
             }
-            [sself updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
         }];
     } else {
         [self removeBotTipCellModels];
         [self removeWaitingInQueueCellModels];
         [self reloadChatTableView];
-        [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
         [self.positionCheckTimer invalidate];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -1025,8 +985,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
     }
     
-    [MQServiceToViewInterface downloadMediaWithUrlString:avatarPath progress:^(float progress) {
-    } completion:^(NSData *mediaData, NSError *error) {
+    [MQServiceToViewInterface downloadMediaWithUrlString:avatarPath progress:nil completion:^(NSData *mediaData, NSError *error) {
         [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage = [UIImage imageWithData:mediaData];
         [self refreshOutgoingAvatarWithImage:[MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage];
     }];
@@ -1065,22 +1024,40 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 
-- (NSString *)noAgentTitle {
-    if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
-        return @"排队等待中...";
-    }
-    return [MQBundleUtil localizedStringForKey:@"no_agent_title"];
-}
-
-- (void)updateChatTitleWithAgent:(MQAgent *)agent {
+- (void)updateChatTitleWithAgent:(MQAgent *)agent state:(MQState)state {
     MQChatAgentStatus agentStatus = [self getAgentStatus:agent];
-    NSString *viewTitle = agent.nickname.length == 0 ? [self noAgentTitle] : agent.nickname;
+    NSString *viewTitle = @"";
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didScheduleClientWithViewTitle:agentStatus:)]) {
+            switch (state) {
+                case MQStateAllocatingAgent:
+                    viewTitle = [MQBundleUtil localizedStringForKey:@"wait_agent"];
+                    agentStatus = MQChatAgentStatusNone;
+                    break;
+                case MQStateUnallocatedAgent:
+                case MQStateBlacklisted:
+                case MQStateOffline:
+                    viewTitle = [MQBundleUtil localizedStringForKey:@"no_agent_title"];
+                    agentStatus = MQChatAgentStatusNone;
+                    break;
+                case MQStateQueueing:
+                    viewTitle = @"排队等待中...";
+                    agentStatus = MQChatAgentStatusNone;
+                    break;
+                case MQStateAllocatedAgent:
+                    viewTitle = agent.nickname;
+                    break;
+                case MQStateInitialized:
+                case MQStateUninitialized:
+                    viewTitle = [MQBundleUtil localizedStringForKey:@"wait_agent"];
+                    agentStatus = MQChatAgentStatusNone;
+                    break;
+            }
+            
             [self.delegate didScheduleClientWithViewTitle:viewTitle agentStatus:agentStatus];
         }
         
-        if ([self.delegate respondsToSelector:@selector(changeNavReightBtnWithAgentType:)]) {
+        if ([self.delegate respondsToSelector:@selector(changeNavReightBtnWithAgentType:hidden:)]) {
             NSString *agentType = @"";
             switch (agent.privilege) {
                 case MQAgentPrivilegeAdmin:
@@ -1098,7 +1075,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 default:
                     break;
             }
-            [self.delegate changeNavReightBtnWithAgentType:agentType];
+            
+            [self.delegate changeNavReightBtnWithAgentType:agentType hidden:(state != MQStateAllocatedAgent)];
         }
     }
 }
@@ -1170,8 +1148,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (messages.count > 1 || ![[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
         [self playReceivedMessageSound];
     }
-    //更新界面title
-    [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
+
     //通知界面收到了消息
     BOOL isRefreshView = true;
     if (![MQChatViewConfig sharedConfig].enableEventDispaly && [[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
@@ -1189,10 +1166,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if ([messages count] == 1 && [[messages firstObject] isKindOfClass:[MQBotAnswerMessage class]]) {
         //调用强制转人工方法
         if ([((MQBotAnswerMessage *)[messages firstObject]).subType isEqualToString:@"redirect"]) {
-            __weak typeof(self)wself = self;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                __strong typeof(wself)sself = wself;
-                [sself forceRedirectToHumanAgent];
+                [self forceRedirectToHumanAgent];
             });
         }
         //渲染手段转人工
@@ -1201,12 +1176,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
     }
     //等待 0.1 秒，等待 tableView 更新后再滑动到底部，优化体验
-    __weak typeof(self) wself = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        __strong typeof (wself) sself = wself;
-        if (sself.delegate && isRefreshView) {
-            if ([sself.delegate respondsToSelector:@selector(didReceiveMessage)]) {
-                [sself.delegate didReceiveMessage];
+        if (self.delegate && isRefreshView) {
+            if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
+                [self.delegate didReceiveMessage];
             }
         }
     });
@@ -1237,7 +1210,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)didRedirectWithAgentName:(NSString *)agentName {
-    [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
+    //[self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
 }
 
 - (void)didSendMessageWithNewMessageId:(NSString *)newMessageId
@@ -1250,12 +1223,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (![newMessageId isEqualToString:oldMessageId] && sendStatus == MQChatMessageSendStatusSuccess) {
         NSString *agentName = [MQServiceToViewInterface getCurrentAgentName];
         if (agentName.length > 0) {
-            [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
+            //[self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
         }
     }
     if ([MQServiceToViewInterface getCurrentAgentName].length == 0 && self.clientStatus != MQClientStatusOnlining) {
         [self addNoAgentTip];
-        [self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
+        //[self updateChatTitleWithAgent:[MQServiceToViewInterface getCurrentAgent]];
     }
     NSInteger index = [self getIndexOfCellWithMessageId:oldMessageId];
     if (index < 0) {
@@ -1268,21 +1241,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [cellModel updateCellMessageDate:newMessageDate];
     }
     
-    __weak typeof(self) wself = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        __strong typeof (wself) sself = wself;
-        [sself updateCellWithIndex:index];
+        [self updateCellWithIndex:index];
     });
     
     // 将 messageId 保存到 set，用于去重
     if (![currentViewMessageIdSet containsObject:newMessageId]) {
         [currentViewMessageIdSet addObject:newMessageId];
-    }
-    
-    // 根据 agentType 来改变状态
-    NSString *agentType = [MQServiceToViewInterface getCurrentAgentType];
-    if ([self.delegate respondsToSelector:@selector(changeNavReightBtnWithAgentType:)]) {
-        [self.delegate changeNavReightBtnWithAgentType:agentType];
     }
 }
 
@@ -1302,9 +1267,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)dismissingChatViewController {
-#ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface setClientOffline];
-#endif
 }
 
 - (NSString *)getPreviousInputtingText {
@@ -1368,11 +1331,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  强制转人工
  */
 - (void)forceRedirectToHumanAgent {
-#ifdef INCLUDE_MEIQIA_SDK
     NSString *currentAgentId = [MQServiceToViewInterface getCurrentAgentId];
     [MQServiceToViewInterface setNotScheduledAgentWithAgentId:currentAgentId];
     [self setClientOnline];
-#endif
 }
 
 #pragma mark - lazyload

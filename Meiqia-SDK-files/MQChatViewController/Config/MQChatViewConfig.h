@@ -34,6 +34,7 @@ typedef enum : NSUInteger {
  客服的状态
  */
 typedef enum : NSUInteger {
+    MQChatAgentStatusNone           = 0,   //不显示
     MQChatAgentStatusOnDuty         = 1,            //客服在线
     MQChatAgentStatusOffDuty        = 2,            //客服隐身
     MQChatAgentStatusOffLine        = 3             //客服离线

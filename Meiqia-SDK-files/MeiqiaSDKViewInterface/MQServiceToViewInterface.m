@@ -412,23 +412,7 @@
              receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
 {
     self.serviceToViewDelegate = receiveMessageDelegate;
-    if (!clientId || clientId.length == 0) {
-        [MQManager setCurrentClientOnlineWithSuccess:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
-            NSArray *toMessages = nil;
-            if (messages.count > 0) {
-                toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
-            }
-            if (result == MQClientOnlineResultSuccess) {
-                NSString *agentType = [agent convertPrivilegeToString];
-                success(true, agent.nickname, agentType, toMessages);
-            } else if((result == MQClientOnlineResultNotScheduledAgent) || (result == MQClientOnlineResultBlacklisted)) {
-                success(false, @"", @"", toMessages);
-            }
-        } failure:^(NSError *error) {
-            success(false, @"初始化失败，请重新打开", @"", nil);
-        } receiveMessageDelegate:self];
-        return ;
-    }
+
     [MQManager setClientOnlineWithClientId:clientId success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
         if (result == MQClientOnlineResultSuccess) {
             NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
