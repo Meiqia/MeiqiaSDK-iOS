@@ -71,7 +71,7 @@ extern NSString * const kTTTBackgroundLineWidthAttributeName;
  */
 extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 
-@protocol TTTAttributedLabelDelegate;
+@protocol MEIQIA_TTTAttributedLabelDelegate;
 
 // Override UILabel @property to accept both NSString and NSAttributedString
 @protocol MEIQIA_TTTAttributedLabel <NSObject>
@@ -105,7 +105,7 @@ IB_DESIGNABLE
  
  @bug Setting `attributedText` directly is not recommended, as it may cause a crash when attempting to access any links previously set. Instead, call `setText:`, passing an `NSAttributedString`.
  */
-@interface MEIQIA_TTTAttributedLabel : UILabel <TTTAttributedLabel, UIGestureRecognizerDelegate>
+@interface MEIQIA_TTTAttributedLabel : UILabel <MEIQIA_TTTAttributedLabel, UIGestureRecognizerDelegate>
 
 /**
  * The designated initializers are @c initWithFrame: and @c initWithCoder:.
@@ -122,7 +122,7 @@ IB_DESIGNABLE
  
  @discussion A `TTTAttributedLabel` delegate responds to messages sent by tapping on links in the label. You can use the delegate to respond to links referencing a URL, address, phone number, date, or date with a specified time zone and duration.
  */
-@property (nonatomic, unsafe_unretained) IBOutlet id <TTTAttributedLabelDelegate> delegate;
+@property (nonatomic, unsafe_unretained) IBOutlet id <MEIQIA_TTTAttributedLabelDelegate> delegate;
 
 ///--------------------------------------------
 /// @name Detecting, Accessing, & Styling Links
@@ -463,7 +463,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 /**
  The `TTTAttributedLabelDelegate` protocol defines the messages sent to an attributed label delegate when links are tapped. All of the methods of this protocol are optional.
  */
-@protocol TTTAttributedLabelDelegate <NSObject>
+@protocol MEIQIA_TTTAttributedLabelDelegate <NSObject>
 
 ///-----------------------------------
 /// @name Responding to Link Selection
