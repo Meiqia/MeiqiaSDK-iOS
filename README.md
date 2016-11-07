@@ -87,8 +87,7 @@ framework中的文件 | 说明
 在 Podfile 中加入：
 
 ```
-
-pod 'Meiqia', '~> 3.3.1'
+pod 'Meiqia', '~> 3.3.2'
 ```
 
 接着安装美洽 pod 即可：
@@ -142,8 +141,6 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 ```xml
 <key>NSAppTransportSecurity</key>
 <dict>
-<key>NSAllowsArbitraryLoads</key>
-<true/>
 <key>NSExceptionDomains</key>
 <dict>
 <key>s3.cn-north-1.amazonaws.com.cn</key>
