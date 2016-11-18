@@ -29,7 +29,7 @@ edition: m2016
 
 美洽 SDK 的工作流程如下图所示。
 
-![SDK工作流程图](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/dd401360bac3d4ab)
+![SDK工作流程图](https://app-s3-cdn.b0.upaiyun.com/meiqia.upload.temp/files/ee026e0cac97fb1e/WechatIMG193.jpeg)
 
 说明：
 * 自定义用户数据将会在美洽客服工作台上显示；
