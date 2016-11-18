@@ -56,7 +56,7 @@
     
     [self.contentWebView loadHTML:self.viewModel.content WithCompletion:^(CGFloat height) {
         __strong typeof (wself) sself = wself;
-        if (self.viewModel.cachedWetViewHeight != height) {
+        if (sself.viewModel.cachedWetViewHeight != height) {
             [sself updateUI:height];
             sself.viewModel.cachedWetViewHeight = height;
             [sself.chatCellDelegate reloadCellAsContentUpdated:sself];

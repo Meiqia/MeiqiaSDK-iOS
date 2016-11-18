@@ -291,8 +291,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)reloadCellAsContentUpdated:(UITableViewCell *)cell {
-    [self.chatTableView beginUpdates];
-    [self.chatTableView endUpdates];
+    [self.chatTableView reloadData];
     
     if (cell.viewBottomEdge >= self.chatTableView.contentSize.height) {
         if (!self.chatTableView.isDragging && !self.chatTableView.tracking && !self.chatTableView.decelerating ) {
@@ -436,8 +435,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         return NO;
     }
     [chatViewService sendTextMessageWithContent:text];
-    [self chatTableViewScrollToBottomWithAnimated:true];
     sendTime = [NSDate timeIntervalSinceReferenceDate];
+    [self chatTableViewScrollToBottomWithAnimated:YES];
     return YES;
 }
 

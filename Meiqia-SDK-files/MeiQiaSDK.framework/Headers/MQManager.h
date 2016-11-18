@@ -48,6 +48,8 @@
 
 + (void)removeStateChangeObserverWithKey:(NSString *)key;
 
++ (MQState)getCurrentState;
+
 /**
  *  开启美洽服务
  *

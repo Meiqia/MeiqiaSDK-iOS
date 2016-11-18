@@ -112,9 +112,13 @@
 		E4036E1F1D110C6B0065D5A5 /* MQWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4036E1E1D110C6B0065D5A5 /* MQWebViewController.m */; };
 		E40C2C7B1D2B710300744577 /* testdata.txt in Resources */ = {isa = PBXBuildFile; fileRef = E40C2C7A1D2B710300744577 /* testdata.txt */; };
 		E41863381CCF163D009FB370 /* MQCustomizedUIText.m in Sources */ = {isa = PBXBuildFile; fileRef = E41863371CCF163D009FB370 /* MQCustomizedUIText.m */; };
+		E41DDDA61DD18DE0000B3083 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E41DDDA51DD18DE0000B3083 /* libz.tbd */; };
 		E426A9F81D2396DA002AA08C /* MQPreChatFormListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9F71D2396DA002AA08C /* MQPreChatFormListViewController.m */; };
 		E426A9FB1D239711002AA08C /* MQPreChatSubmitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */; };
 		E43228451D58926800FDA410 /* MQBotRichTextMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E43228441D58926800FDA410 /* MQBotRichTextMessage.m */; };
+		E4367E7E1DDD5E87005F8FF8 /* MQVisialMessageFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E4367E7D1DDD5E86005F8FF8 /* MQVisialMessageFactory.m */; };
+		E4367E811DDD5EA0005F8FF8 /* MQEventMessageFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E4367E801DDD5EA0005F8FF8 /* MQEventMessageFactory.m */; };
+		E4367E841DDD5EBE005F8FF8 /* MQMessageFactoryHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E4367E831DDD5EBE005F8FF8 /* MQMessageFactoryHelper.m */; };
 		E44008BB1DAB4528003842E7 /* MQMessageFormCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E44008BA1DAB4528003842E7 /* MQMessageFormCategoryViewController.m */; };
 		E44A5EA51D5AF47D000481E8 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E44A5EA41D5AF47D000481E8 /* Accelerate.framework */; };
 		E45CA11F1CC60828000B8917 /* MeiQiaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */; };
@@ -383,12 +387,19 @@
 		E40C2C7A1D2B710300744577 /* testdata.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testdata.txt; sourceTree = "<group>"; };
 		E41863361CCF163D009FB370 /* MQCustomizedUIText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCustomizedUIText.h; sourceTree = "<group>"; };
 		E41863371CCF163D009FB370 /* MQCustomizedUIText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQCustomizedUIText.m; sourceTree = "<group>"; };
+		E41DDDA51DD18DE0000B3083 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		E426A9F61D2396DA002AA08C /* MQPreChatFormListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MQPreChatFormListViewController.h; path = ../PreChatForm/MQPreChatFormListViewController.h; sourceTree = "<group>"; };
 		E426A9F71D2396DA002AA08C /* MQPreChatFormListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MQPreChatFormListViewController.m; path = ../PreChatForm/MQPreChatFormListViewController.m; sourceTree = "<group>"; };
 		E426A9F91D239711002AA08C /* MQPreChatSubmitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MQPreChatSubmitViewController.h; path = ../PreChatForm/MQPreChatSubmitViewController.h; sourceTree = "<group>"; };
 		E426A9FA1D239711002AA08C /* MQPreChatSubmitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MQPreChatSubmitViewController.m; path = ../PreChatForm/MQPreChatSubmitViewController.m; sourceTree = "<group>"; };
 		E43228431D58926800FDA410 /* MQBotRichTextMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQBotRichTextMessage.h; sourceTree = "<group>"; };
 		E43228441D58926800FDA410 /* MQBotRichTextMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQBotRichTextMessage.m; sourceTree = "<group>"; };
+		E4367E7C1DDD5E86005F8FF8 /* MQVisialMessageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQVisialMessageFactory.h; sourceTree = "<group>"; };
+		E4367E7D1DDD5E86005F8FF8 /* MQVisialMessageFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQVisialMessageFactory.m; sourceTree = "<group>"; };
+		E4367E7F1DDD5EA0005F8FF8 /* MQEventMessageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQEventMessageFactory.h; sourceTree = "<group>"; };
+		E4367E801DDD5EA0005F8FF8 /* MQEventMessageFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQEventMessageFactory.m; sourceTree = "<group>"; };
+		E4367E821DDD5EBE005F8FF8 /* MQMessageFactoryHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFactoryHelper.h; sourceTree = "<group>"; };
+		E4367E831DDD5EBE005F8FF8 /* MQMessageFactoryHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFactoryHelper.m; sourceTree = "<group>"; };
 		E44008B91DAB4528003842E7 /* MQMessageFormCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormCategoryViewController.h; sourceTree = "<group>"; };
 		E44008BA1DAB4528003842E7 /* MQMessageFormCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormCategoryViewController.m; sourceTree = "<group>"; };
 		E44A5EA41D5AF47D000481E8 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -476,6 +487,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E41DDDA61DD18DE0000B3083 /* libz.tbd in Frameworks */,
 				E44A5EA51D5AF47D000481E8 /* Accelerate.framework in Frameworks */,
 				E45CA12D1CCA33EF000B8917 /* libsqlite3.tbd in Frameworks */,
 				CCE9D1481C18139E004E862E /* MobileCoreServices.framework in Frameworks */,
@@ -616,6 +628,12 @@
 				E43228441D58926800FDA410 /* MQBotRichTextMessage.m */,
 				E4806D4D1D6D41AE00BE57D0 /* MQBotMessageFactory.h */,
 				E4806D4E1D6D41AE00BE57D0 /* MQBotMessageFactory.m */,
+				E4367E7C1DDD5E86005F8FF8 /* MQVisialMessageFactory.h */,
+				E4367E7D1DDD5E86005F8FF8 /* MQVisialMessageFactory.m */,
+				E4367E7F1DDD5EA0005F8FF8 /* MQEventMessageFactory.h */,
+				E4367E801DDD5EA0005F8FF8 /* MQEventMessageFactory.m */,
+				E4367E821DDD5EBE005F8FF8 /* MQMessageFactoryHelper.h */,
+				E4367E831DDD5EBE005F8FF8 /* MQMessageFactoryHelper.m */,
 			);
 			path = MessageModels;
 			sourceTree = "<group>";
@@ -1117,6 +1135,7 @@
 		CCE9D13C1C181368004E862E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E41DDDA51DD18DE0000B3083 /* libz.tbd */,
 				E44A5EA41D5AF47D000481E8 /* Accelerate.framework */,
 				E45CA12C1CCA33EF000B8917 /* libsqlite3.tbd */,
 				E45CA11E1CC60828000B8917 /* MeiQiaSDK.framework */,
@@ -1494,6 +1513,7 @@
 				CC3310981C33F7EA0088E648 /* MQChatViewController.m in Sources */,
 				CC84A8BA1CEC7D790097C99E /* MQMessageFormImageView.m in Sources */,
 				313E280B1CF4A4A400E9F944 /* MQMessageFormViewStyleGreen.m in Sources */,
+				E4367E7E1DDD5E87005F8FF8 /* MQVisialMessageFactory.m in Sources */,
 				CCD145101C4F41DE007CA0DC /* MQEvaluationCell.m in Sources */,
 				CC84A8C61CEC80260097C99E /* MQBotMenuCell.m in Sources */,
 				CC868F7B1C7AFFF200BFA68D /* MEIQIA_FBBitmapFont.m in Sources */,
@@ -1527,11 +1547,13 @@
 				CC3310B11C33F7EA0088E648 /* MQChatDeviceUtil.m in Sources */,
 				313E28021CF4280600E9F944 /* MQMessageFormImageCell.m in Sources */,
 				E4D3CAA61CABBFEF0002C25B /* MQChatViewStyleBlue.m in Sources */,
+				E4367E811DDD5EA0005F8FF8 /* MQEventMessageFactory.m in Sources */,
 				CC868F811C7AFFF200BFA68D /* MEIQIA_FBSquareFontView.m in Sources */,
 				CC868F831C7AFFF200BFA68D /* MEIQIA_HPTextViewInternal.m in Sources */,
 				CC3310A71C33F7EA0088E648 /* MQEventMessageCell.m in Sources */,
 				CC868F7D1C7AFFF200BFA68D /* MEIQIA_FBFontSymbol.m in Sources */,
 				E4036E0F1D0FE5170065D5A5 /* MQRichTextMessage.m in Sources */,
+				E4367E841DDD5EBE005F8FF8 /* MQMessageFactoryHelper.m in Sources */,
 				CC3310A11C33F7EA0088E648 /* MQImageCellModel.m in Sources */,
 				CC3310A21C33F7EA0088E648 /* MQMessageDateCellModel.m in Sources */,
 				CC3310A01C33F7EA0088E648 /* MQEventCellModel.m in Sources */,
@@ -1697,6 +1719,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 				);
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.ecoboost.sdk.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1727,6 +1750,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 				);
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.ecoboost.sdk.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

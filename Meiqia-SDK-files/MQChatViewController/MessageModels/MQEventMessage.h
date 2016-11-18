@@ -20,6 +20,8 @@ typedef enum : NSUInteger {
     MQChatEventTypeAgentUpdate               = 7,    //客服的状态发生改变
     MQChatEventTypeQueueingRemoved           = 8,    //顾客从等待客服队列中移除
     MQChatEventTypeQueueingAdd               = 9,    //顾客被添加到客服等待队列
+    MQChatEventTypeBackList                  = 10,   // 被添加到黑名单
+    MQChatEventTypeBotRedirectHuman          = 11,   //机器人转人工
 } MQChatEventType;
 
 @interface MQEventMessage : MQBaseMessage
@@ -29,6 +31,8 @@ typedef enum : NSUInteger {
 
 /** 事件类型 */
 @property (nonatomic, assign) MQChatEventType eventType;
+
+@property (nonatomic, strong, readonly) NSString *tipString;
 
 /**
  * 初始化message
