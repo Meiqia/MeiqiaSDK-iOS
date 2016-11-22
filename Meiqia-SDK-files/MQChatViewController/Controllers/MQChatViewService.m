@@ -1095,9 +1095,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:false];
     [self playReceivedMessageSound];
     BOOL needsResort = NO;
-    if ([[[messages firstObject] date] compare:[[self.cellModels lastObject] getCellDate]] == NSOrderedAscending) {
+    
+    // find earliest message
+    MQBaseMessage *earliest = [messages reduce:[messages firstObject] step:^id(MQBaseMessage *current, MQBaseMessage *element) {
+        return [[earliest date] compare:[element date]] == NSOrderedDescending ? element : current;
+    }];
+    
+    if ([[earliest date] compare:[[self.cellModels lastObject] getCellDate]] == NSOrderedAscending) {
         needsResort = YES;
     }
+    
     if (needsResort) {
         [self.cellModels sortUsingComparator:^NSComparisonResult(id<MQCellModelProtocol>  _Nonnull obj1,  id<MQCellModelProtocol> _Nonnull obj2) {
             return [[obj1 getCellDate] compare:[obj2 getCellDate]];

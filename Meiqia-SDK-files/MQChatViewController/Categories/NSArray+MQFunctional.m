@@ -28,4 +28,12 @@
     return resultArray;
 }
 
+- (id)reduce:(id)initial step:(id(^)(id current, id element))action {
+    __block id value = initial;
+    [self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        value = action(value, obj);
+    }];
+    return value;
+}
+
 @end
