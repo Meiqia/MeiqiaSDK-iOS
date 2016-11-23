@@ -133,8 +133,6 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
 
 /**
  *  设置底部自定义发送图片的按钮图片；
- *  @param image 图片发送按钮image
- *  @param highlightedImage 图片发送按钮选中image
  */
 @property (nonatomic, strong) UIImage *photoSenderImage;
 @property (nonatomic, strong) UIImage *photoSenderHighlightedImage;
