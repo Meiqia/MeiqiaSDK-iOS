@@ -79,31 +79,34 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         self.positionCheckTimer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(checkAndUpdateWaitingQueueStatus) userInfo:nil repeats:YES];
 //        currentViewMessageIdSet = [NSMutableSet new];
         
-        __weak typeof(self) wself = self;
-        [MQManager addStateObserverWithBlock:^(MQState oldState, MQState newState, NSDictionary *value, NSError *error) {
-            __strong typeof (wself) sself = wself;
-            MQAgent *agent = value[@"agent"];
-            NSString *agentType = [agent convertPrivilegeToString];
-            
-            [sself updateChatTitleWithAgent:agent state:newState];
-            
-            if (![agentType isEqualToString:@"bot"] && agentType.length > 0) {
-                [sself removeBotTipCellModels];
-            }
-            
-            if (newState == MQStateOffline) {
-                if ([value[@"reason"] isEqualToString:@"autoconnect fail"]) {
-                    [sself.delegate showToastViewWithContent:@"网络故障"];
-                }
-            }
-        } withKey:@"MQChatViewService"];
-        
         self.delegate = delegate;
         self.errorDelegate = errorDelegate;
         
+        [self addObserve];
         [self updateChatTitleWithAgent:nil state:MQStateAllocatingAgent];
     }
     return self;
+}
+
+- (void)addObserve {
+    __weak typeof(self) wself = self;
+    [MQManager addStateObserverWithBlock:^(MQState oldState, MQState newState, NSDictionary *value, NSError *error) {
+        __strong typeof (wself) sself = wself;
+        MQAgent *agent = value[@"agent"];
+        NSString *agentType = [agent convertPrivilegeToString];
+        
+        [sself updateChatTitleWithAgent:agent state:newState];
+        
+        if (![agentType isEqualToString:@"bot"] && agentType.length > 0) {
+            [sself removeBotTipCellModels];
+        }
+        
+        if (newState == MQStateOffline) {
+            if ([value[@"reason"] isEqualToString:@"autoconnect fail"]) {
+                [sself.delegate showToastViewWithContent:@"网络故障"];
+            }
+        }
+    } withKey:@"MQChatViewService"];
 }
 
 - (void)cleanTimer {
