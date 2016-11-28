@@ -1,0 +1,9 @@
+
+language: objective-c
+osx_image: xcode8.1
+xcode_project: Meiqia-SDK-Demo.xcodeproj
+xcode_scheme: Meiqia-SDK-Demo
+xcode_sdk: iphonesimulator10.1
+
+
+
