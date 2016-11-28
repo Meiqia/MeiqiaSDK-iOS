@@ -75,6 +75,16 @@ CGFloat internalImageWidth = 80;
         return internalImageWidth + kMQCellAvatarToVerticalEdgeSpacing * 2;
     }];
     
+    [self.viewModel setBotEvaluateDidTapUseful:^(NSString *messageId){
+        __strong typeof (wself) sself = wself;
+        [sself botEvaluateDidTapUsefulWithMessageId:messageId];
+    }];
+    
+    [self.viewModel setBotEvaluateDidTapUseless:^(NSString *messageId) {
+        __strong typeof (wself) sself = wself;
+        [sself botEvaluateDidTapUselessWithMessageId:messageId];
+    }];
+    
     // 绑定完成，通知 viewModel 进行数据加载和加工
     [self.viewModel load];
 }
@@ -141,6 +151,18 @@ CGFloat internalImageWidth = 80;
 
 - (void)openURL {
     [self.viewModel openFrom:[MQWindowUtil topController]];
+}
+
+- (void)botEvaluateDidTapUsefulWithMessageId:(NSString *)messageId {
+    if ([self.chatCellDelegate respondsToSelector:@selector(evaluateBotAnswer:messageId:)]) {
+        [self.chatCellDelegate evaluateBotAnswer:YES messageId:messageId];
+    }
+}
+
+- (void)botEvaluateDidTapUselessWithMessageId:(NSString *)messageId {
+    if ([self.chatCellDelegate respondsToSelector:@selector(evaluateBotAnswer:messageId:)]) {
+        [self.chatCellDelegate evaluateBotAnswer:NO messageId:messageId];
+    }
 }
 
 #pragma mark -

@@ -17,6 +17,7 @@
 ///TODO: 稍后用这个状态替换目前的本地状态变量
 typedef NS_ENUM(NSUInteger, MQClientStatus) {
     MQClientStatusOffLine = 0,
+    MQClientStatusPendingOnPreChatForm,
     MQClientStatusOnlining,
     MQClientStatusOnline,
 };
@@ -80,7 +81,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 /**
  *  根据 agentType 改变导航栏右键
  */
-- (void)changeNavReightBtnWithAgentType:(NSString *)agentType;
+- (void)changeNavReightBtnWithAgentType:(NSString *)agentType hidden:(BOOL)hidden;
 
 #endif
 
@@ -112,8 +113,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 /** 顾客当前的状态 */
 @property (nonatomic, assign) MQClientStatus clientStatus;
 
-/** 是否显示机器人转人工按钮 */
-@property (nonatomic, assign) BOOL isShowBotRedirectBtn;
+- (instancetype)initWithDelegate:(id<MQChatViewServiceDelegate>)delegate errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
 
 /**
  * 获取更多历史聊天消息
@@ -211,11 +211,17 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
  */
 - (void)fillTextDraftToFiledIfExists:(UITextField *)tf;
 
+/**
+ 手动上线当前顾客
+ */
+- (void)setClientOnline;
+
 #ifndef INCLUDE_MEIQIA_SDK
 /**
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
  */
 - (void)loadLastMessage;
+
 
 #else
 

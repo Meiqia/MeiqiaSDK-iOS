@@ -11,6 +11,10 @@
 #import "MQBundleUtil.h"
 #import "MQChatFileUtil.h"
 #import "NSArray+MQFunctional.h"
+#import "MQBotMessageFactory.h"
+#import "MQMessageFactoryHelper.h"
+#import "MQVisialMessageFactory.h"
+#import "MQEventMessageFactory.h"
 
 #pragma 该文件的作用是：开源聊天界面调用美洽 SDK 接口的中间层，目的是剥离开源界面中的美洽业务逻辑。这样就能让该聊天界面用于非美洽项目中，开发者只需要实现 `MQServiceToViewInterface` 中的方法，即可将自己项目的业务逻辑和该聊天界面对接。
 
@@ -63,12 +67,7 @@
     //将MQMessage转换成UI能用的Message类型
     NSMutableArray *toMessages = [[NSMutableArray alloc] init];
     for (MQMessage *fromMessage in messagesArray) {
-        MQBaseMessage *toMessage;
-        if (fromMessage.action == MQMessageActionMessage || fromMessage.action == MQMessageActionTicketReply) {
-            toMessage = [self convertToSendMessageWithMessage:fromMessage];
-        } else {
-            toMessage = [self convertToEventMessageWithMessage:fromMessage];
-        }
+        MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType] createMessage:fromMessage];
         if (toMessage) {
             [toMessages addObject:toMessage];
         }
@@ -77,210 +76,6 @@
     return toMessages;
 }
 
-+ (MQBaseMessage *)convertToEventMessageWithMessage:(MQMessage *)fromMessage {
-    NSString *eventContent = @"";
-    MQChatEventType eventType = MQChatEventTypeInitConversation;
-    switch (fromMessage.action) {
-        case MQMessageActionInitConversation:
-        {
-            eventContent = @"您进入了客服对话";
-            eventType = MQChatEventTypeInitConversation;
-            break;
-        }
-        case MQMessageActionAgentDidCloseConversation:
-        {
-            eventContent = @"客服结束了此条对话";
-            eventType = MQChatEventTypeAgentDidCloseConversation;
-            break;
-        }
-        case MQMessageActionEndConversationTimeout:
-        {
-            eventContent = @"对话超时，系统自动结束了对话";
-            eventType = MQChatEventTypeEndConversationTimeout;
-            break;
-        }
-        case MQMessageActionRedirect:
-        {
-            eventContent = @"您的对话被转接给了其他客服";
-            eventType = MQChatEventTypeRedirect;
-            break;
-        }
-        case MQMessageActionAgentInputting:
-        {
-            eventContent = @"客服正在输入...";
-            eventType = MQChatEventTypeAgentInputting;
-            break;
-        }
-        case MQMessageActionInviteEvaluation:
-        {
-            eventContent = @"客服邀请您评价刚才的服务";
-            eventType = MQChatEventTypeInviteEvaluation;
-            break;
-        }
-        case MQMessageActionClientEvaluation:
-        {
-            eventContent = @"顾客评价结果";
-            eventType = MQChatEventTypeClientEvaluation;
-            break;
-        }
-        case MQMessageActionAgentUpdate:
-        {
-            eventContent = @"客服状态发生改变";
-            eventType = MQChatEventTypeAgentUpdate;
-            break;
-        }
-        case MQMessageActionListedInBlackList:
-        {
-            eventContent = [MQBundleUtil localizedStringForKey:@"message_tips_online_failed_listed_in_black_list"];
-            eventType = MQChatEventTypeAgentUpdate;
-            break;
-        }
-        case MQMessageActionQueueingRemoved:
-        {
-            eventContent = @"queue remove";
-            eventType = MQChatEventTypeQueueingRemoved;
-            break;
-        }
-        case MQMessageActionQueueingAdd:
-        {
-            eventContent = @"queue add";
-            eventType = MQChatEventTypeQueueingAdd;
-            break;
-        }
-        default:
-            break;
-    }
-    if (eventContent.length == 0) {
-        return nil;
-    }
-    MQEventMessage *toMessage = [[MQEventMessage alloc] initWithEventContent:eventContent eventType:eventType];
-    toMessage.messageId = fromMessage.messageId;
-    toMessage.date = fromMessage.createdOn;
-    toMessage.content = eventContent;
-    return toMessage;
-}
-
-+ (MQBaseMessage *)convertToSendMessageWithMessage:(MQMessage *)fromMessage {
-    MQBaseMessage *toMessage;
-    NSArray *normalTypes = @[@"evaluate", @"reply", @"redirect", @"queueing", @"manual_redirect"];
-    switch (fromMessage.contentType) {
-        case MQMessageContentTypeBot: {
-            //判断是否是机器人消息
-            if ([[fromMessage.accessoryData objectForKey:@"content_robot"] count] > 0) {
-                NSString *subType = [fromMessage.accessoryData objectForKey:@"sub_type"] ?: @"";
-                if ([normalTypes containsObject:subType]) {
-                    // 机器人普通回答消息
-                    NSString *content;
-                    if ([subType isEqualToString:@"queueing"]) {
-                        content = @"暂无空闲客服，您已进入排队等待。";
-                        subType = @"redirect";
-                    } else {
-                        content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
-                        content = [MQManager convertToUnicodeWithEmojiAlias:content];
-                    }
-                    BOOL isEvaluated = [fromMessage.accessoryData objectForKey:@"is_evaluated"] ? [[fromMessage.accessoryData objectForKey:@"is_evaluated"] boolValue] : false;
-                    MQBotAnswerMessage *botMessage = [[MQBotAnswerMessage alloc] initWithContent:content subType:subType isEvaluated:isEvaluated];
-                    toMessage = botMessage;
-                    break;
-                } else if ([subType isEqualToString:@"menu"]) {
-                    // 机器人菜单消息
-                    NSString *content = @"";
-                    NSMutableArray *menu = [NSMutableArray new];
-                    NSArray *contentRobot = [fromMessage.accessoryData objectForKey:@"content_robot"] ?: [NSArray new];
-                    for (NSInteger i=0; i < [contentRobot count]; i++) {
-                        NSDictionary *subContent = [contentRobot objectAtIndex:i];
-                        if (i == 0 && [[subContent objectForKey:@"type"] isEqualToString:@"text"]) {
-                            content = [subContent objectForKey:@"text"];
-                        } else if ([[subContent objectForKey:@"type"] isEqualToString:@"menu"]) {
-                            NSArray *items = [subContent objectForKey:@"items"];
-                            for (NSDictionary *item in items) {
-                                NSString *menuTitle = [item objectForKey:@"text"];
-                                menuTitle = [MQManager convertToUnicodeWithEmojiAlias:menuTitle];
-                                [menu addObject:menuTitle];
-                            }
-                        }
-                    }
-                    content = [MQManager convertToUnicodeWithEmojiAlias:content];
-                    MQBotMenuMessage *botMessage = [[MQBotMenuMessage alloc] initWithContent:content menu:menu];
-                    toMessage = botMessage;
-                    break;
-                } else if ([subType isEqualToString:@"message"]) {
-                    NSString *content = [[fromMessage.accessoryData objectForKey:@"content_robot"] firstObject][@"text"];
-                    content = [MQManager convertToUnicodeWithEmojiAlias:content];
-                    MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:content];
-                    toMessage = textMessage;
-                    break;
-                }
-            }
-            break;
-        }
-        case MQMessageContentTypeText: {
-            MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:fromMessage.content];
-            toMessage = textMessage;
-            break;
-        }
-        case MQMessageContentTypeImage: {
-            MQImageMessage *imageMessage = [[MQImageMessage alloc] initWithImagePath:fromMessage.content];
-            toMessage = imageMessage;
-            break;
-        }
-        case MQMessageContentTypeVoice: {
-            MQVoiceMessage *voiceMessage = [[MQVoiceMessage alloc] initWithVoicePath:fromMessage.content];
-            [voiceMessage handleAccessoryData:fromMessage.accessoryData];
-            toMessage = voiceMessage;
-            break;
-        }
-        case MQMessageContentTypeFile: {
-            MQFileDownloadMessage *fileDownloadMessage = [[MQFileDownloadMessage alloc] initWithDictionary:fromMessage.accessoryData];
-            toMessage = fileDownloadMessage;
-            break;
-        }
-        case MQMessageContentTypeRichText: {
-            MQRichTextMessage *richTextMessage = [[MQRichTextMessage alloc] initWithDictionary:fromMessage.accessoryData];
-            toMessage = richTextMessage;
-            break;
-        }
-        default:
-            break;
-    }
-    toMessage.messageId = fromMessage.messageId;
-    toMessage.date = fromMessage.createdOn;
-    toMessage.userName = fromMessage.messageUserName;
-    toMessage.userAvatarPath = fromMessage.messageAvatar;
-    switch (fromMessage.sendStatus) {
-        case MQMessageSendStatusSuccess:
-            toMessage.sendStatus = MQChatMessageSendStatusSuccess;
-            break;
-        case MQMessageSendStatusFailed:
-            toMessage.sendStatus = MQChatMessageSendStatusFailure;
-            break;
-        case MQMessageSendStatusSending:
-            toMessage.sendStatus = MQChatMessageSendStatusSending;
-            break;
-        default:
-            break;
-    }
-    switch (fromMessage.fromType) {
-        case MQMessageFromTypeAgent:
-        {
-            toMessage.fromType = MQChatMessageIncoming;
-            break;
-        }
-        case MQMessageFromTypeClient:
-        {
-            toMessage.fromType = MQChatMessageOutgoing;
-            break;
-        }
-        case MQMessageFromTypeBot:
-        {
-            toMessage.fromType = MQChatMessageIncoming;
-            break;
-        }
-        default:
-            break;
-    }
-    return toMessage;
-}
 
 + (void)sendTextMessageWithContent:(NSString *)content
                          messageId:(NSString *)localMessageId
@@ -457,23 +252,7 @@
              receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
 {
     self.serviceToViewDelegate = receiveMessageDelegate;
-    if (!clientId || clientId.length == 0) {
-        [MQManager setCurrentClientOnlineWithSuccess:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
-            NSArray *toMessages = nil;
-            if (messages.count > 0) {
-                toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
-            }
-            if (result == MQClientOnlineResultSuccess) {
-                NSString *agentType = [agent convertPrivilegeToString];
-                success(true, agent.nickname, agentType, toMessages);
-            } else if((result == MQClientOnlineResultNotScheduledAgent) || (result == MQClientOnlineResultBlacklisted)) {
-                success(false, @"", @"", toMessages);
-            }
-        } failure:^(NSError *error) {
-            success(false, @"初始化失败，请重新打开", @"", nil);
-        } receiveMessageDelegate:self];
-        return ;
-    }
+
     [MQManager setClientOnlineWithClientId:clientId success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
         if (result == MQClientOnlineResultSuccess) {
             NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
@@ -540,7 +319,21 @@
         NSLog(@"美洽 SDK：上传自定义信息不能为空。");
         completion(false, nil);
     }
-    [MQManager setClientInfo:clientInfo completion:^(BOOL success, NSError *error) {
+    
+    if ([MQChatViewConfig sharedConfig].updateClientInfoUseOverride) {
+        [MQManager updateClientInfo:clientInfo completion:completion];
+    } else {
+        [MQManager setClientInfo:clientInfo completion:completion];
+    }
+}
+
++ (void)updateClientInfoWithDictionary:(NSDictionary *)clientInfo
+                            completion:(void (^)(BOOL success, NSError *error))completion {
+    if (!clientInfo) {
+        NSLog(@"美洽 SDK：上传自定义信息不能为空。");
+        completion(false, nil);
+    }
+    [MQManager updateClientInfo:clientInfo completion:^(BOOL success, NSError *error) {
         completion(success, error);
     }];
 }
@@ -625,72 +418,11 @@
         return;
     }
     
-    if ([self handleRedirectMessage:messages]) {
-        MQMessage *message = [messages firstObject];
-        //客服被转接，给界面生成tipMessage
-        NSString *agentName = message.agent.nickname ? message.agent.nickname : @"其他客服";
-        NSString *tipsContent = [NSString stringWithFormat:@"接下来由 %@ 为您服务", agentName];
-        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
-            [self.serviceToViewDelegate didReceiveTipsContent:tipsContent];
-        }
-    } else if ([self handleBlacklistMessage:messages]) {
-        //给界面生成tipMessage
-        NSString *action = messages.firstObject.accessoryData[@"action"];
-        NSString *tipsContent = [MQBundleUtil localizedStringForKey:@"message_tips_online_failed_listed_in_black_list"];
-        if ([action isEqualToString:@"sendMessage"]) {
-            tipsContent = [MQBundleUtil localizedStringForKey:@"message_tips_send_message_fail_listed_in_black_list"];
-        }
-        
-        if (action.length > 0) { //没有手动指定 action 的黑名单消息，不显示tips
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //延迟一点添加tips，以免重发失败的时候消息会在 cell 调整顺序之前到达，添加到错误的位置
-                if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveTipsContent:)]) {
-                    [self.serviceToViewDelegate didReceiveTipsContent:tipsContent showLines:NO];
-                }
-            });
-        }
-        
-        // 刷新客服状态
-        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
-        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
-            [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
-        }
-    } else if ([self handleQueueingMessage:messages]) {
-        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
-        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
-            [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
-        }
-    } else {
-        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
-        
-        if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
-            [self.serviceToViewDelegate didReceiveNewMessages:toMessages];
-        }
+    if ([self.serviceToViewDelegate respondsToSelector:@selector(didReceiveNewMessages:)]) {
+        [self.serviceToViewDelegate didReceiveNewMessages:[MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages]];
     }
 }
 
-- (BOOL)handleQueueingMessage:(NSArray<MQMessage *> *)messages {
-    if (messages.count == 1 && ([messages firstObject].action == MQMessageActionQueueingAdd || [messages firstObject].action == MQMessageActionQueueingRemoved)) {
-        return YES;
-    }
-    return NO;
-}
-
-- (BOOL)handleBlacklistMessage:(NSArray<MQMessage *> *)messages {
-    if (messages.count == 1 && [messages firstObject].action == MQMessageActionListedInBlackList) {
-        return YES;
-    }
-    return NO;
-}
-
-- (BOOL)handleRedirectMessage:(NSArray<MQMessage *> *)messages {
-    if (messages.count == 1 && [messages firstObject].action == MQMessageActionRedirect) {
-        if ([self.serviceToViewDelegate respondsToSelector:@selector(didRedirectWithAgentName:)]) {
-            [self.serviceToViewDelegate didRedirectWithAgentName:messages.firstObject.agent.nickname];
-        }
-        return YES;
-    }
-    return NO;
-}
 
 //强制转人工
 - (void)forceRedirectHumanAgentWithSuccess:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
@@ -734,12 +466,23 @@
     [MQManager getIsShowRedirectHumanButtonComplete:action];
 }
 
-+ (void)getMessageFormIntroComplete:(void (^)(NSString *, NSError *))action {
-    [MQManager getMessageFormIntroComplete:action];
++ (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action {
+    [MQManager getMessageFormConfigComplete:action];
+}
+
++ (void)getTicketCategoryComplete:(void(^)(NSArray *categories))action {
+    [MQManager getTicketCategoryComplete:action];
 }
 
 + (void)submitMessageFormWithMessage:(NSString *)message images:(NSArray *)images clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
-    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
+//    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
+    [MQManager submitTicketForm:message userInfo:clientInfo completion:^(MQTicket *ticket, NSError *e) {
+        if (e) {
+            completion(NO, e);
+        } else {
+            completion(YES, nil);
+        }
+    }];
 }
 
 + (int)waitingInQueuePosition {
@@ -750,7 +493,27 @@
     return [MQManager getClientQueuePositionComplete:action];
 }
 
++ (void)requestPreChatServeyDataIfNeedCompletion:(void(^)(MQPreChatData *data, NSError *error))block {
+    NSString *clientId = [MQChatViewConfig sharedConfig].MQClientId;
+    NSString *customId = [MQChatViewConfig sharedConfig].customizedId;
+
+    [MQManager requestPreChatServeyDataIfNeedWithClientId:clientId customizedId:customId completion:block];
+}
+
++ (void)getCaptchaComplete:(void(^)(NSString *token, UIImage *image))block {
+    [MQManager getCaptchaComplete:block];
+}
+
++ (void)getCaptchaWithURLComplete:(void (^)(NSString *token, NSString *url))block {
+    [MQManager getCaptchaURLComplete:block];
+}
+
++ (void)submitPreChatForm:(NSDictionary *)formData completion:(void(^)(id,NSError *))block {
+    [MQManager submitPreChatForm:formData completion:block];
+}
+
 + (NSError *)checkGlobalError {
     return [MQManager checkGlobalError];
 }
+
 @end

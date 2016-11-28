@@ -17,7 +17,7 @@ static const NSInteger kMQBotMenuCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQBotMenuCellSelectedNumberActionSheetTag = 2001;
 static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
 
-@interface MQBotMenuCell() <TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+@interface MQBotMenuCell() <MEIQIA_TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 @end
 

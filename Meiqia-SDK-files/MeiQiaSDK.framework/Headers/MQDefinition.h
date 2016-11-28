@@ -7,6 +7,21 @@
 //
 #import <Foundation/Foundation.h>
 
+#define stringify(arg) (@""#arg)
+#define recordError(e) { [MQDataCache sharedCache].globalError = e; }
+
+typedef NS_ENUM(NSUInteger, MQState) {
+    MQStateUninitialized,
+    MQStateInitialized,
+    MQStateOffline,
+    MQStateUnallocatedAgent,
+    MQStateAllocatingAgent,
+    MQStateAllocatedAgent,
+    MQStateBlacklisted,
+    MQStateQueueing,
+};
+typedef void (^StateChangeBlock)(MQState oldState, MQState newState, NSDictionary *value, NSError *error);
+
 /**
  *  美洽客服系统当前有新消息，开发者可实现该协议方法，通过此方法显示小红点未读标识
  */

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MQPreChatData.h"
 
 @interface MQEnterpriseConfig : NSObject
 
@@ -16,6 +17,12 @@
 @property (nonatomic, assign) BOOL showSwitch;
 
 @property (nonatomic, copy) NSString *intro;
+
+@property (nonatomic, strong) NSArray *ticketContactFields;
+
+@property (nonatomic, copy) NSString *ticketContactFillInRule;
+
+@property (nonatomic, strong) MQPreChatData *preChatData;
 
 @end
 

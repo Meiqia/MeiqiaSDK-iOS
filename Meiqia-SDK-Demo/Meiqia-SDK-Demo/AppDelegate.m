@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <MeiQiaSDK/MQManager.h>
+#import "MQServiceToViewInterface.h"
 
 @interface AppDelegate ()
 
@@ -34,13 +35,17 @@
          UIRemoteNotificationTypeSound];
     }
     
-#error 请填写您的美洽 AppKey
-    [MQManager initWithAppkey:@"请填写您的美洽 AppKey" completion:^(NSString *clientId, NSError *error) {
+//#error 请填写您的美洽 AppKey
+    [MQManager initWithAppkey:@"b40eb2f8792ce17de91797f5bf9a439d" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {
             NSLog(@"error:%@",error);
         }
+        
+        [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+            NSLog(@">> unread message count: %d", (int)messages.count);
+        }];
     }];
     
     return YES;

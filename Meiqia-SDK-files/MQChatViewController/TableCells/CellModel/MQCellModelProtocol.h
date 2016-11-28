@@ -164,6 +164,12 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
  */
 - (void)updateOutgoingAvatarImage:(UIImage *)avatarImage;
 
+/**
+ 通知 cell model，该 model 中所对应的机器人 message 已经被评价过了
+ */
+- (void)didEvaluate;
+
+
 @end
 
 /**

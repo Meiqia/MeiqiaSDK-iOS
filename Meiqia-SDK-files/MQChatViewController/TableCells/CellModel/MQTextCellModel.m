@@ -118,6 +118,7 @@
  */
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
 
+@property (nonatomic, strong) TTTAttributedLabel *textLabelForHeightCalculation;
 
 @end
 
@@ -128,6 +129,9 @@
                                      delegate:(id<MQCellModelDelegate>)delegator
 {
     if (self = [super init]) {
+        self.textLabelForHeightCalculation = [TTTAttributedLabel new];
+        self.textLabelForHeightCalculation.numberOfLines = 0;
+
         self.messageId = message.messageId;
         self.sendStatus = message.sendStatus;
         NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -147,7 +151,7 @@
             [contentAttributes setObject:(__bridge id)[MQChatViewConfig sharedConfig].incomingMsgTextColor.CGColor forKey:(__bridge id)kCTForegroundColorAttributeName];
         }
         self.cellTextAttributes = [[NSDictionary alloc] initWithDictionary:contentAttributes];
-        self.cellText = [[NSAttributedString alloc] initWithString:message.content attributes:self.cellTextAttributes];
+        self.cellText = [[NSAttributedString alloc] initWithString:[MQServiceToViewInterface convertToUnicodeWithEmojiAlias:message.content] attributes:self.cellTextAttributes];
         self.date = message.date;
         self.cellHeight = 44.0;
         self.delegate = delegator;
@@ -155,8 +159,6 @@
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
             self.avatarPath = message.userAvatarPath;
-            //这里使用美洽接口下载多媒体消息的图片，开发者也可以替换成自己的图片缓存策略
-#ifdef INCLUDE_MEIQIA_SDK
             [MQServiceToViewInterface downloadMediaWithUrlString:message.userAvatarPath progress:^(float progress) {
             } completion:^(NSData *mediaData, NSError *error) {
                 if (mediaData && !error) {
@@ -171,19 +173,6 @@
                     }
                 }
             }];
-#else
-            __block UIImageView *tempImageView = [UIImageView new];
-            [tempImageView sd_setImageWithURL:[NSURL URLWithString:message.userAvatarPath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                
-                self.avatarImage = tempImageView.image.copy;
-                if (self.delegate) {
-                    if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
-                        //通知ViewController去刷新tableView
-                        [self.delegate didUpdateCellDataWithMessageId:self.messageId];
-                    }
-                }
-            }];
-#endif
         } else {
             self.avatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
             if (message.fromType == MQChatMessageOutgoing) {
@@ -194,7 +183,10 @@
         //文字最大宽度
         CGFloat maxLabelWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
         //文字高度
-        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
+//        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
+        self.textLabelForHeightCalculation.attributedText = self.cellText;
+        CGFloat messageTextHeight = [self.textLabelForHeightCalculation sizeThatFits:CGSizeMake(maxLabelWidth, MAXFLOAT)].height;
+
         //判断文字中是否有emoji
         if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
             NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
@@ -272,35 +264,41 @@
         self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing;
         
         //匹配消息文字中的正则
-        //数字正则匹配
-        NSMutableDictionary *numberRegexDic = [[NSMutableDictionary alloc] init];
-        for (NSString *numberRegex in [MQChatViewConfig sharedConfig].numberRegexs) {
-            NSRange range = [message.content rangeOfString:numberRegex options:NSRegularExpressionSearch];
-            if (range.location != NSNotFound) {
-                [numberRegexDic setValue:[NSValue valueWithRange:range] forKey:[message.content substringWithRange:range]];
+        self.numberRangeDic = [self createRegexMap:[MQChatViewConfig sharedConfig].numberRegexs for:message.content];
+        self.linkNumberRangeDic = [self createRegexMap:[MQChatViewConfig sharedConfig].linkRegexs for:message.content];
+        self.emailNumberRangeDic = [self createRegexMap:[MQChatViewConfig sharedConfig].emailRegexs for:message.content];
+        
+        //防止邮件地址被解析为连接地址
+        NSMutableDictionary *tempLinkNumberRangDic = [self.linkNumberRangeDic mutableCopy];
+        for ( NSString *email in self.emailNumberRangeDic.allKeys) {
+            for (NSString *link in self.linkNumberRangeDic.allKeys) {
+                if ([email rangeOfString:link].length != 0) {
+                    [tempLinkNumberRangDic removeObjectForKey:link];
+                }
             }
         }
-        self.numberRangeDic = numberRegexDic;
-        //链接正则匹配
-        NSMutableDictionary *linkRegexDic = [[NSMutableDictionary alloc] init];
-        for (NSString *linkRegex in [MQChatViewConfig sharedConfig].linkRegexs) {
-            NSRange range = [message.content rangeOfString:linkRegex options:NSRegularExpressionSearch];
-            if (range.location != NSNotFound) {
-                [linkRegexDic setValue:[NSValue valueWithRange:range] forKey:[message.content substringWithRange:range]];
-            }
-        }
-        self.linkNumberRangeDic = linkRegexDic;
-        //email正则匹配
-        NSMutableDictionary *emailRegexDic = [[NSMutableDictionary alloc] init];
-        for (NSString *emailRegex in [MQChatViewConfig sharedConfig].emailRegexs) {
-            NSRange range = [message.content rangeOfString:emailRegex options:NSRegularExpressionSearch];
-            if (range.location != NSNotFound) {
-                [emailRegexDic setValue:[NSValue valueWithRange:range] forKey:[message.content substringWithRange:range]];
-            }
-        }
-        self.emailNumberRangeDic = emailRegexDic;
+        self.linkNumberRangeDic = tempLinkNumberRangDic;
     }
     return self;
+}
+
+- (NSDictionary *)createRegexMap:(NSArray *)regexs for:(NSString *)s {
+    NSMutableDictionary *regexDic = [[NSMutableDictionary alloc] init];
+    for (NSString *linkRegex in regexs) {
+        
+        for (NSTextCheckingResult *matchedResult in [self matchWithRegex:linkRegex in:s]) {
+            if (matchedResult.range.location != NSNotFound) {
+                [regexDic setValue:[NSValue valueWithRange:matchedResult.range] forKey:[s substringWithRange:matchedResult.range]];
+            }
+        }
+    }
+    return regexDic;
+}
+
+- (NSArray *)matchWithRegex:(NSString *)r in:(NSString *)string {
+    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:r options:(NSRegularExpressionCaseInsensitive) error:nil];
+    NSArray *matchResults = [regex matchesInString:string options:0 range:NSMakeRange(0, string.length)];
+    return matchResults;
 }
 
 #pragma MQCellModelProtocol

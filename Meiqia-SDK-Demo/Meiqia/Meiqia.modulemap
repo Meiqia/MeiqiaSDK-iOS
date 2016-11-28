@@ -1,0 +1,6 @@
+framework module Meiqia {
+    umbrella header "Meiqia.h"
+
+    module * { export *}
+    export *
+}

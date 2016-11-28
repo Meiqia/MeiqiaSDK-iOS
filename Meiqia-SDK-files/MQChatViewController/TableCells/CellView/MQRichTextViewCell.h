@@ -11,5 +11,4 @@
 
 @interface MQRichTextViewCell : MQChatBaseCell
 
-
 @end

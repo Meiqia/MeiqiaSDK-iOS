@@ -29,10 +29,12 @@
 #import "MQImageUtil.h"
 #import "MQRecorderView.h"
 #import "MQMessageFormViewManager.h"
+#import "MQPreChatFormListViewController.h"
+#import "MQAGEmojiKeyBoardView.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate, MQAGEmojiKeyboardViewDelegate, MQAGEmojiKeyboardViewDataSource>
 
 @end
 
@@ -46,6 +48,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @property (nonatomic, strong) MQKeyboardController *keyboardController;
 @property (nonatomic, strong) MQRecordView *recordView;
 @property (nonatomic, strong) MQRecorderView *displayRecordView;//只用来显示
+@property (nonatomic, strong) MQAGEmojiKeyboardView *emojiView;
 
 @end
 
@@ -66,12 +69,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self removeDelegateAndObserver];
     [chatViewConfig setConfigToDefault];
     [chatViewService setCurrentInputtingText:[(MQTabInputContentView *)self.chatInputBar.contentView textField].text];
-#ifdef INCLUDE_MEIQIA_SDK
     [self closeMeiqiaChatView];
-#endif
     [MQCustomizedUIText reset];
-    
-    [MQServiceToViewInterface completeChat];
+    chatViewService = nil;
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -95,7 +95,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     sendTime = [NSDate timeIntervalSinceReferenceDate];
     self.view.backgroundColor = [MQChatViewConfig sharedConfig].chatViewStyle.backgroundColor ?: [UIColor colorWithWhite:0.95 alpha:1];
-    [self setNavBar];
     [self initChatTableView];
     [self initInputBar];
     [self layoutViews];
@@ -104,17 +103,47 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     
     chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
-    [chatViewService sendLocalWelcomeChatMessage];
     
 #ifdef INCLUDE_MEIQIA_SDK
-    [self updateNavBarTitle:[MQBundleUtil localizedStringForKey:@"wait_agent"]];
+    //[self updateNavBarTitle:[MQBundleUtil localizedStringForKey:@"wait_agent"]];
     isMQCommunicationFailed = NO;
     [self addObserver];
 #endif
     
-    UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
-    popRecognizer.edges = UIRectEdgeLeft;
-    [self.view addGestureRecognizer:popRecognizer];
+    if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypePush) {
+        UIScreenEdgePanGestureRecognizer *popRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePopRecognizer:)];
+        popRecognizer.edges = UIRectEdgeLeft;
+        [self.view addGestureRecognizer:popRecognizer];
+    }
+    
+    [self presentUI];
+}
+
+- (void)presentUI {
+    [MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^(NSDictionary *userInfo){
+        NSString *targetType = userInfo[@"targetType"];
+        NSString *target = userInfo[@"target"];
+        NSString *menu = userInfo[@"menu"];
+        
+        if ([targetType isEqualToString:@"agent"]) {
+            [MQChatViewConfig sharedConfig].scheduledAgentId = target;
+        } else if ([targetType isEqualToString:@"group"]) {
+            [MQChatViewConfig sharedConfig].scheduledGroupId = target;
+        }
+        
+        if ([menu length] > 0) {
+            NSMutableArray *m = [[MQChatViewConfig sharedConfig].preSendMessages mutableCopy] ?: [NSMutableArray new];
+            [m addObject:menu];
+            [MQChatViewConfig sharedConfig].preSendMessages = m;
+        }
+        
+        [chatViewService setClientOnline];
+    } cancle:^{
+        [self dismissViewControllerAnimated:NO completion:^{
+            [self dismissChatViewController];
+        }];
+    }];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -130,6 +159,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
     
     [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
+    
+    [MQServiceToViewInterface completeChat];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -182,27 +213,12 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)removeDelegateAndObserver {
-    self.navigationController.delegate = nil;
-    chatViewService.delegate = nil;
-    tableDataSource.chatCellDelegate = nil;
-    self.chatTableView.chatTableViewDelegate = nil;
-    self.chatTableView.delegate = nil;
-    self.chatInputBar.delegate = nil;
-//    self.recordView.recordViewDelegate = nil;
-    
-#ifdef INCLUDE_MEIQIA_SDK
-    chatViewService.errorDelegate = nil;
-#endif
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma 初始化viewModel
 - (void)initchatViewService {
-    chatViewService = [[MQChatViewService alloc] init];
-    chatViewService.delegate = self;
-#ifdef INCLUDE_MEIQIA_SDK
-    chatViewService.errorDelegate = self;
-#endif
+    chatViewService = [[MQChatViewService alloc] initWithDelegate:self errorDelegate:self];
 }
 
 #pragma 初始化tableView dataSource
@@ -274,6 +290,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.view endEditing:true];
 }
 
+- (void)reloadCellAsContentUpdated:(UITableViewCell *)cell {
+    [self.chatTableView reloadData];
+    
+    if (cell.viewBottomEdge >= self.chatTableView.contentSize.height) {
+        if (!self.chatTableView.isDragging && !self.chatTableView.tracking && !self.chatTableView.decelerating ) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self scrollTableViewToBottom];
+            });
+        }
+    }
+}
+
 //下拉刷新，获取以前的消息
 - (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -289,39 +317,12 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     });
 }
 
-#pragma 编辑导航栏 - Demo用到的收取消息按钮
-- (void)setNavBar {
-    if ([MQChatViewConfig sharedConfig].didSetStatusBarStyle) {
-        [UIApplication sharedApplication].statusBarStyle = [MQChatViewConfig sharedConfig].statusBarStyle;
-    }
-    if ([MQChatViewConfig sharedConfig].navBarRightButton) {
-        return;
-    }
-#ifndef INCLUDE_MEIQIA_SDK
-    UIBarButtonItem *loadMessageButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"收取消息" style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
-    loadMessageButtonItem.tintColor = [UIColor redColor];
-    self.navigationItem.rightBarButtonItem = loadMessageButtonItem;
-    if (![MQChatViewConfig sharedConfig].enableEvaluationButton) {
-        return;
-    }
-    UIBarButtonItem *rightNavButtonItem = [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
-    rightNavButtonItem.tintColor = chatViewConfig.chatViewStyle.btnTextColor;
-    self.navigationItem.rightBarButtonItem = rightNavButtonItem;
-#endif
-}
-
 - (void)tapNavigationRightBtn:(id)sender {
     [self showEvaluationAlertView];
 }
 
 - (void)tapNavigationRedirectBtn:(id)sender {
     [chatViewService forceRedirectToHumanAgent];
-    // 清除当前右上角的按钮
-    self.navigationItem.rightBarButtonItem = nil;
-    // 改变 title
-#ifdef INCLUDE_MEIQIA_SDK
-    [self updateNavTitleWithAgentName:[MQBundleUtil localizedStringForKey:@"wait_agent"] agentStatus:MQChatAgentStatusOffLine];
-#endif
     [self showActivityIndicatorView];
 }
 
@@ -387,37 +388,26 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self updateNavTitleWithAgentName:viewTitle agentStatus:agentStatus];
 }
 
-- (void)changeNavReightBtnWithAgentType:(NSString *)agentType {
+- (void)changeNavReightBtnWithAgentType:(NSString *)agentType hidden:(BOOL)hidden {
     // 隐藏 loading
     [self dismissActivityIndicatorView];
-    
-    if ([MQChatViewConfig sharedConfig].navBarRightButton) {
-        return;
-    }
-    NSString *titleKey = nil;
-    SEL navBtnSelector = nil;
+    __block UIBarButtonItem *item = nil;
     if ([agentType isEqualToString:@"bot"]) {
-        if (chatViewService.isShowBotRedirectBtn) {
-            titleKey = @"meiqia_redirect_sheet";
-            navBtnSelector = @selector(tapNavigationRedirectBtn:);
-        }
-    } else if ([agentType isEqualToString:@"agent"] || [agentType isEqualToString:@"admin"]) {
-        if ([MQChatViewConfig sharedConfig].enableEvaluationButton) {
-            titleKey = @"meiqia_evaluation_sheet";
-            navBtnSelector = @selector(tapNavigationRightBtn:);
-        }
-    }
-    // 判断是否隐藏右导航栏按钮
-    if (!navBtnSelector) {
-        self.navigationItem.rightBarButtonItem = nil;
+        [MQServiceToViewInterface getIsShowRedirectHumanButtonComplete:^(BOOL isShow, NSError *error) {
+            if (isShow) {
+                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_redirect_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRedirectBtn:)];
+            }
+        }];
         return;
+    } else if ([MQChatViewConfig sharedConfig].navBarRightButton) {
+        item = [[UIBarButtonItem alloc]initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
+    } else {
+        if (![MQChatViewConfig sharedConfig].navBarRightButton && !hidden) {
+            item =  [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
+        }
     }
-    NSString *title = [MQBundleUtil localizedStringForKey:titleKey];
-    if ([self.navigationItem.rightBarButtonItem.title isEqualToString:title]) {
-        return;
-    }
-    UIBarButtonItem *rightNavButtonItem = [[UIBarButtonItem alloc]initWithTitle:title style:(UIBarButtonItemStylePlain) target:self action:navBtnSelector];
-    self.navigationItem.rightBarButtonItem = rightNavButtonItem;
+    
+    self.navigationItem.rightBarButtonItem = item;
 }
 
 - (void)didReceiveMessage {
@@ -445,12 +435,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         return NO;
     }
     [chatViewService sendTextMessageWithContent:text];
-    [self chatTableViewScrollToBottomWithAnimated:true];
     sendTime = [NSDate timeIntervalSinceReferenceDate];
+    [self chatTableViewScrollToBottomWithAnimated:YES];
     return YES;
 }
 
 -(void)sendImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
+    
     NSString *mediaPermission = [MQChatDeviceUtil isDeviceSupportImageSourceType:(int)sourceType];
     if (!mediaPermission) {
         return;
@@ -620,7 +611,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
 }
 
-- (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId{
+- (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId {
     [chatViewService evaluateBotAnswer:isUseful messageId:messageId];
 }
 
@@ -655,19 +646,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma MQServiceToViewInterfaceErrorDelegate 后端返回的数据的错误委托方法
 - (void)getLoadHistoryMessageError {
-    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:0 isLoadOver:false];
+    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:0 isLoadOver:YES];
     [MQToast showToast:[MQBundleUtil localizedStringForKey:@"load_history_message_error"] duration:1.0 window:self.view];
-}
-
-/**
- *  更新导航栏title
- */
-- (void)updateNavBarTitle:(NSString *)title {
-    //如果开发者设定了 title ，则不更新 title
-    if ([MQChatViewConfig sharedConfig].navTitleText) {
-        return;
-    }
-    self.navigationItem.title = title;
 }
 
 /**
@@ -772,17 +752,32 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     UIButton *recorderBtn  = [[UIButton alloc] initWithFrame:rect];
     [recorderBtn setImage:[MQAssetUtil imageFromBundleWithName:@"micIcon"] forState:(UIControlStateNormal)];
     [recorderBtn addTarget:self action:@selector(showRecorder) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.chatInputBar.buttonGroupBar addButton:recorderBtn];
     
     UIButton *cameraBtn  = [[UIButton alloc] initWithFrame:rect];
     [cameraBtn setImage:[MQAssetUtil imageFromBundleWithName:@"cameraIcon"] forState:(UIControlStateNormal)];
     [cameraBtn addTarget:self action:@selector(camera) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.chatInputBar.buttonGroupBar addButton:cameraBtn];
     
     UIButton *imageRoll  = [[UIButton alloc] initWithFrame:rect];
     [imageRoll setImage:[MQAssetUtil imageFromBundleWithName:@"imageIcon"] forState:(UIControlStateNormal)];
     [imageRoll addTarget:self action:@selector(imageRoll) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.chatInputBar.buttonGroupBar addButton:imageRoll];
+    
+    UIButton *emoji  = [[UIButton alloc] initWithFrame:rect];
+    [emoji setImage:[MQAssetUtil imageFromBundleWithName:@"emoji"] forState:(UIControlStateNormal)];
+    [emoji addTarget:self action:@selector(emoji) forControlEvents:(UIControlEventTouchUpInside)];
+    
+    if ([MQChatViewConfig sharedConfig].enableSendVoiceMessage) {
+        [self.chatInputBar.buttonGroupBar addButton:recorderBtn];
+    }
+    
+    if ([MQChatViewConfig sharedConfig].enableSendImageMessage) {
+        [self.chatInputBar.buttonGroupBar addButton:cameraBtn];
+        [self.chatInputBar.buttonGroupBar addButton:imageRoll];
+    }
+    
+    if ([MQChatViewConfig sharedConfig].enableSendEmoji) {
+        [self.chatInputBar.buttonGroupBar addButton:emoji];
+    }
+    
 }
 
 - (BOOL)handleSendMessageAbility {
@@ -814,6 +809,17 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)imageRoll {
     if ([self handleSendMessageAbility]) {
         [self sendImageWithSourceType:(UIImagePickerControllerSourceTypePhotoLibrary)];
+    }
+}
+
+- (void)emoji {
+    if ([self handleSendMessageAbility]) {
+        if (self.chatInputBar.isFirstResponder) {
+            [self.chatInputBar resignFirstResponder];
+        }else{
+            self.chatInputBar.inputView = self.emojiView;
+            [self.chatInputBar becomeFirstResponder];
+        }
     }
 }
 
@@ -893,6 +899,21 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self cancelRecord:CGPointZero];
 }
 
+#pragma mark - emoji delegate and datasource
+
+- (void)emojiKeyBoardView:(MQAGEmojiKeyboardView *)emojiKeyBoardView didUseEmoji:(NSString *)emoji {
+    MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
+    textField.text = [textField.text stringByAppendingString:emoji];
+}
+
+- (void)emojiKeyBoardViewDidPressBackSpace:(MQAGEmojiKeyboardView *)emojiKeyBoardView {
+    MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
+    if (textField.text.length > 0) {
+        NSRange lastRange = [textField.text rangeOfComposedCharacterSequenceAtIndex:([textField.text length] - 1)];
+        textField.text = [textField.text stringByReplacingCharactersInRange:lastRange withString:@""];
+    }
+}
+
 #pragma mark -
 
 - (void)handlePopRecognizer:(UIScreenEdgePanGestureRecognizer*)recognizer {
@@ -947,7 +968,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if (!_keyboardController) {
         _keyboardController = [[MQKeyboardController alloc] initWithResponders:@[self.chatInputBar.contentView, self.chatInputBar] contextView:self.view panGestureRecognizer:self.chatTableView.panGestureRecognizer delegate:self];
         _keyboardController.keyboardTriggerPoint = CGPointMake(0, self.constaintInputBarHeight.constant);
-        _keyboardController.delegate = self;
     }
     return _keyboardController;
 }
@@ -1019,5 +1039,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
 }
 
+- (MQAGEmojiKeyboardView *)emojiView {
+    if (!_emojiView) {
+        _emojiView = [[MQAGEmojiKeyboardView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 216) dataSource:self];
+        _emojiView.delegate = self;
+        _emojiView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    }
+    return _emojiView;
+}
 
 @end

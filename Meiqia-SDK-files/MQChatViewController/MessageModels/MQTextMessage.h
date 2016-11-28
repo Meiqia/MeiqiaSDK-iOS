@@ -13,6 +13,7 @@
 
 /** 消息content */
 @property (nonatomic, copy) NSString *content;
+@property (nonatomic, assign) BOOL isHTML;
 
 /**
  * 用文字初始化message

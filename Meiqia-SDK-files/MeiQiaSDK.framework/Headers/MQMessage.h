@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "MQAgent.h"
 
+#define QUEUEING_SYMBOL 999
+
 typedef enum : NSUInteger {
     MQMessageActionMessage                      = 0,   //普通消息 (message)
     MQMessageActionInitConversation             = 1,   //初始化对话 (init_conv)
@@ -56,7 +58,7 @@ typedef enum : NSUInteger {
     MQMessageSendStatusSending               = 2 //发送中
 } MQMessageSendStatus;
 
-@interface MQMessage : NSObject <NSCopying>
+@interface MQMessage : MQModel <NSCopying>
 
 /** 消息id */
 @property (nonatomic, copy  ) NSString             *messageId;
@@ -103,6 +105,11 @@ typedef enum : NSUInteger {
 /** 消息是否已读 */
 @property (nonatomic, assign) BOOL                 isRead;
 
+/*
+ 该消息对应的 enterprise id, 不一定有值，也不存数据库，仅用来判断该消息属于哪个企业，用来切换数据库, 如果这个地方没有值，查看 agent 对象里面的 enterpriseId 字段
+ */
+@property (nonatomic, copy) NSString *enterpriseId;
+
 ///** 消息的 sub_type */
 //@property (nonatomic, copy)   NSString             *subType;
 //
@@ -119,6 +126,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) id accessoryData;
 
 + (instancetype)createBlacklistMessageWithAction:(NSString *)action;
+
+- (NSString *)stringFromContentType;
 
 //- (id)initMessageWithData:(NSDictionary *)data;
 
