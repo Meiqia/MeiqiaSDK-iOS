@@ -25,11 +25,6 @@
  */
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)message;
 
-/**
- 在状态改变的时候调用，如果新状态是上线，__messages__ 可能会有数据
- */
-- (void)stateChanged:(MQState)newState fromState:(MQState)oldState agent:(MQAgent *)agent messages:(NSArray *)messages;
-
 @end
 
 /**
@@ -72,6 +67,8 @@
  * @warning 初始化前后均可调用
  */
 + (void)registerDeviceToken:(NSData *)deviceToken;
+
++ (void)registerDeviceTokenString:(NSString *)token;
 
 /**
  * 初始化SDK。美洽建议开发者在AppDelegate.m中的系统回调didFinishLaunchingWithOptions中进行SDK初始化。
