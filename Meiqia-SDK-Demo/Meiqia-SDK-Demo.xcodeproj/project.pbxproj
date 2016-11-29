@@ -29,6 +29,7 @@
 		E41DDDA61DD18DE0000B3083 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E41DDDA51DD18DE0000B3083 /* libz.tbd */; };
 		E4275AD91DEC1B5F0011B32B /* MQOnlineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4275AD51DEC16400011B32B /* MQOnlineTests.m */; };
 		E4275ADB1DEC1D000011B32B /* MQInitializationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4275ADA1DEC1D000011B32B /* MQInitializationTest.m */; };
+		E4275ADD1DEC41010011B32B /* MQSendTextTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4275ADC1DEC41010011B32B /* MQSendTextTests.m */; };
 		E44A5EA51D5AF47D000481E8 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E44A5EA41D5AF47D000481E8 /* Accelerate.framework */; };
 		E45474001DE5512400948ECD /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E45CA12C1CCA33EF000B8917 /* libsqlite3.tbd */; };
 		E45474011DE5512A00948ECD /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D13F1C181385004E862E /* libicucore.tbd */; };
@@ -497,6 +498,7 @@
 		E41DDDA51DD18DE0000B3083 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		E4275AD51DEC16400011B32B /* MQOnlineTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQOnlineTests.m; sourceTree = "<group>"; };
 		E4275ADA1DEC1D000011B32B /* MQInitializationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQInitializationTest.m; sourceTree = "<group>"; };
+		E4275ADC1DEC41010011B32B /* MQSendTextTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQSendTextTests.m; sourceTree = "<group>"; };
 		E44A5EA41D5AF47D000481E8 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		E45472CD1DE412F800948ECD /* Meiqia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Meiqia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E45472D01DE412F800948ECD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -884,9 +886,10 @@
 		CCE9D1221C1812F6004E862E /* Meiqia-SDK-DemoTests */ = {
 			isa = PBXGroup;
 			children = (
+				CCE9D1251C1812F6004E862E /* Info.plist */,
 				CCE9D1231C1812F6004E862E /* Meiqia_SDK_DemoTests.m */,
 				E4275AD51DEC16400011B32B /* MQOnlineTests.m */,
-				CCE9D1251C1812F6004E862E /* Info.plist */,
+				E4275ADC1DEC41010011B32B /* MQSendTextTests.m */,
 				E4275ADA1DEC1D000011B32B /* MQInitializationTest.m */,
 			);
 			path = "Meiqia-SDK-DemoTests";
@@ -2083,6 +2086,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4275ADD1DEC41010011B32B /* MQSendTextTests.m in Sources */,
 				E4275AD91DEC1B5F0011B32B /* MQOnlineTests.m in Sources */,
 				CCE9D1241C1812F6004E862E /* Meiqia_SDK_DemoTests.m in Sources */,
 				E4275ADB1DEC1D000011B32B /* MQInitializationTest.m in Sources */,

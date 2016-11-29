@@ -18,46 +18,89 @@
 
 - (void)setUp {
     self.appKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AppKey"];
+    // Put setup code here. This method is called before the invocation of each test method in the class.
+    __block BOOL waitingForInitComplete = YES;
+    BOOL isInitInTheAir = NO;
+    do {
+        if (!isInitInTheAir) {
+            isInitInTheAir = YES;
+            [MQManager initWithAppkey:self.appKey completion:^(NSString *clientId, NSError *error) {
+                NSAssert(error == nil, @"[error localizedDescription]");
+                NSAssert([clientId length] != 0, @"分配顾客 id 失败");
+                waitingForInitComplete = NO;
+            }];
+        }
+    } while (waitingForInitComplete);
 }
 
 - (void)tearDown {
 
 }
 
+- (void)testEndConversasion {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"testUserOnlineWithClientId"];
+    
+    [MQManager setClientOnlineWithClientId:[MQManager getCurrentClientId] success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
+        [MQManager endCurrentConversationWithCompletion:^(BOOL success, NSError *error) {
+            NSAssert(success, @"结束对话失败");
+            NSAssert(error == nil, [error localizedDescription]);
+            NSAssert([MQManager getCurrentAgent].agentId.length == 0, @"客服设置错误");
+            NSAssert([MQManager getCurrentState] == MQStateUnallocatedAgent, @"状态设置错误");
+            [expectation fulfill];
+        }];
+    } failure:^(NSError *error) {
+        NSAssert(error == nil, [error localizedDescription]);
+    } receiveMessageDelegate:nil];
+    
+    [self waitForExpectationsWithTimeout:10 handler:nil];
+}
+
 - (void)testUserOnlineWithClientId {
     XCTestExpectation *expectation = [self expectationWithDescription:@"testUserOnlineWithClientId"];
     
-    [MQManager initWithAppkey:self.appKey completion:^(NSString *clientId, NSError *error) {
-       [MQManager setClientOnlineWithClientId:clientId success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
-           [expectation fulfill];
-       } failure:nil receiveMessageDelegate:nil];
-    }];
+    [MQManager setClientOnlineWithClientId:[MQManager getCurrentClientId] success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
+        NSAssert(agent.agentId.length != 0, @"分配客服失败");
+        NSAssert([MQManager getCurrentAgent].agentId.length > 0, @"客服设置错误");
+        NSAssert([MQManager getCurrentState] == MQStateAllocatedAgent, @"状态设置错误");
+        [expectation fulfill];
+        [MQManager endCurrentConversationWithCompletion:nil];
+    } failure:^(NSError *error) {
+        NSAssert(error == nil, [error description]);
+    } receiveMessageDelegate:nil];
     
-    [self waitForExpectationsWithTimeout:5 handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
 - (void)testUserOnlineWithCustomizedId {
     XCTestExpectation *expectation = [self expectationWithDescription:@"testUserOnlineWithCustomizedId"];
     
-    [MQManager initWithAppkey:self.appKey completion:^(NSString *clientId, NSError *error) {
-        [MQManager setClientOnlineWithCustomizedId:[[NSUUID UUID]UUIDString] success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
-            [expectation fulfill];
-        } failure:nil receiveMessageDelegate:nil];
-    }];
+    [MQManager setClientOnlineWithCustomizedId:[[NSUUID UUID]UUIDString] success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
+        NSAssert(agent.agentId.length != 0, @"分配客服失败");
+        NSAssert([MQManager getCurrentAgent].agentId.length > 0, @"客服设置错误");
+        NSAssert([MQManager getCurrentState] == MQStateAllocatedAgent, @"状态设置错误");
+        [expectation fulfill];
+        [MQManager endCurrentConversationWithCompletion:nil];
+    } failure:^(NSError *error) {
+        NSAssert(error == nil, [error description]);
+    } receiveMessageDelegate:nil];
     
-    [self waitForExpectationsWithTimeout:5 handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
 - (void)testUserOnlineWithCurrentId {
     XCTestExpectation *expectation = [self expectationWithDescription:@"testUserOnlineWithCurrentId"];
     
-    [MQManager initWithAppkey:self.appKey completion:^(NSString *clientId, NSError *error) {
-       [MQManager setCurrentClientOnlineWithSuccess:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
-           [expectation fulfill];
-       } failure:nil receiveMessageDelegate:nil];
-    }];
+    [MQManager setCurrentClientOnlineWithSuccess:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
+        NSAssert(agent.agentId.length != 0, @"分配客服失败");
+        NSAssert([MQManager getCurrentAgent].agentId.length > 0, @"客服设置错误");
+        NSAssert([MQManager getCurrentState] == MQStateAllocatedAgent, @"状态设置错误");
+        [expectation fulfill];
+        [MQManager endCurrentConversationWithCompletion:nil];
+    } failure:^(NSError *error) {
+        NSAssert(error == nil, [error description]);
+    } receiveMessageDelegate:nil];
     
-    [self waitForExpectationsWithTimeout:5 handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
 @end

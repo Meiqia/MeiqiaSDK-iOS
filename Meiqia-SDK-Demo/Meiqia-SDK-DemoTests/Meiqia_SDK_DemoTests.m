@@ -7,8 +7,10 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <MeiQiaSDK/MeiQiaSDK.h>
 
 @interface Meiqia_SDK_DemoTests : XCTestCase
+@property (nonatomic, strong) NSString *appKey;
 
 @end
 
@@ -16,7 +18,18 @@
 
 - (void)setUp {
     [super setUp];
+    self.appKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AppKey"];
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    __block BOOL waitingForInitComplete = YES;
+    BOOL isInitInTheAir = NO;
+    do {
+        if (!isInitInTheAir) {
+            isInitInTheAir = YES;
+            [MQManager initWithAppkey:self.appKey completion:^(NSString *clientId, NSError *error) {
+                waitingForInitComplete = NO;
+            }];
+        }
+    } while (waitingForInitComplete);
 }
 
 - (void)tearDown {
@@ -24,7 +37,7 @@
     [super tearDown];
 }
 
-- (void)testExample {
+- (void)test111Example {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
 }
