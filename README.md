@@ -106,11 +106,11 @@ $ pod install
 github "meiqia/MeiqiaSDK-iOS"
 ```
 
-2. 将 MeiQia.framework 中的 MeiQiaSDK.framework 拖到与MeiQia.framework 同一级目录
+2. 将 Meiqia.framework 中的 MeiQiaSDK.framework 拖到与Meiqia.framework 同一级目录
 
 3. 将 Meiqia.framework 和 MeiQiaSDK.framework 两个包拖入工程中
 
-4. 将 Meiqia.framework 拖入 Embeded Binearies 中
+4. 将 Meiqia.framework 拖入 Embedded Binearies 中
 
 5. 完成
 
