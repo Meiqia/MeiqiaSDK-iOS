@@ -5,6 +5,8 @@ permalink: /docs/meiqia-ios-sdk/
 edition: m2016
 ---
 
+#MeiQiaSDK [![](https://travis-ci.org/Meiqia/MeiqiaSDK-iOS.svg?branch=master)]() [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods compatible](https://img.shields.io/cocoapods/v/Meiqia.svg)](#cocoapods) [![GitHub release](https://img.shields.io/github/release/meiqia/MeiqiaSDK-iOS.svg)](https://github.com/ReactiveCocoa/ReactiveCocoa/releases)
+
 > 在您阅读此文档之前，我们假定您已经具备了基础的 iOS 应用开发经验，并能够理解相关基础概念。
 
 > 如有疑问，欢迎加入 美洽 SDK 开发 QQ 群：295646206
@@ -95,6 +97,22 @@ pod 'Meiqia', '~> 3.3.2'
 ```
 $ pod install
 ```
+
+# Carthage 集成
+
+1. 在 Cartfile 中增加:
+
+```
+github "meiqia/MeiqiaSDK-iOS"
+```
+
+2. 将 MeiQia.framework 中的 MeiQiaSDK.framework 拖到与MeiQia.framework 同一级目录
+
+3. 将 Meiqia.framework 和 MeiQiaSDK.framework 两个包拖入工程中
+
+4. 将 Meiqia.framework 拖入 Embeded Binearies 中
+
+5. 完成
 
 # 快速集成 SDK
 
