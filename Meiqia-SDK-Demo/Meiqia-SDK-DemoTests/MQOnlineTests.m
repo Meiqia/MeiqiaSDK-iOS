@@ -57,11 +57,12 @@
 
 - (void)testUserOnlineWithClientId {
     XCTestExpectation *expectation = [self expectationWithDescription:@"testUserOnlineWithClientId"];
-    
-    [MQManager setClientOnlineWithClientId:[MQManager getCurrentClientId] success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
+    NSString *clientId = [MQManager getCurrentClientId];
+    [MQManager setClientOnlineWithClientId:clientId success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
         NSAssert(agent.agentId.length != 0, @"分配客服失败");
         NSAssert([MQManager getCurrentAgent].agentId.length > 0, @"客服设置错误");
         NSAssert([MQManager getCurrentState] == MQStateAllocatedAgent, @"状态设置错误");
+        NSAssert([[MQManager getCurrentClientId] isEqualToString:clientId], @"用户 id 错误");
         [expectation fulfill];
         [MQManager endCurrentConversationWithCompletion:nil];
     } failure:^(NSError *error) {
@@ -74,10 +75,12 @@
 - (void)testUserOnlineWithCustomizedId {
     XCTestExpectation *expectation = [self expectationWithDescription:@"testUserOnlineWithCustomizedId"];
     
-    [MQManager setClientOnlineWithCustomizedId:[[NSUUID UUID]UUIDString] success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
+    NSString *customizedId = [[NSUUID UUID]UUIDString];
+    [MQManager setClientOnlineWithCustomizedId:customizedId success:^(MQClientOnlineResult result, MQAgent *agent, NSArray<MQMessage *> *messages) {
         NSAssert(agent.agentId.length != 0, @"分配客服失败");
         NSAssert([MQManager getCurrentAgent].agentId.length > 0, @"客服设置错误");
         NSAssert([MQManager getCurrentState] == MQStateAllocatedAgent, @"状态设置错误");
+        NSAssert([[MQManager getCurrentCustomizedId] isEqualToString:customizedId], @"自定义用户 id 错误");
         [expectation fulfill];
         [MQManager endCurrentConversationWithCompletion:nil];
     } failure:^(NSError *error) {
