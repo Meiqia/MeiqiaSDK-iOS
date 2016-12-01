@@ -68,6 +68,8 @@
  */
 + (void)registerDeviceToken:(NSData *)deviceToken;
 
++ (void)registerDeviceTokenString:(NSString *)token;
+
 /**
  @param deviceToken 去掉特殊符号和空格之后的字符串
  */
