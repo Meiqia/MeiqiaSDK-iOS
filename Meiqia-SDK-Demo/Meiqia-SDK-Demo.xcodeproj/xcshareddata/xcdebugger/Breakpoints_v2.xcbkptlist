@@ -57,5 +57,59 @@
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "[MQMessageAPIManager syncMessagesAfterUTCDate:complete:]"
+            moduleName = "">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[MQMessageAPIManager syncMessagesAfterUTCDate:complete:]"
+                  moduleName = "Meiqia-SDK-Demo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ianluo/Documents/meiqia/project/SDK&amp;SDK_Demo/SDK/MeiqiaSDK_Ecoboost_iOS-me/MeiqiaSDK_Ecoboost_iOS/MeiQiaSDK/APIManager/APIManagers/MQMessageAPIManager.m"
+                  timestampString = "502272619.341701"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "296"
+                  endingLineNumber = "296"
+                  offsetFromSymbolStart = "81">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "[MQConversationAPIManager getScheduledConversationWithAction:]"
+            moduleName = "">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[MQConversationAPIManager getScheduledConversationWithAction:]"
+                  moduleName = "Meiqia-SDK-Demo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ianluo/Documents/meiqia/project/SDK&amp;SDK_Demo/SDK/MeiqiaSDK_Ecoboost_iOS-me/MeiqiaSDK_Ecoboost_iOS/MeiQiaSDK/APIManager/APIManagers/MQConversationAPIManager.m"
+                  timestampString = "502276571.034137"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "71">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
