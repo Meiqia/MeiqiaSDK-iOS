@@ -50,6 +50,7 @@
         }];
     } failure:^(NSError *error) {
         NSAssert(error == nil, [error localizedDescription]);
+        [expectation fulfill];
     } receiveMessageDelegate:nil];
     
     [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -67,6 +68,7 @@
         [MQManager endCurrentConversationWithCompletion:nil];
     } failure:^(NSError *error) {
         NSAssert(error == nil, [error description]);
+        [expectation fulfill];
     } receiveMessageDelegate:nil];
     
     [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -85,6 +87,7 @@
         [MQManager endCurrentConversationWithCompletion:nil];
     } failure:^(NSError *error) {
         NSAssert(error == nil, [error description]);
+        [expectation fulfill];
     } receiveMessageDelegate:nil];
     
     [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -101,6 +104,7 @@
         [MQManager endCurrentConversationWithCompletion:nil];
     } failure:^(NSError *error) {
         NSAssert(error == nil, [error description]);
+        [expectation fulfill];
     } receiveMessageDelegate:nil];
     
     [self waitForExpectationsWithTimeout:10 handler:nil];

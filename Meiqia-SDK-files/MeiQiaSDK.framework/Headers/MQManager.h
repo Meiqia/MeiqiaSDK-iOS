@@ -36,9 +36,9 @@
 @class MQTicket;
 @interface MQManager : NSObject
 
-/**
- * 注册状态观察者在状态改变的时候调用
- */
+
+/// 注册状态观察者在状态改变的时候调用
+/// 注意不要使用 self, 该 block 会被 retain，使用 self 会导致调用的类无法被释放。
 + (void)addStateObserverWithBlock:(StateChangeBlock)block withKey:(NSString *)key;
 
 + (void)removeStateChangeObserverWithKey:(NSString *)key;
@@ -68,6 +68,9 @@
  */
 + (void)registerDeviceToken:(NSData *)deviceToken;
 
+/**
+ @param deviceToken 去掉特殊符号和空格之后的字符串
+ */
 + (void)registerDeviceTokenString:(NSString *)token;
 
 /**

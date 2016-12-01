@@ -93,6 +93,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [MQManager addStateObserverWithBlock:^(MQState oldState, MQState newState, NSDictionary *value, NSError *error) {
         __strong typeof (wself) sself = wself;
         MQAgent *agent = value[@"agent"];
+        
         NSString *agentType = [agent convertPrivilegeToString];
         
         [sself updateChatTitleWithAgent:agent state:newState];

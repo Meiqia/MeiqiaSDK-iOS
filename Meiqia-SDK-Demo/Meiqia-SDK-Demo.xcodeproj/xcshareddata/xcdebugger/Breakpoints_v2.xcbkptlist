@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "4"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "[MQManager setClientOnlineWithWithSuccess:failure:receiveMessageDelegate:]"
+            moduleName = "">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[MQManager setClientOnlineWithWithSuccess:failure:receiveMessageDelegate:]"
+                  moduleName = "Meiqia-SDK-Demo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ianluo/Documents/meiqia/project/SDK&amp;SDK_Demo/SDK/MeiqiaSDK_Ecoboost_iOS-me/MeiqiaSDK_Ecoboost_iOS/MeiQiaSDK/SDKInterface/MQManager.m"
+                  timestampString = "502254228.485284"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "375"
+                  endingLineNumber = "375"
+                  offsetFromSymbolStart = "98">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "[MQManager openMeiqiaService]"
+            moduleName = "">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[MQManager openMeiqiaService]"
+                  moduleName = "Meiqia-SDK-Demo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ianluo/Documents/meiqia/project/SDK&amp;SDK_Demo/SDK/MeiqiaSDK_Ecoboost_iOS-me/MeiqiaSDK_Ecoboost_iOS/MeiQiaSDK/SDKInterface/MQManager.m"
+                  timestampString = "502254961.194533"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "903"
+                  endingLineNumber = "903"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
