@@ -89,7 +89,7 @@ framework中的文件 | 说明
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.3.2'
+pod 'Meiqia', '~> 3.3.3'
 ```
 
 接着安装美洽 pod 即可：
