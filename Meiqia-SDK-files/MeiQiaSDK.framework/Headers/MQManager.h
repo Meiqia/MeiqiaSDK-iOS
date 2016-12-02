@@ -25,11 +25,6 @@
  */
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)message;
 
-/**
- 在状态改变的时候调用，如果新状态是上线，__messages__ 可能会有数据
- */
-- (void)stateChanged:(MQState)newState fromState:(MQState)oldState agent:(MQAgent *)agent messages:(NSArray *)messages;
-
 @end
 
 /**
@@ -41,9 +36,9 @@
 @class MQTicket;
 @interface MQManager : NSObject
 
-/**
- * 注册状态观察者在状态改变的时候调用
- */
+
+/// 注册状态观察者在状态改变的时候调用
+/// 注意不要使用 self, 该 block 会被 retain，使用 self 会导致调用的类无法被释放。
 + (void)addStateObserverWithBlock:(StateChangeBlock)block withKey:(NSString *)key;
 
 + (void)removeStateChangeObserverWithKey:(NSString *)key;
@@ -72,6 +67,11 @@
  * @warning 初始化前后均可调用
  */
 + (void)registerDeviceToken:(NSData *)deviceToken;
+
+/**
+ @param deviceToken 去掉特殊符号和空格之后的字符串
+ */
++ (void)registerDeviceTokenString:(NSString *)token;
 
 /**
  * 初始化SDK。美洽建议开发者在AppDelegate.m中的系统回调didFinishLaunchingWithOptions中进行SDK初始化。

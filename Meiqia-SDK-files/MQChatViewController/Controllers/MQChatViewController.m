@@ -161,6 +161,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
     
     [MQServiceToViewInterface completeChat];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {

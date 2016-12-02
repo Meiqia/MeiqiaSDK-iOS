@@ -93,6 +93,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [MQManager addStateObserverWithBlock:^(MQState oldState, MQState newState, NSDictionary *value, NSError *error) {
         __strong typeof (wself) sself = wself;
         MQAgent *agent = value[@"agent"];
+        
         NSString *agentType = [agent convertPrivilegeToString];
         
         [sself updateChatTitleWithAgent:agent state:newState];
@@ -600,12 +601,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             continue;
         }
         
-         NSArray *redundentCellModels = [newCellModels filter:^BOOL(id<MQCellModelProtocol> cellModel) {
+         NSArray *redundentCellModels = [self.cellModels filter:^BOOL(id<MQCellModelProtocol> cellModel) {
             return [[cellModel getCellMessageId] isEqualToString:[newCellModel getCellMessageId]];
          }];
         
         if ([redundentCellModels count] > 0) {
-            [self.cellModels replaceObjectAtIndex:[newCellModels indexOfObject:[redundentCellModels firstObject]] withObject:newCellModel];
+            [self.cellModels replaceObjectAtIndex:[self.cellModels indexOfObject:[redundentCellModels firstObject]] withObject:newCellModel];
         } else {
             [newCellModels addObject:newCellModel];
         }
@@ -1034,6 +1035,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (MQChatAgentStatus)getAgentStatus:(MQAgent *)agent {
     if (!agent.isOnline) {
         return MQChatAgentStatusOffLine;
+    }
+    
+    if (agent.privilege == MQAgentPrivilegeBot) {
+        return MQChatAgentStatusOnDuty;
     }
     switch (agent.status) {
         case MQAgentStatusHide:
