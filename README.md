@@ -112,7 +112,6 @@ github "meiqia/MeiqiaSDK-iOS"
 
 4. 将 Meiqia.framework 拖入 Embedded Binearies 中
 
-5. 完成
 
 # 快速集成 SDK
 
