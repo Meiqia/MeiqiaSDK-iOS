@@ -1036,6 +1036,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (!agent.isOnline) {
         return MQChatAgentStatusOffLine;
     }
+    
+    if (agent.privilege == MQAgentPrivilegeBot) {
+        return MQChatAgentStatusOnDuty;
+    }
     switch (agent.status) {
         case MQAgentStatusHide:
             return MQChatAgentStatusOffDuty;
