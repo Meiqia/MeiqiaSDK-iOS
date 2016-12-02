@@ -100,7 +100,7 @@ $ pod install
 
 # Carthage 集成
 
-1. 在 Cartfile 中增加:
+在 Cartfile 中增加:
 
 ```
 github "meiqia/MeiqiaSDK-iOS"
