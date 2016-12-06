@@ -638,8 +638,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     switch (position) {
         case 1: // top
             [self insertMessageDateCellAtFirstWithCellModel:[newCellModels firstObject]]; // 如果需要，顶部插入时间
-            [self addTipCellModelWithTips:@"Older" enableLinesDisplay:NO];
-            self.cellModels = newCellModels;
+            self.cellModels = [[newCellModels arrayByAddingObjectsFromArray:self.cellModels] mutableCopy];
             break;
         case 0: // bottom
             [self addMessageDateCellAtLastWithCurrentCellModel:[newCellModels lastObject]]; // 如果需要，底部插入时间
