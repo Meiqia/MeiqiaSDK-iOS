@@ -53,7 +53,7 @@
         [expectation fulfill];
     } receiveMessageDelegate:nil];
     
-    [self waitForExpectationsWithTimeout:10 handler:nil];
+    [self waitForExpectationsWithTimeout:120 handler:nil];
 }
 
 - (void)testUserOnlineWithClientId {
@@ -71,7 +71,7 @@
         [expectation fulfill];
     } receiveMessageDelegate:nil];
     
-    [self waitForExpectationsWithTimeout:10 handler:nil];
+    [self waitForExpectationsWithTimeout:120 handler:nil];
 }
 
 - (void)testUserOnlineWithCustomizedId {
@@ -90,7 +90,7 @@
         [expectation fulfill];
     } receiveMessageDelegate:nil];
     
-    [self waitForExpectationsWithTimeout:10 handler:nil];
+    [self waitForExpectationsWithTimeout:120 handler:nil];
 }
 
 - (void)testUserOnlineWithCurrentId {
@@ -107,7 +107,7 @@
         [expectation fulfill];
     } receiveMessageDelegate:nil];
     
-    [self waitForExpectationsWithTimeout:10 handler:nil];
+    [self waitForExpectationsWithTimeout:120 handler:nil];
 }
 
 @end

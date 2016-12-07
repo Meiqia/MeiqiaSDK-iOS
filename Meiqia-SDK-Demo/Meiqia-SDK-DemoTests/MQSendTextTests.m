@@ -50,7 +50,7 @@
     }];
     
     
-    [self waitForExpectationsWithTimeout:10 handler:nil];
+    [self waitForExpectationsWithTimeout:120 handler:nil];
 }
 
 - (void)testSendTextMessageAfterOnline {
@@ -71,7 +71,7 @@
     
     
     
-    [self waitForExpectationsWithTimeout:10 handler:nil];
+    [self waitForExpectationsWithTimeout:120 handler:nil];
 }
 
 - (void)testSendTextMessageWhenConversationFinishedRemote {
@@ -105,7 +105,7 @@
     }];
     
     
-    [self waitForExpectationsWithTimeout:15 handler:nil];
+    [self waitForExpectationsWithTimeout:120 handler:nil];
     
 }
 
