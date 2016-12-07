@@ -1,7 +1,7 @@
 
 language: objective-c
 osx_image: xcode8.0
-script: xcodebuild -project Meiqia-SDK-Demo/Meiqia-SDK-Demo.xcodeproj -scheme Meiqia-SDK-Demo -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6s' test ONLY_ACTIVE_ARCH=NO
+script: xcodebuild -project Meiqia-SDK-Demo/Meiqia-SDK-Demo.xcodeproj -scheme Meiqia-SDK-Demo -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6s' test ONLY_ACTIVE_ARCH=NO | xcpretty
 
 
 
