@@ -5,7 +5,7 @@ permalink: /docs/meiqia-ios-sdk/
 edition: m2016
 ---
 
-#MeiQiaSDK [![](https://travis-ci.org/Meiqia/MeiqiaSDK-iOS.svg?branch=master)]() [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods compatible](https://img.shields.io/cocoapods/v/Meiqia.svg)](#cocoapods) [![GitHub release](https://img.shields.io/github/release/meiqia/MeiqiaSDK-iOS.svg)](https://github.com/ReactiveCocoa/ReactiveCocoa/releases)
+#MeiQiaSDK [![](https://travis-ci.org/Meiqia/MeiqiaSDK-iOS.svg?branch=master)]() [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods compatible](https://img.shields.io/cocoapods/v/Meiqia.svg)](#cocoapods) [![GitHub release](https://img.shields.io/github/release/meiqia/MeiqiaSDK-iOS.svg)](https://github.com/Meiqia/MeiqiaSDK-iOS/releases)
 
 > 在您阅读此文档之前，我们假定您已经具备了基础的 iOS 应用开发经验，并能够理解相关基础概念。
 
