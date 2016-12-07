@@ -43,7 +43,7 @@
         [expectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:10 handler:nil];
+    [self waitForExpectationsWithTimeout:120 handler:nil];
 }
 
 - (void)testInitNewClient {
@@ -55,7 +55,7 @@
         [expectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:10 handler:nil];
+    [self waitForExpectationsWithTimeout:120 handler:nil];
 }
 
 @end
