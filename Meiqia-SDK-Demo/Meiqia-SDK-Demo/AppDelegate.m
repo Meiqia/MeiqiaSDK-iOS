@@ -21,19 +21,19 @@
     // Override point for customization after application launch.
     
     //推送注册
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8){
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 80000
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert
                                                 | UIUserNotificationTypeBadge
                                                 | UIUserNotificationTypeSound
                                                                                  categories:nil];
         [application registerUserNotificationSettings:settings];
         [application registerForRemoteNotifications];
-    }else{
+#else
         [application registerForRemoteNotificationTypes:
          UIRemoteNotificationTypeBadge |
          UIRemoteNotificationTypeAlert |
          UIRemoteNotificationTypeSound];
-    }
+#endif
     
 #error 请填写您的美洽 AppKey
     [MQManager initWithAppkey:@"请填写您的美洽 AppKey" completion:^(NSString *clientId, NSError *error) {
