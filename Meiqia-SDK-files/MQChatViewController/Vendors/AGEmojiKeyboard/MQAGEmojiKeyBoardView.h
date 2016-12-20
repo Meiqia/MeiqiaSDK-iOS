@@ -66,6 +66,7 @@ typedef NS_ENUM(NSInteger, MQAGEmojiKeyboardViewCategoryImage) {
  */
 @protocol MQAGEmojiKeyboardViewDataSource <NSObject>
 
+@optional
 /**
  Method called on dataSource to get the category image when selected.
 

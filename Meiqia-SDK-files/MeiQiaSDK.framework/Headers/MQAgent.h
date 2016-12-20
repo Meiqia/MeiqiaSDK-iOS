@@ -62,6 +62,11 @@ typedef enum : NSUInteger {
 /** 是否在线 */
 @property (nonatomic, assign) BOOL             isOnline;
 
+/*
+ 该消息对应的 enterprise id, 不一定有值，也不存数据库，仅用来判断该消息属于哪个企业，用来切换数据库, 如果这个地方没有值，查看所属的 message 对象里面的 enterpriseId 字段
+ */
+@property (nonatomic, copy) NSString *enterpriseId;
+
 // 转换 agent type
 - (NSString *)convertPrivilegeToString;
 

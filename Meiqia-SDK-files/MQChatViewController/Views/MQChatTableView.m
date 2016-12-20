@@ -120,9 +120,7 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 }
 
 - (void)updateTableViewAtIndexPath:(NSIndexPath *)indexPath {
-//    [self beginUpdates]; //有时候会造成崩溃，但是没有查到具体原因
-    [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//    [self endUpdates];
+    [self reloadData];
 }
 
 /** 点击tableView的事件 */
@@ -178,6 +176,7 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
             enableTopAutoRefresh = false;
         }
     }
+    
     if (cellNumber > 1) {
         [self scrollToCellIndex:cellNumber-1];
     }

@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MQMessageFactoryHelper.h"
 
 @class MQMessage, MQBaseMessage;
-@interface MQBotMessageFactory : NSObject
+@interface MQBotMessageFactory : NSObject <MQMessageFactory>
 
-+ (MQBaseMessage *)createBotMessageWithMessage:(MQMessage *)originalMessage;
+- (MQBaseMessage *)createMessage:(MQMessage *)plainMessage;
 
 @end

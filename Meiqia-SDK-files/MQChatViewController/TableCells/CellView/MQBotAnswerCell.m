@@ -20,7 +20,7 @@ static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;
 static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
 static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
 
-@interface MQBotAnswerCell() <TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+@interface MQBotAnswerCell() <MEIQIA_TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 @end
 

@@ -15,11 +15,14 @@
 #import "MQMessageFormImageView.h"
 #import "MQMessageFormInputView.h"
 #import "MQMessageFormViewService.h"
+#import "MQMessageFormCategoryViewController.h"
 
 static CGFloat const kMQMessageFormSpacing   = 16.0;
 static NSString * const kMessageFormMessageKey = @"message";
 
 @interface MQMessageFormViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, MQMessageFormImageViewDelegate>
+
+@property (nonatomic, strong) NSMutableDictionary *accessoryData;
 
 @end
 
@@ -70,6 +73,14 @@ static NSString * const kMessageFormMessageKey = @"message";
     [self.view addGestureRecognizer:tap];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+    self.accessoryData = [NSMutableDictionary new];
+    
+    MQMessageFormCategoryViewController *categoryViewController = [MQMessageFormCategoryViewController new];
+    [categoryViewController setCategorySelected:^(NSString *categoryId) {
+        self.accessoryData[@"category_id"] = categoryId;
+    }];
+    [categoryViewController showIfNeededOn:self];
 }
 
 - (void)dismissKeyboard {
@@ -274,6 +285,12 @@ static NSString * const kMessageFormMessageKey = @"message";
             valueCharCount += text.length;
         }
         [dict setObject:text forKey:model.key];
+    }
+    
+    if (self.accessoryData.allKeys.count > 0) {
+        for (NSString *key in self.accessoryData.allKeys) {
+            dict[key] = self.accessoryData[key];
+        }
     }
     
     if (!contactAllRequired && valueCharCount == 0) {

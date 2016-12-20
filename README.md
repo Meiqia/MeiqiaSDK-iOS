@@ -5,6 +5,8 @@ permalink: /docs/meiqia-ios-sdk/
 edition: m2016
 ---
 
+#MeiQiaSDK [![](https://travis-ci.org/Meiqia/MeiqiaSDK-iOS.svg?branch=master)]() [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods compatible](https://img.shields.io/cocoapods/v/Meiqia.svg)](#cocoapods) [![GitHub release](https://img.shields.io/github/release/meiqia/MeiqiaSDK-iOS.svg)](https://github.com/Meiqia/MeiqiaSDK-iOS/releases)
+
 > 在您阅读此文档之前，我们假定您已经具备了基础的 iOS 应用开发经验，并能够理解相关基础概念。
 
 > 如有疑问，欢迎加入 美洽 SDK 开发 QQ 群：295646206
@@ -29,7 +31,7 @@ edition: m2016
 
 美洽 SDK 的工作流程如下图所示。
 
-![SDK工作流程图](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/dd401360bac3d4ab)
+![SDK工作流程图](DemoScreen/WechatIMG193.jpeg)
 
 说明：
 * 自定义用户数据将会在美洽客服工作台上显示；
@@ -81,13 +83,13 @@ framework中的文件 | 说明
 - SystemConfiguration.framework
 - MobileCoreServices.framework
 - QuickLook.framework
+
 # CocoaPods 导入
 
 在 Podfile 中加入：
 
 ```
-
-pod 'Meiqia', '~> 3.3.1'
+pod 'Meiqia', '~> 3.3.4.1'
 ```
 
 接着安装美洽 pod 即可：
@@ -95,6 +97,21 @@ pod 'Meiqia', '~> 3.3.1'
 ```
 $ pod install
 ```
+
+# Carthage 集成
+
+在 Cartfile 中增加:
+
+```
+github "meiqia/MeiqiaSDK-iOS"
+```
+
+2. 将 Meiqia.framework 中的 MeiQiaSDK.framework 拖到与Meiqia.framework 同一级目录
+
+3. 将 Meiqia.framework 和 MeiQiaSDK.framework 两个包拖入工程中
+
+4. 将 Meiqia.framework 拖入 Embedded Binearies 中
+
 
 # 快速集成 SDK
 
@@ -131,36 +148,6 @@ return YES;
 MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 [chatViewManager pushMQChatViewControllerInViewController:self];
 ```
-
-### info.plist设置
-
-美洽的图片、语音等静态资源放在了 AWS S3 上，但 `s3.amazonaws.com` 使用了 SHA1 证书，不满足 iOS 9 的 [ATS ( App Transport Security )](https://developer.apple.com/library/prerelease/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14) 要求。
-
-所以为了能让聊天界面正确显示图片和语音，开发者需要在 App 的 info.plist 中增加如下设置 (右键点击`info.plist` -> `Open As` -> `Source Code`):
-
-```xml
-<key>NSAppTransportSecurity</key>
-<dict>
-<key>NSAllowsArbitraryLoads</key>
-<true/>
-<key>NSExceptionDomains</key>
-<dict>
-<key>s3.cn-north-1.amazonaws.com.cn</key>
-<dict>
-<key>NSExceptionRequiresForwardSecrecy</key>
-<false/>
-</dict>
-</dict>
-</dict>
-```
-添加完成后，info.plist显示效果如图：
-
-![info.plist配置](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/f4564c89cef713c1)
-
-关于 S3 证书问题，可参考 stackoverflow 上面的一个 [讨论](http://stackoverflow.com/questions/32500655/ios-9-app-download-from-amazon-s3-ssl-error-tls-1-2-support)。
-
-至此，你已经为你的 APP 添加美洽提供的客服服务。而美洽 SDK 还提供其他强大的功能，可以帮助提高服务效率，提升用户使用体验。接下来为你详细介绍如何使用其他功能。
-
 
 # 名词解释
 
@@ -658,8 +645,6 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 当前仅支持一种推送方案，即美洽服务端发送消息至开发者的服务端，开发者再推送消息到 App，可见 [SDK 工作流程](#SDK-工作流程) 。
 
-未来美洽 iOS SDK 将会支持直接推送消息给 App，即开发者可上传 App 的推送证书至美洽，美洽将推送消息至苹果 APNS 服务器。目前正在紧张开发中。
-
 ### 设置接收推送的服务器地址
 
 推送消息将会发送至开发者的服务器。
@@ -881,6 +866,31 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 更新日志
+
+**v3.3.4.1 2016 年 12 月 13 日**
+
+* 移除 ATS 配置检查
+
+**v3.3.4 2016 年 12 月 7 日**
+
+* 修复发送图片，语音失败。
+
+**V3.3.3 2016 年 12 月 2 日**
+
+* 修复进入后台之后，ticket 回复不能马上收到。
+* 其他小问题.
+
+**v3.3.2 2016 年 10 月 19 日** 
+
+* 增加留言表单中工单类型选择。
+* 多企业支持切换。
+* 增加工单相关接口。
+* 修复问题:
+	- 偶发的文字截断 
+	- 用户设置上传之后立刻获取无法获取到。
+	- 留言表单返回按钮的图片没有自动获取聊天界面用户设置的自定义图片。
+	- 导航栏右侧按钮，如果是自定义按钮，在分配机器人是没有显示转接人工，并且转接客服之后消失。
+	- 增加 socket 连接无法连接时的消息轮询机制，确保消息不丢失。
 
 **v3.3.1 2016 年 09 月 18 日** 
 

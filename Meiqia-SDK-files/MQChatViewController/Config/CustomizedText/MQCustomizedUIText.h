@@ -71,6 +71,8 @@ typedef NS_ENUM(NSUInteger, MQUITextKey) {
     MQUITextKeyPreChatFormTitle,
     MQUITextKeyPreChatFormMultipleSelectionLabel,
     MQUITextKeyPreChatFormBlankAlertLabel,
+    
+    MQUITextKeyQueuePosition,
 };
 
 @interface MQCustomizedUIText : NSObject

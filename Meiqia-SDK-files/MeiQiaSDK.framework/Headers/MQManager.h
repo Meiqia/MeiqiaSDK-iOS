@@ -15,7 +15,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.3.1"
+#define MQSDKVersion @"3.3.4.1"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -35,6 +35,15 @@
 
 @class MQTicket;
 @interface MQManager : NSObject
+
+
+/// 注册状态观察者在状态改变的时候调用
+/// 注意不要使用 self, 该 block 会被 retain，使用 self 会导致调用的类无法被释放。
++ (void)addStateObserverWithBlock:(StateChangeBlock)block withKey:(NSString *)key;
+
++ (void)removeStateChangeObserverWithKey:(NSString *)key;
+
++ (MQState)getCurrentState;
 
 /**
  *  开启美洽服务
@@ -60,6 +69,11 @@
 + (void)registerDeviceToken:(NSData *)deviceToken;
 
 /**
+ @param deviceToken 去掉特殊符号和空格之后的字符串
+ */
++ (void)registerDeviceTokenString:(NSString *)token;
+
+/**
  * 初始化SDK。美洽建议开发者在AppDelegate.m中的系统回调didFinishLaunchingWithOptions中进行SDK初始化。
  * 如果成功返回一个顾客的信息，开发者可保存该clientId，绑定开发者自己的用户系统，下次使用setClientOnlineWithClientId进行上线
  *
@@ -67,6 +81,21 @@
  * @param completion 如果初始化成功，将会返回clientId，并且error为nil；如果初始化失败，clientId为空，会返回error
  */
 + (void)initWithAppkey:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error))completion;
+
+/**
+    获取本地初始化过的 app key
+ */
++ (NSArray *)getLocalAppKeys;
+
+/**
+ 获取当前使用的 app key
+ */
++ (NSString *)getCurrentAppKey;
+
+/**
+ 获取消息所对应的企业 appkey
+ */
++ (NSString *)appKeyForMessage:(MQMessage *)message;
 
 /**
  * 设置指定分配的客服或客服组。
@@ -461,6 +490,16 @@
 + (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action;
 
 /**
+ 获取 ticket 类别
+ */
++ (void)getTicketCategoryComplete:(void(^)(NSArray *categories))action;
+
+/**
+ 获取从指定日期开始的所有工单消息
+ */
++ (void)getTicketsFromDate:(NSDate *)date complete:(void(^)(NSArray *, NSError *))action;
+
+/**
  *  提交留言表单
  *
  *  @param message 留言消息
@@ -514,7 +553,7 @@
 /**
  提交用户填写的留言工单
  */
-+ (void)submitTicketForm:(NSString *)content userInfo:(NSDictionary *)usreInfo completion:(void(^)(MQTicket *ticket, NSError *))block;
++ (void)submitTicketForm:(NSString *)content userInfo:(NSDictionary *)userInfo completion:(void(^)(MQTicket *ticket, NSError *))block;
 
 
 @end

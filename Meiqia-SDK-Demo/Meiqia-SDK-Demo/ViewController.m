@@ -15,6 +15,7 @@
 #import "MQBundleUtil.h"
 #import "MQAssetUtil.h"
 #import "MQImageUtil.h"
+#import "MQToast.h"
 
 static CGFloat const kMQButtonVerticalSpacing   = 16.0;
 static CGFloat const kMQButtonHeight            = 42.0;
@@ -161,7 +162,7 @@ static int indicator_tag = 10;
     //基本功能 - 在线客服
     
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
+    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
     [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
 
     [chatViewManager setClientInfo:@{@"name":@"updated"} override:YES];

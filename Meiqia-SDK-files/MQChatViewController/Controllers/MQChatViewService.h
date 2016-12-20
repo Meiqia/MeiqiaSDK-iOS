@@ -81,7 +81,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 /**
  *  根据 agentType 改变导航栏右键
  */
-- (void)changeNavReightBtnWithAgentType:(NSString *)agentType;
+- (void)changeNavReightBtnWithAgentType:(NSString *)agentType hidden:(BOOL)hidden;
 
 #endif
 
@@ -113,8 +113,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 /** 顾客当前的状态 */
 @property (nonatomic, assign) MQClientStatus clientStatus;
 
-/** 是否显示机器人转人工按钮 */
-@property (nonatomic, assign) BOOL isShowBotRedirectBtn;
+- (instancetype)initWithDelegate:(id<MQChatViewServiceDelegate>)delegate errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
 
 /**
  * 获取更多历史聊天消息

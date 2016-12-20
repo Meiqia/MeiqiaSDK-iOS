@@ -15,27 +15,31 @@
 
 @implementation MQBotMessageFactory
 
-+ (MQBaseMessage *)createBotMessageWithMessage:(MQMessage *)originalMessage {
+- (MQBaseMessage *)createMessage:(MQMessage *)plainMessage {
     NSArray *normalTypes = @[@"evaluate", @"reply", @"redirect", @"queueing", @"manual_redirect"];
     
-    NSString *subType = [originalMessage.accessoryData objectForKey:@"sub_type"] ?: @"";
-    
-    if ([[originalMessage.accessoryData objectForKey:@"content_robot"] count] > 0) {
+    NSString *subType = [plainMessage.accessoryData objectForKey:@"sub_type"] ?: @"";
+    MQBaseMessage *message = nil;
+    if ([[plainMessage.accessoryData objectForKey:@"content_robot"] count] > 0) {
         if ([normalTypes containsObject:subType]) {
-            return [self getNormalBotAnswerMessage:originalMessage.accessoryData subType:subType];
+            message = [self getNormalBotAnswerMessage:plainMessage.accessoryData subType:subType];
         } else if ([subType isEqualToString:@"menu"]) {
-            return [self getMenuBotMessage:originalMessage.accessoryData];
+            message = [self getMenuBotMessage:plainMessage.accessoryData];
         } else if ([subType isEqualToString:@"message"]) {
-            return [self getTextMessage:originalMessage.accessoryData];
-        } else {
-            return nil;
+            message = [self getTextMessage:plainMessage.accessoryData];
         }
-    } else {
-        return nil;
     }
+    
+    message.messageId = plainMessage.messageId;
+    message.date = plainMessage.createdOn;
+    message.userName = plainMessage.messageUserName;
+    message.userAvatarPath = plainMessage.messageAvatar;
+    message.fromType = MQChatMessageIncoming;
+    
+    return message;
 }
 
-+ (BOOL)isThisAnswerContainsMenu:(NSArray *)contentRobot {
+- (BOOL)isThisAnswerContainsMenu:(NSArray *)contentRobot {
     BOOL contains = NO;
     if ([contentRobot isKindOfClass:[NSArray class]]) {
         if (contentRobot.count > 1) {
@@ -48,7 +52,7 @@
     return contains;
 }
 
-+ (MQBaseMessage *)getNormalBotAnswerMessage:(NSDictionary *)data subType:(NSString *)subType {
+- (MQBaseMessage *)getNormalBotAnswerMessage:(NSDictionary *)data subType:(NSString *)subType {
     NSString *content = @"";
     MQBotMenuMessage *embedMenuMessage;
     
@@ -80,7 +84,7 @@
     return botMessage;
 }
 
-+ (MQBaseMessage *)getMenuBotMessage:(NSDictionary *)data {
+- (MQBaseMessage *)getMenuBotMessage:(NSDictionary *)data {
     NSString *content = @"";
     NSMutableArray *menu = [NSMutableArray new];
     NSArray *contentRobot = [data objectForKey:@"content_robot"] ?: [NSArray new];
@@ -102,7 +106,7 @@
     return botMessage;
 }
 
-+ (MQBotMenuMessage *)getEmbedMenuBotMessage:(NSDictionary *)data {
+- (MQBotMenuMessage *)getEmbedMenuBotMessage:(NSDictionary *)data {
     NSArray *items = data[@"items"];
     NSMutableArray *menu = [NSMutableArray new];
     if ([items isKindOfClass:[NSArray class]]) {
@@ -122,7 +126,7 @@
     return [[MQBotMenuMessage alloc] initWithContent:content menu:menu];
 }
 
-+ (MQBaseMessage *)getTextMessage:(NSDictionary *)data {
+- (MQBaseMessage *)getTextMessage:(NSDictionary *)data {
     MQBaseMessage *message = [self tryToGetRichTextMessage:data];
     if (message) {
         //如果是富文本cell，直接返回
@@ -135,7 +139,7 @@
     }
 }
 
-+ (MQBaseMessage *)tryToGetRichTextMessage:(NSDictionary *)data {
+- (MQBaseMessage *)tryToGetRichTextMessage:(NSDictionary *)data {
     id content = [[data objectForKey:@"content_robot"] firstObject][@"rich_text"];
     if (content) {
         MQBotRichTextMessage *botRichTextMessage;

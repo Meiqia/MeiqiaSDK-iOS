@@ -380,6 +380,11 @@
 + (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action;
 
 /**
+ 获取配置的 ticket 类别
+ */
++ (void)getTicketCategoryComplete:(void(^)(NSArray *categories))action;
+
+/**
  *  提交留言表单
  *
  *  @param message 留言消息

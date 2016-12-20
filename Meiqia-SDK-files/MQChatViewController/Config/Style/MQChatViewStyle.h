@@ -68,33 +68,28 @@ typedef NS_ENUM (NSUInteger, MQChatViewStyleType)
 
 /**
  * 设置发送过来的message的文字颜色；
- * @param textColor 文字颜色
  */
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 
 /**
  *  设置发送过来的message气泡颜色
  *
- *  @param bubbleColor 气泡颜色
  */
 @property (nonatomic, copy) UIColor *incomingBubbleColor;
 
 /**
  * 设置发送出去的message的文字颜色；
- * @param textColor 文字颜色
  */
 @property (nonatomic, copy) UIColor *outgoingMsgTextColor;
 
 /**
  *  设置发送的message气泡颜色
  *
- *  @param bubbleColor 气泡颜色
  */
 @property (nonatomic, copy) UIColor *outgoingBubbleColor;
 
 /**
  * 设置事件流的显示文字的颜色；
- * @param textColor 文字颜色
  */
 @property (nonatomic, copy) UIColor *eventTextColor;
 
@@ -139,8 +134,6 @@ typedef NS_ENUM (NSUInteger, MQChatViewStyleType)
 
 /**
  *  设置底部自定义发送图片的按钮图片；
- *  @param image 图片发送按钮image
- *  @param highlightedImage 图片发送按钮选中image
  */
 @property (nonatomic, strong) UIImage *photoSenderImage;
 @property (nonatomic, strong) UIImage *photoSenderHighlightedImage;
