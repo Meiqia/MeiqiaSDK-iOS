@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Meiqia"
-  s.version          = "3.3.4"
+  s.version          = "3.3.4.1"
   s.summary          = "美洽官方 SDK for iOS"
   s.description      = "美洽官方的 iOS SDK"
 
