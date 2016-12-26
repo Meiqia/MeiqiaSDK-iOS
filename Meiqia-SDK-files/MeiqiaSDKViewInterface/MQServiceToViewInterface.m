@@ -7,7 +7,7 @@
 //
 
 #import "MQServiceToViewInterface.h"
-#import <MeiQiaSDK/MeiQiaSDK.h>
+#import <MeiQiaSDK/MeiqiaSDK.h>
 #import "MQBundleUtil.h"
 #import "MQChatFileUtil.h"
 #import "NSArray+MQFunctional.h"

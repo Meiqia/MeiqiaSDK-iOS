@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "UIView+MQLayout.h"
 #import "NSArray+MQFunctional.h"
-#import <MeiqiaSDK/MeiqiaSDK.h>
+#import <MeiQiaSDK/MeiqiaSDK.h>
 
 #define TextFieldLimit 100
 

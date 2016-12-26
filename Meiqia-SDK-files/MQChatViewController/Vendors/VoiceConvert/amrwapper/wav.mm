@@ -16,7 +16,7 @@
  * -------------------------------------------------------------------
  */
 
-#import <UIKit/UIkit.h>
+#import <UIKit/UIKit.h>
 #include "wav.h"
 
 void WavWriter::writeString(const char *str) {

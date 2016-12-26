@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <MeiqiaSDK/MQEnterprise.h>
+#import <MeiQiaSDK/MQEnterprise.h>
 
 @interface MQMessageFormViewService : NSObject
 

@@ -10,7 +10,7 @@
 #import "MQChatViewManager.h"
 #import "MQChatDeviceUtil.h"
 #import "DevelopViewController.h"
-#import <MeiQiaSDK/MeiQiaSDK.h>
+#import <MeiQiaSDK/MeiqiaSDK.h>
 #import "NSArray+MQFunctional.h"
 #import "MQBundleUtil.h"
 #import "MQAssetUtil.h"
