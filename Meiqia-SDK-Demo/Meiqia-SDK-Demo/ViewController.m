@@ -59,6 +59,29 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onlineSuccessed) name:MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
+    
+    [self getUnreadMessageswithIds:@[@"123",@"111",@"3"] complete:^(NSArray *messages, NSString *id, NSString *clientId) {
+        NSLog(@"message count: %d, client id:%@", (int)messages.count, clientId);
+    }];
+}
+
+- (void)_getUnreadMessages:(NSArray *)ids index:(NSUInteger)index complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
+    [MQManager refreshLocalClientWithCustomizedId:ids[index] complete:^(NSString *clientId) {
+        NSLog(@"getting for (%@ - %@)",ids[index], clientId);
+        [MQManager getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+            NSLog(@"got %d messages for (%@ - %@)", (int)messages.count, [MQManager getCurrentCustomizedId], clientId);
+            if (index < ids.count - 1) {
+                [self _getUnreadMessages:ids index:index + 1 complete:action];
+                action(messages, [MQManager getCurrentCustomizedId], [MQManager getCurrentClientId]);
+            } else {
+                action(messages, [MQManager getCurrentCustomizedId], [MQManager getCurrentClientId]);
+            }
+        }];
+    }];
+}
+
+- (void)getUnreadMessageswithIds:(NSArray *)ids complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
+    [self _getUnreadMessages:ids index:0 complete:action];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
