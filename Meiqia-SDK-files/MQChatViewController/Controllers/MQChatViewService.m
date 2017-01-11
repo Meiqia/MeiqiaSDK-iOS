@@ -1074,7 +1074,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //如果没有获取更多的历史消息，则也需要通知界面取消刷新indicator
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didGetHistoryMessagesWithCellNumber:isLoadOver:)]) {
-            [self.delegate didGetHistoryMessagesWithCellNumber:cellNumber isLoadOver:messageNumber < kMQChatGetHistoryMessageNumber];
+            [self.delegate didGetHistoryMessagesWithCellNumber:cellNumber isLoadOver:messageNumber == 0];
         }
     }
 }
