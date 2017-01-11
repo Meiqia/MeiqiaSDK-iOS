@@ -910,7 +910,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)sendPreSendMessages {
-    if ([MQServiceToViewInterface getCurrentAgentStatus] == MQChatAgentStatusOnDuty) {
+//    if ([MQServiceToViewInterface getCurrentAgentStatus] == MQChatAgentStatusOnDuty) {
         for (id messageContent in [MQChatViewConfig sharedConfig].preSendMessages) {
             if ([messageContent isKindOfClass:NSString.class]) {
                 [self sendTextMessageWithContent:messageContent];
@@ -920,7 +920,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
         
         [MQChatViewConfig sharedConfig].preSendMessages = nil;
-    }
+//    }
 }
 
 //获取顾客信息
