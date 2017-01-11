@@ -17,7 +17,7 @@ static const CGFloat ButtonHeight = 37;
 static const NSUInteger DefaultRecentEmojisMaintainedCount = 50;
 
 static NSString *const segmentRecentName = @"Recent";
-NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
+NSString *const MQRecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 
 
 @interface MQAGEmojiKeyboardView () <UIScrollViewDelegate, MQAGEmojiPageViewDelegate>
@@ -93,7 +93,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
 
 // recent emojis are backed in NSUserDefaults to save them across app restarts.
 - (NSMutableArray *)recentEmojis {
-  NSArray *emojis = [[NSUserDefaults standardUserDefaults] arrayForKey:RecentUsedEmojiCharactersKey];
+  NSArray *emojis = [[NSUserDefaults standardUserDefaults] arrayForKey:MQRecentUsedEmojiCharactersKey];
   NSMutableArray *recentEmojis = [emojis mutableCopy];
   if (recentEmojis == nil) {
     recentEmojis = [NSMutableArray array];
@@ -109,7 +109,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
     NSIndexSet *indexesToBeRemoved = [NSIndexSet indexSetWithIndexesInRange:indexRange];
     [recentEmojis removeObjectsAtIndexes:indexesToBeRemoved];
   }
-  [[NSUserDefaults standardUserDefaults] setObject:recentEmojis forKey:RecentUsedEmojiCharactersKey];
+  [[NSUserDefaults standardUserDefaults] setObject:recentEmojis forKey:MQRecentUsedEmojiCharactersKey];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame dataSource:(id<MQAGEmojiKeyboardViewDataSource>)dataSource {
