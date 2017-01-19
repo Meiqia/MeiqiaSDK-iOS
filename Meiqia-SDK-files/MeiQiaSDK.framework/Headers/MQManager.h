@@ -15,7 +15,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.3.4.1"
+#define MQSDKVersion @"3.3.5"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -41,8 +41,10 @@
 /// 注意不要使用 self, 该 block 会被 retain，使用 self 会导致调用的类无法被释放。
 + (void)addStateObserverWithBlock:(StateChangeBlock)block withKey:(NSString *)key;
 
+/// 移除已注册的状态观察者
 + (void)removeStateChangeObserverWithKey:(NSString *)key;
 
+/// 获取当前的状态
 + (MQState)getCurrentState;
 
 /**
@@ -64,12 +66,12 @@
  * App进入后台后，美洽推送给开发者服务端的消息数据格式中，会有deviceToken的字段。
  *
  * @param deviceToken 设备唯一标识，用于推送服务;
- * @warning 初始化前后均可调用
+ * @warning 初始化前后均可调用，如果使用 swift，建议使用 registerDeviceTokenString:(NSString *)token 代替
  */
 + (void)registerDeviceToken:(NSData *)deviceToken;
 
 /**
- @param deviceToken 去掉特殊符号和空格之后的字符串
+ @param deviceToken 去掉特殊符号和空格之后的字符串，若使用 swift 集成 MeiQiaSDK 的时候，NSData 会被自动转为 Data，这个时候无法用上面的方法正确获取 deviceToken，需要使用这个方法。
  */
 + (void)registerDeviceTokenString:(NSString *)token;
 

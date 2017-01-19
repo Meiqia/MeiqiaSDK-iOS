@@ -60,9 +60,9 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
     
-    [self getUnreadMessageswithIds:@[@"123",@"111",@"3"] complete:^(NSArray *messages, NSString *id, NSString *clientId) {
-        NSLog(@"message count: %d, client id:%@", (int)messages.count, clientId);
-    }];
+//    [self getUnreadMessageswithIds:@[@"123",@"111",@"3"] complete:^(NSArray *messages, NSString *id, NSString *clientId) {
+//        NSLog(@"message count: %d, client id:%@", (int)messages.count, clientId);
+//    }];
 }
 
 - (void)_getUnreadMessages:(NSArray *)ids index:(NSUInteger)index complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
