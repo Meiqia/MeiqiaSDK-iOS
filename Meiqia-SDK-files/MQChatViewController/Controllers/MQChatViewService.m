@@ -36,6 +36,8 @@
 #import "MQBotWebViewBubbleAnswerCellModel.h"
 #import "MQCustomizedUIText.h"
 #import "NSArray+MQFunctional.h"
+#import "MQToast.h"
+#import "NSError+MQConvenient.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -801,17 +803,25 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)onlineWithClientId {
     __weak typeof(self) weakSelf = self;
-    [self.serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages) {
+    [self.serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
-        [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
+        if (error == nil) {
+            [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
+        } else {
+            [MQToast showToast:[error shortDescription] duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        }
     } receiveMessageDelegate:self];
 }
 
 - (void)onlineWithCustomizedId {
     __weak typeof(self) weakSelf = self;
-    [self.serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages) {
+    [self.serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
-        [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
+        if (error == nil) {
+            [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
+        } else {
+            [MQToast showToast:[error shortDescription] duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        }
     } receiveMessageDelegate:self];
 }
 

@@ -56,7 +56,7 @@
         [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
         
         if (![transitionContext transitionWasCancelled] && !self.isPresenting) {
-            [[UIApplication sharedApplication].keyWindow addSubview:self.toViewController.view];
+//            [[UIApplication sharedApplication].keyWindow addSubview:self.toViewController.view];
         }
     }];
 }
