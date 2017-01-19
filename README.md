@@ -5,7 +5,7 @@ permalink: /docs/meiqia-ios-sdk/
 edition: m2016
 ---
 
-#MeiQiaSDK [![](https://travis-ci.org/Meiqia/MeiqiaSDK-iOS.svg?branch=master)]() [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods compatible](https://img.shields.io/cocoapods/v/Meiqia.svg)](#cocoapods) [![GitHub release](https://img.shields.io/github/release/meiqia/MeiqiaSDK-iOS.svg)](https://github.com/ReactiveCocoa/ReactiveCocoa/releases)
+#MeiQiaSDK [![](https://travis-ci.org/Meiqia/MeiqiaSDK-iOS.svg?branch=master)]() [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods compatible](https://img.shields.io/cocoapods/v/Meiqia.svg)](#cocoapods) [![GitHub release](https://img.shields.io/github/release/meiqia/MeiqiaSDK-iOS.svg)](https://github.com/Meiqia/MeiqiaSDK-iOS/releases)
 
 > 在您阅读此文档之前，我们假定您已经具备了基础的 iOS 应用开发经验，并能够理解相关基础概念。
 
@@ -112,7 +112,6 @@ github "meiqia/MeiqiaSDK-iOS"
 
 4. 将 Meiqia.framework 拖入 Embedded Binearies 中
 
-5. 完成
 
 # 快速集成 SDK
 
@@ -646,8 +645,6 @@ MQAgent *agent = [MQManager getCurrentAgent];
 
 当前仅支持一种推送方案，即美洽服务端发送消息至开发者的服务端，开发者再推送消息到 App，可见 [SDK 工作流程](#SDK-工作流程) 。
 
-未来美洽 iOS SDK 将会支持直接推送消息给 App，即开发者可上传 App 的推送证书至美洽，美洽将推送消息至苹果 APNS 服务器。目前正在紧张开发中。
-
 ### 设置接收推送的服务器地址
 
 推送消息将会发送至开发者的服务器。
@@ -869,6 +866,14 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 更新日志
+
+**v3.3.5 2017 年 1 月 20 日**
+* 优化错误处理
+* 移除发送预发送消息时，必须客服已经成功分配的限制
+* 移除可能引起开发者工程对象名冲突的变量命名
+* 按时间获取 n 条消息时，当服务器未返回正确数量消息的时候，不再显示为到达末页
+* 修复批量获取消息的时候，日期 cell 显示错误的问题
+* 修复评价按钮没有按照设置隐藏
 
 **v3.3.4.1 2016 年 12 月 13 日**
 
