@@ -450,6 +450,7 @@
 		E4B95AA01DE687ED00BECBB5 /* libopencore-amrnb.a in Resources */ = {isa = PBXBuildFile; fileRef = E4B958991DE5A80100BECBB5 /* libopencore-amrnb.a */; };
 		E4B95AA11DE687ED00BECBB5 /* libopencore-amrwb.a in Resources */ = {isa = PBXBuildFile; fileRef = E4B9589A1DE5A80100BECBB5 /* libopencore-amrwb.a */; };
 		E4B95AA21DE687F000BECBB5 /* MQChatViewAsset.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E4B957C81DE5A80000BECBB5 /* MQChatViewAsset.bundle */; };
+		E4CB2E8E1E30656C00CAFD23 /* NSError+MQConvenient.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CB2E8D1E30656C00CAFD23 /* NSError+MQConvenient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -791,6 +792,8 @@
 		E4B958FD1DE5A80100BECBB5 /* MQMessageFormTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormTextView.m; sourceTree = "<group>"; };
 		E4B958FF1DE5A80100BECBB5 /* MQMessageFormImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormImageView.h; sourceTree = "<group>"; };
 		E4B959001DE5A80100BECBB5 /* MQMessageFormImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormImageView.m; sourceTree = "<group>"; };
+		E4CB2E8C1E30656C00CAFD23 /* NSError+MQConvenient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+MQConvenient.h"; sourceTree = "<group>"; };
+		E4CB2E8D1E30656C00CAFD23 /* NSError+MQConvenient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+MQConvenient.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1012,6 +1015,8 @@
 				E4B957D61DE5A80000BECBB5 /* UIViewController+MQHieriachy.m */,
 				E4B957D71DE5A80000BECBB5 /* UIViewController+MQOrientationFix.h */,
 				E4B957D81DE5A80000BECBB5 /* UIViewController+MQOrientationFix.m */,
+				E4CB2E8C1E30656C00CAFD23 /* NSError+MQConvenient.h */,
+				E4CB2E8D1E30656C00CAFD23 /* NSError+MQConvenient.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2014,6 +2019,7 @@
 				E4B9592A1DE5A80100BECBB5 /* MQVoiceMessage.m in Sources */,
 				E4B959121DE5A80100BECBB5 /* MQChatViewStyle.m in Sources */,
 				E4B959681DE5A80100BECBB5 /* amrFileCodec.mm in Sources */,
+				E4CB2E8E1E30656C00CAFD23 /* NSError+MQConvenient.m in Sources */,
 				E4B9596D1DE5A80100BECBB5 /* MQEvaluationView.m in Sources */,
 				E4B959461DE5A80100BECBB5 /* MQTipsCell.m in Sources */,
 				E4B9590A1DE5A80100BECBB5 /* UIColor+MQHex.m in Sources */,

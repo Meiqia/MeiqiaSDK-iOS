@@ -403,7 +403,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     } else if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         item = [[UIBarButtonItem alloc]initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
     } else {
-        if (![MQChatViewConfig sharedConfig].navBarRightButton && !hidden) {
+        if (![MQChatViewConfig sharedConfig].navBarRightButton && !hidden && [MQChatViewConfig sharedConfig].enableEvaluationButton) {
             item =  [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
         }
     }

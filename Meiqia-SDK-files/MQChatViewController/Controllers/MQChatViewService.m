@@ -36,6 +36,8 @@
 #import "MQBotWebViewBubbleAnswerCellModel.h"
 #import "MQCustomizedUIText.h"
 #import "NSArray+MQFunctional.h"
+#import "MQToast.h"
+#import "NSError+MQConvenient.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -641,7 +643,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             self.cellModels = [[newCellModels arrayByAddingObjectsFromArray:self.cellModels] mutableCopy];
             break;
         case 0: // bottom
-            [self addMessageDateCellAtLastWithCurrentCellModel:[newCellModels lastObject]]; // 如果需要，底部插入时间
+            [self addMessageDateCellAtLastWithCurrentCellModel:[newCellModels firstObject]]; // 如果需要，底部插入时间
             [self.cellModels addObjectsFromArray:newCellModels];
             break;
         default:
@@ -801,17 +803,25 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)onlineWithClientId {
     __weak typeof(self) weakSelf = self;
-    [self.serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages) {
+    [self.serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
-        [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
+        if (error == nil) {
+            [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
+        } else {
+            [MQToast showToast:[error shortDescription] duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        }
     } receiveMessageDelegate:self];
 }
 
 - (void)onlineWithCustomizedId {
     __weak typeof(self) weakSelf = self;
-    [self.serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages) {
+    [self.serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
-        [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
+        if (error == nil) {
+            [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
+        } else {
+            [MQToast showToast:[error shortDescription] duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        }
     } receiveMessageDelegate:self];
 }
 
@@ -910,7 +920,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)sendPreSendMessages {
-    if ([MQServiceToViewInterface getCurrentAgentStatus] == MQChatAgentStatusOnDuty) {
+//    if ([MQServiceToViewInterface getCurrentAgentStatus] == MQChatAgentStatusOnDuty) {
         for (id messageContent in [MQChatViewConfig sharedConfig].preSendMessages) {
             if ([messageContent isKindOfClass:NSString.class]) {
                 [self sendTextMessageWithContent:messageContent];
@@ -920,7 +930,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
         
         [MQChatViewConfig sharedConfig].preSendMessages = nil;
-    }
+//    }
 }
 
 //获取顾客信息
@@ -1074,7 +1084,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //如果没有获取更多的历史消息，则也需要通知界面取消刷新indicator
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didGetHistoryMessagesWithCellNumber:isLoadOver:)]) {
-            [self.delegate didGetHistoryMessagesWithCellNumber:cellNumber isLoadOver:messageNumber < kMQChatGetHistoryMessageNumber];
+            [self.delegate didGetHistoryMessagesWithCellNumber:cellNumber isLoadOver:messageNumber == 0];
         }
     }
 }

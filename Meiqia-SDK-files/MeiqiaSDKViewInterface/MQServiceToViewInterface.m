@@ -230,7 +230,7 @@
 }
 
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId
-                                success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages))success
+                                success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error))success
                  receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
 {
     self.serviceToViewDelegate = receiveMessageDelegate;
@@ -238,17 +238,17 @@
         NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
         if (result == MQClientOnlineResultSuccess) {
             NSString *agentType = [agent convertPrivilegeToString];
-            success(true, agent.nickname, agentType, toMessages);
+            success(true, agent.nickname, agentType, toMessages, nil);
         } else if(result == MQClientOnlineResultNotScheduledAgent) {
-            success(false, @"", @"", toMessages);
+            success(false, @"", @"", toMessages,nil);
         }
     } failure:^(NSError *error) {
-        success(false, @"", @"", nil);
+        success(false, @"", @"", nil, error);
     } receiveMessageDelegate:self];
 }
 
 - (void)setClientOnlineWithClientId:(NSString *)clientId
-                            success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages))success
+                            success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error))success
              receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate
 {
     self.serviceToViewDelegate = receiveMessageDelegate;
@@ -257,12 +257,12 @@
         if (result == MQClientOnlineResultSuccess) {
             NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messages];
             NSString *agentType = [agent convertPrivilegeToString];
-            success(true, agent.nickname, agentType, toMessages);
+            success(true, agent.nickname, agentType, toMessages, nil);
         } else if((result == MQClientOnlineResultNotScheduledAgent) || (result == MQClientOnlineResultBlacklisted))  {
-            success(false, @"", @"", nil);
+            success(false, @"", @"", nil, nil);
         }
     } failure:^(NSError *error) {
-        success(false, @"初始化失败，请重新打开", @"", nil);
+        success(false, @"初始化失败，请重新打开", @"", nil, error);
     } receiveMessageDelegate:self];
 }
 

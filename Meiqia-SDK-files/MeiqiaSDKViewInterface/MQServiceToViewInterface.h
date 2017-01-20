@@ -152,7 +152,7 @@
  * @param ;
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId
-                                success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages))success
+                                success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error))success
                  receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**
@@ -160,7 +160,7 @@
  * @param ;
  */
 - (void)setClientOnlineWithClientId:(NSString *)clientId
-                            success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages))success
+                            success:(void (^)(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error))success
              receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**
