@@ -69,27 +69,26 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     self.requestCount --;
     
-    
     if (self.requestCount == 0) {
         [self.loadingIndicator stopAnimating];
-        CGFloat height = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
-        if (self.loadComplete) {
-            self.loadComplete(height);
-        }
     }
     
+    CGFloat height = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
+    if (self.loadComplete) {
+        self.loadComplete(height);
+    }
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     self.requestCount --;
     
-    
     if (self.requestCount == 0) {
         [self.loadingIndicator stopAnimating];
-        CGFloat height = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
-        if (self.loadComplete) {
-            self.loadComplete(height);
-        }
+    }
+    
+    CGFloat height = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
+    if (self.loadComplete) {
+        self.loadComplete(height);
     }
 }
 @end
