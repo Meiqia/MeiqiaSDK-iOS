@@ -103,7 +103,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy  ) NSString             *conversationId;
 
 /** 消息是否已读 */
-@property (nonatomic, assign) BOOL                 isRead;
+@property (nonatomic, assign) bool                 isRead;
 
 /*
  该消息对应的 enterprise id, 不一定有值，也不存数据库，仅用来判断该消息属于哪个企业，用来切换数据库, 如果这个地方没有值，查看 agent 对象里面的 enterpriseId 字段

@@ -177,9 +177,7 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
         }
     }
     
-    if (cellNumber > 1) {
-        [self scrollToCellIndex:cellNumber-1];
-    }
+    [self scrollToCellIndex:MAX(cellNumber-1, 0)];
 }
 
 - (void)scrollToCellIndex:(NSInteger)index {
@@ -216,7 +214,7 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
     if (enableBottomPullRefresh) {
         [self.bottomRefreshView scrollViewDidScroll:scrollView];
     }
-    BOOL didPullAutoTopRefresh = (scrollView.contentOffset.y < 0) && enableTopAutoRefresh;
+    BOOL didPullAutoTopRefresh = (scrollView.contentOffset.y < -40) && enableTopAutoRefresh;
     if (didPullAutoTopRefresh && didPullRefreshView && enableTopAutoRefresh) {
         [self startLoadingAutoTopRefreshView];
     }
