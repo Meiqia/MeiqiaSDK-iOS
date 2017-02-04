@@ -810,7 +810,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         // 设置顾客的状态
         weakSelf.clientStatus = MQClientStatusOnline;
         
-        if (error == nil) {
+        if ([error reason].length == 0) {
             [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
         } else {
             [MQToast showToast:[error shortDescription] duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
@@ -827,7 +827,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         // 设置顾客的状态
         weakSelf.clientStatus = MQClientStatusOnline;
         
-        if (error == nil) {
+        if ([error reason].length == 0) {
             [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
         } else {
             [MQToast showToast:[error shortDescription] duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
