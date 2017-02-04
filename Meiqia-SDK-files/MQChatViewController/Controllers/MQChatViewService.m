@@ -805,6 +805,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     __weak typeof(self) weakSelf = self;
     [self.serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
+        // 设置顾客已上线
+        didSetOnline = true;
+        // 设置顾客的状态
+        weakSelf.clientStatus = MQClientStatusOnline;
+        
         if (error == nil) {
             [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
         } else {
@@ -817,6 +822,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     __weak typeof(self) weakSelf = self;
     [self.serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
+        // 设置顾客已上线
+        didSetOnline = true;
+        // 设置顾客的状态
+        weakSelf.clientStatus = MQClientStatusOnline;
+        
         if (error == nil) {
             [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
         } else {
@@ -828,12 +838,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)handleClientOnlineWithRreceivedMessages:(NSArray *)receivedMessages
                          completeStatus:(BOOL)completion
 {
-    // 设置顾客已上线
-    didSetOnline = true;
-    
-    // 设置顾客的状态
-    self.clientStatus = MQClientStatusOnline;
-    
     if (receivedMessages) {
         [self saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
         [self reloadChatTableView];
