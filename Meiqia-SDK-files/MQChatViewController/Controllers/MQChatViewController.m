@@ -429,8 +429,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #pragma MQInputBarDelegate
 -(BOOL)sendTextMessage:(NSString*)text {
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
-    if (chatViewService.clientStatus == MQClientStatusOnlining || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
-        NSString *alertText = chatViewService.clientStatus == MQClientStatusOnlining ? @"cannot_text_client_is_onlining" : @"send_to_fast";
+    if (chatViewService.clientStatus == MQStateAllocatingAgent || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
+        NSString *alertText = chatViewService.clientStatus == MQStateAllocatingAgent ? @"cannot_text_client_is_onlining" : @"send_to_fast";
         [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view];
         [[(MQTabInputContentView *)self.chatInputBar.contentView textField] setText:text];
         return NO;
@@ -453,8 +453,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
-    if (chatViewService.clientStatus == MQClientStatusOnlining || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
-        NSString *alertText = chatViewService.clientStatus == MQClientStatusOnlining ? @"cannot_text_client_is_onlining" : @"send_to_fast";
+    if (chatViewService.clientStatus == MQStateAllocatingAgent || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
+        NSString *alertText = chatViewService.clientStatus == MQStateAllocatingAgent ? @"cannot_text_client_is_onlining" : @"send_to_fast";
         [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view];
         return ;
     }
@@ -500,8 +500,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
-    if (chatViewService.clientStatus == MQClientStatusOnlining || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
-        NSString *alertText = chatViewService.clientStatus == MQClientStatusOnlining ? @"cannot_text_client_is_onlining" : @"send_to_fast";
+    if (chatViewService.clientStatus == MQStateAllocatingAgent || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
+        NSString *alertText = chatViewService.clientStatus == MQStateAllocatingAgent ? @"cannot_text_client_is_onlining" : @"send_to_fast";
         [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view];
         return ;
     }

@@ -14,14 +14,6 @@
 #import "MQServiceToViewInterface.h"
 #endif
 
-///TODO: 稍后用这个状态替换目前的本地状态变量
-typedef NS_ENUM(NSUInteger, MQClientStatus) {
-    MQClientStatusOffLine = 0,
-    MQClientStatusPendingOnPreChatForm,
-    MQClientStatusOnlining,
-    MQClientStatusOnline,
-};
-
 @protocol MQChatViewServiceDelegate <NSObject>
 
 
@@ -111,7 +103,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 @property (nonatomic, assign) CGFloat chatViewWidth;
 
 /** 顾客当前的状态 */
-@property (nonatomic, assign) MQClientStatus clientStatus;
+@property (nonatomic, assign) MQState clientStatus;
 
 - (instancetype)initWithDelegate:(id<MQChatViewServiceDelegate>)delegate errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
 

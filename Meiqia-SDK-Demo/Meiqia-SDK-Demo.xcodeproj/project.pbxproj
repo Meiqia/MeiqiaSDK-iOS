@@ -45,7 +45,6 @@
 		E4B959041DE5A80100BECBB5 /* MQShareTransitioningDelegateImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B957C41DE5A80000BECBB5 /* MQShareTransitioningDelegateImpl.m */; };
 		E4B959051DE5A80100BECBB5 /* MQTransitioningAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B957C61DE5A80000BECBB5 /* MQTransitioningAnimation.m */; };
 		E4B959061DE5A80100BECBB5 /* MQChatViewAsset.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E4B957C81DE5A80000BECBB5 /* MQChatViewAsset.bundle */; };
-		E4B959071DE5A80100BECBB5 /* MQChatViewAsset.bundle.zip in Resources */ = {isa = PBXBuildFile; fileRef = E4B957C91DE5A80000BECBB5 /* MQChatViewAsset.bundle.zip */; };
 		E4B959081DE5A80100BECBB5 /* NSArray+MQFunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B957CC1DE5A80000BECBB5 /* NSArray+MQFunctional.m */; };
 		E4B959091DE5A80100BECBB5 /* NSNull+MQSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B957CE1DE5A80000BECBB5 /* NSNull+MQSafe.m */; };
 		E4B9590A1DE5A80100BECBB5 /* UIColor+MQHex.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B957D01DE5A80000BECBB5 /* UIColor+MQHex.m */; };
@@ -529,7 +528,6 @@
 		E4B957C51DE5A80000BECBB5 /* MQTransitioningAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTransitioningAnimation.h; sourceTree = "<group>"; };
 		E4B957C61DE5A80000BECBB5 /* MQTransitioningAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTransitioningAnimation.m; sourceTree = "<group>"; };
 		E4B957C81DE5A80000BECBB5 /* MQChatViewAsset.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MQChatViewAsset.bundle; sourceTree = "<group>"; };
-		E4B957C91DE5A80000BECBB5 /* MQChatViewAsset.bundle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = MQChatViewAsset.bundle.zip; sourceTree = "<group>"; };
 		E4B957CB1DE5A80000BECBB5 /* NSArray+MQFunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MQFunctional.h"; sourceTree = "<group>"; };
 		E4B957CC1DE5A80000BECBB5 /* NSArray+MQFunctional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+MQFunctional.m"; sourceTree = "<group>"; };
 		E4B957CD1DE5A80000BECBB5 /* NSNull+MQSafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+MQSafe.h"; sourceTree = "<group>"; };
@@ -993,7 +991,6 @@
 			isa = PBXGroup;
 			children = (
 				E4B957C81DE5A80000BECBB5 /* MQChatViewAsset.bundle */,
-				E4B957C91DE5A80000BECBB5 /* MQChatViewAsset.bundle.zip */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -1929,7 +1926,6 @@
 				CCE9D1191C1812F6004E862E /* LaunchScreen.storyboard in Resources */,
 				CCE9D1161C1812F6004E862E /* Assets.xcassets in Resources */,
 				CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */,
-				E4B959071DE5A80100BECBB5 /* MQChatViewAsset.bundle.zip in Resources */,
 				E40C2C7B1D2B710300744577 /* testdata.txt in Resources */,
 				CCE9D1141C1812F6004E862E /* Main.storyboard in Resources */,
 				E4B959061DE5A80100BECBB5 /* MQChatViewAsset.bundle in Resources */,

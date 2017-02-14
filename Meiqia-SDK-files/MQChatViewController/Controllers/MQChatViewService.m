@@ -63,7 +63,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 @implementation MQChatViewService {
 #ifdef INCLUDE_MEIQIA_SDK
     BOOL addedNoAgentTip;  //是否已经说明了没有客服标记
-    BOOL didSetOnline;     //用来判断顾客是否尝试登陆了
 #endif
     //当前界面上显示的 message
 //    NSMutableSet *currentViewMessageIdSet;
@@ -73,7 +72,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (self = [super init]) {
         self.cellModels = [[NSMutableArray alloc] init];
         addedNoAgentTip = false;
-        didSetOnline    = false;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backFromBackground) name:UIApplicationWillEnterForegroundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanTimer) name:MQ_NOTIFICATION_CHAT_END object:nil];
@@ -128,6 +126,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
         [self setClientOnline];
     }
+}
+
+- (MQState)clientStatus {
+    return [MQManager getCurrentState];
 }
 
 #pragma 增加cellModel并刷新tableView
@@ -786,11 +788,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #pragma 顾客上线的逻辑
 //上线
 - (void)setClientOnline {
-    if (self.clientStatus == MQClientStatusOnlining || self.clientStatus == MQClientStatusPendingOnPreChatForm) {
+    if (self.clientStatus == MQStateAllocatingAgent) {
         return;
     }
-    
-    self.clientStatus = MQClientStatusOnlining;
     
     [MQServiceToViewInterface setScheduledAgentWithAgentId:[MQChatViewConfig sharedConfig].scheduledAgentId agentGroupId:[MQChatViewConfig sharedConfig].scheduledGroupId scheduleRule:[MQChatViewConfig sharedConfig].scheduleRule];
     
@@ -828,12 +828,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)handleClientOnlineWithRreceivedMessages:(NSArray *)receivedMessages
                          completeStatus:(BOOL)completion
 {
-    // 设置顾客已上线
-    didSetOnline = true;
-    
-    // 设置顾客的状态
-    self.clientStatus = MQClientStatusOnline;
-    
     if (receivedMessages) {
         [self saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
         [self reloadChatTableView];
@@ -1071,9 +1065,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma MQServiceToViewInterfaceDelegate
 - (void)didReceiveHistoryMessages:(NSArray *)messages {
-    if (!didSetOnline) {
-        return;
-    }
     NSInteger cellNumber = 0;
     NSInteger messageNumber = 0;
     if (messages.count > 0) {
@@ -1209,7 +1200,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 {
     [self playSendedMessageSound];
 
-    if ([MQServiceToViewInterface getCurrentAgentName].length == 0 && self.clientStatus != MQClientStatusOnlining) {
+    if ([MQServiceToViewInterface getCurrentAgentName].length == 0 && self.clientStatus != MQStateAllocatingAgent) {
         [self addNoAgentTip];
     }
     NSInteger index = [self getIndexOfCellWithMessageId:oldMessageId];
