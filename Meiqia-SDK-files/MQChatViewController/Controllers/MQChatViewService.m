@@ -805,7 +805,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     __weak typeof(self) weakSelf = self;
     [self.serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
-        if (error == nil) {
+        // 设置顾客已上线
+        didSetOnline = true;
+        // 设置顾客的状态
+        weakSelf.clientStatus = MQClientStatusOnline;
+        
+        if ([error reason].length == 0) {
             [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
         } else {
             [MQToast showToast:[error shortDescription] duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
@@ -817,7 +822,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     __weak typeof(self) weakSelf = self;
     [self.serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
-        if (error == nil) {
+        // 设置顾客已上线
+        didSetOnline = true;
+        // 设置顾客的状态
+        weakSelf.clientStatus = MQClientStatusOnline;
+        
+        if ([error reason].length == 0) {
             [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
         } else {
             [MQToast showToast:[error shortDescription] duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
