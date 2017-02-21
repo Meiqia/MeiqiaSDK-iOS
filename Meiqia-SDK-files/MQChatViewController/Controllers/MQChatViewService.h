@@ -23,7 +23,7 @@
  *  @param cellNumber 需要显示的cell数量
  *  @param isLoadOver 是否已经获取完了历史消息
  */
-- (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver;
+- (void)didGetHistoryMessagesWithCommitTableAdjustment:(void(^)(void))commit;
 
 /**
  *  已经更新了这条消息的数据，通知tableView刷新界面
@@ -35,10 +35,17 @@
  */
 - (void)reloadChatTableView;
 
+/*
+ call after add model
+ */
+- (void)insertCellAtBottomForModelCount:(NSInteger)count;
+
+- (void)insertCellAtTopForModelCount:(NSInteger)count;
+
 /**
  *  通知viewController将tableView滚动到底部
  */
-- (void)scrollTableViewToBottom;
+- (void)scrollTableViewToBottomAnimated:(BOOL)animated;
 
 /**
  *  通知viewController收到了消息

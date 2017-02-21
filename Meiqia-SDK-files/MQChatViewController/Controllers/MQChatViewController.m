@@ -31,6 +31,7 @@
 #import "MQMessageFormViewManager.h"
 #import "MQPreChatFormListViewController.h"
 #import "MQAGEmojiKeyBoardView.h"
+#import "MQRefresh.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
@@ -234,11 +235,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
  * 初始化聊天的tableView
  */
 - (void)initChatTableView {
-//    [self setChatTableViewFrame];
     self.chatTableView = [[MQChatTableView alloc] initWithFrame:chatViewConfig.chatViewFrame style:UITableViewStylePlain];
     self.chatTableView.chatTableViewDelegate = self;
     self.chatTableView.delegate = self;
     [self.view addSubview:self.chatTableView];
+    
+    [self.chatTableView setupPullRefreshWithAction:^{
+        [chatViewService startGettingHistoryMessages];
+    }];
+    
+    [self.chatTableView.refreshView setText:[MQBundleUtil localizedStringForKey:@"pull_refresh_normal"] forStatus: MQRefreshStatusDraging];
+    [self.chatTableView.refreshView setText:[MQBundleUtil localizedStringForKey:@"pull_refresh_triggered"] forStatus: MQRefreshStatusTriggered];
+    [self.chatTableView.refreshView setText:[MQBundleUtil localizedStringForKey:@"no_more_messages"] forStatus: MQRefreshStatusEnd];
 }
 
 /**
@@ -297,25 +305,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if (cell.viewBottomEdge >= self.chatTableView.contentSize.height) {
         if (!self.chatTableView.isDragging && !self.chatTableView.tracking && !self.chatTableView.decelerating ) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self scrollTableViewToBottom];
+                [self scrollTableViewToBottomAnimated: NO];
             });
         }
     }
-}
-
-//下拉刷新，获取以前的消息
-- (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:1 isLoadOver:true];
-//    });
-    [chatViewService startGettingHistoryMessages];
-}
-
-//上拉刷新，获取更新的消息
-- (void)startLoadingBottomMessagesInTableView:(UITableView *)tableView {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.chatTableView finishLoadingBottomRefreshView];
-    });
 }
 
 - (void)tapNavigationRightBtn:(id)sender {
@@ -343,37 +336,57 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 #pragma UIScrollViewDelegate
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    [self.chatTableView scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    if (self.chatTableView.refreshView.status == MQRefreshStatusTriggered) {
+        [self.chatTableView startAnimation];
+    }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self.chatTableView scrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-    [self.chatTableView scrollViewDidEndScrollingAnimation:scrollView];
-}
-
-#pragma MQChatViewServiceDelegate
-
-- (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver{
-    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:cellNumber isLoadOver:isLoadOver];
+- (void)didGetHistoryMessagesWithCommitTableAdjustment:(void(^)(void))commitTableAdjustment {
+    [self.chatTableView stopAnimationCompletion:^{
+        CGFloat oldHeight = self.chatTableView.contentSize.height;
+        commitTableAdjustment();
+        CGFloat heightIncreatment = self.chatTableView.contentSize.height - oldHeight;
+        if (heightIncreatment > 0) {
+            heightIncreatment -= self.chatTableView.refreshView.bounds.size.height;
+            self.chatTableView.contentOffset = CGPointMake(0, heightIncreatment);
+            [self.chatTableView flashScrollIndicators];
+        } else {
+            [self.chatTableView setLoadEnded];
+        }
+    }];
 }
 
 - (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
     [self.chatTableView updateTableViewAtIndexPath:indexPath];
 }
 
-- (void)reloadChatTableView {
-    CGSize preContentSize = self.chatTableView.contentSize;
-    [self.chatTableView reloadData];
-    if (!CGSizeEqualToSize(preContentSize, self.chatTableView.contentSize)) {
-        [self scrollTableViewToBottom];
+- (void)insertCellAtBottomForModelCount:(NSInteger)count {
+    NSMutableArray *indexToAdd = [NSMutableArray new];
+    NSInteger currentCellCount = [self.chatTableView numberOfRowsInSection: 0];
+    for (int i = 0; i < count; i ++) {
+        [indexToAdd addObject:[NSIndexPath indexPathForRow:currentCellCount + i inSection:0]];
     }
+    [self.chatTableView insertRowsAtIndexPaths:indexToAdd withRowAnimation:(UITableViewRowAnimationBottom)];
 }
 
-- (void)scrollTableViewToBottom {
-    [self chatTableViewScrollToBottomWithAnimated:false];
+- (void)insertCellAtTopForModelCount:(NSInteger)count {
+    NSMutableArray *indexToAdd = [NSMutableArray new];
+    for (int i = 0; i < count; i ++) {
+        [indexToAdd insertObject:[NSIndexPath indexPathForRow:i inSection:0] atIndex: 0];
+    }
+    [self.chatTableView insertRowsAtIndexPaths:indexToAdd withRowAnimation:(UITableViewRowAnimationTop)];
+}
+
+- (void)reloadChatTableView {
+//    CGSize preContentSize = self.chatTableView.contentSize;
+    [self.chatTableView reloadData];
+//    if (!CGSizeEqualToSize(preContentSize, self.chatTableView.contentSize)) {
+//        [self scrollTableViewToBottomAnimated: NO];
+//    }
+}
+
+- (void)scrollTableViewToBottomAnimated:(BOOL)animated {
+    [self chatTableViewScrollToBottomWithAnimated: animated];
 }
 
 - (void)showEvaluationAlertView {
@@ -414,10 +427,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)didReceiveMessage {
     //判断是否显示新消息提示
     if ([self.chatTableView isTableViewScrolledToBottom]) {
-        [self chatTableViewScrollToBottomWithAnimated:true];
+        [self chatTableViewScrollToBottomWithAnimated: YES];
     } else {
         if ([MQChatViewConfig sharedConfig].enableShowNewMessageAlert) {
-            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:self.view];
+            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
         }
     }
 }
@@ -487,10 +500,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)chatTableViewScrollToBottomWithAnimated:(BOOL)animated {
     NSInteger cellCount = [self.chatTableView numberOfRowsInSection:0];
-    if (cellCount == 0) {
-        return;
-    }
-    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:cellCount-1 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
+    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow: MAX(cellCount - 1, 0) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
 - (void)beginRecord:(CGPoint)point {
@@ -647,8 +657,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma MQServiceToViewInterfaceErrorDelegate 后端返回的数据的错误委托方法
 - (void)getLoadHistoryMessageError {
-    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:0 isLoadOver:YES];
-    [MQToast showToast:[MQBundleUtil localizedStringForKey:@"load_history_message_error"] duration:1.0 window:self.view];
+//    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:0 isLoadOver:YES];
+    [self.chatTableView stopAnimationCompletion:^{
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"load_history_message_error"] duration:1.0 window:self.view];
+    }];
 }
 
 /**
