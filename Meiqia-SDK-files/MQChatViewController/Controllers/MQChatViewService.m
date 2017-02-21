@@ -196,7 +196,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         cellModel.sendStatus = MQChatMessageSendStatusSuccess;
         [self playSendedMessageSound];
-        [self reloadChatTableView];
     });
 #endif
 }
@@ -227,7 +226,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         cellModel.sendStatus = MQChatMessageSendStatusSuccess;
         [self playSendedMessageSound];
-        [self reloadChatTableView];
     });
 #endif
 }
@@ -243,12 +241,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     NSString *messageId = [[self.cellModels objectAtIndex:index] getCellMessageId];
     [MQServiceToViewInterface removeMessageInDatabaseWithId:messageId completion:nil];
     
-    // 删除界面上的 messageId set
-//    if (![currentViewMessageIdSet containsObject:messageId]) {
-//        [currentViewMessageIdSet removeObject:messageId];
-//    }
 #endif
     [self.cellModels removeObjectAtIndex:index];
+    [self.delegate removeCellAtIndex:index];
     //判断删除这个model的之前的model是否为date，如果是，则删除时间cellModel
     if (index < 0 || self.cellModels.count <= index-1) {
         return;
@@ -256,12 +251,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     
     id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index-1];
     if (cellModel && [cellModel isKindOfClass:[MQMessageDateCellModel class]]) {
-        // 删除界面上的 messageId set
-//        NSString *messageId = [[self.cellModels objectAtIndex:index-1] getCellMessageId];
-//        if (![currentViewMessageIdSet containsObject:messageId]) {
-//            [currentViewMessageIdSet removeObject:messageId];
-//        }
-        [self.cellModels removeObjectAtIndex:index-1];
+        [self.cellModels removeObjectAtIndex:index - 1];
+        [self.delegate removeCellAtIndex:index - 1];
         index --;
         
     }
@@ -269,12 +260,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (self.cellModels.count > index) {
         id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
         if (cellModel && [cellModel isKindOfClass:[MQTipsCellModel class]]) {
-            // 删除界面上的 messageId set
-//            NSString *messageId = [[self.cellModels objectAtIndex:index] getCellMessageId];
-//            if (![currentViewMessageIdSet containsObject:messageId]) {
-//                [currentViewMessageIdSet removeObject:messageId];
-//            }
             [self.cellModels removeObjectAtIndex:index];
+            [self.delegate removeCellAtIndex:index];
         }
     }
     
@@ -448,8 +435,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     botMenuMsg.fromType = MQChatMessageIncoming;
     MQBotMenuCellModel *botMenuCellModel = [[MQBotMenuCellModel alloc] initCellModelWithMessage:botMenuMsg cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:botMenuCellModel];
-    
-    [self reloadChatTableView];
+    [self.delegate insertCellAtBottomForModelCount: 1];
     [self playReceivedMessageSound];
 }
 
@@ -519,7 +505,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     welcomeMessage.sendStatus = MQChatMessageSendStatusSuccess;
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:welcomeMessage cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:cellModel];
-    [self reloadChatTableView];
+    [self.delegate insertCellAtBottomForModelCount: 1];
 }
 
 #pragma 点击了某个cell
@@ -1074,7 +1060,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [self.delegate didGetHistoryMessagesWithCommitTableAdjustment:^{
                 if (messages.count > 0) {
                     [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
-                    [self.delegate reloadChatTableView];
+                    [self.delegate reloadChatTableView]; // 这个地方不使用 [self.delegate insertCellAtBottomForModelCount: ]; 因为需要整体重新加载之后移动 table 的偏移量
                 }
             }];
         }
@@ -1231,13 +1217,14 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  *  刷新所有的本机用户的头像
  */
 - (void)refreshOutgoingAvatarWithImage:(UIImage *)avatarImage {
+    NSMutableArray *indexsToReload = [NSMutableArray new];
     for (NSInteger index=0; index<self.cellModels.count; index++) {
         id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
         if ([cellModel respondsToSelector:@selector(updateOutgoingAvatarImage:)]) {
             [cellModel updateOutgoingAvatarImage:avatarImage];
+            [indexsToReload addObject:[NSIndexPath indexPathForRow:index inSection:0]];
         }
     }
-    [self reloadChatTableView];
 }
 
 - (void)dismissingChatViewController {

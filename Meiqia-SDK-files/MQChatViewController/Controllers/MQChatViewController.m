@@ -300,15 +300,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)reloadCellAsContentUpdated:(UITableViewCell *)cell {
-    [self.chatTableView reloadData];
-    
-    if (cell.viewBottomEdge >= self.chatTableView.contentSize.height) {
-        if (!self.chatTableView.isDragging && !self.chatTableView.tracking && !self.chatTableView.decelerating ) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self scrollTableViewToBottomAnimated: NO];
-            });
-        }
+    NSIndexPath *indexPath = [self.chatTableView indexPathForCell: cell];
+    if (indexPath) {
+        [self.chatTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation: UITableViewRowAnimationNone];
     }
+    
+//    if (cell.viewBottomEdge >= self.chatTableView.contentSize.height) {
+//        if (!self.chatTableView.isDragging && !self.chatTableView.tracking && !self.chatTableView.decelerating ) {
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                [self scrollTableViewToBottomAnimated: NO];
+//            });
+//        }
+//    }
 }
 
 - (void)tapNavigationRightBtn:(id)sender {
@@ -377,12 +380,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.chatTableView insertRowsAtIndexPaths:indexToAdd withRowAnimation:(UITableViewRowAnimationTop)];
 }
 
+- (void)removeCellAtIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow: index inSection: 0];
+    [self.chatTableView deleteRowsAtIndexPaths: @[indexPath] withRowAnimation: UITableViewRowAnimationFade];
+}
+
 - (void)reloadChatTableView {
-//    CGSize preContentSize = self.chatTableView.contentSize;
     [self.chatTableView reloadData];
-//    if (!CGSizeEqualToSize(preContentSize, self.chatTableView.contentSize)) {
-//        [self scrollTableViewToBottomAnimated: NO];
-//    }
 }
 
 - (void)scrollTableViewToBottomAnimated:(BOOL)animated {

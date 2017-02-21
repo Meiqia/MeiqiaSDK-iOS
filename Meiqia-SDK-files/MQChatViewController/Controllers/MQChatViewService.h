@@ -42,6 +42,8 @@
 
 - (void)insertCellAtTopForModelCount:(NSInteger)count;
 
+- (void)removeCellAtIndex:(NSInteger)index;
+
 /**
  *  通知viewController将tableView滚动到底部
  */
