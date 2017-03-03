@@ -125,3 +125,7 @@
 "pre_chat_form_title" =  "Please fill those blanks";
 "pre_chat_form_mutiple_selection_label" = "(multiple)";
 "pre_chat_form_black_alert_label" = "Please complete the red blank";
+
+//pull refresh
+"pull_refresh_normal" = "Pull to load";
+"pull_refresh_triggered" = "Realse to load";

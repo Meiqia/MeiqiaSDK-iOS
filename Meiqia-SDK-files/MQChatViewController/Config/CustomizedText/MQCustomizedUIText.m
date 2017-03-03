@@ -79,6 +79,9 @@ static NSMutableDictionary * customizedTextMap;
         @(MQUITextKeyPreChatFormBlankAlertLabel) : @"pre_chat_form_black_alert_label",
         
         @(MQUITextKeyQueuePosition) : @"wating_in_queue_tip_text",
+        
+        @(MQUITextKeyPullRefreshNormal) : @"pull_refresh_normal",
+        @(MQUITextKeyPullRfreshTriggered) : @"pull_refresh_triggered"
         };
     
     
