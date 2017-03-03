@@ -19,8 +19,6 @@
 @interface MQChatTableView : UITableView
 
 
-@property (nonatomic, strong) MQChatViewService *chatViewModel;
-
 @property (nonatomic, weak) id<MQChatTableViewDelegate> chatTableViewDelegate;
 
 

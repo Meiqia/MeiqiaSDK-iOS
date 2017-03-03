@@ -13,8 +13,6 @@
 
 @interface UITableView(MQRefresh_private)
 
-@property (nonatomic, copy) void(^action)(void);
-
 @end
 
 static id keyUITableViewView, keyUITableViewMQRefreshAction, keyUITableViewMQRefreshObserverCount;
