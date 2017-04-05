@@ -185,20 +185,20 @@ static int indicator_tag = 10;
     //基本功能 - 在线客服
     
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
-    [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
-
-    [chatViewManager setClientInfo:@{@"name":@"updated"} override:YES];
+//    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
+//    [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
+//
+    [chatViewManager setClientInfo:@{@"key" : @"value2"} override:YES];
     [chatViewManager pushMQChatViewControllerInViewController:self];
-//    [chatViewManager setLoginCustomizedId:@"xxxxjjxjjx"];
-  //  [chatViewManager setPreSendMessages:@[@"message1"]];
- //   [chatViewManager setScheduledAgentId:@"f60d269236231a6fa5c1b0d4848c4569"];
-    //[chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
+//    [chatViewManager setLoginCustomizedId:@"10"];
+////    [chatViewManager setPreSendMessages:@[@"message1"]];
+// //   [chatViewManager setScheduledAgentId:@"f60d269236231a6fa5c1b0d4848c4569"];
+//    //[chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
 //    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
-    [self removeIndecatorForView:basicFunctionBtn];
-    
-    [chatViewManager setRecordMode:MQRecordModeDuckOther];
-    [chatViewManager setPlayMode:MQPlayModeMixWithOther];
+//    [self removeIndecatorForView:basicFunctionBtn];
+//    
+//    [chatViewManager setRecordMode:MQRecordModeDuckOther];
+//    [chatViewManager setPlayMode:MQPlayModeMixWithOther];
 }
 
 #pragma 开发者的高级功能，其中有调用美洽SDK的API接口

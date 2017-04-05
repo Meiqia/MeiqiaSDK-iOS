@@ -830,6 +830,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self.delegate insertCellAtTopForModelCount: newCellCount];
         [self scrollToButton];
         [UIView setAnimationsEnabled:YES];
+        [self.delegate reloadChatTableView];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self scrollToButton]; // some image may lead the table didn't reach bottom
@@ -939,8 +940,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
     
     [MQServiceToViewInterface downloadMediaWithUrlString:avatarPath progress:nil completion:^(NSData *mediaData, NSError *error) {
-        [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage = [UIImage imageWithData:mediaData];
-        [self refreshOutgoingAvatarWithImage:[MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage];
+        if (mediaData) {
+            [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage = [UIImage imageWithData:mediaData];
+            [self refreshOutgoingAvatarWithImage:[MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage];
+        }
     }];
 }
 
