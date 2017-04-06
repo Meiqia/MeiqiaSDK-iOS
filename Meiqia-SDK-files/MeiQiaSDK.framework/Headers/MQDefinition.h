@@ -13,7 +13,7 @@
 typedef NS_ENUM(NSUInteger, MQState) {
     MQStateUninitialized,
     MQStateInitialized,
-    MQStateOffline,
+    MQStateOffline, // not using
     MQStateUnallocatedAgent,
     MQStateAllocatingAgent,
     MQStateAllocatedAgent,
@@ -78,6 +78,8 @@ typedef enum : NSInteger {
     MQErrorCodePlistConfigurationError      = -2006,    //开发者App的info.plist没有增加NSExceptionDomains，请参考https://github.com/Meiqia/Meiqia-SDK-iOS-Demo#info.plist设置
     MQErrorCodeBlacklisted                  = -2007,    //被加入黑名单，发消息和分配对话都会失败
     MQErrorCodeSchedulerFail                = -2008,    // 分配对话失败
+    MQErrorCodeUninitailized                = -2009,    // 未初始化操作
+    MQErrorCodeInitializFailed              = -2010,    // 初始化失败
     MQErrorCodeBotFailToRedirectToHuman     = -3001,    // 机器人转人工失败
 } MQErrorCode;
 

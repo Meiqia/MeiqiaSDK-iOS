@@ -392,7 +392,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  @param customizedId 自定义id
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId {
-    [MQManager initWithAppkey:@"b40eb2f8792ce17de91797f5bf9a439d" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"782a09d4b2e2d20a9eceef75fb45245e" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
             [chatViewManager setLoginCustomizedId:customizedId];
@@ -731,7 +731,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableTopPullRefresh:true];
     [chatViewManager.chatViewStyle setPullRefreshColor:[UIColor redColor]];
-//    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor blueColor]];
+    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor redColor]];
 //    [chatViewManager.chatViewStyle setNavBarColor:[UIColor yellowColor]];
     
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];

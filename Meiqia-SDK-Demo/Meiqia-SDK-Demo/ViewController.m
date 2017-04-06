@@ -59,6 +59,29 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onlineSuccessed) name:MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
+    
+//    [self getUnreadMessageswithIds:@[@"123",@"111",@"3"] complete:^(NSArray *messages, NSString *id, NSString *clientId) {
+//        NSLog(@"message count: %d, client id:%@", (int)messages.count, clientId);
+//    }];
+}
+
+- (void)_getUnreadMessages:(NSArray *)ids index:(NSUInteger)index complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
+    [MQManager refreshLocalClientWithCustomizedId:ids[index] complete:^(NSString *clientId) {
+        NSLog(@"getting for (%@ - %@)",ids[index], clientId);
+        [MQManager getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+            NSLog(@"got %d messages for (%@ - %@)", (int)messages.count, [MQManager getCurrentCustomizedId], clientId);
+            if (index < ids.count - 1) {
+                [self _getUnreadMessages:ids index:index + 1 complete:action];
+                action(messages, [MQManager getCurrentCustomizedId], [MQManager getCurrentClientId]);
+            } else {
+                action(messages, [MQManager getCurrentCustomizedId], [MQManager getCurrentClientId]);
+            }
+        }];
+    }];
+}
+
+- (void)getUnreadMessageswithIds:(NSArray *)ids complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
+    [self _getUnreadMessages:ids index:0 complete:action];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -162,20 +185,20 @@ static int indicator_tag = 10;
     //基本功能 - 在线客服
     
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
-    [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
-
-    [chatViewManager setClientInfo:@{@"name":@"updated"} override:YES];
+//    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
+//    [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
+//
+    [chatViewManager setClientInfo:@{@"key" : @"value2"} override:YES];
     [chatViewManager pushMQChatViewControllerInViewController:self];
-//    [chatViewManager setLoginCustomizedId:@"xxxxjjxjjx"];
-  //  [chatViewManager setPreSendMessages:@[@"message1"]];
- //   [chatViewManager setScheduledAgentId:@"f60d269236231a6fa5c1b0d4848c4569"];
-    //[chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
+//    [chatViewManager setLoginCustomizedId:@"10"];
+////    [chatViewManager setPreSendMessages:@[@"message1"]];
+// //   [chatViewManager setScheduledAgentId:@"f60d269236231a6fa5c1b0d4848c4569"];
+//    //[chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
 //    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
-    [self removeIndecatorForView:basicFunctionBtn];
-    
-    [chatViewManager setRecordMode:MQRecordModeDuckOther];
-    [chatViewManager setPlayMode:MQPlayModeMixWithOther];
+//    [self removeIndecatorForView:basicFunctionBtn];
+//    
+//    [chatViewManager setRecordMode:MQRecordModeDuckOther];
+//    [chatViewManager setPlayMode:MQPlayModeMixWithOther];
 }
 
 #pragma 开发者的高级功能，其中有调用美洽SDK的API接口

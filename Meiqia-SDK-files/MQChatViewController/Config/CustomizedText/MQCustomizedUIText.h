@@ -73,6 +73,10 @@ typedef NS_ENUM(NSUInteger, MQUITextKey) {
     MQUITextKeyPreChatFormBlankAlertLabel,
     
     MQUITextKeyQueuePosition,
+    
+    //pull refresh
+    MQUITextKeyPullRefreshNormal,
+    MQUITextKeyPullRfreshTriggered,
 };
 
 @interface MQCustomizedUIText : NSObject

@@ -14,14 +14,6 @@
 #import "MQServiceToViewInterface.h"
 #endif
 
-///TODO: 稍后用这个状态替换目前的本地状态变量
-typedef NS_ENUM(NSUInteger, MQClientStatus) {
-    MQClientStatusOffLine = 0,
-    MQClientStatusPendingOnPreChatForm,
-    MQClientStatusOnlining,
-    MQClientStatusOnline,
-};
-
 @protocol MQChatViewServiceDelegate <NSObject>
 
 
@@ -31,7 +23,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
  *  @param cellNumber 需要显示的cell数量
  *  @param isLoadOver 是否已经获取完了历史消息
  */
-- (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver;
+- (void)didGetHistoryMessagesWithCommitTableAdjustment:(void(^)(void))commit;
 
 /**
  *  已经更新了这条消息的数据，通知tableView刷新界面
@@ -43,10 +35,19 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
  */
 - (void)reloadChatTableView;
 
+/*
+ call after add model
+ */
+- (void)insertCellAtBottomForModelCount:(NSInteger)count;
+
+- (void)insertCellAtTopForModelCount:(NSInteger)count;
+
+- (void)removeCellAtIndex:(NSInteger)index;
+
 /**
  *  通知viewController将tableView滚动到底部
  */
-- (void)scrollTableViewToBottom;
+- (void)scrollTableViewToBottomAnimated:(BOOL)animated;
 
 /**
  *  通知viewController收到了消息
@@ -111,7 +112,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 @property (nonatomic, assign) CGFloat chatViewWidth;
 
 /** 顾客当前的状态 */
-@property (nonatomic, assign) MQClientStatus clientStatus;
+@property (nonatomic, assign) MQState clientStatus;
 
 - (instancetype)initWithDelegate:(id<MQChatViewServiceDelegate>)delegate errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
 

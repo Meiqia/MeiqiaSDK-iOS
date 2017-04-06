@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) UIViewController *toViewController;
 @property (nonatomic, strong) UIViewController *fromViewController;
+@property (nonatomic, strong) UIImageView *backViewContentImageView;
 
 @end
 
@@ -34,12 +35,15 @@
     
     if (self.isPresenting) {
         self.toViewController.view.frame = CGRectMake(screenSize.width, 0, screenSize.width, screenSize.height);
-        [[transitionContext containerView] addSubview:self.fromViewController.view];
         [[transitionContext containerView] addSubview:self.toViewController.view];
     } else {
-        [[transitionContext containerView] addSubview:self.toViewController.view];
+        UIGraphicsBeginImageContextWithOptions([[UIScreen mainScreen] bounds].size, YES, 0);
+        [self.toViewController.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+        self.backViewContentImageView = [[UIImageView alloc] initWithImage:UIGraphicsGetImageFromCurrentImageContext()];
+        UIGraphicsEndImageContext();
+        [[transitionContext containerView] addSubview:self.backViewContentImageView];
         [[transitionContext containerView] addSubview:self.fromViewController.view];
-        self.toViewController.view.frame = CGRectMake(-screenSize.width / 2, 0, screenSize.width, screenSize.height);
+        self.backViewContentImageView.frame = CGRectMake(-screenSize.width / 2, 0, screenSize.width, screenSize.height);
         self.fromViewController.view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
     }
     
@@ -47,6 +51,9 @@
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.toViewController.view.frame = finalFrame;
+        if (self.backViewContentImageView) {
+            self.backViewContentImageView.frame = finalFrame;
+        }
         if (self.isPresenting) {
             self.fromViewController.view.frame = CGRectMake(-screenSize.width / 2, 0, screenSize.width, screenSize.height);
         } else {
@@ -54,10 +61,6 @@
         }
     } completion:^(BOOL finished) {
         [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-        
-        if (![transitionContext transitionWasCancelled] && !self.isPresenting) {
-            [[UIApplication sharedApplication].keyWindow addSubview:self.toViewController.view];
-        }
     }];
 }
 
