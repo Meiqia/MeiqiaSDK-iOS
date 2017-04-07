@@ -19,7 +19,7 @@
     MQBaseMessage *toMessage;
     switch (plainMessage.contentType) {
         case MQMessageContentTypeBot: {
-            // will be handled by MQBotMessageFactory
+            // was handled by MQBotMessageFactory
             return nil;
         }
         case MQMessageContentTypeText: {
