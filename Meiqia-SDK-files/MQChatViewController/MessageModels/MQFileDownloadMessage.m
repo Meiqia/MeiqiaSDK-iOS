@@ -7,7 +7,7 @@
 //
 
 #import "MQFileDownloadMessage.h"
-#import <MeiqiaSDK/MeiqiaSDK.h>
+#import <MeiQiaSDK/MeiqiaSDK.h>
 
 @implementation MQFileDownloadMessage
 

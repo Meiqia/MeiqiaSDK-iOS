@@ -18,7 +18,7 @@
 #import "MQBotAnswerMessage.h"
 #import "MQBotMenuMessage.h"
 #import "MQChatViewConfig.h"
-#import <MeiQiaSDK/MeiQiaSDK.h>
+#import <MeiQiaSDK/MeiqiaSDK.h>
 #import "MQFileDownloadMessage.h"
 #import "MQRichTextMessage.h"
 #import "MQBotRichTextMessage.h"
