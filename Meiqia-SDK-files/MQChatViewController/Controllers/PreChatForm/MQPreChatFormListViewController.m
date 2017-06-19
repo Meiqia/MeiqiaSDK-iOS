@@ -34,18 +34,22 @@
         if (data && (data.form.formItems.count + data.menu.menuItems.count) > 0) {
             UINavigationController *nav;
             if ([data.menu.status isEqualToString:@"close"] || data.menu.menuItems.count == 0) {
-                MQPreChatSubmitViewController *submitViewController = [MQPreChatSubmitViewController new];
-                submitViewController.formData = data;
-                submitViewController.completeBlock = block;
-                submitViewController.cancelBlock = cancelBlock;
-                nav = [[UINavigationController alloc] initWithRootViewController:submitViewController];
+                if (data.form.formItems.count > 0) {
+                    MQPreChatSubmitViewController *submitViewController = [MQPreChatSubmitViewController new];
+                    submitViewController.formData = data;
+                    submitViewController.completeBlock = block;
+                    submitViewController.cancelBlock = cancelBlock;
+                    nav = [[UINavigationController alloc] initWithRootViewController:submitViewController];
+                }
             } else {
                 nav = [[UINavigationController alloc] initWithRootViewController:preChatViewController];
             }
             
             nav.navigationBar.barTintColor = controller.navigationController.navigationBar.barTintColor;
             nav.navigationBar.tintColor = controller.navigationController.navigationBar.tintColor;
-            [controller presentViewController:nav animated:YES completion:nil];
+            if (nav) {
+                [controller presentViewController:nav animated:YES completion:nil];
+            }
         } else {
             block(nil);
         }
