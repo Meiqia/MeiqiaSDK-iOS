@@ -186,9 +186,9 @@ static int indicator_tag = 10;
     
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 //    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
-//    [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
-//
-    [chatViewManager setClientInfo:@{@"key" : @"value2"} override:YES];
+//    [chatViewManager.chatViewStyle setEnableRoundAvatar:
+//    [chatViewManager setClientInfo:@{@"name" : @"123"} override:YES];
+    [chatViewManager setChatWelcomeText:@"asfafsaaaaasgastag？"];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 //    [chatViewManager setLoginCustomizedId:@"10"];
 ////    [chatViewManager setPreSendMessages:@[@"message1"]];

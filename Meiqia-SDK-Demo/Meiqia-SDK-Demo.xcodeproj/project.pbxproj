@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63558F821EEE7B3E00B12545 /* FEZ.png in Resources */ = {isa = PBXBuildFile; fileRef = 63558F811EEE7B3E00B12545 /* FEZ.png */; };
 		CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */; };
 		CCE9D10B1C1812F6004E862E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10A1C1812F6004E862E /* main.m */; };
 		CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10D1C1812F6004E862E /* AppDelegate.m */; };
@@ -481,6 +482,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		63558F811EEE7B3E00B12545 /* FEZ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FEZ.png; sourceTree = "<group>"; };
 		CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ijinmaoAvatar.png; sourceTree = "<group>"; };
 		CCE9D1061C1812F6004E862E /* Meiqia-SDK-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meiqia-SDK-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCE9D10A1C1812F6004E862E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -875,6 +877,7 @@
 			children = (
 				E40C2C7A1D2B710300744577 /* testdata.txt */,
 				CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */,
+				63558F811EEE7B3E00B12545 /* FEZ.png */,
 				CCE9D14B1C1813BE004E862E /* DevelopViewController.h */,
 				CCE9D14C1C1813BE004E862E /* DevelopViewController.m */,
 				CCE9D10C1C1812F6004E862E /* AppDelegate.h */,
@@ -1920,6 +1923,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63558F821EEE7B3E00B12545 /* FEZ.png in Resources */,
 				CCE9D1191C1812F6004E862E /* LaunchScreen.storyboard in Resources */,
 				CCE9D1161C1812F6004E862E /* Assets.xcassets in Resources */,
 				CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */,
