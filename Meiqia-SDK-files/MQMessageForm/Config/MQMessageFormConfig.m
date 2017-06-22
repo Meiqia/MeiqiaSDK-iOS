@@ -25,6 +25,7 @@
     if (self = [super init]) {
         [self setConfigToDefault];
     }
+    
     return self;
 }
 
