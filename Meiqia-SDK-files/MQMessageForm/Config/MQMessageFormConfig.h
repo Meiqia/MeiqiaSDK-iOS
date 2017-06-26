@@ -27,4 +27,6 @@
 /** 将配置设置为默认值 */
 - (void)setConfigToDefault;
 
+
+
 @end
