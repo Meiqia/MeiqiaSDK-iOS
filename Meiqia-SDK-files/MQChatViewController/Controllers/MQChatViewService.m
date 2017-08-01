@@ -303,8 +303,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         return false;
     }
     MQMessageDateCellModel *cellModel = [[MQMessageDateCellModel alloc] initCellModelWithDate:beAddedDate cellWidth:self.chatViewWidth];
-    [self.cellModels addObject:cellModel];
-    [self.delegate insertCellAtBottomForModelCount: 1];
+    if ([cellModel getCellMessageId].length > 0) {
+        [self.cellModels addObject:cellModel];
+        [self.delegate insertCellAtBottomForModelCount: 1];
+    }
     return true;
 }
 
@@ -864,7 +866,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
     }
     
-    [MQServiceToViewInterface getEnterpriseConfigInfoComplete:^(MQEnterprise *enterprise, NSError *e) {
+    [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:YES complete:^(MQEnterprise *enterprise, NSError *e) {
         [MQCustomizedUIText setCustomiedTextForKey:(MQUITextKeyNoAgentTip) text:enterprise.configInfo.intro];
     }];
 }

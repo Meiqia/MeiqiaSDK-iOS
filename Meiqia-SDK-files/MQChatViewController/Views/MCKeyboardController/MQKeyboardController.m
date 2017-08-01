@@ -142,13 +142,36 @@ static void * kMQKeyboardControllerKeyValueObservingContext = &kMQKeyboardContro
     }
     
     if([[UIDevice currentDevice].systemVersion floatValue] >= 9.0) {
-        for(UIWindow* window in [[UIApplication sharedApplication] windows])
-            if([window isKindOfClass:NSClassFromString(@"UIRemoteKeyboardWindow")])
-                for(UIView* subView in window.subviews)
-                    if([subView isKindOfClass:NSClassFromString(@"UIInputSetHostView")])
-                        for(UIView* subsubView in subView.subviews)
-                            if([subsubView isKindOfClass:NSClassFromString(@"UIInputSetHostView")])
-                                self.keyboardView = subsubView;
+        NSArray *windows = [UIApplication sharedApplication].windows;
+        NSComparator cmptr = ^(id obj1, id obj2) {
+            if ([obj1 isKindOfClass: UIWindow.class] && [obj2 isKindOfClass: UIWindow.class]) {
+                UIWindow *window1 = (UIWindow *)obj1;
+                UIWindow *window2 = (UIWindow *)obj2;
+                if (window1.windowLevel > window2.windowLevel) {
+                    return (NSComparisonResult)NSOrderedAscending;
+                }
+                if (window1.windowLevel < window2.windowLevel) {
+                    return (NSComparisonResult)NSOrderedDescending;
+                }
+            }
+            return (NSComparisonResult)NSOrderedSame;
+        };
+        NSArray *sortedWindows = [windows sortedArrayUsingComparator:cmptr];
+        if (sortedWindows.count > 0) {
+            UIWindow *remoteKeyboardWindow = sortedWindows.firstObject;
+            UIView *inputSetHostContainerView = remoteKeyboardWindow.subviews.count > 0 ? remoteKeyboardWindow.subviews.firstObject : nil;
+            UIView *inputSetHostView = inputSetHostContainerView.subviews.count > 0 ? inputSetHostContainerView.subviews.firstObject : nil;
+            if (inputSetHostView) {
+                self.keyboardView = inputSetHostView;
+            }
+        }
+//        for(UIWindow* window in [[UIApplication sharedApplication] windows])
+//            if([window isKindOfClass:NSClassFromString(@"UIRemoteKeyboardWindow")])
+//                for(UIView* subView in window.subviews)
+//                    if([subView isKindOfClass:NSClassFromString(@"UIInputSetHostView")])
+//                        for(UIView* subsubView in subView.subviews)
+//                            if([subsubView isKindOfClass:NSClassFromString(@"UIInputSetHostView")])
+//                                self.keyboardView = subsubView;
     } else {
         self.keyboardView = self.currentResponder.inputAccessoryView.superview;
     }
@@ -250,7 +273,6 @@ static void * kMQKeyboardControllerKeyValueObservingContext = &kMQKeyboardContro
 }
 
 #pragma mark - Key-value observing
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (context == kMQKeyboardControllerKeyValueObservingContext) {
@@ -273,9 +295,9 @@ static void * kMQKeyboardControllerKeyValueObservingContext = &kMQKeyboardContro
 
 - (void)removeKeyboardFrameObserver
 {
-    if (!_isObserving) {
-        return;
-    }
+//    if (!_isObserving) {
+//        return;
+//    }
     
     @try {
         [_keyboardView removeObserver:self

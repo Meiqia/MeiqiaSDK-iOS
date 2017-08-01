@@ -65,7 +65,7 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     alertViewTitle.font = [UIFont systemFontOfSize:17.0];
     [customView addSubview:alertViewTitle];
     
-    [MQServiceToViewInterface getEnterpriseConfigInfoComplete:^(MQEnterprise *enterprise, NSError *error) {
+    [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:YES complete:^(MQEnterprise *enterprise, NSError *error) {
         if (enterprise.configInfo.evaluationPromtText.length > 0) {
             alertViewTitle.text = enterprise.configInfo.evaluationPromtText;
         }

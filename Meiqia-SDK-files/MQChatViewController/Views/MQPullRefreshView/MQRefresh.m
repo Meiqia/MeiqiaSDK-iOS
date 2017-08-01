@@ -145,7 +145,7 @@ static id keyUITableViewView, keyUITableViewMQRefreshAction, keyUITableViewMQRef
 
 - (void)setup {
     self.textMap = [@{
-                      @(MQRefreshStatusNormal) : @"",
+                      @(MQRefreshStatusNormal) : @"下拉加载历史消息",
                       @(MQRefreshStatusDraging) : @"Pull down",
                       @(MQRefreshStatusTriggered) : @"Release to load",
                       @(MQRefreshStatusLoading) : @"Loading...",

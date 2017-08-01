@@ -15,7 +15,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.3.8"
+#define MQSDKVersion @"3.3.9"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -465,7 +465,7 @@
 获取当前企业的配置信息
  */
 
-+ (void)getEnterpriseConfigDataComplete:(void(^)(MQEnterprise *, NSError *))action;
++ (void)getEnterpriseConfigDataWithCache:(BOOL)isLoadCache complete:(void(^)(MQEnterprise *, NSError *))action;
 
 /**
  开始显示聊天界面，如果自定义聊天界面，在聊天界面出现的时候调用，通知 SDK 进行初始化
@@ -556,6 +556,11 @@
  提交用户填写的留言工单
  */
 + (void)submitTicketForm:(NSString *)content userInfo:(NSDictionary *)userInfo completion:(void(^)(MQTicket *ticket, NSError *))block;
+
+/**
+ 获取是否第一次上线
+ */
++ (BOOL)getLoginStatus;
 
 
 @end

@@ -186,13 +186,13 @@ static int indicator_tag = 10;
     
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 //    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
-//    [chatViewManager.chatViewStyle setEnableRoundAvatar:YES];
-//
-    [chatViewManager setClientInfo:@{@"key" : @"value2"} override:YES];
+//    [chatViewManager.chatViewStyle setEnableRoundAvatar:
+//    [chatViewManager setClientInfo:@{@"name" : @"123"} override:YES];
+//    [chatViewManager setChatWelcomeText:@"asfafsaaaaasgastag？"];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 //    [chatViewManager setLoginCustomizedId:@"10"];
-////    [chatViewManager setPreSendMessages:@[@"message1"]];
-// //   [chatViewManager setScheduledAgentId:@"f60d269236231a6fa5c1b0d4848c4569"];
+//    [chatViewManager setPreSendMessages: @[@"我想咨询的订单号：【1705045496811】"]];
+// //   [chatViewManager setScheduledAgentId:@""];
 //    //[chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
 //    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
 //    [self removeIndecatorForView:basicFunctionBtn];

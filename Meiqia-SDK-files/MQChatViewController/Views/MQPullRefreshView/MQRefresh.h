@@ -36,6 +36,8 @@ typedef NS_ENUM(NSUInteger, MQRefreshStatus) {
 
 @property (nonatomic, assign, readonly) MQRefreshStatus status;
 
+- (BOOL)updateCustomViewForStatus:(MQRefreshStatus)status;
+- (void)updateTextForStatus:(MQRefreshStatus)status;
 - (void)setLoadEnd;
 - (void)updateStatusWithTopOffset:(CGFloat)topOffset;
 - (void)setText:(NSString *)text forStatus:(MQRefreshStatus)status;

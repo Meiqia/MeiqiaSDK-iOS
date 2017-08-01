@@ -34,20 +34,50 @@
         if (data && (data.form.formItems.count + data.menu.menuItems.count) > 0) {
             UINavigationController *nav;
             if ([data.menu.status isEqualToString:@"close"] || data.menu.menuItems.count == 0) {
-                MQPreChatSubmitViewController *submitViewController = [MQPreChatSubmitViewController new];
-                submitViewController.formData = data;
-                submitViewController.completeBlock = block;
-                submitViewController.cancelBlock = cancelBlock;
-                nav = [[UINavigationController alloc] initWithRootViewController:submitViewController];
+                if (data.form.formItems.count > 0 && ![data.form.status isEqualToString:@"close"]) {
+                    if (data.form.formItems.count == 1) {
+                        MQPreChatFormItem *item = data.form.formItems.firstObject;
+                        if ([item isKindOfClass: MQPreChatFormItem.class] && [item.displayName isEqual: @"验证码"]) {
+                            // 单独只有一个验证码时直接跳过询前表单步骤
+                            if (block) {
+                                block(nil);
+                            }
+                        } else {
+                            MQPreChatSubmitViewController *submitViewController = [MQPreChatSubmitViewController new];
+                            submitViewController.formData = data;
+                            submitViewController.completeBlock = block;
+                            submitViewController.cancelBlock = cancelBlock;
+                            nav = [[UINavigationController alloc] initWithRootViewController:submitViewController];
+                        }
+                    } else {
+                        MQPreChatSubmitViewController *submitViewController = [MQPreChatSubmitViewController new];
+                        submitViewController.formData = data;
+                        submitViewController.completeBlock = block;
+                        submitViewController.cancelBlock = cancelBlock;
+                        nav = [[UINavigationController alloc] initWithRootViewController:submitViewController];
+                    }
+                } else {
+                    if (block) {
+                        block(nil);
+                    }
+                }
             } else {
                 nav = [[UINavigationController alloc] initWithRootViewController:preChatViewController];
             }
             
             nav.navigationBar.barTintColor = controller.navigationController.navigationBar.barTintColor;
             nav.navigationBar.tintColor = controller.navigationController.navigationBar.tintColor;
-            [controller presentViewController:nav animated:YES completion:nil];
+            if (nav) {
+                [controller presentViewController:nav animated:YES completion:nil];
+            } else {
+                if (block) {
+                    block(nil);
+                }
+            }
         } else {
-            block(nil);
+            if (block) {
+                block(nil);
+            }
         }
     }];
     
@@ -139,7 +169,18 @@
             }
         }];
     } else {
-        [self.navigationController pushViewController:submitViewController animated:animated];
+        MQPreChatFormItem *item = self.viewModel.formData.form.formItems.count > 0 ? self.viewModel.formData.form.formItems.firstObject : nil;
+        if ((self.viewModel.formData.form.formItems.count == 1 && [item isKindOfClass: MQPreChatFormItem.class] && [item.displayName isEqual:@"验证码"])) {
+            [self dismissViewControllerAnimated:YES completion:^{
+                if (self.completeBlock) {
+                    NSString *target = selectedMenu.target;
+                    NSString *targetType = selectedMenu.targetKind;
+                    self.completeBlock(@{@"target":target, @"targetType":targetType, @"menu":selectedMenu.desc});
+                }
+            }];
+        } else {
+            [self.navigationController pushViewController:submitViewController animated:animated];
+        }
     }
 }
 @end

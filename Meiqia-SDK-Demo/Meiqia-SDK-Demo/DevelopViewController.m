@@ -392,7 +392,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  @param customizedId 自定义id
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId {
-    [MQManager initWithAppkey:@"782a09d4b2e2d20a9eceef75fb45245e" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"a891aac118366700931f3df3181c64a0" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
             [chatViewManager setLoginCustomizedId:customizedId];
@@ -778,7 +778,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [chatViewManager setChatViewStyle:[MQChatViewStyle blueStyle]];
-//    [chatViewManager.chatViewStyle setNavBackButtonImage:[UIImage imageNamed:@"ijinmaoAvatar"]];
+    [chatViewManager.chatViewStyle setNavBackButtonImage:[[UIImage imageNamed:@"ijinmaoAvatar"] imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal]];
     
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
