@@ -401,7 +401,7 @@
 /**
  获取当前企业的配置信息
  */
-+ (void)getEnterpriseConfigInfoComplete:(void(^)(MQEnterprise *, NSError *))action;
++ (void)getEnterpriseConfigInfoWithCache:(BOOL)isLoadCache complete:(void(^)(MQEnterprise *, NSError *))action;
 
 /**
  在准备显示聊天界面是调用

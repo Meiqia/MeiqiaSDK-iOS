@@ -10,6 +10,7 @@
 #import "MQBaseMessage.h"
 #import <UIKit/UIKit.h>
 #import "MQChatViewConfig.h"
+#import "MQCellModelProtocol.h"
 #ifdef INCLUDE_MEIQIA_SDK
 #import "MQServiceToViewInterface.h"
 #endif
@@ -115,6 +116,11 @@
 @property (nonatomic, assign) MQState clientStatus;
 
 - (instancetype)initWithDelegate:(id<MQChatViewServiceDelegate>)delegate errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
+
+/**
+ 增加cellModel并刷新tableView
+ */
+- (void)addCellModelAndReloadTableViewWithModel:(id<MQCellModelProtocol>)cellModel;
 
 /**
  * 获取更多历史聊天消息
