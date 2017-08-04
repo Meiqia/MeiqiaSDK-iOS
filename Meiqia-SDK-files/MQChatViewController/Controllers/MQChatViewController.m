@@ -145,9 +145,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             // 获取是否开启无消息访客过滤, warning:用之前的绑定的clientId上线,防止出现排队现象
             //
             if (enterprise.configInfo.isScheduleAfterClientSendMessage && ![MQManager getLoginStatus]) {
-                // 1.设置head title
+                // 设置head title
                 [self updateNavTitleWithAgentName:enterprise.configInfo.public_nickname ?: @"官方客服" agentStatus:MQChatAgentStatusNone];
-                // 2.设置欢迎语 3.设置企业头像
+                // 设置欢迎语 设置企业头像
                 MQTextMessage *message = [[MQTextMessage alloc] initWithContent: enterprise.configInfo.enterpriseIntro ?: @"【系统消息】您好，请问您有什么问题?"];
                 message.fromType = MQChatMessageIncoming;
                 message.date = [NSDate new];
@@ -156,10 +156,14 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
                 message.sendStatus = MQChatMessageSendStatusSuccess;
                 MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage: message cellWidth:self.chatViewService.chatViewWidth delegate:(id <MQCellModelDelegate>)self.chatViewService];
                 [self.chatViewService addCellModelAndReloadTableViewWithModel:cellModel];
-                // 3.显示下拉加载历史消息
-                self.chatTableView.contentInset = UIEdgeInsetsMake(120.0, 0.0, 0.0, 0.0);
-                [self.chatTableView.refreshView updateTextForStatus:MQRefreshStatusDraging];
-                [self.chatTableView.refreshView updateCustomViewForStatus:MQRefreshStatusDraging];
+                // 加载历史消息
+                [self.chatViewService startGettingHistoryMessages];
+                // 注册通知
+                [MQManager addStateObserverWithBlock:^(MQState oldState, MQState newState, NSDictionary *value, NSError *error) {
+                    if (newState == MQStateUnallocatedAgent) { // 离线
+                        [MQManager setClientOffline];
+                    }
+                } withKey:@"MQChatViewController"];
             } else { // 如果未开启，直接让用户上线
                 [self.chatViewService setClientOnline];
             }
