@@ -287,7 +287,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 ## 调出视图
 美洽开源了一套 [聊天界面 Library](https://github.com/Meiqia/MQChatViewController)，完成了一整套 `MQManager` 中的接口。让开发者免去 UI 开发工作。并在 `MQChatViewController` 类中添加其他自定义选项和功能扩展。
 
-你只需要在用户需要客服服务的时候，退出美洽 UI。如下所示：
+你只需要在用户需要客服服务的时候，弹出美洽 UI。如下所示：
 
 ```objc
 //当用户需要使用客服服务时，创建并退出视图

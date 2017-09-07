@@ -137,3 +137,8 @@
 //pull refresh
 "pull_refresh_normal" = "下拉加载历史消息";
 "pull_refresh_triggered" = "松开加载历史消息";
+
+// 请输入消息
+"input_content" = "输入消息...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "服务连接中,请稍候...";

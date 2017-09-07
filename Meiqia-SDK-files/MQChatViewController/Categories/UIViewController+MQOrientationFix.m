@@ -35,6 +35,7 @@
 #pragma mark - private
 
 - (NSArray *)supportedOrientations {
+    
     return [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UISupportedInterfaceOrientations"] ?: @[@"UIInterfaceOrientationPortrait"];
 }
 

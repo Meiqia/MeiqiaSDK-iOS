@@ -62,7 +62,7 @@
         }
     }];
 }
-
+//xlp 将消息基类 转化为UI能用的 Message类型
 + (NSArray *)convertToChatViewMessageWithMQMessages:(NSArray *)messagesArray {
     //将MQMessage转换成UI能用的Message类型
     NSMutableArray *toMessages = [[NSMutableArray alloc] init];

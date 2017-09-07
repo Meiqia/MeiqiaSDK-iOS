@@ -15,6 +15,7 @@
         if ([window isKindOfClass:[UIWindow class]] &&
             window.windowLevel == UIWindowLevelNormal &&
             CGRectEqualToRect(window.bounds, [UIScreen mainScreen].bounds)) {
+            
             UIViewController *topController = window.rootViewController;
             while (topController.presentedViewController) {
                 topController = topController.presentedViewController;

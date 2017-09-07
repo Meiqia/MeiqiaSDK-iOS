@@ -9,6 +9,9 @@
 #import "MQChatDeviceUtil.h"
 #import <AVFoundation/AVFoundation.h>
 
+/**
+ 获取设备尺寸相关信息的工具类
+ */
 @implementation MQChatDeviceUtil
 
 +(CGRect)getDeviceScreenRect{

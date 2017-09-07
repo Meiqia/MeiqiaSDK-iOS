@@ -36,11 +36,16 @@
 #endif
     
 //#error 请填写您的美洽 AppKey
-    [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
+    
+    //测试 a891aac118366700931f3df3181c64a0
+    //575679c246573824c8957c0958bee3f1
+    //782a09d4b2e2d20a9eceef75fb45245e
+    
+    [MQManager initWithAppkey:@"782a09d4b2e2d20a9eceef75fb45245e" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {
-            NSLog(@"error:%@",error);
+            NSLog(@"===初始化失败的原因是error:%@",error);
         }
         
         [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {

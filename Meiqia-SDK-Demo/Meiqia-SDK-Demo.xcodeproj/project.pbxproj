@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		63558F821EEE7B3E00B12545 /* FEZ.png in Resources */ = {isa = PBXBuildFile; fileRef = 63558F811EEE7B3E00B12545 /* FEZ.png */; };
+		89FC07A81F593E6400A13F3E /* MQInputToolView.h in Headers */ = {isa = PBXBuildFile; fileRef = 89FC07A61F593E6400A13F3E /* MQInputToolView.h */; };
+		89FC07A91F593E6400A13F3E /* MQInputToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 89FC07A71F593E6400A13F3E /* MQInputToolView.m */; };
+		89FC07AA1F593E6400A13F3E /* MQInputToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 89FC07A71F593E6400A13F3E /* MQInputToolView.m */; };
 		CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */; };
 		CCE9D10B1C1812F6004E862E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10A1C1812F6004E862E /* main.m */; };
 		CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10D1C1812F6004E862E /* AppDelegate.m */; };
@@ -483,6 +486,8 @@
 
 /* Begin PBXFileReference section */
 		63558F811EEE7B3E00B12545 /* FEZ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FEZ.png; sourceTree = "<group>"; };
+		89FC07A61F593E6400A13F3E /* MQInputToolView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQInputToolView.h; sourceTree = "<group>"; };
+		89FC07A71F593E6400A13F3E /* MQInputToolView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQInputToolView.m; sourceTree = "<group>"; };
 		CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ijinmaoAvatar.png; sourceTree = "<group>"; };
 		CCE9D1061C1812F6004E862E /* Meiqia-SDK-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meiqia-SDK-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCE9D10A1C1812F6004E862E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -852,9 +857,9 @@
 				E4B957BC1DE5A80000BECBB5 /* MeiqiaSDKViewInterface */,
 				E4B957BF1DE5A80000BECBB5 /* MQChatViewController */,
 				E4B958DA1DE5A80100BECBB5 /* MQMessageForm */,
+				CCE9D1081C1812F6004E862E /* Meiqia-SDK-Demo */,
 				E45472CE1DE412F800948ECD /* Meiqia */,
 				CCE9D13C1C181368004E862E /* Frameworks */,
-				CCE9D1081C1812F6004E862E /* Meiqia-SDK-Demo */,
 				CCE9D1221C1812F6004E862E /* Meiqia-SDK-DemoTests */,
 				CCE9D12D1C1812F6004E862E /* Meiqia-SDK-DemoUITests */,
 				CCE9D1071C1812F6004E862E /* Products */,
@@ -1458,6 +1463,8 @@
 		E4B958BD1DE5A80100BECBB5 /* MQInputBar */ = {
 			isa = PBXGroup;
 			children = (
+				89FC07A61F593E6400A13F3E /* MQInputToolView.h */,
+				89FC07A71F593E6400A13F3E /* MQInputToolView.m */,
 				E4B958BE1DE5A80100BECBB5 /* FunctionView */,
 				E4B958C11DE5A80100BECBB5 /* MQButtonGroupBar.h */,
 				E4B958C21DE5A80100BECBB5 /* MQButtonGroupBar.m */,
@@ -1717,6 +1724,7 @@
 				E4B95A4C1DE5A84B00BECBB5 /* MQImageMessageCell.h in Headers */,
 				E4B95A4D1DE5A84B00BECBB5 /* MQMessageDateCell.h in Headers */,
 				E4B95A4E1DE5A84B00BECBB5 /* MQRichTextViewCell.h in Headers */,
+				89FC07A81F593E6400A13F3E /* MQInputToolView.h in Headers */,
 				E4B95A4F1DE5A84B00BECBB5 /* MQTextMessageCell.h in Headers */,
 				E4B95A501DE5A84B00BECBB5 /* MQTipsCell.h in Headers */,
 				E4B95A511DE5A84B00BECBB5 /* MQVoiceMessageCell.h in Headers */,
@@ -2049,6 +2057,7 @@
 				E4B959411DE5A80100BECBB5 /* MQFileDownloadCell.m in Sources */,
 				E4B959231DE5A80100BECBB5 /* MQEventMessageFactory.m in Sources */,
 				E4B959091DE5A80100BECBB5 /* NSNull+MQSafe.m in Sources */,
+				89FC07A91F593E6400A13F3E /* MQInputToolView.m in Sources */,
 				E4B959351DE5A80100BECBB5 /* MQTextCellModel.m in Sources */,
 				E4B9596F1DE5A80100BECBB5 /* MQRecorderView.m in Sources */,
 				E4B9593F1DE5A80100BECBB5 /* MQEvaluationResultCell.m in Sources */,
@@ -2216,6 +2225,7 @@
 				E4B959DD1DE5A83F00BECBB5 /* MEIQIA_FBBitmapFontView.m in Sources */,
 				E4B959DE1DE5A83F00BECBB5 /* MEIQIA_FBFontSymbol.m in Sources */,
 				E4B959DF1DE5A83F00BECBB5 /* MEIQIA_FBLCDFont.m in Sources */,
+				89FC07AA1F593E6400A13F3E /* MQInputToolView.m in Sources */,
 				E4B959E01DE5A83F00BECBB5 /* MEIQIA_FBLCDFontView.m in Sources */,
 				E4B959E11DE5A83F00BECBB5 /* MEIQIA_FBSquareFont.m in Sources */,
 				E4B959E21DE5A83F00BECBB5 /* MEIQIA_FBSquareFontView.m in Sources */,
