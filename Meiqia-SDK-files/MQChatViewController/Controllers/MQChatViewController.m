@@ -1119,36 +1119,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     return _emojiView;
 }
 
-//xlptodo 发送信息前 检测socket是否连接成功 若断开则主动连接 并toast提示
-//- (BOOL)checkSocketStatusBeforesendAnyThing{
-//    BOOL checkStatus = YES;
-//    //如果链接断开 则提示 且发起主动链接
-//    if ([MQManager getCurrentState] == MQStateOffline) {
-//        [MQToast showToast:@"服务连接中,请稍候..." duration:1.5 window:self.view];
-//        [MQManager openMeiqiaService];
-//        checkStatus = NO;
-//    }
-//    return  checkStatus;
-//}
-
-- (void)addTestBt{
-    
-    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
-    bt.frame = CGRectMake(100, 20, 40, 40);
-    bt.backgroundColor = [UIColor redColor];
-    
-    UIWindow *aWindow = [[UIApplication sharedApplication] delegate].window;
-    [aWindow addSubview:bt];
-    
-    [bt addTarget:self action:@selector(closeSocketlalala) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-}
-- (void)closeSocketlalala{
-    
-    //断掉链接
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"xlpCloseSocketNoti" object:nil];
-}
 
 - (BOOL)checkXlpSocketClose{
     return [[NSUserDefaults standardUserDefaults]boolForKey:@"xlpSocketClose"];
