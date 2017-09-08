@@ -836,6 +836,14 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 // xlp 添加 是否连接成功的判断
 - (BOOL)handleSendMessageAbility {
+    //xlp 去掉socket连接的检测
+    if ([self checkXlpSocketClose]) {
+        
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"service_connectting_wait"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        [MQManager openMeiqiaService];
+        
+        return NO;
+    }
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
         [self.view.window endEditing:YES];
         [MQToast showToast:@"正在排队，请等待客服接入后发送消息" duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
@@ -894,13 +902,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (BOOL)inputContentViewShouldBeginEditing:(MQInputContentView *)inputContentView {
    //xlp 去掉socket连接的检测
-//    if ([self checkXlpSocketClose]) {
-//
-//        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"service_connectting_wait"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
-//        [MQManager openMeiqiaService];
-//
-//        return NO;
-//    }
+    if ([self checkXlpSocketClose]) {
+
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"service_connectting_wait"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        [MQManager openMeiqiaService];
+
+        return NO;
+    }
     return YES;
 }
 

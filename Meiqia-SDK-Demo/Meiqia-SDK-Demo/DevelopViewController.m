@@ -761,7 +761,8 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     UIButton *lertButton = [UIButton buttonWithType:UIButtonTypeCustom];
     lertButton.backgroundColor = [UIColor blueColor];
     lertButton.frame = CGRectMake(10, 10, 20, 20);
-    [chatViewManager.chatViewStyle setNavBarLeftButton:lertButton];
+//    [chatViewManager.chatViewStyle setNavBarLeftButton:lertButton];
+    [chatViewManager.chatViewStyle setNavBackButtonImage:[UIImage imageNamed:@"MQMessageCameraInputImageNormalStyleTwo"]];
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleDefault];
     chatViewManager.chatViewStyle.navTitleColor = [UIColor yellowColor];
     

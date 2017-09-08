@@ -118,13 +118,15 @@
         //导航栏左键
         UIBarButtonItem *customizedBackItem = nil;
         if ([MQChatViewConfig sharedConfig].chatViewStyle.navBackButtonImage) {
-            customizedBackItem = [[UIBarButtonItem alloc]initWithImage:[MQChatViewConfig sharedConfig].chatViewStyle.navBackButtonImage style:(UIBarButtonItemStylePlain) target:viewController action:@selector(dismissChatViewController)];
+//            customizedBackItem = [[UIBarButtonItem alloc]initWithImage:[MQChatViewConfig sharedConfig].chatViewStyle.navBackButtonImage style:(UIBarButtonItemStylePlain) target:viewController action:@selector(dismissChatViewController)];
+            customizedBackItem = [[UIBarButtonItem alloc] initWithImage:[[MQChatViewConfig sharedConfig].chatViewStyle.navBackButtonImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
         }
         
         if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypeDefault) {
             viewController.navigationItem.leftBarButtonItem = customizedBackItem ?: [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
         } else {
             viewController.navigationItem.leftBarButtonItem = customizedBackItem ?: [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
+            
         }
     }
     

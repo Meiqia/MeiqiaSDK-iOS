@@ -187,6 +187,8 @@
  *  点击了某消息
  *
  *  @param messageId 消息id
+ #pragma mark xlp - .m文件已经注释 17/7/25
+
  */
 + (void)didTapMessageWithMessageId:(NSString *)messageId;
 
