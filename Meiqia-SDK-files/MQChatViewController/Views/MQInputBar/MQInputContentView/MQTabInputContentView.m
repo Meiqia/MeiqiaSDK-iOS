@@ -7,7 +7,6 @@
 //
 
 #import "MQTabInputContentView.h"
-#import "MQBundleUtil.h"
 
 @implementation MQTabInputContentView
 {
@@ -20,7 +19,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.textField = [[MEIQIA_HPGrowingTextView alloc] init];
-        self.textField.placeholder = [MQBundleUtil localizedStringForKey:@"input_content"];
+        self.textField.placeholder = @"输入消息 ...";
         self.textField.font = [UIFont systemFontOfSize:15];
         self.textField.maxNumberOfLines = 8;
         self.textField.returnKeyType = UIReturnKeySend;
@@ -140,14 +139,6 @@
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputContentViewShouldBeginEditing:)]) {
         return [self.delegate inputContentViewShouldBeginEditing:self];
-    }else{
-        return true;
-    }
-}
-//xlp 新添加的
-- (BOOL)growingTextViewShouldEndEditing:(MEIQIA_HPGrowingTextView *)growingTextView{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(inputContentViewShouldEndEditing:)]) {
-        return [self.delegate inputContentViewShouldEndEditing:self];
     }else{
         return true;
     }

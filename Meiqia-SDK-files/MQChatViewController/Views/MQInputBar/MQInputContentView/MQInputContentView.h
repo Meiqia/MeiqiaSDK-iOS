@@ -29,8 +29,6 @@
 - (void)inputContentView:(MQInputContentView *)inputContentView userObjectChange:(NSObject *)object;
 
 - (BOOL)inputContentViewShouldBeginEditing:(MQInputContentView *)inputContentView;
-//xlp 新添加
-- (BOOL)inputContentViewShouldEndEditing:(MQInputContentView *)inputContentView;
 
 - (void)inputContentTextDidChange:(NSString *)newString;
 

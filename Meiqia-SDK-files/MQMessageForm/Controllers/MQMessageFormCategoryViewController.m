@@ -32,9 +32,6 @@
 }
 
 - (void)viewDidLoad {
-    //xlptodo
-    [super viewDidLoad];
-
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemCancel) target:self action:@selector(dismiss)];
     self.tableView.tableFooterView = [UIView new];
     self.title = @"选择留言分类";
