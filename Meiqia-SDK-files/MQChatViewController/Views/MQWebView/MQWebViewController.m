@@ -19,6 +19,9 @@
 @implementation MQWebViewController
 
 - (void)viewDidLoad {
+    //xlptodo
+    [super viewDidLoad];
+
     self.webView = [UIWebView new];
     self.webView.delegate = self;
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		63558F821EEE7B3E00B12545 /* FEZ.png in Resources */ = {isa = PBXBuildFile; fileRef = 63558F811EEE7B3E00B12545 /* FEZ.png */; };
+		8904283D1F668A5B003B7F2D /* MQInputToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8904283C1F668A5B003B7F2D /* MQInputToolView.m */; };
 		CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */; };
 		CCE9D10B1C1812F6004E862E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10A1C1812F6004E862E /* main.m */; };
 		CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10D1C1812F6004E862E /* AppDelegate.m */; };
@@ -483,6 +484,8 @@
 
 /* Begin PBXFileReference section */
 		63558F811EEE7B3E00B12545 /* FEZ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FEZ.png; sourceTree = "<group>"; };
+		8904283B1F668A5B003B7F2D /* MQInputToolView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQInputToolView.h; sourceTree = "<group>"; };
+		8904283C1F668A5B003B7F2D /* MQInputToolView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQInputToolView.m; sourceTree = "<group>"; };
 		CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ijinmaoAvatar.png; sourceTree = "<group>"; };
 		CCE9D1061C1812F6004E862E /* Meiqia-SDK-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meiqia-SDK-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCE9D10A1C1812F6004E862E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1458,6 +1461,8 @@
 		E4B958BD1DE5A80100BECBB5 /* MQInputBar */ = {
 			isa = PBXGroup;
 			children = (
+				8904283B1F668A5B003B7F2D /* MQInputToolView.h */,
+				8904283C1F668A5B003B7F2D /* MQInputToolView.m */,
 				E4B958BE1DE5A80100BECBB5 /* FunctionView */,
 				E4B958C11DE5A80100BECBB5 /* MQButtonGroupBar.h */,
 				E4B958C21DE5A80100BECBB5 /* MQButtonGroupBar.m */,
@@ -2049,6 +2054,7 @@
 				E4B959411DE5A80100BECBB5 /* MQFileDownloadCell.m in Sources */,
 				E4B959231DE5A80100BECBB5 /* MQEventMessageFactory.m in Sources */,
 				E4B959091DE5A80100BECBB5 /* NSNull+MQSafe.m in Sources */,
+				8904283D1F668A5B003B7F2D /* MQInputToolView.m in Sources */,
 				E4B959351DE5A80100BECBB5 /* MQTextCellModel.m in Sources */,
 				E4B9596F1DE5A80100BECBB5 /* MQRecorderView.m in Sources */,
 				E4B9593F1DE5A80100BECBB5 /* MQEvaluationResultCell.m in Sources */,

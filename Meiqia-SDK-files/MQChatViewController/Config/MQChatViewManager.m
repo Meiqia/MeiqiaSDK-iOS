@@ -119,6 +119,7 @@
         UIBarButtonItem *customizedBackItem = nil;
         if ([MQChatViewConfig sharedConfig].chatViewStyle.navBackButtonImage) {
 //            customizedBackItem = [[UIBarButtonItem alloc]initWithImage:[MQChatViewConfig sharedConfig].chatViewStyle.navBackButtonImage style:(UIBarButtonItemStylePlain) target:viewController action:@selector(dismissChatViewController)];
+            //xlp
             customizedBackItem = [[UIBarButtonItem alloc] initWithImage:[[MQChatViewConfig sharedConfig].chatViewStyle.navBackButtonImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
         }
         
