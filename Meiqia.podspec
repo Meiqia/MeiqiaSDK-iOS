@@ -1,4 +1,4 @@
-# coding: utf-8
+# coding: utf-8I
 #
 # Be sure to run `pod lib lint MeiqiaSDK.podspec' to ensure this is a
 # valid spec before submitting.
@@ -9,14 +9,14 @@
 
 Pod::Spec.new do |s|
   s.name             = "Meiqia"
-  s.version          = "3.4.0"
+  s.version          = "3.4.2"
   s.summary          = "美洽官方 SDK for iOS"
   s.description      = "美洽官方的 iOS SDK"
 
   s.homepage         = "https://github.com/Meiqia/MeiqiaSDK-iOS"
   s.license          = 'MIT'
   s.author           = { "ijinmao" => "340052204@qq.com" }
-  s.source           = { :git => "https://github.com/Meiqia/MeiqiaSDK-iOS.git", :tag => "v3.4.0" }
+  s.source           = { :git => "https://github.com/Meiqia/MeiqiaSDK-iOS.git", :tag => "v3.4.2" }
   s.social_media_url = "https://meiqia.com"
   s.documentation_url = "https://github.com/Meiqia/MeiqiaSDK-iOS/wiki"
   s.platform     = :ios, '7.0'
@@ -42,3 +42,5 @@ Pod::Spec.new do |s|
   
 
 end
+
+
