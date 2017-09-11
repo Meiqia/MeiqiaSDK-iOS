@@ -129,3 +129,9 @@
 //pull refresh
 "pull_refresh_normal" = "Pull to load";
 "pull_refresh_triggered" = "Realse to load";
+//xlp
+// 请输入消息
+"input_content" = "Please input your content...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "Service is connectting,please waitting";
+

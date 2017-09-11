@@ -12,7 +12,7 @@
 #import "MQChatViewService.h"
 #import "MQCellModelProtocol.h"
 #import "MQChatDeviceUtil.h"
-#import "MQInputToolBar.h"
+#import "MQInputToolView.h"
 #import "MQTabInputContentView.h"
 #import "MQKeyboardController.h"
 #import "MQToast.h"
@@ -37,7 +37,7 @@
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate, MQAGEmojiKeyboardViewDelegate, MQAGEmojiKeyboardViewDataSource>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolViewDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate, MQAGEmojiKeyboardViewDelegate, MQAGEmojiKeyboardViewDataSource>
 
 @property(nonatomic, strong)MQChatViewService *chatViewService;
 
@@ -46,7 +46,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @interface MQChatViewController()
 
 @property (nonatomic, strong) id evaluateBarButtonItem;//保存隐藏的barButtonItem
-@property (nonatomic, strong) MQInputToolBar *chatInputBar;
+@property (nonatomic, strong) MQInputToolView *chatInputBar;
 @property (nonatomic, strong) NSLayoutConstraint *constaintInputBarHeight;
 @property (nonatomic, strong) NSLayoutConstraint *constraintInputBarBottom;
 @property (nonatomic, strong) MQEvaluationView *evaluationView;
@@ -121,7 +121,27 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     
     [self presentUI];
+    
+    //xlp
+    //[self addTestBt];
 }
+
+//xlp
+- (void)addTestBt{
+    
+    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
+    bt.frame = CGRectMake(100, 20, 40, 40);
+    bt.backgroundColor = [UIColor redColor];
+    
+    UIWindow *aWindow = [[UIApplication sharedApplication] delegate].window;
+    [aWindow addSubview:bt];
+    
+    [bt addTarget:self action:@selector(closeSocketlalala) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+}
+
+
 
 - (void)presentUI {
     [MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^(NSDictionary *userInfo){
@@ -829,7 +849,15 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (BOOL)handleSendMessageAbility {
-  
+    //xlp 去掉socket连接的检测
+    if ([self checkXlpSocketClose]) {
+        
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"service_connectting_wait"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        [MQManager openMeiqiaService];
+        
+        return NO;
+    }
+
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
         [self.view.window endEditing:YES];
         [MQToast showToast:@"正在排队，请等待客服接入后发送消息" duration:2.5 window:self.view.window];
@@ -887,12 +915,21 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (BOOL)inputContentViewShouldBeginEditing:(MQInputContentView *)inputContentView {
 
+    //xlp 去掉socket连接的检测
+    if ([self checkXlpSocketClose]) {
+        
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"service_connectting_wait"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        [MQManager openMeiqiaService];
+        
+        return NO;
+    }
+
     return YES;
 }
 
 #pragma mark - inputbar delegate
 
-- (void)inputBar:(MQInputToolBar *)inputBar willChangeHeight:(CGFloat)height {
+- (void)inputBar:(MQInputToolView *)inputBar willChangeHeight:(CGFloat)height {
     if (height > kMQChatViewInputBarHeight) {
         CGFloat diff = height - self.constaintInputBarHeight.constant;
         if (diff < self.chatTableView.contentInset.top + self.self.chatTableView.contentSize.height) {
@@ -1002,14 +1039,15 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     return _evaluationView;
 }
 
-- (MQInputToolBar *)chatInputBar {
+- (MQInputToolView *)chatInputBar {
     if (!_chatInputBar) {
         MQTabInputContentView *contentView = [[MQTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 118)];
-        _chatInputBar = [[MQInputToolBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kMQChatViewInputBarHeight) contentView: contentView];
+        _chatInputBar = [[MQInputToolView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kMQChatViewInputBarHeight) contentView: contentView];
         _chatInputBar.delegate = self;
         _chatInputBar.contentViewDelegate = self;
         [contentView setupButtons];
-        _chatInputBar.backgroundColor = [UIColor greenColor];
+        //xlp
+//        _chatInputBar.backgroundColor = [UIColor greenColor];
     }
     return _chatInputBar;
 }
@@ -1096,6 +1134,17 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         _emojiView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     }
     return _emojiView;
+}
+
+//xlp 测试可删除
+- (void)closeSocketlalala{
+    
+    //断掉链接
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"xlpCloseSocketNoti" object:nil];
+}
+
+- (BOOL)checkXlpSocketClose{
+    return [[NSUserDefaults standardUserDefaults]boolForKey:@"xlpSocketClose"];
 }
 
 
