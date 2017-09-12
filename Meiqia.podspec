@@ -1,4 +1,4 @@
-# coding: utf-8I
+# coding: utf-8
 #
 # Be sure to run `pod lib lint MeiqiaSDK.podspec' to ensure this is a
 # valid spec before submitting.
@@ -42,5 +42,3 @@ Pod::Spec.new do |s|
   
 
 end
-
-
