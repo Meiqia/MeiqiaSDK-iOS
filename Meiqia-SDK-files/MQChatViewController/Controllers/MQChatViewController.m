@@ -66,6 +66,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     NSTimeInterval sendTime;        //发送时间，用于限制发送频率
     UIView *translucentView;        //loading 的半透明层
     UIActivityIndicatorView *activityIndicatorView; //loading
+    
+    //xlp  是否开启访客无消息过滤的标志
+    BOOL openVisitorNoMessageBool; // 默认值 在presentUI里分2种情况初始化 在发送各种消息前检测 若为真 打开 则需手动上线  若为假 则不做操作
 }
 
 - (void)dealloc {
@@ -122,7 +125,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     [self presentUI];
     
-    [MQManager openMeiqiaService];
+
 
     
     //xlp
@@ -147,6 +150,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 
 - (void)presentUI {
+    
     [MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^(NSDictionary *userInfo){
         NSString *targetType = userInfo[@"targetType"];
         NSString *target = userInfo[@"target"];
@@ -187,7 +191,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
                         [MQManager setClientOffline];
                     }
                 } withKey:@"MQChatViewController"];
+                
+                openVisitorNoMessageBool = YES;
+                
             } else { // 如果未开启，直接让用户上线
+                openVisitorNoMessageBool = NO;
                 [self.chatViewService setClientOnline];
             }
         }];
@@ -504,9 +512,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         [[(MQTabInputContentView *)self.chatInputBar.contentView textField] setText:text];
         return NO;
     }
-    //xlp  T5637  记得修改验证  擦擦  暂时出现 消息发送失败的问题 擦擦擦
-    [self.chatViewService setClientOnline];
-    
+    //xlp  T5637
+    [self checkOpenVisitorNoMessageBool];
+
     [self.chatViewService sendTextMessageWithContent:text];
     sendTime = [NSDate timeIntervalSinceReferenceDate];
     [self chatTableViewScrollToBottomWithAnimated:YES];
@@ -1158,5 +1166,15 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     return [[NSUserDefaults standardUserDefaults]boolForKey:@"xlpSocketClose"];
 }
 
+//xlp 在对话规则 打开过滤无消息访客按钮后 刚开始对话 客户未能上线 状态为 初始化
+- (void)checkOpenVisitorNoMessageBool{
+    
+    if (openVisitorNoMessageBool) {
+        [MQServiceToViewInterface prepareForChat]; //初始化
+        [self.chatViewService setClientOnline];
+        
+        openVisitorNoMessageBool = NO;
+    }
+}
 
 @end
