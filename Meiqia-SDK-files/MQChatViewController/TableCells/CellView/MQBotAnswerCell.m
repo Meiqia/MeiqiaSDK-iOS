@@ -7,13 +7,13 @@
 //
 
 #import "MQBotAnswerCell.h"
-#import "MQChatFileUtil.h"
 #import "MQChatViewConfig.h"
+#import "MQChatFileUtil.h"
 #import "MQBundleUtil.h"
-#import "MQBotAnswerCellModel.h"
 #import "MEIQIA_TTTAttributedLabel.h"
 #import "MQStringSizeUtil.h"
 #import "MQChatViewStyle.h"
+#import "MQBotAnswerCellModel.h"
 
 static const NSInteger kMQTextCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;

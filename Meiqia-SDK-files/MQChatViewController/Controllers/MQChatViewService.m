@@ -39,6 +39,8 @@
 #import "MQToast.h"
 #import "NSError+MQConvenient.h"
 
+#import "MQBotMenuWebViewBubbleAnswerCellModel.h"
+
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
 /** 一次获取历史消息数的个数 */
@@ -559,16 +561,40 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         } else if ([message isKindOfClass:[MQFileDownloadMessage class]]) {
             cellModel = [[MQFileDownloadCellModel alloc] initCellModelWithMessage:(MQFileDownloadMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQRichTextMessage class]]) {
+            
             if ([message isKindOfClass:[MQBotRichTextMessage class]]) {
-                if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
-                    cellModel = [[MQBotWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                
+//                if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+//                    cellModel = [[MQBotWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+//                } else {
+//                    cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+//                }
+                //xlp 富文本展示
+                if ([(MQBotRichTextMessage *)message menu] != nil) {
+
+                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+                        cellModel = [[MQBotMenuWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                    } else {
+                        cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                    }
+
                 } else {
-                    cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+
+                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+                        cellModel = [[MQBotWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                    } else {
+                        cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                    }
                 }
+                
+                
+                
             } else {
                 cellModel = [[MQRichTextViewModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
             }
+            
         }else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
+            
             if ([(MQBotAnswerMessage *)message menu] == nil) {
                 cellModel = [[MQBotAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
             } else {

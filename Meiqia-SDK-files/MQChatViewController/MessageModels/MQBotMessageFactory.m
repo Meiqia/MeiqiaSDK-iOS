@@ -55,7 +55,7 @@
 - (MQBaseMessage *)getNormalBotAnswerMessage:(NSDictionary *)data subType:(NSString *)subType {
     NSString *content = @"";
     MQBotMenuMessage *embedMenuMessage;
-    
+    NSLog(@"====收到的信息的内容为===%@",data);
     if ([subType isEqualToString:@"queueing"]) {
         content = @"暂无空闲客服，您已进入排队等待。";
         subType = @"redirect";
@@ -68,9 +68,16 @@
         }
         
         MQBaseMessage *message = [self tryToGetRichTextMessage:data];
-        if (message && embedMenuMessage == nil) {
+        //xlp 显示富文本 修改
+//        if (message && embedMenuMessage == nil) {
+        if (message  != nil) {
+
+            MQBotRichTextMessage * botRichTextMessage = (MQBotRichTextMessage *)message;
             //如果是富文本cell，直接返回
-            return message;
+            if (embedMenuMessage) {
+                botRichTextMessage.menu = embedMenuMessage;
+            }
+            return botRichTextMessage;
         } else {
             content = [[data objectForKey:@"content_robot"] firstObject][@"text"];
             content = [MQManager convertToUnicodeWithEmojiAlias:content];
@@ -155,6 +162,7 @@
         botRichTextMessage.subType = data[@"sub_type"];
         
         BOOL isEvaluated = [data objectForKey:@"is_evaluated"] ? [[data objectForKey:@"is_evaluated"] boolValue] : false;
+
         botRichTextMessage.isEvaluated = isEvaluated;
         return botRichTextMessage;
     } else {

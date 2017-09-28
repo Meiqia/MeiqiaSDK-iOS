@@ -122,6 +122,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     [self presentUI];
     
+    [MQManager openMeiqiaService];
+
+    
     //xlp
     //[self addTestBt];
 }
@@ -501,6 +504,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         [[(MQTabInputContentView *)self.chatInputBar.contentView textField] setText:text];
         return NO;
     }
+    //xlp  T5637  记得修改验证  擦擦  暂时出现 消息发送失败的问题 擦擦擦
+    [self.chatViewService setClientOnline];
+    
     [self.chatViewService sendTextMessageWithContent:text];
     sendTime = [NSDate timeIntervalSinceReferenceDate];
     [self chatTableViewScrollToBottomWithAnimated:YES];
@@ -535,6 +541,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)inputContentTextDidChange:(NSString *)newString {
+    
+    //xlp 判断当前顾客的状态是否登录成功 若失败 则手动上线
+    
+//    NSLog(@"%@",[MQManager getCurrentState]);
+    
     //用户正在输入
     static BOOL shouldSendInputtingMessageToServer = YES;
     

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		63558F821EEE7B3E00B12545 /* FEZ.png in Resources */ = {isa = PBXBuildFile; fileRef = 63558F811EEE7B3E00B12545 /* FEZ.png */; };
 		8904283D1F668A5B003B7F2D /* MQInputToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8904283C1F668A5B003B7F2D /* MQInputToolView.m */; };
+		895936CC1F7A4EA2000841AF /* MQBotMenuWebViewBubbleAnswerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 895936CB1F7A4EA2000841AF /* MQBotMenuWebViewBubbleAnswerCell.m */; };
+		895936CF1F7A5670000841AF /* MQBotMenuWebViewBubbleAnswerCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 895936CE1F7A5670000841AF /* MQBotMenuWebViewBubbleAnswerCellModel.m */; };
 		CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */; };
 		CCE9D10B1C1812F6004E862E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10A1C1812F6004E862E /* main.m */; };
 		CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10D1C1812F6004E862E /* AppDelegate.m */; };
@@ -486,6 +488,10 @@
 		63558F811EEE7B3E00B12545 /* FEZ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FEZ.png; sourceTree = "<group>"; };
 		8904283B1F668A5B003B7F2D /* MQInputToolView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQInputToolView.h; sourceTree = "<group>"; };
 		8904283C1F668A5B003B7F2D /* MQInputToolView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQInputToolView.m; sourceTree = "<group>"; };
+		895936CA1F7A4EA2000841AF /* MQBotMenuWebViewBubbleAnswerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MQBotMenuWebViewBubbleAnswerCell.h; sourceTree = "<group>"; };
+		895936CB1F7A4EA2000841AF /* MQBotMenuWebViewBubbleAnswerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MQBotMenuWebViewBubbleAnswerCell.m; sourceTree = "<group>"; };
+		895936CD1F7A5670000841AF /* MQBotMenuWebViewBubbleAnswerCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MQBotMenuWebViewBubbleAnswerCellModel.h; sourceTree = "<group>"; };
+		895936CE1F7A5670000841AF /* MQBotMenuWebViewBubbleAnswerCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MQBotMenuWebViewBubbleAnswerCellModel.m; sourceTree = "<group>"; };
 		CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ijinmaoAvatar.png; sourceTree = "<group>"; };
 		CCE9D1061C1812F6004E862E /* Meiqia-SDK-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meiqia-SDK-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCE9D10A1C1812F6004E862E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1143,6 +1149,7 @@
 		E4B958191DE5A80000BECBB5 /* CellModel */ = {
 			isa = PBXGroup;
 			children = (
+				E4B958221DE5A80000BECBB5 /* MQCellModelProtocol.h */,
 				E4B9581A1DE5A80000BECBB5 /* MQBotAnswerCellModel.h */,
 				E4B9581B1DE5A80000BECBB5 /* MQBotAnswerCellModel.m */,
 				E4B9581C1DE5A80000BECBB5 /* MQBotMenuAnswerCellModel.h */,
@@ -1151,7 +1158,8 @@
 				E4B9581F1DE5A80000BECBB5 /* MQBotMenuCellModel.m */,
 				E4B958201DE5A80000BECBB5 /* MQBotWebViewBubbleAnswerCellModel.h */,
 				E4B958211DE5A80000BECBB5 /* MQBotWebViewBubbleAnswerCellModel.m */,
-				E4B958221DE5A80000BECBB5 /* MQCellModelProtocol.h */,
+				895936CD1F7A5670000841AF /* MQBotMenuWebViewBubbleAnswerCellModel.h */,
+				895936CE1F7A5670000841AF /* MQBotMenuWebViewBubbleAnswerCellModel.m */,
 				E4B958231DE5A80000BECBB5 /* MQEvaluationResultCellModel.h */,
 				E4B958241DE5A80000BECBB5 /* MQEvaluationResultCellModel.m */,
 				E4B958251DE5A80000BECBB5 /* MQEventCellModel.h */,
@@ -1187,6 +1195,8 @@
 				E4B9583D1DE5A80000BECBB5 /* MQBotMenuCell.m */,
 				E4B9583E1DE5A80000BECBB5 /* MQBotWebViewBubbleAnswerCell.h */,
 				E4B9583F1DE5A80000BECBB5 /* MQBotWebViewBubbleAnswerCell.m */,
+				895936CA1F7A4EA2000841AF /* MQBotMenuWebViewBubbleAnswerCell.h */,
+				895936CB1F7A4EA2000841AF /* MQBotMenuWebViewBubbleAnswerCell.m */,
 				E4B958401DE5A80000BECBB5 /* MQChatBaseCell.h */,
 				E4B958411DE5A80000BECBB5 /* MQChatBaseCell.m */,
 				E4B958421DE5A80000BECBB5 /* MQEvaluationCell.h */,
@@ -1409,7 +1419,6 @@
 		E4B958B01DE5A80100BECBB5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E4B958B11DE5A80100BECBB5 /* DMFilterView */,
 				E4B958B21DE5A80100BECBB5 /* MCKeyboardController */,
 				E4B958B51DE5A80100BECBB5 /* MQChatTableView.h */,
 				E4B958B61DE5A80100BECBB5 /* MQChatTableView.m */,
@@ -1422,13 +1431,6 @@
 				E4B958D31DE5A80100BECBB5 /* MQWebView */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		E4B958B11DE5A80100BECBB5 /* DMFilterView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DMFilterView;
 			sourceTree = "<group>";
 		};
 		E4B958B21DE5A80100BECBB5 /* MCKeyboardController */ = {
@@ -2000,6 +2002,7 @@
 				E4B9591B1DE5A80100BECBB5 /* MQPreChatFormViewModel.m in Sources */,
 				E46FBA131E5A92AD00BF76DD /* MQRefresh.m in Sources */,
 				E4B9591F1DE5A80100BECBB5 /* MQBotMenuMessage.m in Sources */,
+				895936CF1F7A5670000841AF /* MQBotMenuWebViewBubbleAnswerCellModel.m in Sources */,
 				E4B959651DE5A80100BECBB5 /* MEIQIA_MLAudioMeterObserver.m in Sources */,
 				E4B9596B1DE5A80100BECBB5 /* MQKeyboardController.m in Sources */,
 				E4B959451DE5A80100BECBB5 /* MQTextMessageCell.m in Sources */,
@@ -2096,6 +2099,7 @@
 				E4B959791DE5A80100BECBB5 /* MQWebViewController.m in Sources */,
 				E4B9597C1DE5A80100BECBB5 /* MQMessageFormViewManager.m in Sources */,
 				E4B959781DE5A80100BECBB5 /* MQEmbededWebView.m in Sources */,
+				895936CC1F7A4EA2000841AF /* MQBotMenuWebViewBubbleAnswerCell.m in Sources */,
 				E4B9594C1DE5A80100BECBB5 /* MQChatAudioRecorder.m in Sources */,
 				E4B959221DE5A80100BECBB5 /* MQEventMessage.m in Sources */,
 				E4B9594D1DE5A80100BECBB5 /* MQChatDeviceUtil.m in Sources */,
