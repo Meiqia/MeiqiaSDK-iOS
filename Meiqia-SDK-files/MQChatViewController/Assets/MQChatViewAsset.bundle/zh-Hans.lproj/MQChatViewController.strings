@@ -133,3 +133,13 @@
 "pre_chat_form_title" =  "请填写以下内容";
 "pre_chat_form_mutiple_selection_label" = "(多选)";
 "pre_chat_form_black_alert_label" = "红色文字的地方为必填项, 请填写完整";
+
+//pull refresh
+"pull_refresh_normal" = "下拉加载历史消息";
+"pull_refresh_triggered" = "松开加载历史消息";
+//xlp
+// 请输入消息
+"input_content" = "输入消息...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "服务连接中,请稍候...";
+

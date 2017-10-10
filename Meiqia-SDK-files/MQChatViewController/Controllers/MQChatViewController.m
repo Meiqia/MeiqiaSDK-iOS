@@ -12,7 +12,7 @@
 #import "MQChatViewService.h"
 #import "MQCellModelProtocol.h"
 #import "MQChatDeviceUtil.h"
-#import "MQInputToolBar.h"
+#import "MQInputToolView.h"
 #import "MQTabInputContentView.h"
 #import "MQKeyboardController.h"
 #import "MQToast.h"
@@ -31,17 +31,22 @@
 #import "MQMessageFormViewManager.h"
 #import "MQPreChatFormListViewController.h"
 #import "MQAGEmojiKeyBoardView.h"
+#import "MQRefresh.h"
+#import "MQTextCellModel.h"
+#import "MQTipsCellModel.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate, MQAGEmojiKeyboardViewDelegate, MQAGEmojiKeyboardViewDataSource>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolViewDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate, MQAGEmojiKeyboardViewDelegate, MQAGEmojiKeyboardViewDataSource>
+
+@property(nonatomic, strong)MQChatViewService *chatViewService;
 
 @end
 
 @interface MQChatViewController()
 
 @property (nonatomic, strong) id evaluateBarButtonItem;//保存隐藏的barButtonItem
-@property (nonatomic, strong) MQInputToolBar *chatInputBar;
+@property (nonatomic, strong) MQInputToolView *chatInputBar;
 @property (nonatomic, strong) NSLayoutConstraint *constaintInputBarHeight;
 @property (nonatomic, strong) NSLayoutConstraint *constraintInputBarBottom;
 @property (nonatomic, strong) MQEvaluationView *evaluationView;
@@ -55,7 +60,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @implementation MQChatViewController {
     MQChatViewConfig *chatViewConfig;
     MQChatViewTableDataSource *tableDataSource;
-    MQChatViewService *chatViewService;
     BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
     UIStatusBarStyle previousStatusBarStyle;//当前statusBar样式
     BOOL previousStatusBarHidden;   //调出聊天视图界面前是否隐藏 statusBar
@@ -68,10 +72,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     NSLog(@"清除chatViewController");
     [self removeDelegateAndObserver];
     [chatViewConfig setConfigToDefault];
-    [chatViewService setCurrentInputtingText:[(MQTabInputContentView *)self.chatInputBar.contentView textField].text];
+    [self.chatViewService setCurrentInputtingText:[(MQTabInputContentView *)self.chatInputBar.contentView textField].text];
     [self closeMeiqiaChatView];
     [MQCustomizedUIText reset];
-    chatViewService = nil;
+//    chatViewService = nil;
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -102,7 +106,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self initTableViewDataSource];
     
     
-    chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
+    self.chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
     
 #ifdef INCLUDE_MEIQIA_SDK
     //[self updateNavBarTitle:[MQBundleUtil localizedStringForKey:@"wait_agent"]];
@@ -117,7 +121,27 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     
     [self presentUI];
+    
+    //xlp
+    //[self addTestBt];
 }
+
+//xlp
+- (void)addTestBt{
+    
+    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
+    bt.frame = CGRectMake(100, 20, 40, 40);
+    bt.backgroundColor = [UIColor redColor];
+    
+    UIWindow *aWindow = [[UIApplication sharedApplication] delegate].window;
+    [aWindow addSubview:bt];
+    
+    [bt addTarget:self action:@selector(closeSocketlalala) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+}
+
+
 
 - (void)presentUI {
     [MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^(NSDictionary *userInfo){
@@ -137,7 +161,33 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             [MQChatViewConfig sharedConfig].preSendMessages = m;
         }
         
-        [chatViewService setClientOnline];
+        [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:NO complete:^(MQEnterprise *enterprise, NSError *e) {
+            // 获取是否开启无消息访客过滤, warning:用之前的绑定的clientId上线,防止出现排队现象
+            //
+            if (enterprise.configInfo.isScheduleAfterClientSendMessage && ![MQManager getLoginStatus]) {
+                // 设置head title
+                [self updateNavTitleWithAgentName:enterprise.configInfo.public_nickname ?: @"官方客服" agentStatus:MQChatAgentStatusNone];
+                // 设置欢迎语 设置企业头像
+                MQTextMessage *message = [[MQTextMessage alloc] initWithContent: enterprise.configInfo.enterpriseIntro ?: @"【系统消息】您好，请问您有什么问题?"];
+                message.fromType = MQChatMessageIncoming;
+                message.date = [NSDate new];
+                message.userName = enterprise.configInfo.public_nickname;
+                message.userAvatarPath = enterprise.configInfo.avatar;
+                message.sendStatus = MQChatMessageSendStatusSuccess;
+                MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage: message cellWidth:self.chatViewService.chatViewWidth delegate:(id <MQCellModelDelegate>)self.chatViewService];
+                [self.chatViewService addCellModelAndReloadTableViewWithModel:cellModel];
+                // 加载历史消息
+                [self.chatViewService startGettingHistoryMessages];
+                // 注册通知
+                [MQManager addStateObserverWithBlock:^(MQState oldState, MQState newState, NSDictionary *value, NSError *error) {
+                    if (newState == MQStateUnallocatedAgent) { // 离线
+                        [MQManager setClientOffline];
+                    }
+                } withKey:@"MQChatViewController"];
+            } else { // 如果未开启，直接让用户上线
+                [self.chatViewService setClientOnline];
+            }
+        }];
     } cancle:^{
         [self dismissViewControllerAnimated:NO completion:^{
             [self dismissChatViewController];
@@ -177,7 +227,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.keyboardController endListeningForKeyboard];
     
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
-        [chatViewService saveTextDraftIfNeeded:(UITextField *)[(MQTabInputContentView *)self.chatInputBar.contentView textField]];
+        [self.chatViewService saveTextDraftIfNeeded:(UITextField *)[(MQTabInputContentView *)self.chatInputBar.contentView textField]];
     }
 }
 
@@ -185,7 +235,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [super viewWillAppear:animated];
     [UIView setAnimationsEnabled:YES];
     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
-    [chatViewService fillTextDraftToFiledIfExists:(UITextField *)[(MQTabInputContentView *)self.chatInputBar.contentView textField]];
+    [self.chatViewService fillTextDraftToFiledIfExists:(UITextField *)[(MQTabInputContentView *)self.chatInputBar.contentView textField]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -219,12 +269,12 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 #pragma 初始化viewModel
 - (void)initchatViewService {
-    chatViewService = [[MQChatViewService alloc] initWithDelegate:self errorDelegate:self];
+    self.chatViewService = [[MQChatViewService alloc] initWithDelegate:self errorDelegate:self];
 }
 
 #pragma 初始化tableView dataSource
 - (void)initTableViewDataSource {
-    tableDataSource = [[MQChatViewTableDataSource alloc] initWithChatViewService:chatViewService];
+    tableDataSource = [[MQChatViewTableDataSource alloc] initWithChatViewService: self.chatViewService];
     tableDataSource.chatCellDelegate = self;
     self.chatTableView.dataSource = tableDataSource;
 }
@@ -234,11 +284,20 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
  * 初始化聊天的tableView
  */
 - (void)initChatTableView {
-//    [self setChatTableViewFrame];
     self.chatTableView = [[MQChatTableView alloc] initWithFrame:chatViewConfig.chatViewFrame style:UITableViewStylePlain];
     self.chatTableView.chatTableViewDelegate = self;
     self.chatTableView.delegate = self;
     [self.view addSubview:self.chatTableView];
+    
+    __weak typeof(self) wself = self;
+    [self.chatTableView setupPullRefreshWithAction:^{
+        __strong typeof (wself) sself = wself;
+        [sself.chatViewService startGettingHistoryMessages];
+    }];
+    
+    [self.chatTableView.refreshView setText:[MQBundleUtil localizedStringForKey:@"pull_refresh_normal"] forStatus: MQRefreshStatusDraging];
+    [self.chatTableView.refreshView setText:[MQBundleUtil localizedStringForKey:@"pull_refresh_triggered"] forStatus: MQRefreshStatusTriggered];
+    [self.chatTableView.refreshView setText:[MQBundleUtil localizedStringForKey:@"no_more_messages"] forStatus: MQRefreshStatusEnd];
 }
 
 /**
@@ -292,30 +351,14 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)reloadCellAsContentUpdated:(UITableViewCell *)cell {
-    [self.chatTableView reloadData];
-    
-    if (cell.viewBottomEdge >= self.chatTableView.contentSize.height) {
-        if (!self.chatTableView.isDragging && !self.chatTableView.tracking && !self.chatTableView.decelerating ) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self scrollTableViewToBottom];
-            });
+    NSIndexPath *indexPath = [self.chatTableView indexPathForCell: cell];
+    if (indexPath) {
+        for (UITableViewCell *_cell in [self.chatTableView visibleCells]) {
+            if (_cell == cell) {
+                [self.chatTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation: UITableViewRowAnimationNone];
+            }
         }
     }
-}
-
-//下拉刷新，获取以前的消息
-- (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:1 isLoadOver:true];
-//    });
-    [chatViewService startGettingHistoryMessages];
-}
-
-//上拉刷新，获取更新的消息
-- (void)startLoadingBottomMessagesInTableView:(UITableView *)tableView {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.chatTableView finishLoadingBottomRefreshView];
-    });
 }
 
 - (void)tapNavigationRightBtn:(id)sender {
@@ -323,7 +366,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)tapNavigationRedirectBtn:(id)sender {
-    [chatViewService forceRedirectToHumanAgent];
+    [self.chatViewService forceRedirectToHumanAgent];
     [self showActivityIndicatorView];
 }
 
@@ -333,7 +376,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 #pragma UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    id<MQCellModelProtocol> cellModel = [chatViewService.cellModels objectAtIndex:indexPath.row];
+    id<MQCellModelProtocol> cellModel = [self.chatViewService.cellModels objectAtIndex:indexPath.row];
     return [cellModel getCellHeight];
 }
 
@@ -343,37 +386,60 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 #pragma UIScrollViewDelegate
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    [self.chatTableView scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    if (self.chatTableView.refreshView.status == MQRefreshStatusTriggered) {
+        [self.chatTableView startAnimation];
+    }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self.chatTableView scrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-    [self.chatTableView scrollViewDidEndScrollingAnimation:scrollView];
-}
-
-#pragma MQChatViewServiceDelegate
-
-- (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver{
-    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:cellNumber isLoadOver:isLoadOver];
+- (void)didGetHistoryMessagesWithCommitTableAdjustment:(void(^)(void))commitTableAdjustment {
+    __weak typeof(self) wself = self;
+    [self.chatTableView stopAnimationCompletion:^{
+        __strong typeof (wself) sself = wself;
+        CGFloat oldHeight = sself.chatTableView.contentSize.height;
+        commitTableAdjustment();
+        CGFloat heightIncreatment = sself.chatTableView.contentSize.height - oldHeight;
+        if (heightIncreatment > 0) {
+            heightIncreatment -= sself.chatTableView.refreshView.bounds.size.height;
+            sself.chatTableView.contentOffset = CGPointMake(0, heightIncreatment);
+            [sself.chatTableView flashScrollIndicators];
+        } else {
+            [sself.chatTableView setLoadEnded];
+        }
+    }];
 }
 
 - (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
     [self.chatTableView updateTableViewAtIndexPath:indexPath];
 }
 
-- (void)reloadChatTableView {
-    CGSize preContentSize = self.chatTableView.contentSize;
-    [self.chatTableView reloadData];
-    if (!CGSizeEqualToSize(preContentSize, self.chatTableView.contentSize)) {
-        [self scrollTableViewToBottom];
+- (void)insertCellAtBottomForModelCount:(NSInteger)count {
+    NSMutableArray *indexToAdd = [NSMutableArray new];
+    NSInteger currentCellCount = [self.chatTableView numberOfRowsInSection: 0];
+    for (int i = 0; i < count; i ++) {
+        [indexToAdd addObject:[NSIndexPath indexPathForRow:currentCellCount + i inSection:0]];
     }
+    [self.chatTableView insertRowsAtIndexPaths:indexToAdd withRowAnimation:(UITableViewRowAnimationBottom)];
 }
 
-- (void)scrollTableViewToBottom {
-    [self chatTableViewScrollToBottomWithAnimated:false];
+- (void)insertCellAtTopForModelCount:(NSInteger)count {
+    NSMutableArray *indexToAdd = [NSMutableArray new];
+    for (int i = 0; i < count; i ++) {
+        [indexToAdd insertObject:[NSIndexPath indexPathForRow:i inSection:0] atIndex: 0];
+    }
+    [self.chatTableView insertRowsAtIndexPaths:indexToAdd withRowAnimation:(UITableViewRowAnimationTop)];
+}
+
+- (void)removeCellAtIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow: index inSection: 0];
+    [self.chatTableView deleteRowsAtIndexPaths: @[indexPath] withRowAnimation: UITableViewRowAnimationFade];
+}
+
+- (void)reloadChatTableView {
+    [self.chatTableView reloadData];
+}
+
+- (void)scrollTableViewToBottomAnimated:(BOOL)animated {
+    [self chatTableViewScrollToBottomWithAnimated: animated];
 }
 
 - (void)showEvaluationAlertView {
@@ -414,10 +480,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)didReceiveMessage {
     //判断是否显示新消息提示
     if ([self.chatTableView isTableViewScrolledToBottom]) {
-        [self chatTableViewScrollToBottomWithAnimated:true];
+        [self chatTableViewScrollToBottomWithAnimated: YES];
     } else {
         if ([MQChatViewConfig sharedConfig].enableShowNewMessageAlert) {
-            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:self.view];
+            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
         }
     }
 }
@@ -429,20 +495,19 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #pragma MQInputBarDelegate
 -(BOOL)sendTextMessage:(NSString*)text {
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
-    if (chatViewService.clientStatus == MQClientStatusOnlining || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
-        NSString *alertText = chatViewService.clientStatus == MQClientStatusOnlining ? @"cannot_text_client_is_onlining" : @"send_to_fast";
+    if (self.chatViewService.clientStatus == MQStateAllocatingAgent || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
+        NSString *alertText = self.chatViewService.clientStatus == MQStateAllocatingAgent ? @"cannot_text_client_is_onlining" : @"send_to_fast";
         [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view];
         [[(MQTabInputContentView *)self.chatInputBar.contentView textField] setText:text];
         return NO;
     }
-    [chatViewService sendTextMessageWithContent:text];
+    [self.chatViewService sendTextMessageWithContent:text];
     sendTime = [NSDate timeIntervalSinceReferenceDate];
     [self chatTableViewScrollToBottomWithAnimated:YES];
     return YES;
 }
 
 -(void)sendImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
-    
     NSString *mediaPermission = [MQChatDeviceUtil isDeviceSupportImageSourceType:(int)sourceType];
     if (!mediaPermission) {
         return;
@@ -453,8 +518,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
-    if (chatViewService.clientStatus == MQClientStatusOnlining || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
-        NSString *alertText = chatViewService.clientStatus == MQClientStatusOnlining ? @"cannot_text_client_is_onlining" : @"send_to_fast";
+    if (self.chatViewService.clientStatus == MQStateAllocatingAgent || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
+        NSString *alertText = self.chatViewService.clientStatus == MQStateAllocatingAgent ? @"cannot_text_client_is_onlining" : @"send_to_fast";
         [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view];
         return ;
     }
@@ -475,7 +540,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     if (shouldSendInputtingMessageToServer) {
         shouldSendInputtingMessageToServer = NO;
-        [chatViewService sendUserInputtingWithContent:newString];
+        [self.chatViewService sendUserInputtingWithContent:newString];
         
         //wait for 5 secs to enable sending message again
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -487,10 +552,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)chatTableViewScrollToBottomWithAnimated:(BOOL)animated {
     NSInteger cellCount = [self.chatTableView numberOfRowsInSection:0];
-    if (cellCount == 0) {
-        return;
+    if (cellCount > 0) {
+        [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow: cellCount - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
-    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:cellCount-1 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
 }
 
 - (void)beginRecord:(CGPoint)point {
@@ -500,8 +564,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
-    if (chatViewService.clientStatus == MQClientStatusOnlining || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
-        NSString *alertText = chatViewService.clientStatus == MQClientStatusOnlining ? @"cannot_text_client_is_onlining" : @"send_to_fast";
+    if (self.chatViewService.clientStatus == MQStateAllocatingAgent || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
+        NSString *alertText = self.chatViewService.clientStatus == MQStateAllocatingAgent ? @"cannot_text_client_is_onlining" : @"send_to_fast";
         [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view];
         return ;
     }
@@ -558,7 +622,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 #pragma MQRecordViewDelegate
 - (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath {
-    [chatViewService sendVoiceMessageWithAMRFilePath:filePath];
+    [self.chatViewService sendVoiceMessageWithAMRFilePath:filePath];
     [self chatTableViewScrollToBottomWithAnimated:true];
 }
 
@@ -575,7 +639,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     UIImage *image          =  [MQImageUtil resizeImage:[MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]]maxSize:CGSizeMake(1000, 1000)];
     [picker dismissViewControllerAnimated:YES completion:^{
-        [chatViewService sendImageMessageWithImage:image];
+        [self.chatViewService sendImageMessageWithImage:image];
         [self chatTableViewScrollToBottomWithAnimated:true];
     }];
 }
@@ -604,7 +668,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)resendMessageInCell:(UITableViewCell *)cell resendData:(NSDictionary *)resendData {
     //先删除之前的消息
     NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
-    [chatViewService resendMessageAtIndex:indexPath.row resendData:resendData];
+    [self.chatViewService resendMessageAtIndex:indexPath.row resendData:resendData];
     [self chatTableViewScrollToBottomWithAnimated:true];
 }
 
@@ -613,7 +677,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId {
-    [chatViewService evaluateBotAnswer:isUseful messageId:messageId];
+    [self.chatViewService evaluateBotAnswer:isUseful messageId:messageId];
 }
 
 - (void)didTapMenuWithText:(NSString *)menuText {
@@ -623,7 +687,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         return ;
     }
     NSString *sendText = [menuText substringFromIndex:orderRange.location+2];
-    [chatViewService sendTextMessageWithContent:sendText];
+    [self.chatViewService sendTextMessageWithContent:sendText];
+    [self chatTableViewScrollToBottomWithAnimated:YES];
 }
 
 - (void)didTapReplyBtn {
@@ -636,19 +701,21 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)didTapMessageInCell:(UITableViewCell *)cell {
     NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
-    [chatViewService didTapMessageCellAtIndex:indexPath.row];
+    [self.chatViewService didTapMessageCellAtIndex:indexPath.row];
 }
 
 #pragma MQEvaluationViewDelegate
 - (void)didSelectLevel:(NSInteger)level comment:(NSString *)comment {
-    [chatViewService sendEvaluationLevel:level comment:comment];
+    [self.chatViewService sendEvaluationLevel:level comment:comment];
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma MQServiceToViewInterfaceErrorDelegate 后端返回的数据的错误委托方法
 - (void)getLoadHistoryMessageError {
-    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:0 isLoadOver:YES];
-    [MQToast showToast:[MQBundleUtil localizedStringForKey:@"load_history_message_error"] duration:1.0 window:self.view];
+//    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:0 isLoadOver:YES];
+    [self.chatTableView stopAnimationCompletion:^{
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"load_history_message_error"] duration:1.0 window:self.view];
+    }];
 }
 
 /**
@@ -710,13 +777,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)didReceiveRefreshOutgoingAvatarNotification:(NSNotification *)notification {
     if ([notification.object isKindOfClass:[UIImage class]]) {
-        [chatViewService refreshOutgoingAvatarWithImage:notification.object];
+        [self.chatViewService refreshOutgoingAvatarWithImage:notification.object];
     }
 }
 
 - (void)closeMeiqiaChatView {
     if ([self.navigationItem.title isEqualToString:[MQBundleUtil localizedStringForKey:@"no_agent_title"]]) {
-        [chatViewService dismissingChatViewController];
+        [self.chatViewService dismissingChatViewController];
     }
 }
 
@@ -740,8 +807,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)updateTableCells {
-    chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
-    [chatViewService updateCellModelsFrame];
+    self.chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
+    [self.chatViewService updateCellModelsFrame];
     [self.chatTableView reloadData];
 }
 
@@ -782,6 +849,15 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (BOOL)handleSendMessageAbility {
+    //xlp 去掉socket连接的检测
+    if ([self checkXlpSocketClose]) {
+        
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"service_connectting_wait"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        [MQManager openMeiqiaService];
+        
+        return NO;
+    }
+
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
         [self.view.window endEditing:YES];
         [MQToast showToast:@"正在排队，请等待客服接入后发送消息" duration:2.5 window:self.view.window];
@@ -838,12 +914,22 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (BOOL)inputContentViewShouldBeginEditing:(MQInputContentView *)inputContentView {
+
+    //xlp 去掉socket连接的检测
+    if ([self checkXlpSocketClose]) {
+        
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"service_connectting_wait"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        [MQManager openMeiqiaService];
+        
+        return NO;
+    }
+
     return YES;
 }
 
 #pragma mark - inputbar delegate
 
-- (void)inputBar:(MQInputToolBar *)inputBar willChangeHeight:(CGFloat)height {
+- (void)inputBar:(MQInputToolView *)inputBar willChangeHeight:(CGFloat)height {
     if (height > kMQChatViewInputBarHeight) {
         CGFloat diff = height - self.constaintInputBarHeight.constant;
         if (diff < self.chatTableView.contentInset.top + self.self.chatTableView.contentSize.height) {
@@ -953,15 +1039,15 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     return _evaluationView;
 }
 
-- (MQInputToolBar *)chatInputBar {
+- (MQInputToolView *)chatInputBar {
     if (!_chatInputBar) {
         MQTabInputContentView *contentView = [[MQTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 118)];
-        _chatInputBar = [[MQInputToolBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kMQChatViewInputBarHeight) contentView: contentView];
+        _chatInputBar = [[MQInputToolView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kMQChatViewInputBarHeight) contentView: contentView];
         _chatInputBar.delegate = self;
         _chatInputBar.contentViewDelegate = self;
         [contentView setupButtons];
-//        _chatInputBar.backgroundColor = [UIColor greenColor];
         _chatInputBar.backgroundColor = [UIColor colorWithHexString:chatbg];
+
     }
     return _chatInputBar;
 }
@@ -1049,5 +1135,17 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     return _emojiView;
 }
+
+//xlp 测试可删除
+- (void)closeSocketlalala{
+    
+    //断掉链接
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"xlpCloseSocketNoti" object:nil];
+}
+
+- (BOOL)checkXlpSocketClose{
+    return [[NSUserDefaults standardUserDefaults]boolForKey:@"xlpSocketClose"];
+}
+
 
 @end

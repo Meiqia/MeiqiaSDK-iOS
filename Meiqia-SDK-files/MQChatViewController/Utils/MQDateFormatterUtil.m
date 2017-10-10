@@ -105,13 +105,20 @@
 }
 
 + (NSInteger) dateYearFromDate:(NSDate *)date{
-    NSDateComponents *components = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:date];
+//    NSDateComponents *components = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:date];
+    NSDateComponents *components = [self obtainComponentsWithDate:date];
     return components.year;
 }
 
 + (NSInteger) dateDayFromDate:(NSDate *)date{
-    NSDateComponents *components = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:date];
+//    NSDateComponents *components = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:date];
+//    return components.day;
+    NSDateComponents *components = [self obtainComponentsWithDate:date];
     return components.day;
 }
-
+#pragma mark - 这一部分警告 是因为用的枚举变量 在ios8时被弃用
++ (NSDateComponents *)obtainComponentsWithDate:(NSDate *)date{
+    
+    return [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:date];
+}
 @end

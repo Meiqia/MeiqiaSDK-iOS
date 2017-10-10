@@ -99,7 +99,16 @@
 
 "cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
 
+"message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
+
 "send_to_fast"  = "您发送的太快啦，请休息一下吧~";"leave_a_message" = "留言";
+"reply_tip_text"        = "抱歉，当前没有客服在线，您可以给我们 留言";
+"bot_redirect_tip_text"  = "很抱歉您不满意机器人的回答，您可以尝试 转人工";
+
+"cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
+
+"send_to_fast"  = "您发送的太快啦，请休息一下吧~";
+"leave_a_message" = "留言";
 "submit" = "提交";
 "leave_a_message_placeholder" = "请输入你的留言";
 "param_not_allow_null" = "%@ 不允许为空";
@@ -115,7 +124,7 @@
 "wechat" = "微信";
 "wechat_placeholder" = "请输入你的微信号";
 "name" = "姓名";
-"name_placeholder" = "请输入";
+"name_placeholder" = "请输入姓名";
 
 "wating_in_queue_tip_text" = "请稍等，前面还有%d个访客，您也可以选择给我们 留言";
 
@@ -124,3 +133,14 @@
 "pre_chat_form_title" =  "请填写以下内容";
 "pre_chat_form_mutiple_selection_label" = "(多选)";
 "pre_chat_form_black_alert_label" = "红色文字的地方为必填项, 请填写完整";
+
+//pull refresh
+"pull_refresh_normal" = "下拉加载历史消息";
+"pull_refresh_triggered" = "松开加载历史消息";
+
+//xlp
+// 请输入消息
+"input_content" = "输入消息...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "服务连接中,请稍候...";
+

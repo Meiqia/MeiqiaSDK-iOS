@@ -30,7 +30,8 @@
   if (([self.buttons count] - 1) == [buttonTexts count]) {
     // just reset text on each button
     for (NSUInteger i = 0; i < [buttonTexts count]; ++i) {
-      [self.buttons[i] setTitle:buttonTexts[i] forState:UIControlStateNormal];
+        //xlp
+      [(UIButton *)self.buttons[i] setTitle:buttonTexts[i] forState:UIControlStateNormal];
     }
   } else {
     [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];

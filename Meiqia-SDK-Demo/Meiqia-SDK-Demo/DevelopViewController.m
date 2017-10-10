@@ -392,7 +392,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  @param customizedId 自定义id
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId {
-    [MQManager initWithAppkey:@"b40eb2f8792ce17de91797f5bf9a439d" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
             [chatViewManager setLoginCustomizedId:customizedId];
@@ -731,7 +731,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableTopPullRefresh:true];
     [chatViewManager.chatViewStyle setPullRefreshColor:[UIColor redColor]];
-//    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor blueColor]];
+    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor redColor]];
 //    [chatViewManager.chatViewStyle setNavBarColor:[UIColor yellowColor]];
     
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -761,7 +761,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     UIButton *lertButton = [UIButton buttonWithType:UIButtonTypeCustom];
     lertButton.backgroundColor = [UIColor blueColor];
     lertButton.frame = CGRectMake(10, 10, 20, 20);
-    [chatViewManager.chatViewStyle setNavBarLeftButton:lertButton];
+//    [chatViewManager.chatViewStyle setNavBarLeftButton:lertButton];
+    //xlp
+    [chatViewManager.chatViewStyle setNavBackButtonImage:[UIImage imageNamed:@"MQMessageCameraInputImageNormalStyleTwo"]];
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleDefault];
     chatViewManager.chatViewStyle.navTitleColor = [UIColor yellowColor];
     
@@ -778,7 +780,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [chatViewManager setChatViewStyle:[MQChatViewStyle blueStyle]];
-//    [chatViewManager.chatViewStyle setNavBackButtonImage:[UIImage imageNamed:@"ijinmaoAvatar"]];
+    [chatViewManager.chatViewStyle setNavBackButtonImage:[[UIImage imageNamed:@"ijinmaoAvatar"] imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal]];
     
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];

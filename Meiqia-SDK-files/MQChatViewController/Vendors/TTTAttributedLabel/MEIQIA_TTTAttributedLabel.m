@@ -610,7 +610,11 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
 
     for (MEIQIA_TTTAttributedLabelLink *link in links) {
         if (link.attributes) {
-            [mutableAttributedString addAttributes:link.attributes range:link.result.range];
+            //xlp 输入的时候没问题 再进来会话页面 展示的时候 就越界了
+            if (mutableAttributedString.length > (link.result.range.location + link.result.range.length)){
+                
+                [mutableAttributedString addAttributes:link.attributes range:link.result.range];
+            }
         }
     }
 

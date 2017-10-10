@@ -48,6 +48,7 @@
         NSAssert(NO, @"ChatTableDataSource的cellForRow中，没有返回正确的cell类型");
         return cell;
     }
+    //xlp 富文本时返回的信息是  cell类型是  MQBotWebViewBubbleAnswerCell  model类型是 MQBotWebViewBubbleAnswerCellModel
     [(MQChatBaseCell*)cell updateCellWithCellModel:cellModel];
     return cell;
 }

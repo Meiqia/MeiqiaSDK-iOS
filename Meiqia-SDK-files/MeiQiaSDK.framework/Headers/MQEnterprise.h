@@ -16,6 +16,14 @@
 
 @property (nonatomic, assign) bool showSwitch;
 
+@property (nonatomic, assign) BOOL isScheduleAfterClientSendMessage;
+
+@property (nonatomic, copy) NSString *avatar;
+
+@property (nonatomic, copy) NSString *public_nickname;
+
+@property (nonatomic, copy) NSString *enterpriseIntro;
+
 @property (nonatomic, copy) NSString *intro;
 
 @property (nonatomic, strong) NSArray *ticketContactFields;

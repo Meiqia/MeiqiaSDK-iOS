@@ -217,8 +217,8 @@
     }];
 }
 
-+ (void)getEnterpriseConfigInfoComplete:(void(^)(MQEnterprise *, NSError *))action {
-    [MQManager getEnterpriseConfigDataComplete:action];
++ (void)getEnterpriseConfigInfoWithCache:(BOOL)isLoadCache complete:(void(^)(MQEnterprise *, NSError *))action {
+    [MQManager getEnterpriseConfigDataWithCache:isLoadCache complete:action];
 }
 
 #pragma 实例方法

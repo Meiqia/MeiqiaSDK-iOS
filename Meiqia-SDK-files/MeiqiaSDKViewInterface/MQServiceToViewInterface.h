@@ -187,6 +187,8 @@
  *  点击了某消息
  *
  *  @param messageId 消息id
+ #pragma mark xlp - .m文件已经注释 17/7/25
+
  */
 + (void)didTapMessageWithMessageId:(NSString *)messageId;
 
@@ -401,7 +403,7 @@
 /**
  获取当前企业的配置信息
  */
-+ (void)getEnterpriseConfigInfoComplete:(void(^)(MQEnterprise *, NSError *))action;
++ (void)getEnterpriseConfigInfoWithCache:(BOOL)isLoadCache complete:(void(^)(MQEnterprise *, NSError *))action;
 
 /**
  在准备显示聊天界面是调用

@@ -31,16 +31,32 @@ platform :ios do
   desc "This will also make sure the profile is up to date"
   lane :beta do
     # match(type: "appstore") # more information: https://codesigning.guide
-    #gym(scheme: "Meiqia-SDK-Demo") # Build your app - more options available
-    #pilot
-    path = ipa(
-	project: Meiqia-SDK-Demo.xcodeproj,
-	configuration: release,
-	scheme: Meiqia-SDK-Demo,
-	clean: true
+
+    bump_up_build_number
+
+    gym(
+      scheme: "Meiqia-SDK-Demo",
+      project: "Meiqia-SDK-Demo/Meiqia-SDK-Demo.xcodeproj",
+      
+    ) # Build your app - more options available
+    
+    upload_to_test_flight
+
+  end
+
+  lane :upload_to_test_flight do
+    ENV["DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"] = "-t DAV"
+    pilot(
+      skip_submission: true
     )
-    sh "upload_pgy.sh path"
-    # You can also use other beta testing services here (run `fastlane actions`)
+  end
+
+  lane :bump_up_build_number do
+    
+    increment_build_number(
+      build_number: ENV['CI_BUILD_ID'],
+      xcodeproj: 'Meiqia-SDK-Demo/Meiqia-SDK-Demo.xcodeproj'
+    )
   end
 
   desc "Deploy a new version to the App Store"

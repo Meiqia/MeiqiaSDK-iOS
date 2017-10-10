@@ -47,7 +47,7 @@
         self.view.frame = self.centerScreenFrame;
     }
     self.view.alpha = 0.0;
-    [UIView animateWithDuration:0.35 delay:0.0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
+    [UIView animateWithDuration:0.25 delay:0.0 options: UIViewAnimationOptionCurveEaseInOut animations:^{
         self.view.frame = [UIScreen mainScreen].bounds;
         self.view.alpha = 1.0;
     } completion:nil];
@@ -57,7 +57,8 @@
 }
 
 - (void)dismiss {
-    [UIView animateWithDuration:0.35 delay:0.0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
+    self.saveButton.hidden = YES;
+    [UIView animateWithDuration:0.25 delay:0.0 options: UIViewAnimationOptionCurveEaseInOut animations:^{
         if ((self.fromRectArray.count > 0 && self.fromRectArray.count == self.images.count) || (self.fromRectArray.count > 0 && self.fromRectArray.count == self.imagePaths.count)) {
             self.view.frame = [[self.fromRectArray objectAtIndex:self.currentIndex] CGRectValue];
         } else {
@@ -174,9 +175,8 @@
         _saveButton = [UIButton new];
         [_saveButton setTitle:[MQBundleUtil localizedStringForKey:@"save_photo"] forState:(UIControlStateNormal)];
         [_saveButton sizeToFit];
+        _saveButton.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
         _saveButton.layer.cornerRadius = 12;
-        _saveButton.layer.borderColor = [UIColor whiteColor].CGColor;
-        _saveButton.layer.borderWidth = 1.0;
         _saveButton.layer.masksToBounds = YES;
         _saveButton.titleLabel.font = [UIFont systemFontOfSize:14];
         [_saveButton setContentEdgeInsets:UIEdgeInsetsMake(10, 20, 10, 20)];
@@ -260,6 +260,7 @@
     self.scrollView.minimumZoomScale = 1;
     self.scrollView.zoomScale = 1.0;
     self.scrollView.delegate = self;
+    self.scrollView.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.scrollView];
     
     self.imageView = [[UIImageView alloc] init];

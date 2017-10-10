@@ -34,9 +34,8 @@
          UIRemoteNotificationTypeAlert |
          UIRemoteNotificationTypeSound];
 #endif
-    
-//#error 请填写您的美洽 AppKey
-    [MQManager initWithAppkey:@"9e49508104f703c613f4adcf98c76115" completion:^(NSString *clientId, NSError *error) {
+
+    [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {

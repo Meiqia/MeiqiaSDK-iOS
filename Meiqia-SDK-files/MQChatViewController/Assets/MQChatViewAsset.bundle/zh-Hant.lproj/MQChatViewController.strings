@@ -125,3 +125,14 @@
 "pre_chat_form_title" =  "請填寫以下內容";
 "pre_chat_form_mutiple_selection_label" = "(多選)";
 "pre_chat_form_black_alert_label" = "紅色文字的地方為必填項，請填寫完整";
+
+//pull refresh
+"pull_refresh_normal" = "下拉加載歷史消息";
+"pull_refresh_triggered" = "鬆開加載歷史消息";
+
+//xlp
+// 请输入消息
+"input_content" = "输入消息...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "服務連接中,請稍後...";
+
