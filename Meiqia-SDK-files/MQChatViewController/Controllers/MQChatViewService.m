@@ -1116,7 +1116,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [self didReceiveTipsContent:tipString showLines:NO];
         }
     }
-    
+        
     if (eventMessage.eventType == MQChatEventTypeInviteEvaluation) {
         if (self.delegate) {
             if ([self.delegate respondsToSelector:@selector(showEvaluationAlertView)] && [self.delegate respondsToSelector:@selector(isChatRecording)]) {
@@ -1132,7 +1132,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     NSInteger newCellCount = [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:false];
     [self playReceivedMessageSound];
     BOOL needsResort = NO;
-    
+
     // find earliest message
     MQBaseMessage *earliest = [messages reduce:[messages firstObject] step:^id(MQBaseMessage *current, MQBaseMessage *element) {
         return [[earliest date] compare:[element date]] == NSOrderedDescending ? element : current;

@@ -62,7 +62,12 @@
         }];
         formData.menu.menuItems = filteredMenuItens;
         
-        if (formData.hasSubmittedForm.boolValue) {
+        //3.4.2以下的逻辑是  先判断是否提交过 询前表单,如果提交过 再判断收集顾客信息页面 某些选项 是否 有回头客不显示 有 则不显示
+        // > 3.4.2 则hasSubmittedForm 失效 默认返回 false , 本地保存 收集顾客信息页面 上次点选的信息  和  后台返回的 哪些选项 选择了回头客 不显示 ,然后最终确定 该页面 显示哪些选项
+        // 等于说 本地保存 hasSubmittedForm ,提交过询前表单 就需要保存为真 否则为假  
+//        if (formData.hasSubmittedForm.boolValue) {
+        if (self.hasSubmittedFormLocalBool) {
+            
             NSMutableArray *filteredFormItems = [NSMutableArray new];
             [formData.form.formItems enumerateObjectsUsingBlock:^(MQPreChatFormItem *formItem, NSUInteger idx, BOOL * _Nonnull stop) {
                 if (![formItem isIgnoreReturnCustomer].boolValue) {
@@ -78,9 +83,9 @@
 
 - (void)setValue:(id)value forFieldIndex:(NSInteger)fieldIndex {
     if (value) {
-        [self.filledFieldValue setObject:value forKey:@(fieldIndex)];
+        [self.filledFieldValueDic setObject:value forKey:@(fieldIndex)];
     } else {
-        [self.filledFieldValue removeObjectForKey:@(fieldIndex)];
+        [self.filledFieldValueDic removeObjectForKey:@(fieldIndex)];
     }
 //    MQInfo(@"valued changed: %@", self.filledFieldValue);
 }
@@ -104,16 +109,16 @@
     return (UIKeyboardType)[map[type] intValue];
 }
 
-- (NSMutableDictionary *)filledFieldValue {
-    if (!_filledFieldValue) {
-        _filledFieldValue = [NSMutableDictionary new];
+- (NSMutableDictionary *)filledFieldValueDic {
+    if (!_filledFieldValueDic) {
+        _filledFieldValueDic = [NSMutableDictionary new];
     }
-    return _filledFieldValue;
+    return _filledFieldValueDic;
 }
 
 - (id)valueForFieldIndex:(NSInteger)fieldIndex {
 //    NSString *filedName = [(MQPreChatFormItem *)self.formData.form.formItems[fieldIndex] filedName];
-    return [self.filledFieldValue objectForKey:@(fieldIndex)];
+    return [self.filledFieldValueDic objectForKey:@(fieldIndex)];
 }
 
 - (void)requestCaptchaComplete:(void(^)(UIImage *image))block {
@@ -135,15 +140,15 @@
 }
 
 - (NSArray *)submitFormCompletion:(void(^)(id response, NSError *e))block {
-    NSArray *unsatisfiedIndexs = [self auditInputs:self.filledFieldValue];
+    NSArray *unsatisfiedIndexs = [self auditInputs:self.filledFieldValueDic];
     
     if (unsatisfiedIndexs.count == 0) {
         //replace params key to server defined filed name
         
         NSMutableDictionary *params = [NSMutableDictionary new];
-        for (NSNumber *key in self.filledFieldValue.allKeys) {
+        for (NSNumber *key in self.filledFieldValueDic.allKeys) {
             MQPreChatFormItem *item = self.formData.form.formItems[key.integerValue];
-            params[item.filedName] = self.filledFieldValue[key];
+            params[item.filedName] = self.filledFieldValueDic[key];
         }
         
         params[kCaptchaToken] = self.captchaToken;
@@ -175,7 +180,7 @@
     int i = 0;
     for (MQPreChatFormItem *item in self.formData.form.formItems) {
         if (!item.isOptional.boolValue) {
-            if (![self.filledFieldValue objectForKey:@(i)]) {
+            if (![self.filledFieldValueDic objectForKey:@(i)]) {
                 [unsatisfiedIndexs addObject:@(i)];
             }
         }
@@ -183,6 +188,12 @@
     }
     
     return unsatisfiedIndexs;
+}
+
+//xlp
+- (BOOL)hasSubmittedFormLocalBool{
+    _hasSubmittedFormLocalBool = [[NSUserDefaults standardUserDefaults]boolForKey:@"hasSubmittedFormLocalBool"];
+    return _hasSubmittedFormLocalBool;
 }
 
 @end

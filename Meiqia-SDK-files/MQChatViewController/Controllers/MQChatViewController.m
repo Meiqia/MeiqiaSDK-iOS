@@ -175,14 +175,21 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
                 // 设置head title
                 [self updateNavTitleWithAgentName:enterprise.configInfo.public_nickname ?: @"官方客服" agentStatus:MQChatAgentStatusNone];
                 // 设置欢迎语 设置企业头像
-                MQTextMessage *message = [[MQTextMessage alloc] initWithContent: enterprise.configInfo.enterpriseIntro ?: @"【系统消息】您好，请问您有什么问题?"];
-                message.fromType = MQChatMessageIncoming;
-                message.date = [NSDate new];
-                message.userName = enterprise.configInfo.public_nickname;
-                message.userAvatarPath = enterprise.configInfo.avatar;
-                message.sendStatus = MQChatMessageSendStatusSuccess;
-                MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage: message cellWidth:self.chatViewService.chatViewWidth delegate:(id <MQCellModelDelegate>)self.chatViewService];
-                [self.chatViewService addCellModelAndReloadTableViewWithModel:cellModel];
+                //xlp 检测 企业的欢迎消息是否已经开启 若关闭是 其enterpriseIntro 为 "" ,则需要排除一下 否则 会出现空消息
+                
+                NSString *welcomeStr = enterprise.configInfo.enterpriseIntro;
+                NSString *str = [welcomeStr stringByReplacingOccurrencesOfString:@" " withString:@""];
+                if (enterprise.configInfo.enterpriseIntro && str.length > 0) {
+                    
+                    MQTextMessage *message = [[MQTextMessage alloc] initWithContent: enterprise.configInfo.enterpriseIntro ?: @"【系统消息】您好，请问您有什么问题?"]; //此处若企业欢迎消息关闭 则 content最终为 空 导致会显示一个空消息
+                    message.fromType = MQChatMessageIncoming;
+                    message.date = [NSDate new];
+                    message.userName = enterprise.configInfo.public_nickname;
+                    message.userAvatarPath = enterprise.configInfo.avatar;
+                    message.sendStatus = MQChatMessageSendStatusSuccess;
+                    MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage: message cellWidth:self.chatViewService.chatViewWidth delegate:(id <MQCellModelDelegate>)self.chatViewService];
+                    [self.chatViewService addCellModelAndReloadTableViewWithModel:cellModel];
+                }
                 // 加载历史消息
                 [self.chatViewService startGettingHistoryMessages];
                 // 注册通知

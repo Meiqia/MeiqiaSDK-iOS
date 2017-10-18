@@ -188,7 +188,7 @@ static int indicator_tag = 10;
 //    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
 //    [chatViewManager.chatViewStyle setEnableRoundAvatar:
 //    [chatViewManager setClientInfo:@{@"name" : @"123"} override:YES];
-//    [chatViewManager setChatWelcomeText:@"asfafsaaaaasgastag？"];
+    [chatViewManager setChatWelcomeText:@"asfafsaaaaasgastag？"];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 //    [chatViewManager setLoginCustomizedId:@"10"];
 //    [chatViewManager setPreSendMessages: @[@"我想咨询的订单号：【1705045496811】"]];

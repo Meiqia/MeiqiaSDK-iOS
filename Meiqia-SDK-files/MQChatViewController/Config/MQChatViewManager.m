@@ -288,7 +288,12 @@
 }
 
 - (void)setChatWelcomeText:(NSString *)welcomText {
+
     if (!welcomText) {
+        return;
+    }
+    NSString *str = [welcomText stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (str.length <= 0){
         return;
     }
     chatViewConfig.chatWelcomeText = [welcomText copy];
