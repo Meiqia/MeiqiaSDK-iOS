@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #pragma mark - UITableView(MQRefresh)
-
+/*
 @class MQRefresh;
 @interface UITableView(MQRefresh)
 
@@ -21,7 +21,21 @@
 - (void)setLoadEnded;
 
 @end
+*/
+#import "MQChatTableView.h"
+@class MQRefresh;
+@interface MQChatTableView (MQRefresh)
 
+@property (nonatomic) MQRefresh *refreshView;
+- (void)setupPullRefreshWithAction:(void(^)(void))action;
+- (void)startAnimation;
+- (void)stopAnimationCompletion:(void(^)(void))action;
+- (void)setLoadEnded;
+
+@end
+
+
+/****xlp分割*****/
 typedef NS_ENUM(NSUInteger, MQRefreshStatus) {
     MQRefreshStatusNormal,
     MQRefreshStatusDraging,

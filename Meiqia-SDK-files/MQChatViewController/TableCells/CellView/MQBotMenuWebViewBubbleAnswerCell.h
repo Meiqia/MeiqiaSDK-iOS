@@ -6,7 +6,8 @@
 //  Copyright © 2017年 Meiqia. All rights reserved.
 //
 
-#import <Meiqia/Meiqia.h>
+//#import <Meiqia/Meiqia.h>
+#import "MQChatBaseCell.h"
 
 @interface MQBotMenuWebViewBubbleAnswerCell : MQChatBaseCell
 

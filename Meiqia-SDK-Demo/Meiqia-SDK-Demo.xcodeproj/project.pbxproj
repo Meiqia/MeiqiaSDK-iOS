@@ -11,6 +11,7 @@
 		8904283D1F668A5B003B7F2D /* MQInputToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8904283C1F668A5B003B7F2D /* MQInputToolView.m */; };
 		895936CC1F7A4EA2000841AF /* MQBotMenuWebViewBubbleAnswerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 895936CB1F7A4EA2000841AF /* MQBotMenuWebViewBubbleAnswerCell.m */; };
 		895936CF1F7A5670000841AF /* MQBotMenuWebViewBubbleAnswerCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 895936CE1F7A5670000841AF /* MQBotMenuWebViewBubbleAnswerCellModel.m */; };
+		898D16851FA1BBB8001127B5 /* MQToolUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 898D16841FA1BBB8001127B5 /* MQToolUtil.m */; };
 		CC330EC91C317E2D0088E648 /* ijinmaoAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */; };
 		CCE9D10B1C1812F6004E862E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10A1C1812F6004E862E /* main.m */; };
 		CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10D1C1812F6004E862E /* AppDelegate.m */; };
@@ -492,6 +493,8 @@
 		895936CB1F7A4EA2000841AF /* MQBotMenuWebViewBubbleAnswerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MQBotMenuWebViewBubbleAnswerCell.m; sourceTree = "<group>"; };
 		895936CD1F7A5670000841AF /* MQBotMenuWebViewBubbleAnswerCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MQBotMenuWebViewBubbleAnswerCellModel.h; sourceTree = "<group>"; };
 		895936CE1F7A5670000841AF /* MQBotMenuWebViewBubbleAnswerCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MQBotMenuWebViewBubbleAnswerCellModel.m; sourceTree = "<group>"; };
+		898D16831FA1BBB8001127B5 /* MQToolUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MQToolUtil.h; sourceTree = "<group>"; };
+		898D16841FA1BBB8001127B5 /* MQToolUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MQToolUtil.m; sourceTree = "<group>"; };
 		CC330EC81C317E2D0088E648 /* ijinmaoAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ijinmaoAvatar.png; sourceTree = "<group>"; };
 		CCE9D1061C1812F6004E862E /* Meiqia-SDK-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meiqia-SDK-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCE9D10A1C1812F6004E862E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1253,6 +1256,8 @@
 				E4B9586F1DE5A80100BECBB5 /* MQStringSizeUtil.m */,
 				E4B958701DE5A80100BECBB5 /* MQWindowUtil.h */,
 				E4B958711DE5A80100BECBB5 /* MQWindowUtil.m */,
+				898D16831FA1BBB8001127B5 /* MQToolUtil.h */,
+				898D16841FA1BBB8001127B5 /* MQToolUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1882,7 +1887,7 @@
 			attributes = {
 				CLASSPREFIX = MQ;
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Meiqia;
 				TargetAttributes = {
 					CCE9D1051C1812F6004E862E = {
@@ -2073,6 +2078,7 @@
 				E4B959251DE5A80100BECBB5 /* MQImageMessage.m in Sources */,
 				E4B9595C1DE5A80100BECBB5 /* MEIQIA_FBLCDFontView.m in Sources */,
 				E4B959021DE5A80100BECBB5 /* MQServiceToViewInterface.m in Sources */,
+				898D16851FA1BBB8001127B5 /* MQToolUtil.m in Sources */,
 				E4B959191DE5A80100BECBB5 /* MQPreChatCells.m in Sources */,
 				E4B9591A1DE5A80100BECBB5 /* MQPreChatFormListViewController.m in Sources */,
 				E4B959081DE5A80100BECBB5 /* NSArray+MQFunctional.m in Sources */,
@@ -2316,14 +2322,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -2362,14 +2374,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -2526,7 +2544,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 68;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = H22N8T6DAX;
@@ -2563,7 +2581,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 68;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = H22N8T6DAX;
