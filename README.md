@@ -59,8 +59,9 @@ framework中的文件 | 说明
 [MQAgent.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQAgent.h) | 实体类：客服
 [MQMessage.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQMessage.h) | 实体类：消息
 
+# 三 导入美洽 SDK
 
-#三 导入美洽 SDK
+
 > 推荐你使用CocoaPods导入我们的SDK,原因如下:
 - 后期 sdk更新会很方便.
 - 手动更新你需要删除旧库,下载新库,再重新配置等很麻烦,且由于删除旧库时未删除干净,再迁入新库时会导致很多莫名其妙的问题. 
