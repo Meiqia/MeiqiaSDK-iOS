@@ -70,7 +70,7 @@ framework中的文件 | 说明
 **强烈建议开发者使用最新的版本。请查看[Meiqia在Github上的网页](https://github.com/Meiqia/MeiqiaSDK-iOS/releases) ，确认最新的版本号。或者进入美洽 SDK 开发 QQ 群(295646206),向iOS技术支持人员询问最新版本号**
 
 
-##3.1  CocoaPods 导入
+## 3.1 CocoaPods 导入
 
 在 Podfile 中加入：
 
