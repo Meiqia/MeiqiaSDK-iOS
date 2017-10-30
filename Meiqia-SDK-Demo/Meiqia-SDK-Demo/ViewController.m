@@ -195,10 +195,10 @@ static int indicator_tag = 10;
 //    [bt setImage:[UIImage imageNamed:@"meiqia-icon"] forState:UIControlStateNormal];
 //    [aStyle setNavBarRightButton:bt];
     
-    [chatViewManager setChatWelcomeText:@"asfafsaaaaasgastag？"];
+//    [chatViewManager setChatWelcomeText:@"asfafsaaaaasgastag？"];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 //    [chatViewManager setLoginCustomizedId:@"10"];
-    [chatViewManager setPreSendMessages: @[@"我想咨询的订单号：【1705045496811】"]];
+//    [chatViewManager setPreSendMessages: @[@"我想咨询的订单号：【1705045496811】"]];
 // //   [chatViewManager setScheduledAgentId:@""];
 //    //[chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
 //    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
