@@ -39,6 +39,8 @@
 #import "MQToast.h"
 #import "NSError+MQConvenient.h"
 
+#import "MQBotMenuWebViewBubbleAnswerCellModel.h"
+
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
 /** 一次获取历史消息数的个数 */
@@ -151,7 +153,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [MQServiceToViewInterface getDatabaseHistoryMessagesWithMsgDate:firstMessageDate messagesNumber:kMQChatGetHistoryMessageNumber delegate:self];
     }
 }
+//xlp  获取历史消息 从最后一条数据
+- (void)startGettingHistoryMessagesFromLastMessage {
+    NSDate *lastMessageDate = [self getLastServiceCellModelDate];
 
+    if ([MQChatViewConfig sharedConfig].enableSyncServerMessage) {
+        [MQServiceToViewInterface getServerHistoryMessagesWithMsgDate:lastMessageDate messagesNumber:kMQChatGetHistoryMessageNumber successDelegate:self errorDelegate:self.errorDelegate];
+    } else {
+        [MQServiceToViewInterface getDatabaseHistoryMessagesWithMsgDate:lastMessageDate messagesNumber:kMQChatGetHistoryMessageNumber delegate:self];
+    }
+}
 /**
  *  获取最旧的cell的日期，例如text/image/voice等
  */
@@ -171,6 +182,25 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     return [NSDate date];
 }
 
+- (NSDate *)getLastServiceCellModelDate {
+    for (NSInteger index = 0; index < self.cellModels.count; index++) {
+        id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+      
+        if (index == self.cellModels.count - 1) {
+
+#pragma 开发者可在下面添加自己更多的业务cellModel，以便能正确获取历史消息
+            if ([cellModel isKindOfClass:[MQTextCellModel class]] ||
+                [cellModel isKindOfClass:[MQImageCellModel class]] ||
+                [cellModel isKindOfClass:[MQVoiceCellModel class]] ||
+                [cellModel isKindOfClass:[MQEventCellModel class]] ||
+                [cellModel isKindOfClass:[MQFileDownloadCellModel class]])
+            {
+                return [cellModel getCellDate];
+            }
+        }
+    }
+    return [NSDate date];
+}
 /**
  * 发送文字消息
  */
@@ -559,16 +589,40 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         } else if ([message isKindOfClass:[MQFileDownloadMessage class]]) {
             cellModel = [[MQFileDownloadCellModel alloc] initCellModelWithMessage:(MQFileDownloadMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQRichTextMessage class]]) {
+            
             if ([message isKindOfClass:[MQBotRichTextMessage class]]) {
-                if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
-                    cellModel = [[MQBotWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                
+//                if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+//                    cellModel = [[MQBotWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+//                } else {
+//                    cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+//                }
+                //xlp 富文本展示
+                if ([(MQBotRichTextMessage *)message menu] != nil) {
+
+                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+                        cellModel = [[MQBotMenuWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                    } else {
+                        cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                    }
+
                 } else {
-                    cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+
+                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+                        cellModel = [[MQBotWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                    } else {
+                        cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                    }
                 }
+                
+                
+                
             } else {
                 cellModel = [[MQRichTextViewModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
             }
+            
         }else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
+            
             if ([(MQBotAnswerMessage *)message menu] == nil) {
                 cellModel = [[MQBotAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
             } else {
@@ -1090,7 +1144,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [self didReceiveTipsContent:tipString showLines:NO];
         }
     }
-    
+        
     if (eventMessage.eventType == MQChatEventTypeInviteEvaluation) {
         if (self.delegate) {
             if ([self.delegate respondsToSelector:@selector(showEvaluationAlertView)] && [self.delegate respondsToSelector:@selector(isChatRecording)]) {
@@ -1106,7 +1160,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     NSInteger newCellCount = [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:false];
     [self playReceivedMessageSound];
     BOOL needsResort = NO;
-    
+
     // find earliest message
     MQBaseMessage *earliest = [messages reduce:[messages firstObject] step:^id(MQBaseMessage *current, MQBaseMessage *element) {
         return [[earliest date] compare:[element date]] == NSOrderedDescending ? element : current;

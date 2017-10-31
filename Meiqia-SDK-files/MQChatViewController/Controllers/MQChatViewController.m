@@ -34,6 +34,8 @@
 #import "MQRefresh.h"
 #import "MQTextCellModel.h"
 #import "MQTipsCellModel.h"
+#import "MQToolUtil.h"
+#import "MQChatViewManager.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
@@ -50,7 +52,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @property (nonatomic, strong) NSLayoutConstraint *constaintInputBarHeight;
 @property (nonatomic, strong) NSLayoutConstraint *constraintInputBarBottom;
 @property (nonatomic, strong) MQEvaluationView *evaluationView;
-@property (nonatomic, strong) MQKeyboardController *keyboardController;
+@property (nonatomic, strong) MQKeyboardController *keyboardView;
 @property (nonatomic, strong) MQRecordView *recordView;
 @property (nonatomic, strong) MQRecorderView *displayRecordView;//只用来显示
 @property (nonatomic, strong) MQAGEmojiKeyboardView *emojiView;
@@ -66,6 +68,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     NSTimeInterval sendTime;        //发送时间，用于限制发送频率
     UIView *translucentView;        //loading 的半透明层
     UIActivityIndicatorView *activityIndicatorView; //loading
+    
+    //xlp  是否开启访客无消息过滤的标志
+    BOOL openVisitorNoMessageBool; // 默认值 在presentUI里分2种情况初始化 在发送各种消息前检测 若为真 打开 则需手动上线  若为假 则不做操作
 }
 
 - (void)dealloc {
@@ -122,6 +127,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     [self presentUI];
     
+
+
+    
     //xlp
     //[self addTestBt];
 }
@@ -144,6 +152,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 
 - (void)presentUI {
+    
     [MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^(NSDictionary *userInfo){
         NSString *targetType = userInfo[@"targetType"];
         NSString *target = userInfo[@"target"];
@@ -168,14 +177,21 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
                 // 设置head title
                 [self updateNavTitleWithAgentName:enterprise.configInfo.public_nickname ?: @"官方客服" agentStatus:MQChatAgentStatusNone];
                 // 设置欢迎语 设置企业头像
-                MQTextMessage *message = [[MQTextMessage alloc] initWithContent: enterprise.configInfo.enterpriseIntro ?: @"【系统消息】您好，请问您有什么问题?"];
-                message.fromType = MQChatMessageIncoming;
-                message.date = [NSDate new];
-                message.userName = enterprise.configInfo.public_nickname;
-                message.userAvatarPath = enterprise.configInfo.avatar;
-                message.sendStatus = MQChatMessageSendStatusSuccess;
-                MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage: message cellWidth:self.chatViewService.chatViewWidth delegate:(id <MQCellModelDelegate>)self.chatViewService];
-                [self.chatViewService addCellModelAndReloadTableViewWithModel:cellModel];
+                //xlp 检测 企业的欢迎消息是否已经开启 若关闭是 其enterpriseIntro 为 "" ,则需要排除一下 否则 会出现空消息
+                
+                NSString *welcomeStr = enterprise.configInfo.enterpriseIntro;
+                NSString *str = [welcomeStr stringByReplacingOccurrencesOfString:@" " withString:@""];
+                if (enterprise.configInfo.enterpriseIntro && str.length > 0) {
+                    
+                    MQTextMessage *message = [[MQTextMessage alloc] initWithContent: enterprise.configInfo.enterpriseIntro ?: @"【系统消息】您好，请问您有什么问题?"]; //此处若企业欢迎消息关闭 则 content最终为 空 导致会显示一个空消息
+                    message.fromType = MQChatMessageIncoming;
+                    message.date = [NSDate new];
+                    message.userName = enterprise.configInfo.public_nickname;
+                    message.userAvatarPath = enterprise.configInfo.avatar;
+                    message.sendStatus = MQChatMessageSendStatusSuccess;
+                    MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage: message cellWidth:self.chatViewService.chatViewWidth delegate:(id <MQCellModelDelegate>)self.chatViewService];
+                    [self.chatViewService addCellModelAndReloadTableViewWithModel:cellModel];
+                }
                 // 加载历史消息
                 [self.chatViewService startGettingHistoryMessages];
                 // 注册通知
@@ -184,7 +200,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
                         [MQManager setClientOffline];
                     }
                 } withKey:@"MQChatViewController"];
+                
+                openVisitorNoMessageBool = YES;
+                
             } else { // 如果未开启，直接让用户上线
+                openVisitorNoMessageBool = NO;
                 [self.chatViewService setClientOnline];
             }
         }];
@@ -217,14 +237,14 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self.keyboardController beginListeningForKeyboard];
+    [self.keyboardView beginListeningForKeyboard];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
     
-    [self.keyboardController endListeningForKeyboard];
+    [self.keyboardView endListeningForKeyboard];
     
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
         [self.chatViewService saveTextDraftIfNeeded:(UITextField *)[(MQTabInputContentView *)self.chatInputBar.contentView textField]];
@@ -286,6 +306,12 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)initChatTableView {
     self.chatTableView = [[MQChatTableView alloc] initWithFrame:chatViewConfig.chatViewFrame style:UITableViewStylePlain];
     self.chatTableView.chatTableViewDelegate = self;
+    
+    //xlp 修复 发送消息 或者受到消息 会弹一下
+    self.chatTableView.estimatedRowHeight = 0;
+    self.chatTableView.estimatedSectionFooterHeight = 0;
+    self.chatTableView.estimatedSectionHeaderHeight = 0;
+    
     self.chatTableView.delegate = self;
     [self.view addSubview:self.chatTableView];
     
@@ -319,10 +345,12 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeTop) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeTop) multiplier:1 constant:0]];
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeLeft) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeLeft) multiplier:1 constant:0]];
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeRight) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeRight) multiplier:1 constant:0]];
-    self.constraintInputBarBottom = [NSLayoutConstraint constraintWithItem:self.view attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.chatInputBar attribute:(NSLayoutAttributeBottom) multiplier:1 constant:0];
-    [constrains addObject:self.constraintInputBarBottom];
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.chatInputBar attribute:(NSLayoutAttributeTop) multiplier:1 constant:0]];
+   
+
     
+    self.constraintInputBarBottom = [NSLayoutConstraint constraintWithItem:self.view attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.chatInputBar attribute:(NSLayoutAttributeBottom) multiplier:1 constant: (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX > 0 ? 34 : 0)];
+    [constrains addObject:self.constraintInputBarBottom];
     [self.view addConstraints:constrains];
     
     self.constaintInputBarHeight = [NSLayoutConstraint constraintWithItem:self.chatInputBar attribute:(NSLayoutAttributeHeight) relatedBy:(NSLayoutRelationEqual) toItem:nil attribute:(NSLayoutAttributeNotAnAttribute) multiplier:1 constant:kMQChatViewInputBarHeight];
@@ -501,6 +529,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         [[(MQTabInputContentView *)self.chatInputBar.contentView textField] setText:text];
         return NO;
     }
+    //xlp  T5637
+    [self checkOpenVisitorNoMessageBool];
+
     [self.chatViewService sendTextMessageWithContent:text];
     sendTime = [NSDate timeIntervalSinceReferenceDate];
     [self chatTableViewScrollToBottomWithAnimated:YES];
@@ -535,6 +566,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)inputContentTextDidChange:(NSString *)newString {
+    
+    //xlp 判断当前顾客的状态是否登录成功 若失败 则手动上线
+    
+//    NSLog(@"%@",[MQManager getCurrentState]);
+    
     //用户正在输入
     static BOOL shouldSendInputtingMessageToServer = YES;
     
@@ -945,27 +981,52 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)changeInputBarHeightConstraintConstant:(CGFloat)height {
     self.constaintInputBarHeight.constant = height;
     
-    self.keyboardController.keyboardTriggerPoint = CGPointMake(0, height);
+    self.keyboardView.keyboardTriggerPoint = CGPointMake(0, height);
     [self.view setNeedsUpdateConstraints];
     [self.view layoutIfNeeded];
 }
 
 - (void)changeInputBarBottomLayoutGuideConstant:(CGFloat)height {
+    //xlp 收回键盘 时 减去 34 todo
+    if (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX ) {
+        if (height == 0) {
+            height = 34;
+
+        } else if(height == 237) {
+            // 点击表情 弹出表情键盘时 height == 237 ,X时 + 34
+            height += 34;
+
+        }
+    }
+    
     self.constraintInputBarBottom.constant = height;
+    
     [self.view setNeedsUpdateConstraints];
     [self.view layoutIfNeeded];
 }
 
 #pragma mark - keyboard controller delegate
 - (void)keyboardController:(MQKeyboardController *)keyboardController keyboardChangeFrame:(CGRect)keyboardFrame isImpressionOfGesture:(BOOL)isImpressionOfGesture {
-
-    CGFloat viewHeight = self.navigationController.navigationBar.translucent ? CGRectGetMaxY(self.view.frame) : CGRectGetMaxY(self.view.frame) - 64;
+    
+    CGFloat viewHeight = self.navigationController.navigationBar.translucent ? CGRectGetMaxY(self.view.frame) : CGRectGetMaxY(self.view.frame) - MQToolUtil.kXlpObtainNaviHeight;
+    
     CGFloat heightFromBottom = MAX(0.0, viewHeight - CGRectGetMinY(keyboardFrame));
     
     if (!isImpressionOfGesture) {
-        CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant;
-        if (diff < self.chatTableView.contentInset.top + self.chatTableView.contentSize.height) {
-            self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
+        
+        if (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX ) {
+            
+            CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant + 34;
+            if (diff < self.chatTableView.contentInset.top + self.chatTableView.contentSize.height) {
+                self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
+            }
+            
+        }else{
+            
+            CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant;
+            if (diff < self.chatTableView.contentInset.top + self.chatTableView.contentSize.height) {
+                self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
+            }
         }
     }
     
@@ -1041,7 +1102,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (MQInputToolView *)chatInputBar {
     if (!_chatInputBar) {
-        MQTabInputContentView *contentView = [[MQTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 118)];
+        MQTabInputContentView *contentView = [[MQTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 118 )];
         _chatInputBar = [[MQInputToolView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kMQChatViewInputBarHeight) contentView: contentView];
         _chatInputBar.delegate = self;
         _chatInputBar.contentViewDelegate = self;
@@ -1052,12 +1113,12 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     return _chatInputBar;
 }
 
-- (MQKeyboardController *)keyboardController {
-    if (!_keyboardController) {
-        _keyboardController = [[MQKeyboardController alloc] initWithResponders:@[self.chatInputBar.contentView, self.chatInputBar] contextView:self.view panGestureRecognizer:self.chatTableView.panGestureRecognizer delegate:self];
-        _keyboardController.keyboardTriggerPoint = CGPointMake(0, self.constaintInputBarHeight.constant);
+- (MQKeyboardController *)keyboardView {
+    if (!_keyboardView) {
+        _keyboardView = [[MQKeyboardController alloc] initWithResponders:@[self.chatInputBar.contentView, self.chatInputBar] contextView:self.view panGestureRecognizer:self.chatTableView.panGestureRecognizer delegate:self];
+        _keyboardView.keyboardTriggerPoint = CGPointMake(0, self.constaintInputBarHeight.constant);
     }
-    return _keyboardController;
+    return _keyboardView;
 }
 
 - (MQRecorderView *)displayRecordView {
@@ -1131,6 +1192,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if (!_emojiView) {
         _emojiView = [[MQAGEmojiKeyboardView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 216) dataSource:self];
         _emojiView.delegate = self;
+        _emojiView.backgroundColor = [UIColor whiteColor];
         _emojiView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     }
     return _emojiView;
@@ -1146,6 +1208,27 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (BOOL)checkXlpSocketClose{
     return [[NSUserDefaults standardUserDefaults]boolForKey:@"xlpSocketClose"];
 }
+
+//xlp 在对话规则 打开过滤无消息访客按钮后 刚开始对话 客户未能上线 状态为 初始化
+- (void)checkOpenVisitorNoMessageBool{
+    
+    if (openVisitorNoMessageBool) {
+        [MQServiceToViewInterface prepareForChat]; //初始化
+        
+
+        [self.chatViewService setClientOnline];
+//延时2秒 获取所有的历史记录
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.chatViewService startGettingHistoryMessagesFromLastMessage];
+        });
+        
+        openVisitorNoMessageBool = NO;
+
+    }
+}
+
+
 
 
 @end

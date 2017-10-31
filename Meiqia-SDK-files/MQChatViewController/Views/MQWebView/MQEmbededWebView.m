@@ -43,7 +43,9 @@
 
 - (void)loadHTML:(NSString *)html WithCompletion:(void(^)(CGFloat))block {
     self.viewHeight = 60;
-    [self loadHTMLString:html baseURL:nil];
+    [self loadHTMLString:html baseURL:nil];//xlp 修改
+//    [self loadHTMLString:html baseURL:[[NSBundle mainBundle]bundleURL]];  //不能这样修改 否则导致富文本不显示
+
     self.loadComplete = block;
     self.requestCount = 0;
 }

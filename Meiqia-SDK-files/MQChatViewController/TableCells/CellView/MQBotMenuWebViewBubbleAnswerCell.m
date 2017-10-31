@@ -1,16 +1,18 @@
 //
-//  MQBotWebViewBubbleAnswerCell.m
+//  MQBotMenuWebViewBubbleAnswerCell.m
 //  Meiqia-SDK-Demo
 //
-//  Created by ian luo on 16/9/5.
-//  Copyright © 2016年 Meiqia. All rights reserved.
+//  Created by xulianpeng on 2017/9/26.
+//  Copyright © 2017年 Meiqia. All rights reserved.
 //
 
-#import "MQBotWebViewBubbleAnswerCell.h"
-#import "MQBotWebViewBubbleAnswerCellModel.h"
+#import "MQBotMenuWebViewBubbleAnswerCell.h"
+#import "MQBotMenuWebViewBubbleAnswerCellModel.h"
 #import "UIView+MQLayout.h"
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
+#import "MQEmbededWebView.h"
+#import "MQStringSizeUtil.h"
 
 
 #define TAG_MENUS 10
@@ -23,25 +25,46 @@
 #define FONT_SIZE_EVALUATE_BUTTON 14
 #define SPACE_INTERNAL_VERTICAL 15
 
-@interface MQBotWebViewBubbleAnswerCell()
 
+@interface MQBotMenuWebViewBubbleAnswerCell()
+
+@property (nonatomic, strong) MQBotMenuWebViewBubbleAnswerCellModel *viewModel;
 @property (nonatomic, strong) UIImageView *itemsView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
+
 @property (nonatomic, strong) MQEmbededWebView *contentWebView;
-@property (nonatomic, strong) MQBotWebViewBubbleAnswerCellModel *viewModel;
+
+//xlp 新添加的
+@property (nonatomic, strong) UILabel *menuTitleLabel;
+@property (nonatomic, strong) UILabel *menuFootnoteLabel;
+
+@property (nonatomic, assign) CGFloat currentCellWidth;
+@property (nonatomic, assign) CGFloat currentContentWidth;
+
+
 @property (nonatomic, strong) UIView *evaluateView;
 @property (nonatomic, strong) UIView *evaluatedView;
+
 @property (nonatomic, assign) BOOL manuallySetToEvaluated;
 
 @end
 
-@implementation MQBotWebViewBubbleAnswerCell
+@implementation MQBotMenuWebViewBubbleAnswerCell
+
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self addSubview:self.avatarImageView];
         [self addSubview:self.itemsView];
+        
         [self.itemsView addSubview:self.contentWebView];
+        
+        //xlp 新添加的
+        
+        [self.itemsView addSubview:self.menuTitleLabel];
+        [self.itemsView addSubview:self.menuFootnoteLabel];
+        
+        
         [self layoutUI];
         [self updateUI:0];
     }
@@ -56,14 +79,15 @@
     
     [self.viewModel setCellHeight:^CGFloat{
         __strong typeof (wself) sself = wself;
-        if (sself.viewModel.cachedWebViewHeight > 0) {
-            return sself.viewModel.cachedWebViewHeight + kMQCellAvatarToVerticalEdgeSpacing + kMQCellAvatarToVerticalEdgeSpacing + HEIHGT_VIEW_EVALUATE + SPACE_INTERNAL_VERTICAL;
-        }
-        return sself.viewHeight;
+//        if (sself.viewModel.cachedWebViewHeight > 0) {
+//            return sself.viewModel.cachedWebViewHeight + kMQCellAvatarToVerticalEdgeSpacing + kMQCellAvatarToVerticalEdgeSpacing + HEIHGT_VIEW_EVALUATE + SPACE_INTERNAL_VERTICAL;
+//        }
+//        return sself.viewHeight;
+        return sself.contentView.viewHeight;
     }];
     
     [self.viewModel setAvatarLoaded:^(UIImage *avatar) {
-       __strong typeof (wself) sself = wself;
+        __strong typeof (wself) sself = wself;
         sself.avatarImageView.image = avatar;
     }];
     
@@ -91,21 +115,32 @@
     
     [self.avatarImageView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarToHorizontalEdgeSpacing)];
     [self.itemsView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.avatarImageView.viewRightEdge + kMQCellAvatarToBubbleSpacing, self.avatarImageView.viewY)];
+    
     self.itemsView.viewWidth = self.contentView.viewWidth - kMQCellBubbleMaxWidthToEdgeSpacing - self.avatarImageView.viewRightEdge;
     
     self.contentWebView.viewWidth = self.itemsView.viewWidth - 8;
     self.contentWebView.viewX = 8;
+    
+    //xlp
+    self.currentCellWidth = self.contentView.viewWidth;
+    self.currentContentWidth = self.itemsView.viewWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarToHorizontalEdgeSpacing;
 }
 
 - (void)updateUI:(CGFloat)webContentHeight {
     
     self.contentWebView.viewHeight = webContentHeight;
+    
+    //布局关联视图
+    [self layoutMenuView];
+    
     //recreate evaluate view
     UIView *evaluateView = [self evaluateRelatedView];
     [[self.itemsView viewWithTag:evaluateView.tag] removeFromSuperview];
     [self.itemsView addSubview:evaluateView];
+//    [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    //xlp
     
-    [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.menuFootnoteLabel.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     
     CGFloat bubbleHeight = MAX(self.avatarImageView.viewHeight, evaluateView.viewBottomEdge);
     self.itemsView.viewHeight = bubbleHeight;
@@ -291,4 +326,96 @@
     //    }
     return _evaluatedView;
 }
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+
+- (void)layoutMenuView{
+    self.menuTitleLabel.text = self.viewModel.menuTitle;
+    self.menuTitleLabel.viewWidth = self.currentContentWidth;
+    [self.menuTitleLabel sizeToFit];
+    
+    [self.menuTitleLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    
+    //recreate menus view
+    UIView *menusView = [self menusView:self.viewModel.menus];
+    [[self.itemsView viewWithTag:menusView.tag] removeFromSuperview];
+    [self.itemsView addSubview:menusView];
+    
+    [menusView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.menuTitleLabel.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    
+    self.menuFootnoteLabel.text = self.viewModel.menuFootnote;
+    self.menuFootnoteLabel.viewWidth = self.currentContentWidth;
+    [self.menuFootnoteLabel sizeToFit];
+    [self.menuFootnoteLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, menusView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    
+}
+
+- (UILabel *)menuTitleLabel {
+    if (!_menuTitleLabel) {
+        _menuTitleLabel = [UILabel new];
+        _menuTitleLabel.numberOfLines = 0;
+        _menuTitleLabel.font = [UIFont systemFontOfSize:FONT_SIZE_MENU_TITLE];
+        _menuTitleLabel.textColor = [UIColor grayColor];
+    }
+    return _menuTitleLabel;
+}
+
+- (UILabel *)menuFootnoteLabel {
+    if (!_menuFootnoteLabel) {
+        _menuFootnoteLabel = [UILabel new];
+        _menuFootnoteLabel.numberOfLines = 0;
+        _menuFootnoteLabel.font = [UIFont systemFontOfSize:FONT_SIZE_MENU_FOOTNOTE];
+        _menuFootnoteLabel.textColor = [UIColor grayColor];
+    }
+    return _menuFootnoteLabel;
+}
+
+- (UIView *)menusView:(NSArray *)menus {
+    UIView *container = [UIView new];
+    container.tag = TAG_MENUS;
+    container.viewWidth = self.currentContentWidth;
+    container.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    CGFloat topOffset = 0;
+    for (NSString *menuTitle in menus) {
+        UIButton *menu = [UIButton buttonWithType:(UIButtonTypeCustom)];
+        menu.viewWidth = container.viewWidth;
+        menu.titleLabel.numberOfLines = 0;
+        menu.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        menu.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        [menu setTitle:menuTitle forState:(UIControlStateNormal)];
+        [menu setContentHorizontalAlignment:(UIControlContentHorizontalAlignmentLeft)];
+        [menu.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_MENU]];
+        [menu addTarget:self action:@selector(menuTapped:) forControlEvents:(UIControlEventTouchUpInside)];
+        [menu setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
+        [menu align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(0, topOffset)];
+        [container addSubview:menu];
+        menu.viewHeight = [MQStringSizeUtil getHeightForText:menuTitle withFont:[UIFont systemFontOfSize:FONT_SIZE_MENU] andWidth:container.viewWidth];
+        
+        topOffset += menu.viewHeight + SPACE_INTERNAL_VERTICAL;
+        
+    }
+    
+    container.viewHeight = topOffset;
+    return container;
+}
+- (void)menuTapped:(UIButton *)menu {
+    NSString *didTapMenuText = menu.titleLabel.text;
+    
+    if ([self.chatCellDelegate respondsToSelector:@selector(didTapMenuWithText:)]) {
+        [self.chatCellDelegate didTapMenuWithText:didTapMenuText];
+    }
+}
+
+
 @end

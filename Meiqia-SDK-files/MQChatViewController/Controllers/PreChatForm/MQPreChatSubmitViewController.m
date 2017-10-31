@@ -220,8 +220,13 @@
         [sself hideLoadingIndicator];
         if (e == nil) {
             [sself dismissViewControllerAnimated:YES completion:^{
+                
                 if (sself.completeBlock) {
                     sself.completeBlock([sself createUserInfo]);
+                    //成功提交表单后的回调 ,此时保存 _hasSubmittedFormLocalBool
+                    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"hasSubmittedFormLocalBool"];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                    
                 }
             }];
         } else {

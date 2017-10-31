@@ -10,6 +10,7 @@
 #import "MQAGEmojiPageView.h"
 #import "UIImage+MQGenerate.h"
 #import "MQAssetUtil.h"
+#import "MQToolUtil.h"
 
 static const CGFloat ButtonWidth = 45;
 static const CGFloat ButtonHeight = 37;
@@ -117,54 +118,56 @@ NSString *const MQRecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey"
   if (self) {
     // initialize category
 
-    _dataSource = dataSource;
-
+      _dataSource = dataSource;
+      
       
       self.backgroundColor = [UIColor whiteColor];
       
-    self.category = [self categoryNameAtIndex:self.defaultSelectedCategory];
-
-    self.segmentsBar = [[UISegmentedControl alloc] initWithItems:self.imagesForSelectedSegments];
-    self.segmentsBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+      self.category = [self categoryNameAtIndex:self.defaultSelectedCategory];
+      
+      self.segmentsBar = [[UISegmentedControl alloc] initWithItems:self.imagesForSelectedSegments];
+      self.segmentsBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
       self.segmentsBar.tintColor = [UIColor lightGrayColor];
       [self.segmentsBar setDividerImage:[UIImage new] forLeftSegmentState:(UIControlStateNormal) rightSegmentState:(UIControlStateNormal) barMetrics:(UIBarMetricsDefault)];
       [self.segmentsBar setBackgroundImage:[UIImage EllipseImageWithColor:[UIColor colorWithRed:242/255.0 green:242/255.0 blue:247/255.0 alpha:1] andSize:CGSizeMake(1, 1)] forState:UIControlStateNormal barMetrics:(UIBarMetricsDefault)];
       [self.segmentsBar setBackgroundImage:[UIImage EllipseImageWithColor:[UIColor whiteColor] andSize:CGSizeMake(1, 1)] forState:UIControlStateSelected barMetrics:(UIBarMetricsDefault)];
       [self.segmentsBar setContentMode:(UIViewContentModeScaleAspectFit)];
-    [self.segmentsBar addTarget:self
-                         action:@selector(categoryChangedViaSegmentsBar:)
-               forControlEvents:UIControlEventValueChanged];
-    [self setSelectedCategoryImageInSegmentControl:self.segmentsBar
-                                           atIndex:self.defaultSelectedCategory];
-    self.segmentsBar.selectedSegmentIndex = self.defaultSelectedCategory;
+      [self.segmentsBar addTarget:self
+                           action:@selector(categoryChangedViaSegmentsBar:)
+                 forControlEvents:UIControlEventValueChanged];
+      [self setSelectedCategoryImageInSegmentControl:self.segmentsBar
+                                             atIndex:self.defaultSelectedCategory];
+      self.segmentsBar.selectedSegmentIndex = self.defaultSelectedCategory;
+      
       self.segmentsBar.frame = CGRectMake(0,
                                           0,
                                           CGRectGetWidth(self.bounds),
                                           30);
       [self addSubview:self.segmentsBar];
-
-    self.pageControl = [[UIPageControl alloc] init];
-    self.pageControl.hidesForSinglePage = YES;
-    self.pageControl.currentPage = 0;
+      
+      self.pageControl = [[UIPageControl alloc] init];
+      self.pageControl.hidesForSinglePage = YES;
+      self.pageControl.currentPage = 0;
       self.pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
       self.pageControl.currentPageIndicatorTintColor = [UIColor grayColor];
-    self.pageControl.backgroundColor = [UIColor clearColor];
-    CGSize pageControlSize = [self.pageControl sizeForNumberOfPages:3];
-    CGSize frameSize = CGSizeMake(CGRectGetWidth(self.bounds),
-                                  CGRectGetHeight(self.bounds) - CGRectGetHeight(self.segmentsBar.bounds) - pageControlSize.height);
-    NSUInteger numberOfPages = [self numberOfPagesForCategory:self.category
-                                                  inFrameSize:frameSize];
-    self.pageControl.numberOfPages = numberOfPages;
-    pageControlSize = [self.pageControl sizeForNumberOfPages:numberOfPages];
-    CGRect pageControlFrame = CGRectMake((CGRectGetWidth(self.bounds) - pageControlSize.width) / 2,
-                                         CGRectGetHeight(self.bounds) - self.segmentsBar.bounds.size.height - pageControlSize.height,
-                                         pageControlSize.width,
-                                         pageControlSize.height);
-    self.pageControl.frame = CGRectIntegral(pageControlFrame);
-    [self.pageControl addTarget:self
-                         action:@selector(pageControlTouched:)
-               forControlEvents:UIControlEventValueChanged];
-    [self addSubview:self.pageControl];
+      self.pageControl.backgroundColor = [UIColor clearColor];
+      CGSize pageControlSize = [self.pageControl sizeForNumberOfPages:3];
+      CGSize frameSize = CGSizeMake(CGRectGetWidth(self.bounds),
+                                    CGRectGetHeight(self.bounds) - CGRectGetHeight(self.segmentsBar.bounds) - pageControlSize.height);
+      NSUInteger numberOfPages = [self numberOfPagesForCategory:self.category
+                                                    inFrameSize:frameSize];
+      self.pageControl.numberOfPages = numberOfPages;
+      pageControlSize = [self.pageControl sizeForNumberOfPages:numberOfPages];
+      
+      CGRect pageControlFrame = CGRectMake((CGRectGetWidth(self.bounds) - pageControlSize.width) / 2,
+                                           CGRectGetHeight(self.bounds) - self.segmentsBar.bounds.size.height - pageControlSize.height,
+                                           pageControlSize.width,
+                                           pageControlSize.height);
+      self.pageControl.frame = CGRectIntegral(pageControlFrame);
+      [self.pageControl addTarget:self
+                           action:@selector(pageControlTouched:)
+                 forControlEvents:UIControlEventValueChanged];
+      [self addSubview:self.pageControl];
       
       CGRect scrollViewFrame = CGRectMake(0,
                                           0,
@@ -176,6 +179,7 @@ NSString *const MQRecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey"
       self.emojiPagesScrollView.showsVerticalScrollIndicator = NO;
       self.emojiPagesScrollView.delegate = self;
       self.emojiPagesScrollView.backgroundColor = [UIColor whiteColor];
+
       
       [self addSubview:self.emojiPagesScrollView];
       
@@ -242,34 +246,49 @@ NSString *const MQRecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey"
 }
 
 - (void)layoutSubviews {
-  CGSize pageControlSize = [self.pageControl sizeForNumberOfPages:3];
-  NSUInteger numberOfPages = [self numberOfPagesForCategory:self.category
-                                                inFrameSize:CGSizeMake(CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) - CGRectGetHeight(self.segmentsBar.bounds) - pageControlSize.height)];
-
-  NSInteger currentPage = (self.pageControl.currentPage > numberOfPages) ? numberOfPages : self.pageControl.currentPage;
-
-  // if (currentPage > numberOfPages) it is set implicitly to max pageNumber available
-  self.pageControl.numberOfPages = numberOfPages;
-  pageControlSize = [self.pageControl sizeForNumberOfPages:numberOfPages];
-  CGRect pageControlFrame = CGRectMake((CGRectGetWidth(self.bounds) - pageControlSize.width) / 2,
-                                       CGRectGetHeight(self.bounds) - self.segmentsBar.bounds.size.height - pageControlSize.height,
-                                       pageControlSize.width,
-                                       pageControlSize.height);
-  self.pageControl.frame = CGRectIntegral(pageControlFrame);
-
-  self.emojiPagesScrollView.frame = CGRectMake(0,
-                                               0,
-                                               CGRectGetWidth(self.bounds),
-                                               CGRectGetHeight(self.bounds) - CGRectGetHeight(self.segmentsBar.bounds) - pageControlSize.height);
-  [self.emojiPagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-  self.emojiPagesScrollView.contentOffset = CGPointMake(CGRectGetWidth(self.emojiPagesScrollView.bounds) * currentPage, 0);
-  self.emojiPagesScrollView.contentSize = CGSizeMake(CGRectGetWidth(self.emojiPagesScrollView.bounds) * numberOfPages,
-                                                     CGRectGetHeight(self.emojiPagesScrollView.bounds));
+    CGSize pageControlSize = [self.pageControl sizeForNumberOfPages:3];
+    NSUInteger numberOfPages = [self numberOfPagesForCategory:self.category
+                                                  inFrameSize:CGSizeMake(CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) - CGRectGetHeight(self.segmentsBar.bounds) - pageControlSize.height)];
+    
+    NSInteger currentPage = (self.pageControl.currentPage > numberOfPages) ? numberOfPages : self.pageControl.currentPage;
+    
+    self.pageControl.numberOfPages = numberOfPages;
+    pageControlSize = [self.pageControl sizeForNumberOfPages:numberOfPages];
     
     
-  [self purgePageViews];
-  self.pageViews = [NSMutableArray array];
-  [self setPage:currentPage];
+    CGFloat emojiPagesScrollViewY = 0;
+    if (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX) {
+        emojiPagesScrollViewY = -34;
+    }
+    
+    self.emojiPagesScrollView.frame = CGRectMake(0,
+                                                 emojiPagesScrollViewY,
+                                                 CGRectGetWidth(self.bounds),
+                                                 CGRectGetHeight(self.bounds) - CGRectGetHeight(self.segmentsBar.bounds) - pageControlSize.height);
+    [self.emojiPagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.emojiPagesScrollView.contentOffset = CGPointMake(CGRectGetWidth(self.emojiPagesScrollView.bounds) * currentPage, 0);
+    self.emojiPagesScrollView.contentSize = CGSizeMake(CGRectGetWidth(self.emojiPagesScrollView.bounds) * numberOfPages,
+                                                       CGRectGetHeight(self.emojiPagesScrollView.bounds));
+    
+    
+    
+    CGFloat pageControlFrameY = self.emojiPagesScrollView.frame.origin.y + self.emojiPagesScrollView.frame.size.height;
+    
+    CGRect pageControlFrame = CGRectMake((CGRectGetWidth(self.bounds) - pageControlSize.width) / 2,
+                                         pageControlFrameY,
+                                         pageControlSize.width,
+                                         pageControlSize.height);
+    self.pageControl.frame = CGRectIntegral(pageControlFrame);
+    
+    CGFloat segmentsBarlFrameY = self.pageControl.frame.origin.y + self.pageControl.frame.size.height;
+    self.segmentsBar.frame = CGRectMake(0,
+                                        segmentsBarlFrameY,
+                                        CGRectGetWidth(self.bounds),
+                                        CGRectGetHeight(self.segmentsBar.bounds));
+    
+    [self purgePageViews];
+    self.pageViews = [NSMutableArray array];
+    [self setPage:currentPage];
 }
 
 #pragma mark event handlers

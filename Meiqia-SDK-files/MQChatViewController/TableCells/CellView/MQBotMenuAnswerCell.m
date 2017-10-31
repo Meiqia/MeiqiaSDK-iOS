@@ -10,10 +10,9 @@
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
 #import "UIView+MQLayout.h"
-#import "MQBotMenuAnswerCellModel.h"
-#import "MQChatViewConfig.h"
 #import "UIImage+MQGenerate.h"
 #import "MQStringSizeUtil.h"
+#import "MQBotMenuAnswerCellModel.h"
 
 #define TAG_MENUS 10
 #define TAG_EVALUATE 11
@@ -30,14 +29,18 @@
 @property (nonatomic, strong) MQBotMenuAnswerCellModel *cellModel;
 @property (nonatomic, strong) UIImageView *itemsView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
+
 @property (nonatomic, strong) UILabel *contentLabel;
 @property (nonatomic, strong) UILabel *menuTitleLabel;
 @property (nonatomic, strong) UILabel *menuFootnoteLabel;
+
 @property (nonatomic, strong) UIView *evaluateView;
 @property (nonatomic, strong) UIView *evaluatedView;
 
 @property (nonatomic, assign) CGFloat currentCellWidth;
 @property (nonatomic, assign) CGFloat currentContentWidth;
+
+
 @property (nonatomic, assign) BOOL manuallySetToEvaluated;
 
 @end

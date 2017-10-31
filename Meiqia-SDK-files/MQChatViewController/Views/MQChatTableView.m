@@ -10,6 +10,7 @@
 #import "MQChatViewConfig.h"
 #import "MQStringSizeUtil.h"
 #import "MQBundleUtil.h"
+#import "MQToolUtil.h"
 
 static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 
@@ -20,6 +21,13 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 @implementation MQChatTableView
 
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
+    
+    //xlp 适配iphonex todo
+    if (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX) {
+        CGFloat newHeight = frame.size.height - 34;
+        frame.size.height = newHeight;
+    }
+    
     self = [super initWithFrame:frame style:style];
     if (self) {
         self.backgroundColor = [UIColor clearColor];

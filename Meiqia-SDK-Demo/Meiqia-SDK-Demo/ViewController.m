@@ -188,6 +188,13 @@ static int indicator_tag = 10;
 //    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
 //    [chatViewManager.chatViewStyle setEnableRoundAvatar:
 //    [chatViewManager setClientInfo:@{@"name" : @"123"} override:YES];
+    
+//    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+//    [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
+//    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [bt setImage:[UIImage imageNamed:@"meiqia-icon"] forState:UIControlStateNormal];
+//    [aStyle setNavBarRightButton:bt];
+    
 //    [chatViewManager setChatWelcomeText:@"asfafsaaaaasgastag？"];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 //    [chatViewManager setLoginCustomizedId:@"10"];

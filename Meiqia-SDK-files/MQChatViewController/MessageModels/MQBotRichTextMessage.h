@@ -8,10 +8,15 @@
 
 #import "MQRichTextMessage.h"
 
+@class MQBotMenuMessage;
 @interface MQBotRichTextMessage : MQRichTextMessage
 
 @property (nonatomic, strong) NSNumber *questionId;
 @property (nonatomic, assign) BOOL isEvaluated;
 @property (nonatomic, copy) NSString *subType;
+
+@property (nonatomic, strong) MQBotMenuMessage *menu;
+
+- (id)initWithDictionary:(NSDictionary *)dictionary ;
 
 @end
