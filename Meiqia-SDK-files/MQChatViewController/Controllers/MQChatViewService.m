@@ -153,7 +153,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [MQServiceToViewInterface getDatabaseHistoryMessagesWithMsgDate:firstMessageDate messagesNumber:kMQChatGetHistoryMessageNumber delegate:self];
     }
 }
+//xlp  获取历史消息 从最后一条数据
+- (void)startGettingHistoryMessagesFromLastMessage {
+    NSDate *lastMessageDate = [self getLastServiceCellModelDate];
 
+    if ([MQChatViewConfig sharedConfig].enableSyncServerMessage) {
+        [MQServiceToViewInterface getServerHistoryMessagesWithMsgDate:lastMessageDate messagesNumber:kMQChatGetHistoryMessageNumber successDelegate:self errorDelegate:self.errorDelegate];
+    } else {
+        [MQServiceToViewInterface getDatabaseHistoryMessagesWithMsgDate:lastMessageDate messagesNumber:kMQChatGetHistoryMessageNumber delegate:self];
+    }
+}
 /**
  *  获取最旧的cell的日期，例如text/image/voice等
  */
@@ -173,6 +182,25 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     return [NSDate date];
 }
 
+- (NSDate *)getLastServiceCellModelDate {
+    for (NSInteger index = 0; index < self.cellModels.count; index++) {
+        id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+      
+        if (index == self.cellModels.count - 1) {
+
+#pragma 开发者可在下面添加自己更多的业务cellModel，以便能正确获取历史消息
+            if ([cellModel isKindOfClass:[MQTextCellModel class]] ||
+                [cellModel isKindOfClass:[MQImageCellModel class]] ||
+                [cellModel isKindOfClass:[MQVoiceCellModel class]] ||
+                [cellModel isKindOfClass:[MQEventCellModel class]] ||
+                [cellModel isKindOfClass:[MQFileDownloadCellModel class]])
+            {
+                return [cellModel getCellDate];
+            }
+        }
+    }
+    return [NSDate date];
+}
 /**
  * 发送文字消息
  */

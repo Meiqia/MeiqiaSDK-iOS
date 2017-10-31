@@ -22,8 +22,10 @@
     //xlptodo
     [super viewDidLoad];
 
+    
     self.webView = [UIWebView new];
     self.webView.delegate = self;
+    self.webView.backgroundColor = [UIColor whiteColor];
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
     self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
     

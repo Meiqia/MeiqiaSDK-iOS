@@ -16,6 +16,7 @@
 #import "MQMessageFormInputView.h"
 #import "MQMessageFormViewService.h"
 #import "MQMessageFormCategoryViewController.h"
+#import "MQToolUtil.h"
 
 static CGFloat const kMQMessageFormSpacing   = 16.0;
 static NSString * const kMessageFormMessageKey = @"message";
@@ -386,8 +387,8 @@ static NSString * const kMessageFormMessageKey = @"message";
             offsetY = keyboardHeight + firstResponderUITextView.frame.size.height - (screenHeight - responderMinY);
         }
         // 处理UITextView被导航栏遮挡的情况
-        if (responderMinY < 64) {
-            offsetY = responderMinY - 64;
+        if (responderMinY < MQToolUtil.kXlpObtainNaviHeight) {
+            offsetY = responderMinY - MQToolUtil.kXlpObtainNaviHeight;
         }
         if (offsetY != 0) {
             [UIView animateWithDuration:duration animations:^{

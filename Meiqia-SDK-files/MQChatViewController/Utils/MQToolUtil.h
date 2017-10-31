@@ -11,4 +11,7 @@
 @interface MQToolUtil : NSObject
 + (NSString*)kXlpObtainDeviceVersion;
 + (BOOL)kXlpObtainDeviceVersionIsIphoneX;
++ (NSInteger )kXlpObtainNaviBarHeight;
++ (NSInteger )kXlpObtainStatusBarHeight;
++ (NSInteger )kXlpObtainNaviHeight;
 @end

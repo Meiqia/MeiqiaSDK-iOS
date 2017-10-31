@@ -110,6 +110,26 @@
                                      delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 
 /**
+ * 从服务端获取更多消息
+ *
+ * @param msgDate 获取该日期之前的历史消息;
+ * @param messagesNum 获取消息的数量
+ */
++ (void)getServerHistoryMessagesWithLastMsgDate:(NSDate *)msgDate
+                             messagesNumber:(NSInteger)messagesNumber
+                            successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
+                              errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
+
+/**
+ * 从本地获取更多消息
+ *
+ * @param msgDate 获取该日期之前的历史消息;
+ * @param messagesNum 获取消息的数量
+ */
++ (void)getDatabaseHistoryMessagesWithLastMsgDate:(NSDate *)msgDate
+                               messagesNumber:(NSInteger)messagesNumber
+                                     delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
+/**
  * 发送文字消息
  * @param content 消息内容。会做前后去空格处理，处理后的消息长度不能为0，否则不执行发送操作
  * @param localMessageId 本地消息id

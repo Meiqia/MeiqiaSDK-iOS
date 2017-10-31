@@ -8,6 +8,7 @@
 
 #import "MQToolUtil.h"
 #import <sys/utsname.h>
+#import <UIKit/UIKit.h>
 @implementation MQToolUtil
 + (NSString*)kXlpObtainDeviceVersion
 {
@@ -95,5 +96,19 @@
         return NO;
     }
     
+}
+
++ (NSInteger )kXlpObtainNaviBarHeight{
+    return 44;
+}
++ (NSInteger )kXlpObtainStatusBarHeight{
+    
+    //X 44 其他 20
+    CGRect rectStatus = [[UIApplication sharedApplication] statusBarFrame];
+    return rectStatus.size.height;
+}
++ (NSInteger )kXlpObtainNaviHeight{
+    
+    return [self kXlpObtainNaviBarHeight] + [self kXlpObtainStatusBarHeight];
 }
 @end

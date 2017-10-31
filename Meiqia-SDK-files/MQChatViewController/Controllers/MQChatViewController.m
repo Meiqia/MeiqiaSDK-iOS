@@ -35,6 +35,7 @@
 #import "MQTextCellModel.h"
 #import "MQTipsCellModel.h"
 #import "MQToolUtil.h"
+#import "MQChatViewManager.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
@@ -346,7 +347,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeRight) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeRight) multiplier:1 constant:0]];
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.chatInputBar attribute:(NSLayoutAttributeTop) multiplier:1 constant:0]];
    
-    
+
     
     self.constraintInputBarBottom = [NSLayoutConstraint constraintWithItem:self.view attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.chatInputBar attribute:(NSLayoutAttributeBottom) multiplier:1 constant: (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX > 0 ? 34 : 0)];
     [constrains addObject:self.constraintInputBarBottom];
@@ -1007,14 +1008,25 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #pragma mark - keyboard controller delegate
 - (void)keyboardController:(MQKeyboardController *)keyboardController keyboardChangeFrame:(CGRect)keyboardFrame isImpressionOfGesture:(BOOL)isImpressionOfGesture {
     
-    CGFloat viewHeight = self.navigationController.navigationBar.translucent ? CGRectGetMaxY(self.view.frame) : CGRectGetMaxY(self.view.frame) - 64;
+    CGFloat viewHeight = self.navigationController.navigationBar.translucent ? CGRectGetMaxY(self.view.frame) : CGRectGetMaxY(self.view.frame) - MQToolUtil.kXlpObtainNaviHeight;
     
     CGFloat heightFromBottom = MAX(0.0, viewHeight - CGRectGetMinY(keyboardFrame));
     
     if (!isImpressionOfGesture) {
-        CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant;
-        if (diff < self.chatTableView.contentInset.top + self.chatTableView.contentSize.height) {
-            self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
+        
+        if (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX ) {
+            
+            CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant + 34;
+            if (diff < self.chatTableView.contentInset.top + self.chatTableView.contentSize.height) {
+                self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
+            }
+            
+        }else{
+            
+            CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant;
+            if (diff < self.chatTableView.contentInset.top + self.chatTableView.contentSize.height) {
+                self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
+            }
         }
     }
     
@@ -1202,9 +1214,17 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     if (openVisitorNoMessageBool) {
         [MQServiceToViewInterface prepareForChat]; //初始化
+        
+
         [self.chatViewService setClientOnline];
+//延时2秒 获取所有的历史记录
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.chatViewService startGettingHistoryMessagesFromLastMessage];
+        });
         
         openVisitorNoMessageBool = NO;
+
     }
 }
 
