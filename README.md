@@ -790,6 +790,28 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 - [工作台顾客信息显示应用的名称不正确](#工作台顾客信息显示应用的名称不正确)
 - [编译中出现 undefined symbols](#编译中出现-undefined-symbols)
 
+## 更新SDK
+
+### 1.pod集成的用户
+  
+  直接在工程中修改 podfile里面 meiqia 的版本号为最新的版本号,然后 终端 cd到项目工程目录下,执行 pod update Meiqia即可完成SDK的更新.
+  
+### 2.手动集成的客户比较麻烦,我们这边探索的办法为:
+  
+- 1 请通过show In finder删除 meiqiaSDK文件夹下的四个文件,
+
+- 2 然后再删除 工程中的 文件  ,
+
+
+- 3 cleanXcode, 
+
+- 4 将最新的sdk的内容复制,
+
+- 5 粘贴到 项目工程中 show in  finder 之前存放SDK4个文件的地方,
+
+- 6 然后通过 add files to ,将新的sdk下的四个文件夹 添加到工程中的原来放置这4个文件的地方.
+
+.
 
 ## iOS 11下 SDK 的聊天界面底部输入框出现绿色条状,且无法输入
 请升级到最新版本, 目前最新版本是 3.4.3,主要适配iPhone X.
