@@ -118,7 +118,7 @@
 "name" = "Name";
 "name_placeholder" = "Please enter your name";
 
-"wating_in_queue_tip_text" = "please hold on, %d visitors in front, of you can leave a message";
+"wating_in_queue_tip_text" = "please hold on, %d visitors in front, or you can leave a message";
 
 //询前表单
 "pre_chat_list_title" = "Client Support";

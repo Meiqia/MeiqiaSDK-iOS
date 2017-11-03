@@ -39,7 +39,7 @@
     //cebf283b07b9df05889b2148b34c31b5
 //009c6d3b9af54a81653c1982a1425e7b
 
-    [MQManager initWithAppkey:@"cebf283b07b9df05889b2148b34c31b5" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"009c6d3b9af54a81653c1982a1425e7b" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {
