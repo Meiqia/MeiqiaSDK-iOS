@@ -184,6 +184,8 @@ static int indicator_tag = 10;
 - (void)didTapBasicFunctionBtn:(UIButton *)button {
     //基本功能 - 在线客服
     
+    self.navigationController.navigationBar.translucent = NO;
+    
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 //    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
 //    [chatViewManager.chatViewStyle setEnableRoundAvatar:
@@ -196,7 +198,8 @@ static int indicator_tag = 10;
 //    [aStyle setNavBarRightButton:bt];
     
 //    [chatViewManager setChatWelcomeText:@"asfafsaaaaasgastag？"];
-    [chatViewManager pushMQChatViewControllerInViewController:self];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+    [chatViewManager presentMQChatViewControllerInViewController:self];
 //    [chatViewManager setLoginCustomizedId:@"10"];
 //    [chatViewManager setPreSendMessages: @[@"我想咨询的订单号：【1705045496811】"]];
 // //   [chatViewManager setScheduledAgentId:@""];

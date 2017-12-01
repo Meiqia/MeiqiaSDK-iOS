@@ -7,6 +7,7 @@
 //
 
 #import "MQRefresh.h"
+#import "MQToolUtil.h"
 #import <objc/runtime.h>
 
 #pragma mark - UITableView(MQRefresh)
@@ -305,7 +306,10 @@ static id keyUITableViewView, keyUITableViewMQRefreshAction, keyUITableViewMQRef
     
     if (self.status == MQRefreshStatusLoading || self.status == MQRefreshStatusEnd) { return; }
     
-    if (topOffset == 0) {
+    
+    CGFloat mm = MQToolUtil.kXlpObtainNaviHeight ;
+    
+    if (topOffset == 0|| topOffset == - mm) {
         self.status = MQRefreshStatusNormal;
     } else if (topOffset < -self.bounds.size.height) {
         self.status = MQRefreshStatusTriggered;

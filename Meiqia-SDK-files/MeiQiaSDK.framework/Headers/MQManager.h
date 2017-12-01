@@ -15,7 +15,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.4.3"
+#define MQSDKVersion @"3.4.2"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -83,6 +83,8 @@
  * @param completion 如果初始化成功，将会返回clientId，并且error为nil；如果初始化失败，clientId为空，会返回error
  */
 + (void)initWithAppkey:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error))completion;
+//私有化测试
++ (void)initWithAppkey_Private:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error,NSString *rootUrl))completion;
 
 /**
     获取本地初始化过的 app key
