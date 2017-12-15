@@ -2423,6 +2423,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 68;
+				DEPLOYMENT_POSTPROCESSING = NO;
 				DEVELOPMENT_TEAM = H22N8T6DAX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
@@ -2457,6 +2458,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 68;
+				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = H22N8T6DAX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
@@ -2621,7 +2623,7 @@
 				CCE9D1321C1812F6004E862E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		CCE9D1331C1812F6004E862E /* Build configuration list for PBXNativeTarget "Meiqia-SDK-Demo" */ = {
 			isa = XCConfigurationList;
@@ -2630,7 +2632,7 @@
 				CCE9D1351C1812F6004E862E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		CCE9D1361C1812F6004E862E /* Build configuration list for PBXNativeTarget "Meiqia-SDK-DemoTests" */ = {
 			isa = XCConfigurationList;
@@ -2639,7 +2641,7 @@
 				CCE9D1381C1812F6004E862E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		CCE9D1391C1812F6004E862E /* Build configuration list for PBXNativeTarget "Meiqia-SDK-DemoUITests" */ = {
 			isa = XCConfigurationList;
@@ -2648,7 +2650,7 @@
 				CCE9D13B1C1812F6004E862E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		E45472D61DE412F800948ECD /* Build configuration list for PBXNativeTarget "Meiqia" */ = {
 			isa = XCConfigurationList;
@@ -2657,7 +2659,7 @@
 				E45472D81DE412F800948ECD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

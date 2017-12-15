@@ -83,7 +83,7 @@
  * @param completion 如果初始化成功，将会返回clientId，并且error为nil；如果初始化失败，clientId为空，会返回error
  */
 + (void)initWithAppkey:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error))completion;
-//私有化测试
+
 + (void)initWithAppkey_Private:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error,NSString *rootUrl))completion;
 
 /**

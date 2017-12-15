@@ -312,7 +312,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  * 发送“用户正在输入”的消息
  */
 - (void)sendUserInputtingWithContent:(NSString *)content {
-    //[MQServiceToViewInterface sendClientInputtingWithContent:content];
+    [MQServiceToViewInterface sendClientInputtingWithContent:content];
 }
 
 /**

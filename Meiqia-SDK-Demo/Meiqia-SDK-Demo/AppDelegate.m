@@ -39,13 +39,17 @@
     //cebf283b07b9df05889b2148b34c31b5
 //009c6d3b9af54a81653c1982a1425e7b
 //47b248431b919e46379226016d79187d 私有化
-    [MQManager initWithAppkey:@"47b248431b919e46379226016d79187d" completion:^(NSString *clientId, NSError *error) {
+    
+    //b92a682423d678e44faeb9d508920330
+    //020a5a9f58c8f0e64ac98df631e706e8  alpha环境
+    //d840152748fb1be270847656a4b35294 基富通
+    [MQManager initWithAppkey:@"009c6d3b9af54a81653c1982a1425e7b" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {
             NSLog(@"error:%@",error);
         }
-        
+
         [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
             NSLog(@">> unread message count: %d", (int)messages.count);
         }];
