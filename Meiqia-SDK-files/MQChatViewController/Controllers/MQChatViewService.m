@@ -125,6 +125,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [MQManager removeStateChangeObserverWithKey:@"MQChatViewService"];
 }
 
+//从后台返回到前台时 
 - (void)backFromBackground {
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
         [self setClientOnline];

@@ -1892,6 +1892,7 @@
 					CCE9D1051C1812F6004E862E = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = H22N8T6DAX;
+						ProvisioningStyle = Automatic;
 					};
 					CCE9D11E1C1812F6004E862E = {
 						CreatedOnToolsVersion = 7.1;
@@ -2420,6 +2421,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 68;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DEVELOPMENT_TEAM = H22N8T6DAX;
@@ -2439,6 +2441,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALID_ARCHS = "armv7 arm64";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2455,6 +2458,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 68;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = H22N8T6DAX;
@@ -2474,6 +2478,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VALID_ARCHS = "armv7 arm64";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

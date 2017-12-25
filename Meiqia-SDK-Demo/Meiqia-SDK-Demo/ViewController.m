@@ -52,33 +52,32 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     
     //    [self.navigationController setNavigationBarHidden:YES];
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onlineSuccessed) name:MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
     
     //    [self getUnreadMessageswithIds:@[@"123",@"111",@"3"] complete:^(NSArray *messages, NSString *id, NSString *clientId) {
     //        NSLog(@"message count: %d, client id:%@", (int)messages.count, clientId);
     //    }];
 }
 
-- (void)_getUnreadMessages:(NSArray *)ids index:(NSUInteger)index complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
-    [MQManager refreshLocalClientWithCustomizedId:ids[index] complete:^(NSString *clientId) {
-        NSLog(@"getting for (%@ - %@)",ids[index], clientId);
-        [MQManager getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
-            NSLog(@"got %d messages for (%@ - %@)", (int)messages.count, [MQManager getCurrentCustomizedId], clientId);
-            if (index < ids.count - 1) {
-                [self _getUnreadMessages:ids index:index + 1 complete:action];
-                action(messages, [MQManager getCurrentCustomizedId], [MQManager getCurrentClientId]);
-            } else {
-                action(messages, [MQManager getCurrentCustomizedId], [MQManager getCurrentClientId]);
-            }
-        }];
-    }];
-}
-
-- (void)getUnreadMessageswithIds:(NSArray *)ids complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
-    [self _getUnreadMessages:ids index:0 complete:action];
-}
+//- (void)_getUnreadMessages:(NSArray *)ids index:(NSUInteger)index complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
+//    [MQManager refreshLocalClientWithCustomizedId:ids[index] complete:^(NSString *clientId) {
+//        NSLog(@"getting for (%@ - %@)",ids[index], clientId);
+//        [MQManager getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+//            NSLog(@"got %d messages for (%@ - %@)", (int)messages.count, [MQManager getCurrentCustomizedId], clientId);
+//            if (index < ids.count - 1) {
+//                [self _getUnreadMessages:ids index:index + 1 complete:action];
+//                action(messages, [MQManager getCurrentCustomizedId], [MQManager getCurrentClientId]);
+//            } else {
+//                action(messages, [MQManager getCurrentCustomizedId], [MQManager getCurrentClientId]);
+//            }
+//        }];
+//    }];
+//}
+//
+//- (void)getUnreadMessageswithIds:(NSArray *)ids complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
+//    [self _getUnreadMessages:ids index:0 complete:action];
+//}
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -89,35 +88,33 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     
 }
 
-- (void)onlineSuccessed {
-    //    [MQManager sendTextMessageWithContent:@"text" completion:nil];
-}
 
-- (void)updateIndicator {
-    if ([DevelopViewController shouldShowUnreadMessageCount]) {
-        [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
-            self.unreadMessagesCount = @(messages.count);
-            
-            if (self.unreadMessagesCount.intValue > 0) {
-                [self showIndicatorWithNumber:self.unreadMessagesCount onView:basicFunctionBtn];
-            } else {
-                [self removeIndecatorForView:basicFunctionBtn];
-            }
-        }];
-    }
-    
-}
+//
+//- (void)updateIndicator {
+//    if ([DevelopViewController shouldShowUnreadMessageCount]) {
+//        [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+//            self.unreadMessagesCount = @(messages.count);
+//
+//            if (self.unreadMessagesCount.intValue > 0) {
+//                [self showIndicatorWithNumber:self.unreadMessagesCount onView:basicFunctionBtn];
+//            } else {
+//                [self removeIndecatorForView:basicFunctionBtn];
+//            }
+//        }];
+//    }
+//
+//}
 
-- (void)updateUnreadMessageCount {
-    [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
-        
-        NSUInteger count = [[messages filter:^BOOL(MQMessage *message) {
-            return message.fromType != MQMessageFromTypeClient;
-        }] count];
-        
-        NSLog(@"unreade message count: %lu",(unsigned long)count);
-    }];
-}
+//- (void)updateUnreadMessageCount {
+//    [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
+//
+//        NSUInteger count = [[messages filter:^BOOL(MQMessage *message) {
+//            return message.fromType != MQMessageFromTypeClient;
+//        }] count];
+//
+//        NSLog(@"unreade message count: %lu",(unsigned long)count);
+//    }];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -152,26 +149,26 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     
 }
 
-static int indicator_tag = 10;
-- (void)showIndicatorWithNumber:(NSNumber *)number onView:(UIView *)view {
-    UILabel *indicator = [[UILabel alloc] initWithFrame:CGRectMake(view.bounds.size.width - 10, -10, 20, 20)];
-    indicator.tag = indicator_tag;
-    indicator.backgroundColor = [UIColor redColor];
-    indicator.layer.cornerRadius = 10;
-    indicator.font = [UIFont systemFontOfSize:9];
-    indicator.textAlignment = NSTextAlignmentCenter;
-    indicator.layer.masksToBounds = YES;
-    indicator.text = number.stringValue;
-    indicator.textColor = [UIColor whiteColor];
-    [view addSubview:indicator];
-}
-
-- (void)removeIndecatorForView:(UIView *)view {
-    UIView *v = [view viewWithTag:indicator_tag];
-    if (v) {
-        [v removeFromSuperview];
-    }
-}
+//static int indicator_tag = 10;
+//- (void)showIndicatorWithNumber:(NSNumber *)number onView:(UIView *)view {
+//    UILabel *indicator = [[UILabel alloc] initWithFrame:CGRectMake(view.bounds.size.width - 10, -10, 20, 20)];
+//    indicator.tag = indicator_tag;
+//    indicator.backgroundColor = [UIColor redColor];
+//    indicator.layer.cornerRadius = 10;
+//    indicator.font = [UIFont systemFontOfSize:9];
+//    indicator.textAlignment = NSTextAlignmentCenter;
+//    indicator.layer.masksToBounds = YES;
+//    indicator.text = number.stringValue;
+//    indicator.textColor = [UIColor whiteColor];
+//    [view addSubview:indicator];
+//}
+//
+//- (void)removeIndecatorForView:(UIView *)view {
+//    UIView *v = [view viewWithTag:indicator_tag];
+//    if (v) {
+//        [v removeFromSuperview];
+//    }
+//}
 
 #pragma 最基本功能
 
@@ -187,7 +184,7 @@ static int indicator_tag = 10;
     //    [chatViewManager.chatViewStyle setEnableRoundAvatar:
     //    [chatViewManager setClientInfo:@{@"name" : @"123"} override:YES];
     
-    //    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+        MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
     //    [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
     //    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
     //    [bt setImage:[UIImage imageNamed:@"meiqia-icon"] forState:UIControlStateNormal];

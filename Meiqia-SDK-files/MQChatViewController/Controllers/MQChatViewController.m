@@ -159,26 +159,23 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)presentUI {
     
     [MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^(NSDictionary *userInfo){
+        
+        NSLog(@"检测是否显示讯前表单的回调成功后返回的userInfo=%@",userInfo);
         NSString *targetType = userInfo[@"targetType"];
         NSString *target = userInfo[@"target"];
         NSString *menu = userInfo[@"menu"];
-        
         if ([targetType isEqualToString:@"agent"]) {
             [MQChatViewConfig sharedConfig].scheduledAgentId = target;
         } else if ([targetType isEqualToString:@"group"]) {
             [MQChatViewConfig sharedConfig].scheduledGroupId = target;
         }
-        
         if ([menu length] > 0) {
             NSMutableArray *m = [[MQChatViewConfig sharedConfig].preSendMessages mutableCopy] ?: [NSMutableArray new];
             [m addObject:menu];
             [MQChatViewConfig sharedConfig].preSendMessages = m;
         }
-        
-    
         [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:NO complete:^(MQEnterprise *enterprise, NSError *e) {
             // 获取是否开启无消息访客过滤, warning:用之前的绑定的clientId上线,防止出现排队现象
-            //
             if (enterprise.configInfo.isScheduleAfterClientSendMessage && ![MQManager getLoginStatus]) {
                 // 设置head title
                 [self updateNavTitleWithAgentName:enterprise.configInfo.public_nickname ?: @"官方客服" agentStatus:MQChatAgentStatusNone];
@@ -189,7 +186,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
                 NSString *str = [welcomeStr stringByReplacingOccurrencesOfString:@" " withString:@""];
                 if (enterprise.configInfo.enterpriseIntro && str.length > 0) {
                     
-                    MQTextMessage *message = [[MQTextMessage alloc] initWithContent: enterprise.configInfo.enterpriseIntro ?: @"【系统消息】您好，请问您有什么问题?"]; //此处若企业欢迎消息关闭 则 content最终为 空 导致会显示一个空消息
+                    MQTextMessage *message = [[MQTextMessage alloc] initWithContent: enterprise.configInfo.enterpriseIntro ?: @"【系统消息】您好，请问您有什么问题?"]; //此处若企业欢迎消息关闭 则 content最终为 空 导致会显示一个空消息,故添加前面的判断 ,则意味着 "@"【系统消息】您好，请问您有什么问题?"" 不会显示
                     message.fromType = MQChatMessageIncoming;
                     message.date = [NSDate new];
                     message.userName = enterprise.configInfo.public_nickname;
@@ -215,6 +212,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             }
         }];
     } cancle:^{
+        //讯前表单 左返回按钮
         [self dismissViewControllerAnimated:NO completion:^{
             [self dismissChatViewController];
         }];
@@ -572,21 +570,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)inputContentTextDidChange:(NSString *)newString {
-    
-    
-//    static BOOL shouldSendInputtingMessageToServer = YES;
-//
-//    if (shouldSendInputtingMessageToServer) {
-//        shouldSendInputtingMessageToServer = NO;
-//        [self.chatViewService sendUserInputtingWithContent:newString];
-//
-//        //wait for 5 secs to enable sending message again
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            shouldSendInputtingMessageToServer = YES;
-//        });
-//    }
+  
     //xlp 判断当前是否已分配人工客服
-    
+    //xlp 页面消失时,清楚该两个字段  xlpOldInputStr sendTime
+
     if ([MQManager getCurrentState] == MQStateAllocatedAgent){
         
         //  前后内容 作对比 若不同 则发送,若相同则不送, 且每隔一次 发送一次
@@ -609,7 +596,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         sendTime ++;
     }
     
-    //xlp 页面消失时,清楚该两个字段  xlpOldInputStr sendTime
     
 }
 
@@ -915,15 +901,21 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     //xlp 去掉socket连接的检测
     if ([self checkXlpSocketClose]) {
         
-        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"service_connectting_wait"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"service_connectting_wait"] duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
         [MQManager openMeiqiaService];
         
         return NO;
     }
 
+    //xlp 旧的: waitingInQueuePosition>0 && getCurrentAgent].privilege != MQAgentPrivilegeBot  改为 waitingInQueuePosition>0
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
+//    if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
         [self.view.window endEditing:YES];
         [MQToast showToast:@"正在排队，请等待客服接入后发送消息" duration:2.5 window:self.view.window];
+        
+        [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
+            //从后台获取 position 然后保存到本地
+        }];
         return NO;
     }
     return YES;

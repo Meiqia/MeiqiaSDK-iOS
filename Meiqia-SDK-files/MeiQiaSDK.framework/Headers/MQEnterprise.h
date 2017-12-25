@@ -11,18 +11,19 @@
 
 @interface MQEnterpriseConfig : NSObject
 
-///客服邀请评价显示的文案
-@property (nonatomic, copy) NSString *evaluationPromtText;
+/**企业工作台 配置信息*/
 
-@property (nonatomic, assign) bool showSwitch;
+@property (nonatomic, copy) NSString *evaluationPromtText;///客服邀请评价显示的文案
 
-@property (nonatomic, assign) BOOL isScheduleAfterClientSendMessage;
+@property (nonatomic, assign) bool showSwitch; //
 
-@property (nonatomic, copy) NSString *avatar;
+@property (nonatomic, assign) BOOL isScheduleAfterClientSendMessage; //就字面意思是 访客发送消息后才分配客服,即无消息访客过滤开关
 
-@property (nonatomic, copy) NSString *public_nickname;
+@property (nonatomic, copy) NSString *avatar; //企业客服头像
 
-@property (nonatomic, copy) NSString *enterpriseIntro;
+@property (nonatomic, copy) NSString *public_nickname; //
+
+@property (nonatomic, copy) NSString *enterpriseIntro; //
 
 @property (nonatomic, copy) NSString *intro;
 
@@ -30,7 +31,7 @@
 
 @property (nonatomic, copy) NSString *ticketContactFillInRule;
 
-@property (nonatomic, strong) MQPreChatData *preChatData;
+@property (nonatomic, strong) MQPreChatData *preChatData; //讯前表单数据模型
 
 @end
 
@@ -69,7 +70,7 @@
 
 /** 邮寄地址 */
 @property (nonatomic, copy) NSString *mailingAddress;
-
+/**企业工作台 配置信息*/
 @property (nonatomic, strong) MQEnterpriseConfig *configInfo;
 
 - (void)parseEnterpriseConfigData:(NSDictionary *)json;
