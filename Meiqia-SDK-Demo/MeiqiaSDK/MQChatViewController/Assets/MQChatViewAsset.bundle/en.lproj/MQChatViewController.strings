@@ -1,0 +1,137 @@
+"new_message"         = "Send your message...";
+
+"record_speak"        = "Hold to talk";
+
+"record_end"          = "Release to send";
+
+"cancel"              = "cancel";
+
+"select_gallery"      = "Albums";
+
+"select_camera"       = "Camera";
+
+"wait_agent"          = "Allocating an agent for you...";
+
+"not_access_camera"   = "Please go to Settings — Privacy — Photos. Then select ON for This App.";
+
+"not_access_photos"   = "Please go to Settings — Privacy — Camera. Then select ON for This App.";
+
+"display_new_message" = "Received a new message";
+
+"network_jam"         = "Please check your internet connection and try again.";
+
+"simulator_not_support_camera"      = "Simulator cannot access camera";
+
+"simulator_not_support_microphone"  = "Simulator cannot access microphone";
+
+"recode_time_too_short" = "Message too short";
+
+"record_cancel_swipe"   = "Swipe up to cancel";
+
+"record_cancel_realse"  = "Release to cancel";
+
+"save_photo_error"      = "Sorry, failed to save photo";
+
+"save_photo_success"    = "Saved photo";
+
+"save_text_success"     = "Copied";
+
+"save_photo"            = "save";
+
+"save_text"             = "copy";
+
+"record_error"          = "Sorry, failed to record-_-";
+
+"user_confirm"          = "OK";
+
+"no_more_messages"      = "No more messages";
+
+"welcome_chat"          = "";
+
+"default_assistant"     = "Assistant";
+
+"no_agent_title"        = "Leave message";
+
+"no_agent_tips"         = "Sorry, there are no agents.\nPlease send your contact information to us. We will contact you as soon as possible.";
+
+"retry_send_message"    = "Resend message?";
+
+"alert_view_cancel"     = "cancel";
+
+"alert_view_confirm"    = "confirm";
+
+"cannot_refresh"        = "Cannot refresh anymore~";
+
+"make_call_to"          = "Call ";
+
+"send_message_to"       = "Send a message to ";
+
+"open_url_by_safari"    = "Open this url by Safari";
+
+"make_email_to"         = "Send email";
+
+"load_history_message_error"    = "Sorry, failed to load history messages";
+
+"microphone_denied"     = "Please go to Settings. And open microphone permission for This App.";
+
+"meiqia_communication_failed" = "Sorry, cannot access communication server, please change your network and retry.";
+
+"meiqia_evaluation_sheet"     = "Evaluate";
+
+"meiqia_redirect_sheet"     = "Redirect";
+
+"file_download_file_is_expired" = "File is overdue";
+"file_download_canceld" = "Download canceled";
+"file_download_failed" = "Download fail";
+"file_download_downloading" = "Downloading...";
+"file_download_complete" = "Download complete";
+"file_download_ %@ ∙ %@overdue" = "%@ ∙ overdue in %@ hours";
+
+"message_tips_send_message_fail_listed_in_black_list" = "Sorry, the CS system is down.";
+
+"message_tips_online_failed_listed_in_black_list" = "Sorry, the CS system is down.";
+
+"reply_tip_text"        = "Sorry, no agents available. You can give us a message";
+
+"bot_redirect_tip_text"  = "I am sorry the reply of robot did not solve your problem. Tap here to redirect to an agent.";
+
+"bot_manual_redirect_tip_text" = "If you need help, tap here to redirect to an agent.";
+
+"cannot_text_client_is_onlining"  = "Allocating an agent for you. Please resend later.";
+
+"send_to_fast"  = "Send too fast. Take a break :)";
+"leave_a_message" = "Leave a message";
+"submit" = "submit";
+"leave_a_message_placeholder" = "Please enter your message";
+"param_not_allow_null" = "%@ can not be empty";
+"contact_at_lease_enter_one" = "Please enter at lease one contact info";
+"submit_failure" = "Submit failed";
+"add_picture" = "Add picture";
+"tel" = "Phone";
+"tel_placeholder" = "Please enter your phone number";
+"email" = "Email";
+"email_placeholder" = "Please enter your email";
+"qq" = "QQ";
+"qq_placeholder" = "Please enter your QQ number";
+"wechat" = "WeChat";
+"wechat_placeholder" = "Please enter your WeChat account";
+"name" = "Name";
+"name_placeholder" = "Please enter your name";
+
+"wating_in_queue_tip_text" = "please hold on, %d visitors in front, or you can leave a message";
+
+//询前表单
+"pre_chat_list_title" = "Client Support";
+"pre_chat_form_title" =  "Please fill those blanks";
+"pre_chat_form_mutiple_selection_label" = "(multiple)";
+"pre_chat_form_black_alert_label" = "Please complete the red blank";
+
+//pull refresh
+"pull_refresh_normal" = "Pull to load";
+"pull_refresh_triggered" = "Realse to load";
+//xlp
+// 请输入消息
+"input_content" = "Please input your content...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "Service is connectting,please waitting";
+
