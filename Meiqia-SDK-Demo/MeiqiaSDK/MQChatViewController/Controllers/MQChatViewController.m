@@ -260,6 +260,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [UIView setAnimationsEnabled:YES];
     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
     [self.chatViewService fillTextDraftToFiledIfExists:(UITextField *)[(MQTabInputContentView *)self.chatInputBar.contentView textField]];
+    
+    //xlp 假死时 退出聊天界面 再次进来时 主动重连一次
+    [MQManager openMeiqiaService];
 }
 
 - (void)didReceiveMemoryWarning {

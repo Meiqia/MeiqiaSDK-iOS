@@ -183,13 +183,13 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     //    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
     //    [chatViewManager.chatViewStyle setEnableRoundAvatar:
     //    [chatViewManager setClientInfo:@{@"name" : @"123"} override:YES];
-    
-        MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+
+//        MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
     //    [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
     //    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
     //    [bt setImage:[UIImage imageNamed:@"meiqia-icon"] forState:UIControlStateNormal];
     //    [aStyle setNavBarRightButton:bt];
-    
+
     //    [chatViewManager setChatWelcomeText:@"asfafsaaaaasgastag？"];
     //    [chatViewManager pushMQChatViewControllerInViewController:self];
     [chatViewManager presentMQChatViewControllerInViewController:self];
@@ -202,6 +202,24 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     //
     //    [chatViewManager setRecordMode:MQRecordModeDuckOther];
     //    [chatViewManager setPlayMode:MQPlayModeMixWithOther];
+    
+    
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    chatViewManager.chatViewStyle.enableRoundAvatar = true;
+////    chatViewManager.chatViewStyle.navBarTintColor = RGBA(163, 175, 183, 1);
+//    chatViewManager.keepAudioSessionActive = true;
+//    [chatViewManager enableEvaluationButton:false];
+//    chatViewManager.chatViewStyle.navBackButtonImage = [UIImage imageNamed:@"meiqia-icon"];
+//    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    rightButton.frame = CGRectMake(0, 0, 60, 44);
+//    rightButton.titleLabel.font = [UIFont systemFontOfSize:16];
+//    [rightButton setTitle:@"去留言" forState:UIControlStateNormal];
+//    [rightButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+//    [chatViewManager.chatViewStyle setNavBarRightButton:rightButton];
+////    [chatViewManager setoutgoingDefaultAvatarImage:self.personHeadView.iconImageView.image];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+//
+    
 }
 
 #pragma 开发者的高级功能，其中有调用美洽SDK的API接口
