@@ -58,7 +58,9 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     //    [self getUnreadMessageswithIds:@[@"123",@"111",@"3"] complete:^(NSArray *messages, NSString *id, NSString *clientId) {
     //        NSLog(@"message count: %d, client id:%@", (int)messages.count, clientId);
     //    }];
+    
 }
+
 
 //- (void)_getUnreadMessages:(NSArray *)ids index:(NSUInteger)index complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
 //    [MQManager refreshLocalClientWithCustomizedId:ids[index] complete:^(NSString *clientId) {

@@ -90,7 +90,7 @@
 + (BOOL)kXlpObtainDeviceVersionIsIphoneX{
     //xlp 最后要去掉
     NSString * str = [self kXlpObtainDeviceVersion];
-    if ([str isEqualToString:@"iPhoneX"] || [str isEqualToString:@"Simulator1"]) {
+    if ([str isEqualToString:@"iPhoneX"] || [str isEqualToString:@"Simulator"]) {
         return YES;
     } else {
         return NO;

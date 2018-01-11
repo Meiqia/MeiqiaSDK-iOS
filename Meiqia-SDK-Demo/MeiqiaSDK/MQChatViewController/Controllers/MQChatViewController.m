@@ -37,9 +37,10 @@
 #import "MQToolUtil.h"
 #import "MQChatViewManager.h"
 
+#import "XLPInputView.h"
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolViewDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate, MQAGEmojiKeyboardViewDelegate, MQAGEmojiKeyboardViewDataSource>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputToolViewDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate, MQAGEmojiKeyboardViewDelegate, MQAGEmojiKeyboardViewDataSource,XLPInputViewDelegate>
 
 @property(nonatomic, strong)MQChatViewService *chatViewService;
 
@@ -136,7 +137,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
     
     //xlp
-    [self addTestBt];
+//    [self addTestBt];
 }
 
 //xlp
@@ -952,7 +953,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         if (self.chatInputBar.isFirstResponder) {
             [self.chatInputBar resignFirstResponder];
         }else{
-            self.chatInputBar.inputView = self.emojiView;
+            XLPInputView * mmView = [[XLPInputView alloc]initWithFrame:CGRectMake(0,0, self.view.frame.size.width, emojikeyboardHeight)];
+            mmView.xlpInputViewDelegate = self;
+            self.chatInputBar.inputView = mmView;
+
+//            self.chatInputBar.inputView = self.emojiView;
             [self.chatInputBar becomeFirstResponder];
         }
     }
@@ -1070,6 +1075,27 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 #pragma mark - emoji delegate and datasource
+
+- (void)XLPInputViewObtainEmojiStr:(NSString *)emojiStr{
+    
+    MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
+    textField.text = [textField.text stringByAppendingString:emojiStr];
+}
+- (void)XLPInputViewDeleteEmoji{
+    MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
+    if (textField.text.length > 0) {
+        NSRange lastRange = [textField.text rangeOfComposedCharacterSequenceAtIndex:([textField.text length] - 1)];
+        textField.text = [textField.text stringByReplacingCharactersInRange:lastRange withString:@""];
+    }
+}
+- (void)XLPInputViewSendEmoji{
+     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
+    if (textField.text.length > 0) {
+        
+        [self sendTextMessage:textField.text];
+        [(MQTabInputContentView *)self.chatInputBar.contentView textField].text = @"";
+    }
+}
 
 - (void)emojiKeyBoardView:(MQAGEmojiKeyboardView *)emojiKeyBoardView didUseEmoji:(NSString *)emoji {
     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
