@@ -1019,7 +1019,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         if (height == 0) {
             height = 34;
 
-        } else if(height == 237) {
+        } else if(height == 260) {
             // 点击表情 弹出表情键盘时 height == 237 ,X时 + 34
             height += 34;
 
