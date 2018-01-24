@@ -134,7 +134,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     
 
-
+//    [MQServiceToViewInterface markAllMessagesAsRead];
     
     //xlp
 //    [self addTestBt];
@@ -488,6 +488,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle agentStatus:(MQChatAgentStatus)agentStatus{
+    
+    NSLog(@"导航栏标题的变化为 -====title=%@===agentStatus=%ld",viewTitle,agentStatus);
     [self updateNavTitleWithAgentName:viewTitle agentStatus:agentStatus];
 }
 
@@ -533,7 +535,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
     if (self.chatViewService.clientStatus == MQStateAllocatingAgent || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
         NSString *alertText = self.chatViewService.clientStatus == MQStateAllocatingAgent ? @"cannot_text_client_is_onlining" : @"send_to_fast";
-        [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view];
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view.window];
         [[(MQTabInputContentView *)self.chatInputBar.contentView textField] setText:text];
         return NO;
     }
@@ -920,6 +922,14 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
             //从后台获取 position 然后保存到本地
         }];
+        return NO;
+    }
+    
+    // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
+    if (self.chatViewService.clientStatus == MQStateAllocatingAgent) {
+        NSString *alertText = @"cannot_text_client_is_onlining";
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
+
         return NO;
     }
     return YES;

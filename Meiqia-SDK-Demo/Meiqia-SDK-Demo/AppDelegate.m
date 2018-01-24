@@ -45,7 +45,7 @@
     //d840152748fb1be270847656a4b35294 基富通
     //d70b21192f0f1e0843a9b5c2a7d2ed3a
     //1e50ad71cc22cf98400a934b4a0d3f0a socket测试
-    [MQManager initWithAppkey:@"009c6d3b9af54a81653c1982a1425e7b" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"f3cdefb6d26664279197cee5547dd57f" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {

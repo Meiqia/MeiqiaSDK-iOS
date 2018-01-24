@@ -186,15 +186,16 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     //    [chatViewManager.chatViewStyle setEnableRoundAvatar:
     //    [chatViewManager setClientInfo:@{@"name" : @"123"} override:YES];
 
-//        MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
-    //    [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
+        MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+        [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
     //    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
     //    [bt setImage:[UIImage imageNamed:@"meiqia-icon"] forState:UIControlStateNormal];
     //    [aStyle setNavBarRightButton:bt];
 
     //    [chatViewManager setChatWelcomeText:@"asfafsaaaaasgastag？"];
-    //    [chatViewManager pushMQChatViewControllerInViewController:self];
-    [chatViewManager presentMQChatViewControllerInViewController:self];
+     [chatViewManager setScheduledGroupId: @"6f44f797e759a303990dfccf4df1738a"];
+        [chatViewManager pushMQChatViewControllerInViewController:self];
+//    [chatViewManager presentMQChatViewControllerInViewController:self];
     //    [chatViewManager setLoginCustomizedId:@"10"];
     //    [chatViewManager setPreSendMessages: @[@"我想咨询的订单号：【1705045496811】"]];
     // //   [chatViewManager setScheduledAgentId:@""];
