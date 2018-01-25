@@ -18,7 +18,6 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
     
     //推送注册
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 80000
@@ -45,45 +44,43 @@
     //d840152748fb1be270847656a4b35294 基富通
     //d70b21192f0f1e0843a9b5c2a7d2ed3a
     //1e50ad71cc22cf98400a934b4a0d3f0a socket测试
-    [MQManager initWithAppkey:@"f3cdefb6d26664279197cee5547dd57f" completion:^(NSString *clientId, NSError *error) {
+#pragma mark  集成第一步: 初始化,  参数:appkey
+    [MQManager initWithAppkey:@"009c6d3b9af54a81653c1982a1425e7b" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {
             NSLog(@"error:%@",error);
         }
 
-        [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
-            NSLog(@">> unread message count: %d", (int)messages.count);
-        }];
     }];
     
     return YES;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    [MQManager closeMeiqiaService];
-}
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    #pragma mark  集成第二步: 进入前台 打开meiqia服务
     [MQManager openMeiqiaService];
+}
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    #pragma mark  集成第三步: 进入后台 关闭美洽服务
+    [MQManager closeMeiqiaService];
+}
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    #pragma mark  集成第四步: 上传设备deviceToken
+    [MQManager registerDeviceToken:deviceToken];
+}
+
+
+
+- (void)applicationWillResignActive:(UIApplication *)application {
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    //上传设备deviceToken，以便美洽自建推送后，迁移推送
-    [MQManager registerDeviceToken:deviceToken];
-}
 
 @end

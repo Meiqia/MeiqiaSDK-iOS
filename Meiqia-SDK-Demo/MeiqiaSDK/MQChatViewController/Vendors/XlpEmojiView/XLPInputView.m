@@ -56,6 +56,7 @@
     [self addSubview:emojiCollectionView];
     emojiCollectionView.delegate = self;
     emojiCollectionView.dataSource = self;
+    emojiCollectionView.bounces = NO;
     
     emojiCollectionView.backgroundColor = emojiBackColor;
     [emojiCollectionView reloadData];
@@ -121,12 +122,9 @@
 
         NSString *imageStr = [self obtainImageStrWithKey:emojiDic.allKeys[i]];
         UIImage *image = [MQAssetUtil imageFromBundleWithName:imageStr];
-        UIButton *bt = [MQUIMaker xlpInitWithFrame:CGRectMake(mmWidth + (aWidth * i), emojikeyboardHeight - bottomHeight,aWidth, bottomHeight) image:image backImage:nil corner:0 superView:self touchUpInside:^(UIButton *sender) {
-//            [self bottomBtSelectHandle:i+10];
-            [self scrollToGroup:i];
-            
-        }];
+        UIButton *bt =  [MQUIMaker xlpInitWithFrame:CGRectMake(mmWidth + (aWidth * i), emojikeyboardHeight - bottomHeight,aWidth, bottomHeight) image:image backImage:nil corner:0 superView:self touchUpInside:nil];
         bt.tag = i + 10;
+        [bt addTarget:self action:@selector(btHandle:) forControlEvents:UIControlEventTouchUpInside];
         [bottomBtArr addObject:bt];
     }
     [self bottomBtSelectHandle:10];
@@ -143,6 +141,12 @@
         }
     }
     return @"";
+}
+- (void)btHandle:(UIButton *)bt{
+    
+    int mmmm = [[NSNumber numberWithInteger:bt.tag] intValue];
+    [self scrollToGroup:mmmm];
+    [self bottomBtSelectHandle:mmmm];
 }
 - (void)bottomBtSelectHandle:(int)index{
     
@@ -165,13 +169,14 @@
 }
 - (void)scrollToGroup:(int)section{
     
-    NSIndexPath *indexPath =  [NSIndexPath indexPathForItem:0 inSection:section];
-    [emojiCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:true];
+    NSIndexPath *indexPath =  [NSIndexPath indexPathForItem:5 inSection:(section - 10)];
+    [emojiCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
     
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
-    NSArray *arr = [emojiCollectionView indexPathsForVisibleItems];
+    NSMutableArray *arr = [NSMutableArray new];
+    arr = [[emojiCollectionView indexPathsForVisibleItems] mutableCopy];
     if (arr.count > 0) {
 
         NSIndexPath *lastIndex = arr.lastObject;
@@ -179,6 +184,8 @@
 
     }
 }
+
+
 - (void)returnHandle:(UIButton *)bt{
     if (self.xlpInputViewDelegate && [self.xlpInputViewDelegate respondsToSelector:@selector(XLPInputViewSendEmoji)]) {
         

@@ -12,6 +12,8 @@
 #import <MeiQiaSDK/MQDefinition.h>
 #import "MQCustomizedUIText.h"
 
+#pragma mark - 注意注意注意: 方法后面标记 style_deprecated ,代表该方法 推荐通过 MQChatViewStyle 调用
+
 #define style_deprecated __attribute__((deprecated("修改 MQChatViewStyleType 中的对应属性代替")))
 
 /**
