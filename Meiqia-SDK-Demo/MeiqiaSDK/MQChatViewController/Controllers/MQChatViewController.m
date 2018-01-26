@@ -30,7 +30,6 @@
 #import "MQRecorderView.h"
 #import "MQMessageFormViewManager.h"
 #import "MQPreChatFormListViewController.h"
-#import "MQAGEmojiKeyBoardView.h"
 #import "MQRefresh.h"
 #import "MQTextCellModel.h"
 #import "MQTipsCellModel.h"
@@ -56,7 +55,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @property (nonatomic, strong) MQKeyboardController *keyboardView;
 @property (nonatomic, strong) MQRecordView *recordView;
 @property (nonatomic, strong) MQRecorderView *displayRecordView;//只用来显示
-@property (nonatomic, strong) MQAGEmojiKeyboardView *emojiView;
 
 @end
 
@@ -151,8 +149,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [aWindow addSubview:bt];
     
     [bt addTarget:self action:@selector(closeSocketlalala) forControlEvents:UIControlEventTouchUpInside];
-    
-    
 }
 
 
@@ -588,7 +584,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         
         static int sendTime = 2;
        
-        NSLog(@"sendtime的求余结果为%d",sendTime%2);
         if (![oldInputStr isEqualToString:newInputStr] && sendTime%2 == 0) {
             //用户正在输入
 
@@ -963,11 +958,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         if (self.bottomBar.isFirstResponder) {
             [self.bottomBar resignFirstResponder];
         }else{
-            XLPInputView * mmView = [[XLPInputView alloc]initWithFrame:CGRectMake(0,0, self.view.frame.size.width, emojikeyboardHeight)];
+            
+            CGFloat emojiViewHeight = MQToolUtil.kXlpObtainDeviceVersionIsIphoneX ? (emojikeyboardHeight + 34) : emojikeyboardHeight;
+            
+            XLPInputView * mmView = [[XLPInputView alloc]initWithFrame:CGRectMake(0,0, self.view.frame.size.width, emojiViewHeight)];
             mmView.xlpInputViewDelegate = self;
             self.bottomBar.inputView = mmView;
 
-//            self.chatInputBar.inputView = self.emojiView;
             [self.bottomBar becomeFirstResponder];
         }
     }
@@ -1029,8 +1026,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         if (height == 0) {
             height = 34;
 
-        } else if(height == 260) {
-            // 点击表情 弹出表情键盘时 height == 237 ,X时 + 34
+        } else if(height == emojikeyboardHeight) {
+            // 点击表情 弹出表情键盘时 
             height += 34;
 
         }
@@ -1107,18 +1104,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
 }
 
-//- (void)emojiKeyBoardView:(MQAGEmojiKeyboardView *)emojiKeyBoardView didUseEmoji:(NSString *)emoji {
-//    MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
-//    textField.text = [textField.text stringByAppendingString:emoji];
-//}
-//
-//- (void)emojiKeyBoardViewDidPressBackSpace:(MQAGEmojiKeyboardView *)emojiKeyBoardView {
-//    MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.chatInputBar.contentView textField];
-//    if (textField.text.length > 0) {
-//        NSRange lastRange = [textField.text rangeOfComposedCharacterSequenceAtIndex:([textField.text length] - 1)];
-//        textField.text = [textField.text stringByReplacingCharactersInRange:lastRange withString:@""];
-//    }
-//}
 
 #pragma mark -
 
@@ -1160,16 +1145,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (MQBottomBar *)bottomBar {
     if (!_bottomBar) {
-//        MQTabInputContentView *contentView = [[MQTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 118 )];
-         MQTabInputContentView *contentView = [[MQTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 260 )];
-        contentView.backgroundColor = [UIColor redColor];
+         MQTabInputContentView *contentView = [[MQTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, emojikeyboardHeight )];
         
         _bottomBar = [[MQBottomBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kMQChatViewInputBarHeight) contentView: contentView];
         _bottomBar.delegate = self;
         _bottomBar.contentViewDelegate = self;
         [contentView setupButtons];
-        //xlp
-        _bottomBar.backgroundColor = [UIColor greenColor];
+        
     }
     return _bottomBar;
 }
@@ -1249,15 +1231,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
 }
 
-//- (MQAGEmojiKeyboardView *)emojiView {
-//    if (!_emojiView) {
-//        _emojiView = [[MQAGEmojiKeyboardView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 216) dataSource:self];
-//        _emojiView.delegate = self;
-//        _emojiView.backgroundColor = [UIColor whiteColor];
-//        _emojiView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-//    }
-//    return _emojiView;
-//}
+
 
 //xlp 测试可删除
 - (void)closeSocketlalala{
