@@ -43,15 +43,17 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 }
 #pragma mark  集成第五步: 跳转到聊天界面
 
-- (void)didTapBasicFunctionBtn:(UIButton *)button {
+- (void)pushToMeiqiaVC:(UIButton *)button {
 #pragma mark 总之, 要自定义UI层  请参考 MQChatViewStyle.h类中的相关的方法 ,要修改逻辑相关的 请参考MQChatViewManager.h中相关的方法
     
 #pragma mark  最简单的集成方法: 全部使用meiqia的,  不做任何自定义UI.
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    [chatViewManager setoutgoingDefaultAvatarImage:[UIImage imageNamed:@"meiqia-icon"]];//修改用户的头像
     [chatViewManager pushMQChatViewControllerInViewController:self];
 #pragma mark  觉得返回按钮系统的太丑 想自定义 采用下面的方法
 //    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 //    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+//    [aStyle setNavBarTintColor:[UIColor redColor]];
 //    [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
 //    [chatViewManager pushMQChatViewControllerInViewController:self];
 #pragma mark 觉得头像 方形不好看 ,设置为圆形.
@@ -90,9 +92,6 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 //        //[chatViewManager setLoginCustomizedId:@"notadda"];
 //    }
 //    [chatViewManager pushMQChatViewControllerInViewController:self];
-
-
-    
 }
 
 #pragma 开发者的高级功能，其中有调用美洽SDK的API接口
@@ -126,7 +125,7 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     [self.view addSubview:basicFunctionBtn];
     
     [devFunctionBtn addTarget:self action:@selector(didTapDevFunctionBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [basicFunctionBtn addTarget:self action:@selector(didTapBasicFunctionBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [basicFunctionBtn addTarget:self action:@selector(pushToMeiqiaVC:) forControlEvents:UIControlEventTouchUpInside];
     
 }
 - (void)didReceiveMemoryWarning {
