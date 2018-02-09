@@ -77,6 +77,13 @@
 "meiqia_communication_failed" = "抱歉，連接通信網絡可能有問題，請更換網絡試壹下。";
 
 "meiqia_evaluation_sheet"     = "評價";
+"meiqia_cance_sheet" = "取消";
+
+"mq_evaluate_good" = "好評"
+"mq_evaluate_medium" = "中評"
+"mq_evaluate_bad" = "差評"
+"mq_evaluate_hint" = "填寫評價內容 (選填)"
+"mq_evaluate_title" = "你對本次服務滿意嗎？"
 
 "meiqia_redirect_sheet"     = "轉人工";
 

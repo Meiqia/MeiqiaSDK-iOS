@@ -14,6 +14,7 @@
 #import "MQChatViewConfig.h"
 #import "UIColor+MQHex.h"
 #import "MQServiceToViewInterface.h"
+#import "MQBundleUtil.h"
 
 static CGFloat const kMQEvaluationVerticalSpacing = 16.0;
 static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
@@ -44,7 +45,7 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
 - (void)initCustomAlertView {
     evaluationAlertView = [[CustomIOSAlertView alloc] init];
     [evaluationAlertView setContainerView:[self getCustomAlertView]];
-    [evaluationAlertView setButtonTitles:[NSMutableArray arrayWithObjects:@"取消", @"发送", nil]];
+    [evaluationAlertView setButtonTitles:[NSMutableArray arrayWithObjects:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"], [MQBundleUtil localizedStringForKey:@"alert_view_send"], nil]];
     [evaluationAlertView setDelegate:self];
     [evaluationAlertView setUseMotionEffects:true];
 }
@@ -59,7 +60,7 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     
     //alertView 标题
     UILabel *alertViewTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, kMQEvaluationVerticalSpacing, customView.frame.size.width, 24)];
-    alertViewTitle.text = @"你对本次服务满意吗？";
+    alertViewTitle.text = [MQBundleUtil localizedStringForKey:@"mq_evaluate_title"];
     alertViewTitle.textColor = [UIColor colorWithWhite:0.22 alpha:1];
     alertViewTitle.textAlignment = NSTextAlignmentCenter;
     alertViewTitle.font = [UIFont systemFontOfSize:17.0];
@@ -91,7 +92,7 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     
     //评价的输入文字框
     commentTextField = [[UITextField alloc] initWithFrame:CGRectMake(kMQEvaluationHorizontalSpacing, tableBottomLine.frame.origin.y+tableBottomLine.frame.size.height+kMQEvaluationVerticalSpacing, tableView.frame.size.width - kMQEvaluationHorizontalSpacing, 34)];
-    commentTextField.placeholder = @"填写评价内容（选填）";
+    commentTextField.placeholder = [MQBundleUtil localizedStringForKey:@"mq_evaluate_hint"];
     commentTextField.delegate = self;
     commentTextField.returnKeyType = UIReturnKeyDone;
     commentTextField.font = [UIFont systemFontOfSize:15.0];

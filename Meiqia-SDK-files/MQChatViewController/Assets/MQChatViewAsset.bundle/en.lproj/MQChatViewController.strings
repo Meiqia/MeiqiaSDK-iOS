@@ -4,8 +4,6 @@
 
 "record_end"          = "Release to send";
 
-"cancel"              = "cancel";
-
 "select_gallery"      = "Albums";
 
 "select_camera"       = "Camera";
@@ -56,9 +54,17 @@
 
 "retry_send_message"    = "Resend message?";
 
-"alert_view_cancel"     = "cancel";
+"alert_view_cancel"     = "Cancel";
 
-"alert_view_confirm"    = "confirm";
+"alert_view_confirm"    = "Confirm";
+"alert_view_send"       = "Send";
+
+"mq_evaluate_good"      = "Good";
+"mq_evaluate_medium"    = "Fair";
+"mq_evaluate_bad"       = "Bad";
+"mq_evaluate_hint"      = "Please leave a comment (Optional)";
+"mq_evaluate_title"     = "How would you rate this chat?";
+
 
 "cannot_refresh"        = "Cannot refresh anymore~";
 
@@ -77,6 +83,7 @@
 "meiqia_communication_failed" = "Sorry, cannot access communication server, please change your network and retry.";
 
 "meiqia_evaluation_sheet"     = "Evaluate";
+"meiqia_cance_sheet"         = "Cancel";
 
 "meiqia_redirect_sheet"     = "Redirect";
 

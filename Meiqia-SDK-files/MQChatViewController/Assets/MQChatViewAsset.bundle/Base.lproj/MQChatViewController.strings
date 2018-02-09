@@ -59,6 +59,17 @@
 "alert_view_cancel"     = "取消";
 
 "alert_view_confirm"    = "确定";
+"alert_view_send"       = "发送";
+//@"你对本次服务满意吗？"
+//@"填写评价内容（选填）"
+//@"差评";@"中评";@"好评";
+
+"mq_evaluate_good"      = "好评"
+"mq_evaluate_medium"    ="中评"
+"mq_evaluate_bad"       = "差评"
+"mq_evaluate_hint"      = "填写评价内容 (选填)"
+"mq_evaluate_title"     = "你对本次服务满意吗？"
+
 
 "cannot_refresh"        = "刷新不了啦~";
 
@@ -77,6 +88,7 @@
 "meiqia_communication_failed" = "抱歉，连接通信网络可能有问题，请更换网络试一下。";
 
 "meiqia_evaluation_sheet"     = "评价";
+"meiqia_cance_sheet"          = "取消";
 
 "meiqia_redirect_sheet"     = "转人工";
 

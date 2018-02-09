@@ -11,6 +11,7 @@
 #import "MQServiceToViewInterface.h"
 #import "MQTransitioningAnimation.h"
 #import "MQAssetUtil.h"
+#import "MQBundleUtil.h"
 
 @interface MQChatViewManager()
 
@@ -124,7 +125,7 @@
         }
         
         if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypeDefault) {
-            viewController.navigationItem.leftBarButtonItem = customizedBackItem ?: [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
+            viewController.navigationItem.leftBarButtonItem = customizedBackItem ?: [[UIBarButtonItem alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_cance_sheet"] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
         } else {
             viewController.navigationItem.leftBarButtonItem = customizedBackItem ?: [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
             
