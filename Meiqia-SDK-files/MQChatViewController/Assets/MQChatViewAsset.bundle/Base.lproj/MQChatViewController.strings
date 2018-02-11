@@ -64,11 +64,11 @@
 //@"填写评价内容（选填）"
 //@"差评";@"中评";@"好评";
 
-"mq_evaluate_good"      = "好评"
-"mq_evaluate_medium"    ="中评"
-"mq_evaluate_bad"       = "差评"
-"mq_evaluate_hint"      = "填写评价内容 (选填)"
-"mq_evaluate_title"     = "你对本次服务满意吗？"
+"mq_evaluate_good"      = "好评";
+"mq_evaluate_medium"    = "中评";
+"mq_evaluate_bad"       = "差评";
+"mq_evaluate_hint"      = "填写评价内容 (选填)";
+"mq_evaluate_title"     = "你对本次服务满意吗？";
 
 
 "cannot_refresh"        = "刷新不了啦~";

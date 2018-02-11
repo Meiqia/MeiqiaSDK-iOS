@@ -45,7 +45,7 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
 - (void)initCustomAlertView {
     evaluationAlertView = [[CustomIOSAlertView alloc] init];
     [evaluationAlertView setContainerView:[self getCustomAlertView]];
-    [evaluationAlertView setButtonTitles:[NSMutableArray arrayWithObjects:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"], [MQBundleUtil localizedStringForKey:@"alert_view_send"], nil]];
+    [evaluationAlertView setButtonTitles:[NSMutableArray arrayWithObjects:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"], [MQBundleUtil localizedStringForKey:@"alert_view_confirm"], nil]];
     [evaluationAlertView setDelegate:self];
     [evaluationAlertView setUseMotionEffects:true];
 }

@@ -79,11 +79,11 @@
 "meiqia_evaluation_sheet"     = "评价";
 "meiqia_cance_sheet"         = "取消";
 
-"mq_evaluate_good"      = "好评"
-"mq_evaluate_medium"    = "中评"
-"mq_evaluate_bad"       = "差评"
-"mq_evaluate_hint"      = "填写评价内容 (选填)"
-"mq_evaluate_title"     = "你对本次服务满意吗？"
+"mq_evaluate_good"      = "好评";
+"mq_evaluate_medium"    = "中评";
+"mq_evaluate_bad"       = "差评";
+"mq_evaluate_hint"      = "填写评价内容 (选填)";
+"mq_evaluate_title"     = "你对本次服务满意吗？";
 
 "meiqia_redirect_sheet"     = "转人工";
 
