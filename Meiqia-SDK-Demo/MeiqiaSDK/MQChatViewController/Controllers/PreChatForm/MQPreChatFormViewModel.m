@@ -8,7 +8,7 @@
 
 #import "MQPreChatFormViewModel.h"
 #import "MQChatViewConfig.h"
-#import <MeiqiaSDK/MeiqiaSDK.h>
+#import <MeiQiaSDK/MeiQiaSDK.h>
 #import "MQServiceToViewInterface.h"
 #import "NSArray+MQFunctional.h"
 #import "MQChatViewConfig.h"

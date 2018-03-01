@@ -39,7 +39,6 @@
     NSString * fileRootPath = [[selfBundle bundlePath] stringByAppendingString:@"/MQChatViewAsset.bundle"];
     NSString * filePath = [fileRootPath stringByAppendingString:@"/MQEmojisList.plist"];
     emojiDic = [[NSDictionary dictionaryWithContentsOfFile:filePath] copy];
-//    NSLog(@"获取的表情内容==%@",emojiDic);
 }
 - (void)layoutViewWithFrame:(CGRect)frame{
     

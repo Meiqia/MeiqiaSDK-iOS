@@ -7,8 +7,8 @@
 //
 
 #import "MQFileDownloadMessage.h"
-#import <MeiqiaSDK/MeiqiaSDK.h>
-
+//#import <MeiqiaSDK/MeiqiaSDK.h>
+#import <MeiQiaSDK/MeiQiaSDK.h>
 @implementation MQFileDownloadMessage
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {

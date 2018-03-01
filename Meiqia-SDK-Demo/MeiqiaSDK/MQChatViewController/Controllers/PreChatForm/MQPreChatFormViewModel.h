@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <MeiqiaSDK/MeiqiaSDK.h>
+//#import <MeiqiaSDK/MeiqiaSDK.h>
+#import <MeiQiaSDK/MeiQiaSDK.h>
 
 @interface MQPreChatFormViewModel : NSObject
 

@@ -34,6 +34,8 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+//    self.navigationController.navigationBar.translucent = NO;
+    
     deviceFrame = [MQChatDeviceUtil getDeviceFrameRect:self];
     buttonWidth = deviceFrame.size.width / 2;
     self.navigationItem.title = @"美洽 SDK";
@@ -49,7 +51,14 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 #pragma mark  最简单的集成方法: 全部使用meiqia的,  不做任何自定义UI.
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 //    [chatViewManager setoutgoingDefaultAvatarImage:[UIImage imageNamed:@"meiqia-icon"]];//修改用户的头像
+//    [chatViewManager setScheduledGroupId:@"bed3a1ca7dfe4077da0f84244c96b772"];
+    
+//    [MQManager updateClientInfo:@{@"name":@"123测试",@"gender":@"man11",@"age":@"100"} completion:^(BOOL success, NSError *error) {
+//
+//    }];
+    
     [chatViewManager pushMQChatViewControllerInViewController:self];
+    
 #pragma mark  觉得返回按钮系统的太丑 想自定义 采用下面的方法
 //    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 //    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];

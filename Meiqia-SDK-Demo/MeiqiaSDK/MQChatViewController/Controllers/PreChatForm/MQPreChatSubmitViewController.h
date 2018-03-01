@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MeiqiaSDK/MeiqiaSDK.h>
+#import <MeiQiaSDK/MeiQiaSDK.h>
 #import "MQChatViewConfig.h"
 
 @interface MQPreChatSubmitViewController : UITableViewController

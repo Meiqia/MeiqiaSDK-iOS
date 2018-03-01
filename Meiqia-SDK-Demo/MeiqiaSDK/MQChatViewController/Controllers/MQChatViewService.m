@@ -30,7 +30,7 @@
 #import "MQBundleUtil.h"
 #import "MQFileDownloadCellModel.h"
 #import "MQServiceToViewInterface.h"
-#import <MeiQiaSDK/MeiqiaSDK.h>
+#import <MeiQiaSDK/MeiQiaSDK.h>
 #import "MQBotMenuAnswerCellModel.h"
 #import "MQWebViewBubbleCellModel.h"
 #import "MQBotWebViewBubbleAnswerCellModel.h"
