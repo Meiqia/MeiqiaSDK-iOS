@@ -129,11 +129,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     
     [self presentUI];
-    
-    
-
-//    [MQServiceToViewInterface markAllMessagesAsRead];
-    
     //xlp
 //    [self addTestBt];
 }
@@ -220,12 +215,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
-//    //当横屏时，恢复原来的 statusBar 是否 hidden
-//    if (viewSize.height < viewSize.width) {
-//        [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
-//    }
-//    //恢复原来的导航栏透明模式
-//    self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
+
     //恢复原来的导航栏时间条
     [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
     
@@ -483,7 +473,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle agentStatus:(MQChatAgentStatus)agentStatus{
     
-    NSLog(@"导航栏标题的变化为 -====title=%@===agentStatus=%ld",viewTitle,agentStatus);
     [self updateNavTitleWithAgentName:viewTitle agentStatus:agentStatus];
 }
 
@@ -915,7 +904,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
     //xlp 旧的: waitingInQueuePosition>0 && getCurrentAgent].privilege != MQAgentPrivilegeBot  改为 waitingInQueuePosition>0
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
-//    if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
         [self.view.window endEditing:YES];
         [MQToast showToast:@"正在排队，请等待客服接入后发送消息" duration:2.5 window:self.view.window];
         
