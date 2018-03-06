@@ -1,6 +1,0 @@
-framework module MeiQiaSDK {
-  umbrella header "MeiQiaSDK.h"
-
-  export *
-  module * { export * }
-}
