@@ -75,7 +75,7 @@ framework中的文件 | 说明
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.4.3'
+pod 'Meiqia', '~> 3.4.4'
 ```
 
 
@@ -906,6 +906,14 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十二 更新日志
+
+**v3.4.4  2018 年 3 月 6 日**
+
+* 优化socket性能
+* 添加预发送消息的功能,方便工作台实时了解访客输入的内容
+* 修复表情键盘bug及其他若干bug
+
+
 **v3.4.3  2017 年 10 月 30 日**
 
 * iPhoneX适配
