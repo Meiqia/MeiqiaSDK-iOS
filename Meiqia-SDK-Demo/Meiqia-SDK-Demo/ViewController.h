@@ -1,14 +1,13 @@
 //
 //  ViewController.h
-//  MQEcoboostSDK-test
+//  Meiqia-SDK-Demo
 //
-//  Created by ijinmao on 15/11/11.
-//  Copyright © 2015年 ijinmao. All rights reserved.
+//  Created by xulianpeng on 2017/12/18.
+//  Copyright © 2017年 Meiqia. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController: UIViewController
+@interface ViewController : UIViewController
 
 @end
-
