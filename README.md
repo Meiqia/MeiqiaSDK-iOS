@@ -75,7 +75,7 @@ framework中的文件 | 说明
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.4.3'
+pod 'Meiqia', '~> 3.4.3lll'
 ```
 
 
