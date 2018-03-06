@@ -34,8 +34,6 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    self.navigationController.navigationBar.translucent = NO;
-    
     deviceFrame = [MQChatDeviceUtil getDeviceFrameRect:self];
     buttonWidth = deviceFrame.size.width / 2;
     self.navigationItem.title = @"美洽 SDK";
