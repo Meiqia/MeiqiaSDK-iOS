@@ -111,4 +111,5 @@
     
     return [self kXlpObtainNaviBarHeight] + [self kXlpObtainStatusBarHeight];
 }
+
 @end

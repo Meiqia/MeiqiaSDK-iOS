@@ -15,7 +15,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.4.3"
+#define MQSDKVersion @"3.4.4"
 
 @protocol MQManagerDelegate <NSObject>
 
@@ -563,6 +563,6 @@
  获取是否第一次上线
  */
 + (BOOL)getLoginStatus;
-
-
+/*获取网络是否可用*/
++ (BOOL)obtainNetIsReachable;
 @end

@@ -35,7 +35,7 @@
 #import "MQTipsCellModel.h"
 #import "MQToolUtil.h"
 #import "MQChatViewManager.h"
-
+#import <MeiQiaSDK/MQManager.h>
 #import "XLPInputView.h"
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
@@ -897,6 +897,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (BOOL)handleSendMessageAbility {
+    
+    //xlp 检测网络 排除断网状态还能发送信息
+    if (![MQManager obtainNetIsReachable]) {
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"meiqia_communication_failed"] duration:2.0 window:self.view];
+        return NO;
+    }
+    
     //xlp 去掉socket连接的检测
     if ([self checkXlpSocketClose]) {
         
@@ -983,15 +990,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (BOOL)inputContentViewShouldBeginEditing:(MQInputContentView *)inputContentView {
 
+    //xlp 检测网络 排除断网状态还能发送信息
+    if (![MQManager obtainNetIsReachable]) {
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"meiqia_communication_failed"] duration:2.0 window:self.view];
+        return NO;
+    }
     //xlp 去掉socket连接的检测
     if ([self checkXlpSocketClose]) {
         
         [MQToast showToast:[MQBundleUtil localizedStringForKey:@"service_connectting_wait"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
         [MQManager openMeiqiaService];
-        
         return NO;
     }
-
     return YES;
 }
 
