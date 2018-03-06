@@ -74,7 +74,7 @@ github "meiqia/MeiqiaSDK-iOS"
 
 ## 1.3 手动导入美洽SDK
 ###1.3.1 导入到OC 项目
-打开下载到本地的文件, 找到MeiqiaSDK文件夹下的四个文件件 `MeiQiaSDK.framework` 、 `MQChatViewController`  `MeiqiaSDKViewInterface` 和 `MQMessageForm`,将这四个文件夹拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者直接拖入 Xcode 工程目录结构中。
+打开下载到本地的文件, 找到Meiqia-SDK-files文件夹下的四个文件件 `MeiQiaSDK.framework` 、 `MQChatViewController`  `MeiqiaSDKViewInterface` 和 `MQMessageForm`,将这四个文件夹拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者直接拖入 Xcode 工程目录结构中。
 
 ###1.3.2  导入到Swift 项目
 
@@ -777,26 +777,16 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
   
 ### 2.手动集成的客户比较麻烦,我们这边探索的办法为:
 
-1通过**show In finder** 删除 meiqiaSDK文件夹下的四个文件
+1通过**show In finder** 删除自己项目工程中的Meiqia的四个文件
 
-![show In finder](http://upload-images.jianshu.io/upload_images/639412-77e39181c6aba8c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/400)
-![项目中meiqiaSDK文件夹下的四个文件](http://upload-images.jianshu.io/upload_images/639412-92a39f62e432d067.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/400)
+**`MeiQiaSDK.framework` 、 `MQChatViewController`  `MeiqiaSDKViewInterface` 和 `MQMessageForm`**
 
-2 然后再通过 **delete** 删除 工程中的 文件
+2 cleanXcode, 
 
-![delete文件](http://upload-images.jianshu.io/upload_images/639412-9870ee0ef8613a77.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/400)
+3 从github上下载新版Demo,然后找到
+**`MeiQiaSDK.framework` 、 `MQChatViewController`  `MeiqiaSDKViewInterface` 和 `MQMessageForm`**,复制粘贴到 项目工程中 **show in  finder**之前存放SDK 4个文件的地方
 
-3 cleanXcode, 
-
-4将最新的sdk的内容复制
-
-![下载的SDK中的四个文件](http://upload-images.jianshu.io/upload_images/639412-4b11023bae7ba0fe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-5 粘贴到 项目工程中 **show in  finder**之前存放SDK 4个文件的地方
-
-6 然后通过 **add files to** ,将复制的sdk下的四个文件夹 添加到工程中的原来放置这4个文件的地方
-
-![add files to ](http://upload-images.jianshu.io/upload_images/639412-497a0774e7cad9bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/400)
+4 然后通过 **add files to** ,将复制的sdk下的四个文件夹 添加到工程中的原来放置这4个文件的地方
 
 ## iOS 11下 SDK 的聊天界面底部输入框出现绿色条状,且无法输入
 请升级到最新版本, 目前最新版本是 3.4.2,已完成iOS 11的适配. 
