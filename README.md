@@ -31,8 +31,9 @@ edition: m2016
 
 - 请查看[Meiqia在Github上的网页](https://github.com/Meiqia/MeiqiaSDK-iOS/releases) ，确认最新的版本号。
 - Demo开发者功能 ->点击查看当前SDK版本号
-- 查看SDK中MQManager.h类中 **#define MQSDKVersion @"3.4.4"**
-- 或者进入美洽 SDK 开发 QQ 群(295646206),向iOS技术支持人员询问最新版本号**
+- 查看SDK中MQManager.h类中 **#define MQSDKVersion **
+- 进入美洽 SDK 开发 QQ 群(295646206),向iOS技术支持人员询问最新版本号**
+- pod search Meiqia(此方法由于本地pod缓存,导致获取不到最新的)
 
 #一 导入美洽 SDK
 
@@ -48,7 +49,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.4.4'
+pod 'Meiqia', '~> 3.4.5'
 ```
 接着安装美洽 pod 即可：
 
@@ -789,7 +790,7 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 4 然后通过 **add files to** ,将复制的sdk下的四个文件夹 添加到工程中的原来放置这4个文件的地方
 
 ## iOS 11下 SDK 的聊天界面底部输入框出现绿色条状,且无法输入
-请升级到最新版本, 目前最新版本是 3.4.2,已完成iOS 11的适配. 
+请升级到最新版本, 已完成iOS 11的适配. 
 **温馨提示: 遇到iOS 有重大更新的时候,请提前进入技术支持群,询问SDK是否要更新.**
 ## SDK 初始化失败
 
