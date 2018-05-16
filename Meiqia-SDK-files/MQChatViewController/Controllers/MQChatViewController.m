@@ -129,7 +129,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     
     [self presentUI];
-    //xlp
+    
+        //xlp
 //    [self addTestBt];
 }
 
@@ -372,12 +373,17 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)reloadCellAsContentUpdated:(UITableViewCell *)cell {
     NSIndexPath *indexPath = [self.chatTableView indexPathForCell: cell];
+    NSString *str = [NSString stringWithFormat:@"再次刷新的cell的index.row==%ld",indexPath.row];
+    NSLog(str);
     if (indexPath) {
-        for (UITableViewCell *_cell in [self.chatTableView visibleCells]) {
-            if (_cell == cell) {
-                [self.chatTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation: UITableViewRowAnimationNone];
-            }
-        }
+        
+        [self.chatTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation: UITableViewRowAnimationNone];
+
+//        for (UITableViewCell *_cell in [self.chatTableView visibleCells]) {
+//            if (_cell == cell) {
+//                [self.chatTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation: UITableViewRowAnimationNone];
+//            }
+//        }
     }
 }
 
@@ -397,6 +403,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #pragma UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     id<MQCellModelProtocol> cellModel = [self.chatViewService.cellModels objectAtIndex:indexPath.row];
+    NSString *str = [NSString stringWithFormat:@"行高为==%ld",(long)indexPath.row];
+    NSLog(str);
     return [cellModel getCellHeight];
 }
 
@@ -499,7 +507,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)didReceiveMessage {
-    //判断是否显示新消息提示
+    //判断是否显示新消息提示  旧版本 是根据此时 是否已经滚动到底部,不在底部 则toast 提示新消息 否则直接显示最新消息
     if ([self.chatTableView isTableViewScrolledToBottom]) {
         [self chatTableViewScrollToBottomWithAnimated: YES];
     } else {
@@ -507,6 +515,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
         }
     }
+    
+//    [self chatTableViewScrollToBottomWithAnimated: YES];
 }
 
 - (void)showToastViewWithContent:(NSString *)content {

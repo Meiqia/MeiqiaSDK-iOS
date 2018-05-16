@@ -115,10 +115,14 @@ void inputBufferHandler(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRe
 - (void)startRecording
 {
     NSAssert(!self.isRecording, @"录音必须先停止上一个才可开始新的");
-    
+    if (self.isRecording) {
+        [self stopRecording];
+    }
     NSError *error = nil;
     //设置audio session的category
-    BOOL ret = [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:(AVAudioSessionCategoryOptions)self.recordMode error:&error];
+//    BOOL ret = [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:(AVAudioSessionCategoryOptions)self.recordMode error:&error];
+    BOOL ret = [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord  error:&error];
+
     if (!ret) {
         [self postAErrorWithErrorCode:MLAudioRecorderErrorCodeAboutSession andDescription:@"为AVAudioSession设置Category失败"];
         return;

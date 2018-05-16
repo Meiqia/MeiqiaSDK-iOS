@@ -29,6 +29,7 @@
         self.clipsToBounds = YES;
         self.dataDetectorTypes = UIDataDetectorTypeNone;
         self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleGray)];
+
     }
     return self;
 }

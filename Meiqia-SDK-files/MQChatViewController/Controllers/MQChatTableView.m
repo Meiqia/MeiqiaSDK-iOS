@@ -30,19 +30,22 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
     
     self = [super initWithFrame:frame style:style];
     if (self) {
+        
         self.backgroundColor = [UIColor clearColor];
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
         UITapGestureRecognizer *tapViewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapChatTableView:)];
         tapViewGesture.cancelsTouchesInView = false;
         self.userInteractionEnabled = true;
         [self addGestureRecognizer:tapViewGesture];
+        
+        
     }
     return self;
 }
 
 - (void)updateTableViewAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < [self numberOfRowsInSection:0]) {
-        [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 

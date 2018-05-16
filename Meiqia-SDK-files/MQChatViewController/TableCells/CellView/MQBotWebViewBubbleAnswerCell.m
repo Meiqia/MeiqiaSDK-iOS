@@ -25,13 +25,13 @@
 
 @interface MQBotWebViewBubbleAnswerCell()
 
-@property (nonatomic, strong) UIImageView *itemsView;
+@property (nonatomic, strong) UIImageView *itemsView; //底部气泡
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) MQEmbededWebView *contentWebView;
-@property (nonatomic, strong) MQBotWebViewBubbleAnswerCellModel *viewModel;
-@property (nonatomic, strong) UIView *evaluateView;
-@property (nonatomic, strong) UIView *evaluatedView;
+@property (nonatomic, strong) UIView *evaluateView; //包含已解决 未解决2个按钮
+@property (nonatomic, strong) UIView *evaluatedView; //包含 已反馈 按钮
 @property (nonatomic, assign) BOOL manuallySetToEvaluated;
+@property (nonatomic, strong) MQBotWebViewBubbleAnswerCellModel *viewModel;
 
 @end
 
@@ -92,7 +92,6 @@
     [self.avatarImageView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarToHorizontalEdgeSpacing)];
     [self.itemsView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.avatarImageView.viewRightEdge + kMQCellAvatarToBubbleSpacing, self.avatarImageView.viewY)];
     self.itemsView.viewWidth = self.contentView.viewWidth - kMQCellBubbleMaxWidthToEdgeSpacing - self.avatarImageView.viewRightEdge;
-    
     self.contentWebView.viewWidth = self.itemsView.viewWidth - 8;
     self.contentWebView.viewX = 8;
 }

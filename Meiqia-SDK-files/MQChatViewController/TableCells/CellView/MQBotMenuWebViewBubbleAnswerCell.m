@@ -35,8 +35,8 @@
 @property (nonatomic, strong) MQEmbededWebView *contentWebView;
 
 //xlp 新添加的
-@property (nonatomic, strong) UILabel *menuTitleLabel;
-@property (nonatomic, strong) UILabel *menuFootnoteLabel;
+@property (nonatomic, strong) UILabel *menuTitleLabel; //相关问题
+@property (nonatomic, strong) UILabel *menuFootnoteLabel; //点击问题或回复对应数字查看答案
 
 @property (nonatomic, assign) CGFloat currentCellWidth;
 @property (nonatomic, assign) CGFloat currentContentWidth;
@@ -82,8 +82,8 @@
 //        if (sself.viewModel.cachedWebViewHeight > 0) {
 //            return sself.viewModel.cachedWebViewHeight + kMQCellAvatarToVerticalEdgeSpacing + kMQCellAvatarToVerticalEdgeSpacing + HEIHGT_VIEW_EVALUATE + SPACE_INTERNAL_VERTICAL;
 //        }
-//        return sself.viewHeight;
-        return sself.contentView.viewHeight;
+        return sself.viewHeight;
+//        return sself.contentView.viewHeight;
     }];
     
     [self.viewModel setAvatarLoaded:^(UIImage *avatar) {
@@ -95,7 +95,7 @@
         __strong typeof (wself) sself = wself;
         if (height != self.viewModel.cachedWebViewHeight) {
             [sself.viewModel setCachedWebViewHeight:height];
-            [sself updateUI:height];
+//            [sself updateUI:height];
             [sself.chatCellDelegate reloadCellAsContentUpdated:sself];
         }
     }];
@@ -137,9 +137,7 @@
     UIView *evaluateView = [self evaluateRelatedView];
     [[self.itemsView viewWithTag:evaluateView.tag] removeFromSuperview];
     [self.itemsView addSubview:evaluateView];
-//    [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     //xlp
-    
     [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.menuFootnoteLabel.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     
     CGFloat bubbleHeight = MAX(self.avatarImageView.viewHeight, evaluateView.viewBottomEdge);
@@ -229,6 +227,9 @@
         if ([MQChatViewConfig sharedConfig].incomingBubbleColor) {
             bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].incomingBubbleColor];
         }
+//        if ([MQChatViewConfig sharedConfig].bubbleImageStretchInsets){
+//            bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
+//        }
         bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
         _itemsView.image = bubbleImage;
         _itemsView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -365,7 +366,7 @@
         _menuTitleLabel = [UILabel new];
         _menuTitleLabel.numberOfLines = 0;
         _menuTitleLabel.font = [UIFont systemFontOfSize:FONT_SIZE_MENU_TITLE];
-        _menuTitleLabel.textColor = [UIColor grayColor];
+        _menuTitleLabel.textColor = [UIColor greenColor];
     }
     return _menuTitleLabel;
 }
@@ -375,7 +376,7 @@
         _menuFootnoteLabel = [UILabel new];
         _menuFootnoteLabel.numberOfLines = 0;
         _menuFootnoteLabel.font = [UIFont systemFontOfSize:FONT_SIZE_MENU_FOOTNOTE];
-        _menuFootnoteLabel.textColor = [UIColor grayColor];
+        _menuFootnoteLabel.textColor = [UIColor redColor];
     }
     return _menuFootnoteLabel;
 }
@@ -391,15 +392,17 @@
         UIButton *menu = [UIButton buttonWithType:(UIButtonTypeCustom)];
         menu.viewWidth = container.viewWidth;
         menu.titleLabel.numberOfLines = 0;
-        menu.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        menu.titleLabel.textAlignment = NSTextAlignmentLeft;
+//        menu.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         menu.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [menu setTitle:menuTitle forState:(UIControlStateNormal)];
-        [menu setContentHorizontalAlignment:(UIControlContentHorizontalAlignmentLeft)];
+//        [menu setContentHorizontalAlignment:(UIControlContentHorizontalAlignmentLeft)];
         [menu.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_MENU]];
         [menu addTarget:self action:@selector(menuTapped:) forControlEvents:(UIControlEventTouchUpInside)];
         [menu setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
         [menu align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(0, topOffset)];
         [container addSubview:menu];
+        menu.backgroundColor = [UIColor redColor];
         menu.viewHeight = [MQStringSizeUtil getHeightForText:menuTitle withFont:[UIFont systemFontOfSize:FONT_SIZE_MENU] andWidth:container.viewWidth];
         
         topOffset += menu.viewHeight + SPACE_INTERNAL_VERTICAL;

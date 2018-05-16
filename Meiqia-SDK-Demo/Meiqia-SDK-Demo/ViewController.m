@@ -47,8 +47,8 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 #pragma mark 总之, 要自定义UI层  请参考 MQChatViewStyle.h类中的相关的方法 ,要修改逻辑相关的 请参考MQChatViewManager.h中相关的方法
     
 #pragma mark  最简单的集成方法: 全部使用meiqia的,  不做任何自定义UI.
-    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager pushMQChatViewControllerInViewController:self];
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
     
 #pragma mark  觉得返回按钮系统的太丑 想自定义 采用下面的方法
 //    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
@@ -64,12 +64,12 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 //    [aStyle setEnableIncomingAvatar:NO]; //不显示客服头像
 //    [chatViewManager pushMQChatViewControllerInViewController:self];
 #pragma mark 导航栏 右按钮 想自定义 ,但是不到万不得已,不推荐使用这个,会造成meiqia功能的缺失,因为这个按钮 1 当你在工作台打开机器人开关后 显示转人工,点击转为人工客服. 2在人工客服时 还可以评价客服
-//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-//    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
-//    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [bt setImage:[UIImage imageNamed:@"meiqia-icon"] forState:UIControlStateNormal];
-//    [aStyle setNavBarRightButton:bt];
-//    [chatViewManager pushMQChatViewControllerInViewController:self];
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
+    [bt setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [aStyle setNavBarRightButton:bt];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
 #pragma mark 客户自定义信息
 //    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 ////    [chatViewManager setClientInfo:@{@"name":@"123测试",@"gender":@"man11",@"age":@"100"} override:YES];
