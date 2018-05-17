@@ -13,6 +13,7 @@
 #import "MQImageUtil.h"
 #import "MQEmbededWebView.h"
 #import "MQStringSizeUtil.h"
+#import "MQToolUtil.h"
 
 
 #define TAG_MENUS 10
@@ -54,13 +55,13 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        
         [self addSubview:self.avatarImageView];
         [self addSubview:self.itemsView];
         
         [self.itemsView addSubview:self.contentWebView];
         
         //xlp 新添加的
-        
         [self.itemsView addSubview:self.menuTitleLabel];
         [self.itemsView addSubview:self.menuFootnoteLabel];
         
@@ -86,6 +87,8 @@
 //        return sself.contentView.viewHeight;
     }];
     
+    
+    
     [self.viewModel setAvatarLoaded:^(UIImage *avatar) {
         __strong typeof (wself) sself = wself;
         sself.avatarImageView.image = avatar;
@@ -95,7 +98,7 @@
         __strong typeof (wself) sself = wself;
         if (height != self.viewModel.cachedWebViewHeight) {
             [sself.viewModel setCachedWebViewHeight:height];
-//            [sself updateUI:height];
+            [sself updateUI:height];
             [sself.chatCellDelegate reloadCellAsContentUpdated:sself];
         }
     }];
@@ -113,23 +116,28 @@
 
 - (void)layoutUI {
     
-    [self.avatarImageView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarToHorizontalEdgeSpacing)];
-    [self.itemsView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.avatarImageView.viewRightEdge + kMQCellAvatarToBubbleSpacing, self.avatarImageView.viewY)];
+//    self.contentView.backgroundColor = [UIColor greenColor];
+//    [self.avatarImageView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarToHorizontalEdgeSpacing)];
+//    [self.itemsView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.avatarImageView.viewRightEdge + kMQCellAvatarToBubbleSpacing, self.avatarImageView.viewY)];
     
-    self.itemsView.viewWidth = self.contentView.viewWidth - kMQCellBubbleMaxWidthToEdgeSpacing - self.avatarImageView.viewRightEdge;
+//    self.itemsView.viewWidth = self.contentView.viewWidth - kMQCellBubbleMaxWidthToEdgeSpacing - self.avatarImageView.viewRightEdge;
+//    self.itemsView.viewWidth = [[UIScreen mainScreen]bounds].size.width - kMQCellBubbleMaxWidthToEdgeSpacing - self.avatarImageView.viewRightEdge;
+
+//    self.itemsView.backgroundColor = [UIColor redColor];
     
-    self.contentWebView.viewWidth = self.itemsView.viewWidth - 8;
-    self.contentWebView.viewX = 8;
+//    self.contentWebView.viewWidth = self.itemsView.viewWidth - 8;
+//    self.contentWebView.viewX = 8;
     
     //xlp
-    self.currentCellWidth = self.contentView.viewWidth;
+//    self.currentCellWidth = self.contentView.viewWidth;
+    self.currentCellWidth = [[UIScreen mainScreen]bounds].size.width;
     self.currentContentWidth = self.itemsView.viewWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarToHorizontalEdgeSpacing;
 }
 
 - (void)updateUI:(CGFloat)webContentHeight {
     
+    self.contentWebView.frame = CGRectMake(8, 0, self.itemsView.frame.size.width-8, webContentHeight);
     self.contentWebView.viewHeight = webContentHeight;
-    
     //布局关联视图
     [self layoutMenuView];
     
@@ -144,6 +152,8 @@
     self.itemsView.viewHeight = bubbleHeight;
     self.contentView.viewHeight = self.itemsView.viewBottomEdge + kMQCellAvatarToVerticalEdgeSpacing;
     self.viewHeight = self.contentView.viewHeight;
+    
+    self.viewModel.theCellHeight = self.itemsView.viewBottomEdge + kMQCellAvatarToVerticalEdgeSpacing;
 }
 
 #pragma mark - actions
@@ -214,7 +224,10 @@
 - (MQEmbededWebView *)contentWebView {
     if (!_contentWebView) {
         _contentWebView = [MQEmbededWebView new];
-        _contentWebView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _contentWebView.frame = CGRectMake(8, 0, self.itemsView.frame.size.width-8, self.itemsView.frame.size.height/2);
+//        _contentWebView.layer.borderColor = [UIColor magentaColor].CGColor;
+//        _contentWebView.layer.borderWidth = 2;
+//        _contentWebView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
     return _contentWebView;
 }
@@ -222,17 +235,17 @@
 - (UIImageView *)itemsView {
     if (!_itemsView) {
         _itemsView = [UIImageView new];
+        NSInteger itemsViewX = kMQCellAvatarToVerticalEdgeSpacing+kMQCellAvatarDiameter+kMQCellAvatarToBubbleSpacing;
+        _itemsView.frame = CGRectMake(itemsViewX,kMQCellAvatarToHorizontalEdgeSpacing,MQToolUtil.kXlpScreenWidth - itemsViewX - kMQCellBubbleMaxWidthToEdgeSpacing , 200);
         _itemsView.userInteractionEnabled = true;
         UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
         if ([MQChatViewConfig sharedConfig].incomingBubbleColor) {
             bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].incomingBubbleColor];
         }
-//        if ([MQChatViewConfig sharedConfig].bubbleImageStretchInsets){
-//            bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
-//        }
+
         bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
         _itemsView.image = bubbleImage;
-        _itemsView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//        _itemsView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
     return _itemsView;
 }
@@ -241,7 +254,7 @@
     if (!_avatarImageView) {
         _avatarImageView = [[UIImageView alloc] init];
         _avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
-        _avatarImageView.viewSize = CGSizeMake(kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        _avatarImageView.frame = CGRectMake(kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         _avatarImageView.image = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
         if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
             _avatarImageView.layer.masksToBounds = YES;
@@ -254,45 +267,49 @@
 - (UIView *)evaluateView {
     //    if (!_evaluateView) {
     _evaluateView = [UIView new];
-    _evaluateView.viewWidth = self.itemsView.viewWidth - 8;
-    _evaluateView.viewHeight = HEIHGT_VIEW_EVALUATE;
-    _evaluateView.autoresizingMask =
-    UIViewAutoresizingFlexibleWidth;
+    _evaluateView.frame = CGRectMake(0, 0, self.itemsView.viewWidth - 8, HEIHGT_VIEW_EVALUATE);
+//    _evaluateView.viewWidth = self.itemsView.viewWidth - 8;
+//    _evaluateView.viewHeight = HEIHGT_VIEW_EVALUATE;
+//    _evaluateView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     UIView *lineH = [UIView new];
     lineH.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
-    lineH.viewHeight = 0.5;
-    lineH.viewWidth = _evaluateView.viewWidth;
-    lineH.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    lineH.viewHeight = 0.5;
+//    lineH.viewWidth = _evaluateView.viewWidth;
+    lineH.frame = CGRectMake(0, 0, _evaluateView.frame.size.width, 0.5);
+//    lineH.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     UIButton *usefulButton = [UIButton new];
-    usefulButton.viewWidth = _evaluateView.viewWidth / 2 - 0.5;
-    usefulButton.viewHeight = _evaluateView.viewHeight - 0.5;
-    usefulButton.viewY = 0.5;
+//    usefulButton.viewWidth = _evaluateView.viewWidth / 2 - 0.5;
+//    usefulButton.viewHeight = _evaluateView.viewHeight - 0.5;
+//    usefulButton.viewY = 0.5;
+    usefulButton.frame = CGRectMake(0, 0.5, (_evaluateView.viewWidth-0.5) / 2, _evaluateView.viewHeight - 0.5);
     [usefulButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
-    usefulButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
+//    usefulButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
     [usefulButton setTitle:@"已解决" forState:(UIControlStateNormal)];
     [usefulButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
     [usefulButton addTarget:self action:@selector(didTapPositive) forControlEvents:(UIControlEventTouchUpInside)];
     
     UIView *lineV = [UIView new];
     lineV.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
-    lineV.viewHeight = HEIHGT_VIEW_EVALUATE;
-    lineV.viewWidth = 0.5;
-    [lineV align:(ViewAlignmentTopLeft) relativeToPoint:usefulButton.rightTopCorner];
-    lineV.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+//    lineV.viewHeight = HEIHGT_VIEW_EVALUATE;
+//    lineV.viewWidth = 0.5;
+    lineV.frame = CGRectMake((_evaluateView.viewWidth-0.5) / 2, 0, 0.5, HEIHGT_VIEW_EVALUATE);
+//    [lineV align:(ViewAlignmentTopLeft) relativeToPoint:usefulButton.rightTopCorner];
+//    lineV.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     
     UIButton *uselessButton = [UIButton new];
     [uselessButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
     [uselessButton setTitle:@"未解决" forState:(UIControlStateNormal)];
     [uselessButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
     [uselessButton addTarget:self action:@selector(didTapNegative) forControlEvents:(UIControlEventTouchUpInside)];
-    uselessButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin;
-    uselessButton.viewWidth = _evaluateView.viewWidth / 2;
-    uselessButton.viewHeight = _evaluateView.viewHeight - 0.5;
-    uselessButton.viewY = 0.5;
-    [uselessButton align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(usefulButton.viewRightEdge + 0.5, usefulButton.viewY)];
-    
+//    uselessButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin;
+//    uselessButton.viewWidth = _evaluateView.viewWidth / 2;
+//    uselessButton.viewHeight = _evaluateView.viewHeight - 0.5;
+//    uselessButton.viewY = 0.5;
+//    [uselessButton align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(usefulButton.viewRightEdge + 0.5, usefulButton.viewY)];
+    uselessButton.frame = CGRectMake(lineV.frame.origin.x+lineV.frame.size.width, 0.5, (_evaluateView.viewWidth-0.5) / 2, _evaluateView.viewHeight - 0.5);
+//
     [_evaluateView addSubview:lineH];
     [_evaluateView addSubview:lineV];
     [_evaluateView addSubview:usefulButton];
@@ -304,25 +321,30 @@
 - (UIView *)evaluatedView {
     //    if (!_evaluatedView) {
     _evaluatedView = [UIView new];
-    _evaluatedView.viewWidth = self.itemsView.viewWidth - 8;
-    _evaluatedView.viewHeight = HEIHGT_VIEW_EVALUATE;
-    _evaluatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    _evaluatedView.viewWidth = self.itemsView.viewWidth - 8;
+//    _evaluatedView.viewHeight = HEIHGT_VIEW_EVALUATE;
+//    _evaluatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    _evaluatedView.frame = CGRectMake(0, 0, self.itemsView.viewWidth - 8, HEIHGT_VIEW_EVALUATE);
+
     
     UIView *lineH = [UIView new];
     lineH.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
-    lineH.viewHeight = 0.5;
-    lineH.viewWidth = _evaluatedView.viewWidth;
-    lineH.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    lineH.viewHeight = 0.5;
+//    lineH.viewWidth = _evaluatedView.viewWidth;
+//    lineH.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    lineH.frame = CGRectMake(0, 0, _evaluatedView.frame.size.width, 0.5);
     [_evaluatedView addSubview:lineH];
     
     UIButton *button = [UIButton new];
-    button.viewWidth = _evaluatedView.viewWidth;
-    button.viewHeight = _evaluatedView.viewHeight - 0.5;
-    button.viewY = 0.5;
+//    button.viewWidth = _evaluatedView.viewWidth;
+//    button.viewHeight = _evaluatedView.viewHeight - 0.5;
+//    button.viewY = 0.5;
+    button.frame = CGRectMake(0, 0.5, _evaluatedView.viewWidth, _evaluatedView.viewHeight - 0.5);
     [button setTitleColor:[UIColor lightGrayColor] forState:(UIControlStateNormal)];
     [button.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
     [button setTitle:@"已提交" forState:(UIControlStateNormal)];
-    [button setAutoresizingMask:(UIViewAutoresizingFlexibleWidth)];
+//    [button setAutoresizingMask:(UIViewAutoresizingFlexibleWidth)];
     [_evaluatedView addSubview:button];
     //    }
     return _evaluatedView;
@@ -341,23 +363,27 @@
 
 
 - (void)layoutMenuView{
-    self.menuTitleLabel.text = self.viewModel.menuTitle;
-    self.menuTitleLabel.viewWidth = self.currentContentWidth;
-    [self.menuTitleLabel sizeToFit];
     
+    self.menuTitleLabel.text = self.viewModel.menuTitle;
+    self.menuTitleLabel.viewWidth = self.contentWebView.frame.size.width-16;
+    self.menuTitleLabel.textColor = [UIColor grayColor];
+    [self.menuTitleLabel sizeToFit];
     [self.menuTitleLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     
     //recreate menus view
     UIView *menusView = [self menusView:self.viewModel.menus];
     [[self.itemsView viewWithTag:menusView.tag] removeFromSuperview];
     [self.itemsView addSubview:menusView];
-    
     [menusView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.menuTitleLabel.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     
+    [self.menuFootnoteLabel align:(ViewAlignmentTopLeft) relativeToPoint:menusView.leftBottomCorner];
+
+//    [self.menuFootnoteLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, menusView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     self.menuFootnoteLabel.text = self.viewModel.menuFootnote;
-    self.menuFootnoteLabel.viewWidth = self.currentContentWidth;
+    self.menuFootnoteLabel.viewWidth = self.contentWebView.frame.size.width - 16;
+    self.menuFootnoteLabel.textColor = [UIColor grayColor];
+//    self.menuFootnoteLabel.backgroundColor = [UIColor blueColor];
     [self.menuFootnoteLabel sizeToFit];
-    [self.menuFootnoteLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, menusView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     
 }
 
@@ -366,7 +392,7 @@
         _menuTitleLabel = [UILabel new];
         _menuTitleLabel.numberOfLines = 0;
         _menuTitleLabel.font = [UIFont systemFontOfSize:FONT_SIZE_MENU_TITLE];
-        _menuTitleLabel.textColor = [UIColor greenColor];
+//        _menuTitleLabel.textColor = [UIColor greenColor];
     }
     return _menuTitleLabel;
 }
@@ -376,7 +402,7 @@
         _menuFootnoteLabel = [UILabel new];
         _menuFootnoteLabel.numberOfLines = 0;
         _menuFootnoteLabel.font = [UIFont systemFontOfSize:FONT_SIZE_MENU_FOOTNOTE];
-        _menuFootnoteLabel.textColor = [UIColor redColor];
+//        _menuFootnoteLabel.textColor = [UIColor redColor];
     }
     return _menuFootnoteLabel;
 }
@@ -385,25 +411,25 @@
     UIView *container = [UIView new];
     container.tag = TAG_MENUS;
     container.viewWidth = self.currentContentWidth;
-    container.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    container.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     CGFloat topOffset = 0;
     for (NSString *menuTitle in menus) {
         UIButton *menu = [UIButton buttonWithType:(UIButtonTypeCustom)];
-        menu.viewWidth = container.viewWidth;
+//        menu.viewWidth = container.viewWidth;
+        menu.viewWidth = self.contentWebView.frame.size.width-16;
         menu.titleLabel.numberOfLines = 0;
-        menu.titleLabel.textAlignment = NSTextAlignmentLeft;
 //        menu.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        menu.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        menu.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
         [menu setTitle:menuTitle forState:(UIControlStateNormal)];
-//        [menu setContentHorizontalAlignment:(UIControlContentHorizontalAlignmentLeft)];
+        [menu setContentHorizontalAlignment:(UIControlContentHorizontalAlignmentLeft)];
         [menu.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_MENU]];
         [menu addTarget:self action:@selector(menuTapped:) forControlEvents:(UIControlEventTouchUpInside)];
         [menu setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
-        [menu align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(0, topOffset)];
+        [menu align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, topOffset)];
         [container addSubview:menu];
-        menu.backgroundColor = [UIColor redColor];
-        menu.viewHeight = [MQStringSizeUtil getHeightForText:menuTitle withFont:[UIFont systemFontOfSize:FONT_SIZE_MENU] andWidth:container.viewWidth];
+//        menu.backgroundColor = [UIColor redColor];
+        menu.viewHeight = [MQStringSizeUtil getHeightForText:menuTitle withFont:[UIFont systemFontOfSize:FONT_SIZE_MENU] andWidth:self.contentWebView.frame.size.width];
         
         topOffset += menu.viewHeight + SPACE_INTERNAL_VERTICAL;
         

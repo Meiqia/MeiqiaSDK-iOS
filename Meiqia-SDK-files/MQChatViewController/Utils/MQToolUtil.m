@@ -111,5 +111,12 @@
     
     return [self kXlpObtainNaviBarHeight] + [self kXlpObtainStatusBarHeight];
 }
-
++ (NSInteger )kXlpScreenWidth{
+    
+    return [UIScreen mainScreen].bounds.size.width;
+}
++ (NSInteger )kXlpScreenHeight{
+    
+    return [UIScreen mainScreen].bounds.size.height;
+}
 @end

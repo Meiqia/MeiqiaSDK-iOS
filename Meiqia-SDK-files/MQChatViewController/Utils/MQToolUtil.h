@@ -14,4 +14,6 @@
 + (NSInteger )kXlpObtainNaviBarHeight;
 + (NSInteger )kXlpObtainStatusBarHeight;
 + (NSInteger )kXlpObtainNaviHeight;
++ (NSInteger )kXlpScreenWidth;
++ (NSInteger )kXlpScreenHeight;
 @end
