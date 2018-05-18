@@ -153,7 +153,6 @@
     self.contentView.viewHeight = self.itemsView.viewBottomEdge + kMQCellAvatarToVerticalEdgeSpacing;
     self.viewHeight = self.contentView.viewHeight;
     
-    self.viewModel.theCellHeight = self.itemsView.viewBottomEdge + kMQCellAvatarToVerticalEdgeSpacing;
 }
 
 #pragma mark - actions
@@ -368,7 +367,7 @@
     self.menuTitleLabel.viewWidth = self.contentWebView.frame.size.width-16;
     self.menuTitleLabel.textColor = [UIColor grayColor];
     [self.menuTitleLabel sizeToFit];
-    [self.menuTitleLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    [self.menuTitleLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(16, self.contentWebView.viewBottomEdge)];
     
     //recreate menus view
     UIView *menusView = [self menusView:self.viewModel.menus];
@@ -376,13 +375,10 @@
     [self.itemsView addSubview:menusView];
     [menusView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.menuTitleLabel.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     
-    [self.menuFootnoteLabel align:(ViewAlignmentTopLeft) relativeToPoint:menusView.leftBottomCorner];
-
-//    [self.menuFootnoteLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, menusView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    [self.menuFootnoteLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(16,menusView.leftBottomCorner.y)];
     self.menuFootnoteLabel.text = self.viewModel.menuFootnote;
     self.menuFootnoteLabel.viewWidth = self.contentWebView.frame.size.width - 16;
     self.menuFootnoteLabel.textColor = [UIColor grayColor];
-//    self.menuFootnoteLabel.backgroundColor = [UIColor blueColor];
     [self.menuFootnoteLabel sizeToFit];
     
 }
