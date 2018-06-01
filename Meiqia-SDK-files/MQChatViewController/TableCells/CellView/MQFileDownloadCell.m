@@ -193,7 +193,8 @@
 
 - (void)showActionSheet {
     [self.window endEditing:YES];
-    UIActionSheet *as = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"显示预览", @"打开文件", nil];
+    UIActionSheet *as = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"mq_display_preview"],[MQBundleUtil localizedStringForKey:@"mq_open_file"], nil];
+
     as.delegate = self;
     [as showInView:self];
 }

@@ -1040,40 +1040,40 @@
 		8964BBBC204EAA8900EB9473 /* CellView */ = {
 			isa = PBXGroup;
 			children = (
+				8964BBDD204EAA8900EB9473 /* MQChatBaseCell.h */,
+				8964BBCB204EAA8900EB9473 /* MQChatBaseCell.m */,
+				8964BBDE204EAA8900EB9473 /* MQTipsCell.h */,
+				8964BBCA204EAA8900EB9473 /* MQTipsCell.m */,
+				8964BBD2204EAA8900EB9473 /* MQTextMessageCell.h */,
 				8964BBBD204EAA8900EB9473 /* MQTextMessageCell.m */,
 				8964BBBE204EAA8900EB9473 /* MQRichTextViewCell.h */,
-				8964BBBF204EAA8900EB9473 /* MQFileDownloadCell.m */,
-				8964BBC0204EAA8900EB9473 /* MQImageMessageCell.m */,
-				8964BBC1204EAA8900EB9473 /* MQBotMenuCell.h */,
-				8964BBC2204EAA8900EB9473 /* MQWebViewBubbleCell.h */,
-				8964BBC3204EAA8900EB9473 /* MQEventMessageCell.m */,
-				8964BBC4204EAA8900EB9473 /* MQEvaluationCell.h */,
-				8964BBC5204EAA8900EB9473 /* MQBotAnswerCell.m */,
-				8964BBC6204EAA8900EB9473 /* MQMessageDateCell.h */,
-				8964BBC7204EAA8900EB9473 /* MQEvaluationResultCell.m */,
-				8964BBC8204EAA8900EB9473 /* MQVoiceMessageCell.h */,
-				8964BBC9204EAA8900EB9473 /* MQBotWebViewBubbleAnswerCell.h */,
-				8964BBCA204EAA8900EB9473 /* MQTipsCell.m */,
-				8964BBCB204EAA8900EB9473 /* MQChatBaseCell.m */,
-				8964BBCC204EAA8900EB9473 /* MQBotMenuWebViewBubbleAnswerCell.m */,
-				8964BBCD204EAA8900EB9473 /* MQBotMenuAnswerCell.h */,
-				8964BBCE204EAA8900EB9473 /* MQImageMessageCell.h */,
-				8964BBCF204EAA8900EB9473 /* MQBotMenuCell.m */,
-				8964BBD0204EAA8900EB9473 /* MQFileDownloadCell.h */,
 				8964BBD1204EAA8900EB9473 /* MQRichTextViewCell.m */,
-				8964BBD2204EAA8900EB9473 /* MQTextMessageCell.h */,
-				8964BBD3204EAA8900EB9473 /* MQBotAnswerCell.h */,
+				8964BBD0204EAA8900EB9473 /* MQFileDownloadCell.h */,
+				8964BBBF204EAA8900EB9473 /* MQFileDownloadCell.m */,
+				8964BBCE204EAA8900EB9473 /* MQImageMessageCell.h */,
+				8964BBC0204EAA8900EB9473 /* MQImageMessageCell.m */,
+				8964BBC8204EAA8900EB9473 /* MQVoiceMessageCell.h */,
+				8964BBD8204EAA8900EB9473 /* MQVoiceMessageCell.m */,
+				8964BBC4204EAA8900EB9473 /* MQEvaluationCell.h */,
 				8964BBD4204EAA8900EB9473 /* MQEvaluationCell.m */,
 				8964BBD5204EAA8900EB9473 /* MQEventMessageCell.h */,
+				8964BBC3204EAA8900EB9473 /* MQEventMessageCell.m */,
+				8964BBC2204EAA8900EB9473 /* MQWebViewBubbleCell.h */,
 				8964BBD6204EAA8900EB9473 /* MQWebViewBubbleCell.m */,
-				8964BBD7204EAA8900EB9473 /* MQBotWebViewBubbleAnswerCell.m */,
-				8964BBD8204EAA8900EB9473 /* MQVoiceMessageCell.m */,
+				8964BBC6204EAA8900EB9473 /* MQMessageDateCell.h */,
 				8964BBD9204EAA8900EB9473 /* MQMessageDateCell.m */,
 				8964BBDA204EAA8900EB9473 /* MQEvaluationResultCell.h */,
+				8964BBC7204EAA8900EB9473 /* MQEvaluationResultCell.m */,
+				8964BBC1204EAA8900EB9473 /* MQBotMenuCell.h */,
+				8964BBCF204EAA8900EB9473 /* MQBotMenuCell.m */,
+				8964BBD3204EAA8900EB9473 /* MQBotAnswerCell.h */,
+				8964BBC5204EAA8900EB9473 /* MQBotAnswerCell.m */,
+				8964BBCD204EAA8900EB9473 /* MQBotMenuAnswerCell.h */,
 				8964BBDB204EAA8900EB9473 /* MQBotMenuAnswerCell.m */,
+				8964BBC9204EAA8900EB9473 /* MQBotWebViewBubbleAnswerCell.h */,
+				8964BBD7204EAA8900EB9473 /* MQBotWebViewBubbleAnswerCell.m */,
 				8964BBDC204EAA8900EB9473 /* MQBotMenuWebViewBubbleAnswerCell.h */,
-				8964BBDD204EAA8900EB9473 /* MQChatBaseCell.h */,
-				8964BBDE204EAA8900EB9473 /* MQTipsCell.h */,
+				8964BBCC204EAA8900EB9473 /* MQBotMenuWebViewBubbleAnswerCell.m */,
 			);
 			path = CellView;
 			sourceTree = "<group>";
@@ -1081,11 +1081,11 @@
 		8964BBDF204EAA8900EB9473 /* Animation */ = {
 			isa = PBXGroup;
 			children = (
+				8964BBE4204EAA8900EB9473 /* MQAnimatorPush.h */,
 				8964BBE0204EAA8900EB9473 /* MQAnimatorPush.m */,
+				8964BBE3204EAA8900EB9473 /* MQTransitioningAnimation.h */,
 				8964BBE1204EAA8900EB9473 /* MQTransitioningAnimation.m */,
 				8964BBE2204EAA8900EB9473 /* MQShareTransitioningDelegateImpl.h */,
-				8964BBE3204EAA8900EB9473 /* MQTransitioningAnimation.h */,
-				8964BBE4204EAA8900EB9473 /* MQAnimatorPush.h */,
 				8964BBE5204EAA8900EB9473 /* MQShareTransitioningDelegateImpl.m */,
 			);
 			path = Animation;
@@ -1144,11 +1144,13 @@
 			children = (
 				8964BC0A204EAA8900EB9473 /* PreChatForm */,
 				8964BC13204EAA8A00EB9473 /* MQChatViewService.h */,
-				8964BC14204EAA8A00EB9473 /* MQChatViewTableDataSource.h */,
-				8964BC15204EAA8A00EB9473 /* MQChatViewController.m */,
-				8964BC16204EAA8A00EB9473 /* MQChatViewTableDataSource.m */,
 				8964BC17204EAA8A00EB9473 /* MQChatViewService.m */,
+				8964BC1A204EAA8A00EB9473 /* MQChatTableView.h */,
+				8964BC2D204EAA8A00EB9473 /* MQChatTableView.m */,
 				8964BC18204EAA8A00EB9473 /* MQChatViewController.h */,
+				8964BC15204EAA8A00EB9473 /* MQChatViewController.m */,
+				8964BC14204EAA8A00EB9473 /* MQChatViewTableDataSource.h */,
+				8964BC16204EAA8A00EB9473 /* MQChatViewTableDataSource.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1171,14 +1173,12 @@
 		8964BC19204EAA8A00EB9473 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8964BC1A204EAA8A00EB9473 /* MQChatTableView.h */,
 				8964BC1B204EAA8A00EB9473 /* MQPullRefreshView */,
 				8964BC1E204EAA8A00EB9473 /* MQRecordView */,
 				8964BC21204EAA8A00EB9473 /* MCKeyboardController */,
 				8964BC24204EAA8A00EB9473 /* MQToast */,
 				8964BC27204EAA8A00EB9473 /* MQEvaluationView */,
 				8964BC2A204EAA8A00EB9473 /* MQImageViewer */,
-				8964BC2D204EAA8A00EB9473 /* MQChatTableView.m */,
 				8964BC2E204EAA8A00EB9473 /* MQInputBar */,
 				8964BC3B204EAA8A00EB9473 /* MQWebView */,
 			);
@@ -1242,11 +1242,11 @@
 		8964BC2E204EAA8A00EB9473 /* MQInputBar */ = {
 			isa = PBXGroup;
 			children = (
-				8964BC2F204EAA8A00EB9473 /* MQButtonGroupBar.h */,
 				8964BC30204EAA8A00EB9473 /* MQBottomBar.m */,
+				8964BC35204EAA8A00EB9473 /* MQBottomBar.h */,
+				8964BC2F204EAA8A00EB9473 /* MQButtonGroupBar.h */,
 				8964BC31204EAA8A00EB9473 /* MQButtonGroupBar.m */,
 				8964BC32204EAA8A00EB9473 /* FunctionView */,
-				8964BC35204EAA8A00EB9473 /* MQBottomBar.h */,
 				8964BC36204EAA8A00EB9473 /* MQInputContentView */,
 			);
 			path = MQInputBar;
@@ -1255,8 +1255,8 @@
 		8964BC32204EAA8A00EB9473 /* FunctionView */ = {
 			isa = PBXGroup;
 			children = (
-				8964BC33204EAA8A00EB9473 /* MQRecorderView.m */,
 				8964BC34204EAA8A00EB9473 /* MQRecorderView.h */,
+				8964BC33204EAA8A00EB9473 /* MQRecorderView.m */,
 			);
 			path = FunctionView;
 			sourceTree = "<group>";
@@ -1264,10 +1264,10 @@
 		8964BC36204EAA8A00EB9473 /* MQInputContentView */ = {
 			isa = PBXGroup;
 			children = (
-				8964BC37204EAA8A00EB9473 /* MQTabInputContentView.m */,
-				8964BC38204EAA8A00EB9473 /* MQInputContentView.m */,
 				8964BC39204EAA8A00EB9473 /* MQTabInputContentView.h */,
+				8964BC37204EAA8A00EB9473 /* MQTabInputContentView.m */,
 				8964BC3A204EAA8A00EB9473 /* MQInputContentView.h */,
+				8964BC38204EAA8A00EB9473 /* MQInputContentView.m */,
 			);
 			path = MQInputContentView;
 			sourceTree = "<group>";
@@ -1275,11 +1275,11 @@
 		8964BC3B204EAA8A00EB9473 /* MQWebView */ = {
 			isa = PBXGroup;
 			children = (
+				8964BC3F204EAA8A00EB9473 /* MQWebViewController.h */,
 				8964BC3C204EAA8A00EB9473 /* MQWebViewController.m */,
+				8964BC40204EAA8A00EB9473 /* MQBotWebViewController.h */,
 				8964BC3D204EAA8A00EB9473 /* MQBotWebViewController.m */,
 				8964BC3E204EAA8A00EB9473 /* MQEmbededWebView.h */,
-				8964BC3F204EAA8A00EB9473 /* MQWebViewController.h */,
-				8964BC40204EAA8A00EB9473 /* MQBotWebViewController.h */,
 				8964BC41204EAA8A00EB9473 /* MQEmbededWebView.m */,
 			);
 			path = MQWebView;
