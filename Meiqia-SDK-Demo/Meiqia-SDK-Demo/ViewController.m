@@ -47,15 +47,15 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 #pragma mark 总之, 要自定义UI层  请参考 MQChatViewStyle.h类中的相关的方法 ,要修改逻辑相关的 请参考MQChatViewManager.h中相关的方法
     
 #pragma mark  最简单的集成方法: 全部使用meiqia的,  不做任何自定义UI.
-//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-//    [chatViewManager pushMQChatViewControllerInViewController:self];
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
     
 #pragma mark  觉得返回按钮系统的太丑 想自定义 采用下面的方法
-    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
-    [aStyle setNavBarTintColor:[UIColor blueColor]];
-//    [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
-    [chatViewManager pushMQChatViewControllerInViewController:self];
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+//    [aStyle setNavBarTintColor:[UIColor blueColor]];
+////    [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
 #pragma mark 觉得头像 方形不好看 ,设置为圆形.
 //    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 //    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
@@ -73,7 +73,7 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 #pragma mark 客户自定义信息
 //    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 ////    [chatViewManager setClientInfo:@{@"name":@"123测试",@"gender":@"man11",@"age":@"100"} override:YES];
-//    [chatViewManager setClientInfo:@{@"name":@"123测试",@"gender":@"man11",@"age":@"100"}];
+//    [chatViewManager setClientInfo:@{@"name":@"123测试123",@"gender":@"man11",@"age":@"100"}];
 //    [chatViewManager pushMQChatViewControllerInViewController:self];
 
 #pragma mark 预发送消息
