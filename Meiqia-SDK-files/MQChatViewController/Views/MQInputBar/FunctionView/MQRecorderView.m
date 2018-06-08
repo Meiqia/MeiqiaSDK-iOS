@@ -7,10 +7,11 @@
 //
 
 #import "MQRecorderView.h"
-//#import "mobile-Swift.h"
 #import "MQAssetUtil.h"
 #import "MQChatAudioRecorder.h"
 #import "MQToast.h"
+#import "MQBundleUtil.h"
+
 
 @interface MQRecorderView()<MQChatAudioRecorderDelegate>
 
@@ -43,7 +44,7 @@
     _tipLabel = [[UILabel alloc] init];
     _tipLabel.font = [UIFont systemFontOfSize:18];
     _tipLabel.textColor = [UIColor colorWithRed:118/255.0 green:125/255.0 blue:133/255.0 alpha:1];
-    _tipLabel.text = @"按住说话";
+    _tipLabel.text = [MQBundleUtil localizedStringForKey:@"mq_audio_status_normal"];
     _tipLabel.textAlignment = NSTextAlignmentCenter;
     _tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_tipLabel];
@@ -94,9 +95,9 @@
     CGFloat time = [self getRecordTime];
     if (time >= 50) {
         if (point.y < 50) {
-            self.tipLabel.text = [NSString stringWithFormat:@"录音将在%li秒后结束", (long)(60 - time)];
+            self.tipLabel.text = [NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"mq_record_count_down"], (long)(60 - time)];
         }else{
-            self.tipLabel.text = [NSString stringWithFormat:@"录音将在%li秒后发送", (long)(60 - time)];
+            self.tipLabel.text = [NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"mq_record_will_send"], (long)(60 - time)];
         }
     }
 }
@@ -117,7 +118,7 @@
         if ([self.delegate respondsToSelector:@selector(recordStarted)]) {
             [self.delegate recordStarted];
         }
-        self.tipLabel.text = @"手指上滑，取消发送";
+        self.tipLabel.text = [MQBundleUtil localizedStringForKey:@"record_cancel_swipe"];
     } else if (sender.state == UIGestureRecognizerStateEnded || sender.state == UIGestureRecognizerStateCancelled) {
         if (point.y < 50) {
             if ([self.delegate respondsToSelector:@selector(recordCanceld)]) {
@@ -126,7 +127,7 @@
         }else{
             //录音时间需要大于1秒
             if ([self getRecordTime] < 1) {
-                [MQToast showToast:@"录音时间太短" duration:0.2 window:self.window];
+                [MQToast showToast:[MQBundleUtil localizedStringForKey:@"recode_time_too_short"] duration:0.2 window:self.window];
                 if ([self.delegate respondsToSelector:@selector(recordCanceld)]) {
                     [self.delegate recordCanceld];
                 }
@@ -141,13 +142,13 @@
     } else if(sender.state == UIGestureRecognizerStateChanged) {
             if (point.y < 50) {
                 if ([self getRecordTime] < 50) {
-                    self.tipLabel.text = @"松开手指，取消发送";
+                    self.tipLabel.text = [MQBundleUtil localizedStringForKey:@"record_cancel_realse"];
                 }
                 micImageView.image = [MQAssetUtil imageFromBundleWithName:@"exit_recording"];
                 recordButton.backgroundColor = [UIColor colorWithRed: 150/255.0 green: 159/255.0 blue: 170/255.0 alpha: 1];
             }else{
                 if ([self getRecordTime] < 50) {
-                    self.tipLabel.text = @"手指上滑，取消发送";
+                    self.tipLabel.text = [MQBundleUtil localizedStringForKey:@"record_cancel_swipe"];
                 }
                 micImageView.image = [MQAssetUtil imageFromBundleWithName:@"rectangle9Copy5"];
                 recordButton.backgroundColor = [UIColor colorWithRed: 23/255.0 green: 199/255.0 blue: 209/255.0 alpha: 1];
@@ -158,7 +159,7 @@
 - (void)reUI {
     recordTime = -1;
     [self changeVolumeLayerDiameter:recordButton.frame.size.width];
-    self.tipLabel.text = @"按住说话";
+    self.tipLabel.text = [MQBundleUtil localizedStringForKey:@"mq_audio_status_normal"];
     micImageView.image = [MQAssetUtil imageFromBundleWithName:@"rectangle9Copy5"];
     recordButton.backgroundColor = [UIColor colorWithRed: 23/255.0 green: 199/255.0 blue: 209/255.0 alpha: 1];
 }

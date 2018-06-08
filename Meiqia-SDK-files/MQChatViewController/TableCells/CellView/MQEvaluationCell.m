@@ -8,6 +8,7 @@
 
 #import "MQEvaluationCell.h"
 #import "MQAssetUtil.h"
+#import "MQBundleUtil.h"
 
 static CGFloat const kMQEvaluationCellVerticalSpacing = 12.0;
 static CGFloat const kMQEvaluationCellHorizontalSpacing = 12.0;
@@ -54,17 +55,17 @@ static CGFloat const kMQEvaluationCellTextHeight = 30.0;
     switch (level) {
         case 0:
         {
-            levelLabel.text = @"差评";
+            levelLabel.text = [MQBundleUtil localizedStringForKey:@"mq_evaluation_bad"];
             break;
         }
         case 1:
         {
-            levelLabel.text = @"中评";
+            levelLabel.text = [MQBundleUtil localizedStringForKey:@"mq_evaluation_middle"];
             break;
         }
         case 2:
         {
-            levelLabel.text = @"好评";
+            levelLabel.text = [MQBundleUtil localizedStringForKey:@"mq_evaluation_good"];
             break;
         }
         default:

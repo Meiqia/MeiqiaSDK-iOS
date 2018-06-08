@@ -12,6 +12,7 @@
 #import "MQBundleUtil.h"
 #import "MQBotMenuCellModel.h"
 #import "MEIQIA_TTTAttributedLabel.h"
+#import "MQBundleUtil.h"
 
 static const NSInteger kMQBotMenuCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQBotMenuCellSelectedNumberActionSheetTag = 2001;

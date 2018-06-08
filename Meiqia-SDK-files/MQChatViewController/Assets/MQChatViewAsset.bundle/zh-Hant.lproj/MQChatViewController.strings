@@ -57,6 +57,7 @@
 "retry_send_message"    = "重新發送嗎？";
 
 "alert_view_cancel"     = "取消";
+"alert_view_send"     = "发送";
 
 "alert_view_confirm"    = "確定";
 
@@ -135,4 +136,24 @@
 "input_content" = "输入消息...";
 // 服务连接中,请稍候
 "service_connectting_wait" = "服務連接中,請稍後...";
+
+"mq_direct_content" = "接下来由 %@ 为你服务";
+"mq_send" = "发送";
+"mq_delete" = "删除";
+"mq_record_count_down" = "录音将在%li秒后结束";
+"mq_record_will_send" = "录音将在%li秒后发送";
+"mq_audio_status_normal" = "按住说话";
+"mq_display_preview" = "显示预览";
+"mq_open_file" = "打开文件";
+
+"mq_solved" = "已解决";
+"mq_unsolved" = "未解决";
+"mq_commited" = "已提交";
+
+"mq_evaluation_title" = "妳對本次服務滿意麽?";
+"mq_evaluation_good" = "好評";
+"mq_evaluation_middle" = "中評";
+"mq_evaluation_bad" = "差評";
+"mq_evaluation_content" = "填寫評價內容(可選)";
+
 

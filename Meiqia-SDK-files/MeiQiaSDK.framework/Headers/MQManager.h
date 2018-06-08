@@ -15,8 +15,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.4.5"
-
+#define MQSDKVersion @"3.4.6"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -84,7 +83,6 @@
  */
 + (void)initWithAppkey:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error))completion;
 
-+ (void)initWithAppkey_Private:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error,NSString *rootUrl))completion;
 
 /**
     获取本地初始化过的 app key

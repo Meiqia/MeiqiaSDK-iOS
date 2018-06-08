@@ -13,6 +13,7 @@
 #import "MQImageUtil.h"
 #import "MQEmbededWebView.h"
 #import "MQStringSizeUtil.h"
+#import "MQBundleUtil.h"
 
 
 #define TAG_MENUS 10
@@ -107,7 +108,7 @@
     if (self.viewModel.cachedWebViewHeight > 0) {
         [self updateUI:self.viewModel.cachedWebViewHeight];
     }
-    
+
     [self.viewModel bind];
 }
 
@@ -270,7 +271,7 @@
     usefulButton.viewY = 0.5;
     [usefulButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
     usefulButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
-    [usefulButton setTitle:@"已解决" forState:(UIControlStateNormal)];
+    [usefulButton setTitle:[MQBundleUtil localizedStringForKey:@"mq_solved"] forState:(UIControlStateNormal)];
     [usefulButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
     [usefulButton addTarget:self action:@selector(didTapPositive) forControlEvents:(UIControlEventTouchUpInside)];
     
@@ -283,7 +284,7 @@
     
     UIButton *uselessButton = [UIButton new];
     [uselessButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
-    [uselessButton setTitle:@"未解决" forState:(UIControlStateNormal)];
+    [uselessButton setTitle:[MQBundleUtil localizedStringForKey:@"mq_unsolved"] forState:(UIControlStateNormal)];
     [uselessButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
     [uselessButton addTarget:self action:@selector(didTapNegative) forControlEvents:(UIControlEventTouchUpInside)];
     uselessButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin;
@@ -320,7 +321,7 @@
     button.viewY = 0.5;
     [button setTitleColor:[UIColor lightGrayColor] forState:(UIControlStateNormal)];
     [button.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
-    [button setTitle:@"已提交" forState:(UIControlStateNormal)];
+    [button setTitle:[MQBundleUtil localizedStringForKey:@"mq_commited"] forState:(UIControlStateNormal)];
     [button setAutoresizingMask:(UIViewAutoresizingFlexibleWidth)];
     [_evaluatedView addSubview:button];
     //    }
@@ -344,19 +345,19 @@
     self.menuTitleLabel.viewWidth = self.currentContentWidth;
     [self.menuTitleLabel sizeToFit];
     
-    [self.menuTitleLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    [self.menuTitleLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(16, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     
     //recreate menus view
     UIView *menusView = [self menusView:self.viewModel.menus];
     [[self.itemsView viewWithTag:menusView.tag] removeFromSuperview];
     [self.itemsView addSubview:menusView];
     
-    [menusView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.menuTitleLabel.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    [menusView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(16, self.menuTitleLabel.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     
     self.menuFootnoteLabel.text = self.viewModel.menuFootnote;
     self.menuFootnoteLabel.viewWidth = self.currentContentWidth;
     [self.menuFootnoteLabel sizeToFit];
-    [self.menuFootnoteLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, menusView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    [self.menuFootnoteLabel align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(16, menusView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     
 }
 

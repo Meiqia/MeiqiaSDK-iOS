@@ -60,6 +60,11 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     #pragma mark  集成第四步: 上传设备deviceToken
     [MQManager registerDeviceToken:deviceToken];
+    
+    /*  swift 项目这样处理
+     let devicetokenStr = (NSData.init(data: deviceToken).description as NSString).trimmingCharacters(in: NSCharacterSet(charactersIn: "<>") as CharacterSet).replacingOccurrences(of: " ", with: "", options: .literal, range: nil)
+     MQManager.registerDeviceTokenString(devicetokenStr)
+     */
 }
 
 

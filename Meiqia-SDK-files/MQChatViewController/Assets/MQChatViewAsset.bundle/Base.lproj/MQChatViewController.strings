@@ -57,6 +57,7 @@
 "retry_send_message"    = "重新发送吗？";
 
 "alert_view_cancel"     = "取消";
+"alert_view_send"     = "发送";
 
 "alert_view_confirm"    = "确定";
 
@@ -101,9 +102,7 @@
 
 "message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
 
-"send_to_fast"  = "您发送的太快啦，请休息一下吧~";"leave_a_message" = "留言";
-"reply_tip_text"        = "抱歉，当前没有客服在线，您可以给我们 留言";
-"bot_redirect_tip_text"  = "很抱歉您不满意机器人的回答，您可以尝试 转人工";
+"leave_a_message" = "留言";
 
 "cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
 
@@ -143,4 +142,24 @@
 "input_content" = "输入消息...";
 // 服务连接中,请稍候
 "service_connectting_wait" = "服务连接中,请稍候...";
+
+"mq_direct_content" = "接下来由 %@ 为你服务";
+"mq_send" = "发送";
+"mq_delete" = "删除";
+"mq_record_count_down" = "录音将在%li秒后结束";
+"mq_record_will_send" = "录音将在%li秒后发送";
+"mq_audio_status_normal" = "按住说话";
+"mq_display_preview" = "显示预览";
+"mq_open_file" = "打开文件";
+
+"mq_solved" = "已解决";
+"mq_unsolved" = "未解决";
+"mq_commited" = "已提交";
+
+"mq_evaluation_title" = "你对本次服务满意么?";
+"mq_evaluation_good" = "好评";
+"mq_evaluation_middle" = "中评";
+"mq_evaluation_bad" = "差评";
+"mq_evaluation_content" = "填写评价内容(可选)";
+
 

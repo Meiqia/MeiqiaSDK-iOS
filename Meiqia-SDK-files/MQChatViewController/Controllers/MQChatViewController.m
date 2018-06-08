@@ -300,7 +300,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     self.chatTableView.chatTableViewDelegate = self;
     
     //xlp 修复 发送消息 或者受到消息 会弹一下
-    self.chatTableView.estimatedRowHeight = 0;
+    self.chatTableView.estimatedRowHeight = 200;
     self.chatTableView.estimatedSectionFooterHeight = 0;
     self.chatTableView.estimatedSectionHeaderHeight = 0;
     

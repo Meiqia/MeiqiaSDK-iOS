@@ -91,7 +91,7 @@ static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
 
         positiveBtn = [UIButton new];
         positiveBtn.backgroundColor = [UIColor clearColor];
-        [positiveBtn setTitle:@"解决" forState:UIControlStateNormal];
+        [positiveBtn setTitle:[MQBundleUtil localizedStringForKey:@"mq_solved"] forState:UIControlStateNormal];
         positiveBtn.titleLabel.font = [UIFont systemFontOfSize:kMQBotAnswerEvaluateTextSize];
         [positiveBtn setTitleColor:botBtnColor forState:UIControlStateNormal];
         [positiveBtn addTarget:self action:@selector(didTapPositive:) forControlEvents:UIControlEventTouchUpInside];
@@ -99,7 +99,7 @@ static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
 
         negativeBtn = [UIButton new];
         negativeBtn.backgroundColor = [UIColor clearColor];
-        [negativeBtn setTitle:@"未解决" forState:UIControlStateNormal];
+        [negativeBtn setTitle:[MQBundleUtil localizedStringForKey:@"mq_unsolved"] forState:UIControlStateNormal];
         negativeBtn.titleLabel.font = [UIFont systemFontOfSize:kMQBotAnswerEvaluateTextSize];
         [negativeBtn setTitleColor:botBtnColor forState:UIControlStateNormal];
         [negativeBtn addTarget:self action:@selector(didTapNegative:) forControlEvents:UIControlEventTouchUpInside];
@@ -107,14 +107,14 @@ static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
 
         evaluateDoneBtn = [UIButton new];
         evaluateDoneBtn.backgroundColor = [UIColor clearColor];
-        [evaluateDoneBtn setTitle:@"已反馈" forState:UIControlStateNormal];
+        [evaluateDoneBtn setTitle:[MQBundleUtil localizedStringForKey:@"mq_commited"] forState:UIControlStateNormal];
         evaluateDoneBtn.titleLabel.font = [UIFont systemFontOfSize:kMQBotAnswerEvaluateTextSize];
         [evaluateDoneBtn setTitleColor:[UIColor colorWithWhite:.6 alpha:1] forState:UIControlStateNormal];
         [bubbleImageView addSubview:evaluateDoneBtn];
         
         replyBtn = [UIButton new];
         replyBtn.backgroundColor = [UIColor clearColor];
-        [replyBtn setTitle:@"留言" forState:UIControlStateNormal];
+        [replyBtn setTitle:[MQBundleUtil localizedStringForKey:@"leave_a_message"] forState:UIControlStateNormal];
         replyBtn.titleLabel.font = [UIFont systemFontOfSize:kMQBotAnswerEvaluateTextSize];
         [replyBtn setTitleColor:botBtnColor forState:UIControlStateNormal];
         [replyBtn addTarget:self action:@selector(didTapReply:) forControlEvents:UIControlEventTouchUpInside];
