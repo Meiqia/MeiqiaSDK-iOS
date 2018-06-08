@@ -35,7 +35,7 @@
 #endif
     
 
-#pragma mark  集成第一步: 初始化,  参数:appkey 009c6d3b9af54a81653c1982a1425e7b  d840152748fb1be270847656a4b35294
+#pragma mark  集成第一步: 初始化,  参数:appkey
     [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
@@ -60,6 +60,11 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     #pragma mark  集成第四步: 上传设备deviceToken
     [MQManager registerDeviceToken:deviceToken];
+    
+    /*  swift 项目这样处理
+     let devicetokenStr = (NSData.init(data: deviceToken).description as NSString).trimmingCharacters(in: NSCharacterSet(charactersIn: "<>") as CharacterSet).replacingOccurrences(of: " ", with: "", options: .literal, range: nil)
+     MQManager.registerDeviceTokenString(devicetokenStr)
+     */
 }
 
 
