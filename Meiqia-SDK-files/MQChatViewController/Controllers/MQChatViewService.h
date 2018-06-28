@@ -36,6 +36,11 @@
  */
 - (void)reloadChatTableView;
 
+/**
+ *  通知viewController更新tableView, 并滚动到指定位置
+ */
+- (void)reloadChatTableViewToLastPosition:(NSInteger)indexNum;
+
 /*
  call after add model
  */
