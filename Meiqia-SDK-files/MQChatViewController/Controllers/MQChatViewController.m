@@ -297,17 +297,16 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
  */
 - (void)initChatTableView {
     self.chatTableView = [[MQChatTableView alloc] initWithFrame:chatViewConfig.chatViewFrame style:UITableViewStylePlain];
-//    self.chatTableView.frame = CGRectMake(0,64, chatViewConfig.chatViewFrame.size.width, chatViewConfig.chatViewFrame.size.height - 64);
     self.chatTableView.chatTableViewDelegate = self;
     
     //xlp 修复 发送消息 或者受到消息 会弹一下
-    self.chatTableView.estimatedRowHeight = 200;
+    self.chatTableView.estimatedRowHeight = 0;
     self.chatTableView.estimatedSectionFooterHeight = 0;
     self.chatTableView.estimatedSectionHeaderHeight = 0;
     
-//    if (@available(iOS 11.0, *)) {
-//        self.chatTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-//    }
+    if (@available(iOS 11.0, *)) {
+        self.chatTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
+    }
     self.chatTableView.delegate = self;
     [self.view addSubview:self.chatTableView];
     

@@ -1131,9 +1131,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 __strong typeof (wself) sself = wself;
                 if (messages.count > 0) {
                      [sself saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
-                    [sself.delegate reloadChatTableView]; // 这个地方不使用 [self.delegate insertCellAtBottomForModelCount: ]; 因为需要整体重新加载之后移动 table 的偏移量
-//                    NSInteger messageArrCount = [sself saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
-//                    [sself.delegate reloadChatTableViewToLastPosition:messageArrCount];
+                    [sself.delegate reloadChatTableView]; 
                 }
             }];
         }
