@@ -297,6 +297,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
  */
 - (void)initChatTableView {
     self.chatTableView = [[MQChatTableView alloc] initWithFrame:chatViewConfig.chatViewFrame style:UITableViewStylePlain];
+//    self.chatTableView.frame = CGRectMake(0,64, chatViewConfig.chatViewFrame.size.width, chatViewConfig.chatViewFrame.size.height - 64);
     self.chatTableView.chatTableViewDelegate = self;
     
     //xlp 修复 发送消息 或者受到消息 会弹一下
@@ -304,6 +305,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     self.chatTableView.estimatedSectionFooterHeight = 0;
     self.chatTableView.estimatedSectionHeaderHeight = 0;
     
+//    if (@available(iOS 11.0, *)) {
+//        self.chatTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+//    }
     self.chatTableView.delegate = self;
     [self.view addSubview:self.chatTableView];
     
@@ -1265,12 +1269,12 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
 }
 
-- (void)reloadChatTableViewToLastPosition:(NSInteger)indexNum{
-    [self.chatTableView reloadData];
-    if (indexNum > 0) {
-        NSIndexPath *aindex = [NSIndexPath indexPathForRow:indexNum-1 inSection:0];
-        [self.chatTableView scrollToRowAtIndexPath:aindex atScrollPosition:UITableViewScrollPositionNone animated:NO];
-    }
-}
+//- (void)reloadChatTableViewToLastPosition:(NSInteger)indexNum{
+//    [self.chatTableView reloadData];
+//    if (indexNum > 0) {
+//        NSIndexPath *aindex = [NSIndexPath indexPathForRow:indexNum-1 inSection:0];
+//        [self.chatTableView scrollToRowAtIndexPath:aindex atScrollPosition:UITableViewScrollPositionNone animated:NO];
+//    }
+//}
 
 @end
