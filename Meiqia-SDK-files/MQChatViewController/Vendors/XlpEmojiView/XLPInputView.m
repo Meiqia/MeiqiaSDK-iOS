@@ -10,6 +10,7 @@
 #import "XlpEmojiCell.h"
 #import "MQAssetUtil.h"
 #import "MQUIMaker.h"
+#import "MQBundleUtil.h"
 
 
 
@@ -104,7 +105,7 @@
     deleteBt = [UIButton buttonWithType:UIButtonTypeCustom];
     deleteBt.frame = CGRectMake(0, emojikeyboardHeight - bottomHeight,mmWidth, bottomHeight);
     [self addSubview:deleteBt];
-    [deleteBt setTitle:@"删除" forState:UIControlStateNormal];
+    [deleteBt setTitle:[MQBundleUtil localizedStringForKey:@"mq_delete"] forState:UIControlStateNormal];
     [deleteBt setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     deleteBt.titleLabel.font = [UIFont systemFontOfSize:14];
     [deleteBt addTarget:self action:@selector(deleteHandle:) forControlEvents:UIControlEventTouchUpInside];
@@ -112,7 +113,7 @@
     returnBt = [UIButton buttonWithType:UIButtonTypeCustom];
     returnBt.frame = CGRectMake(self.frame.size.width - mmWidth, emojikeyboardHeight - bottomHeight,mmWidth, bottomHeight);
     [self addSubview:returnBt];
-    [returnBt setTitle:@"发送" forState:UIControlStateNormal];
+    [returnBt setTitle:[MQBundleUtil localizedStringForKey:@"mq_send"] forState:UIControlStateNormal];
     [returnBt setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     returnBt.titleLabel.font = [UIFont systemFontOfSize:14];
     [returnBt addTarget:self action:@selector(returnHandle:) forControlEvents:UIControlEventTouchUpInside];

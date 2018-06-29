@@ -13,6 +13,8 @@
 #import "UIImage+MQGenerate.h"
 #import "MQStringSizeUtil.h"
 #import "MQBotMenuAnswerCellModel.h"
+#import "MQBundleUtil.h"
+
 
 #define TAG_MENUS 10
 #define TAG_EVALUATE 11
@@ -55,6 +57,8 @@
         [self.itemsView addSubview:self.contentLabel];
         [self.itemsView addSubview:self.menuTitleLabel];
         [self.itemsView addSubview:self.menuFootnoteLabel];
+        [self updateUI];
+
     }
     return self;
 }
@@ -83,10 +87,6 @@
     }
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    [self updateUI];
-}
 
 - (void)updateUI {
     //layout fix components
@@ -253,7 +253,7 @@
         usefulButton.viewY = 0.5;
         [usefulButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
         usefulButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
-        [usefulButton setTitle:@"已解决" forState:(UIControlStateNormal)];
+    [usefulButton setTitle:[MQBundleUtil localizedStringForKey:@"mq_solved"] forState:(UIControlStateNormal)];
         [usefulButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
         [usefulButton addTarget:self action:@selector(didTapPositive) forControlEvents:(UIControlEventTouchUpInside)];
         
@@ -266,7 +266,7 @@
         
         UIButton *uselessButton = [UIButton new];
         [uselessButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
-        [uselessButton setTitle:@"未解决" forState:(UIControlStateNormal)];
+    [uselessButton setTitle:[MQBundleUtil localizedStringForKey:@"mq_unsolved"] forState:(UIControlStateNormal)];
         [uselessButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
         [uselessButton addTarget:self action:@selector(didTapNegative) forControlEvents:(UIControlEventTouchUpInside)];
         uselessButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin;
@@ -303,7 +303,7 @@
         button.viewY = 0.5;
         [button setTitleColor:[UIColor lightGrayColor] forState:(UIControlStateNormal)];
         [button.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
-        [button setTitle:@"已提交" forState:(UIControlStateNormal)];
+    [button setTitle:[MQBundleUtil localizedStringForKey:@"mq_commited"] forState:(UIControlStateNormal)];
         [button setAutoresizingMask:(UIViewAutoresizingFlexibleWidth)];
         [_evaluatedView addSubview:button];
 //    }

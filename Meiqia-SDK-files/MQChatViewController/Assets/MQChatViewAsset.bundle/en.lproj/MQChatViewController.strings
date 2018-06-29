@@ -57,6 +57,7 @@
 "retry_send_message"    = "Resend message?";
 
 "alert_view_cancel"     = "cancel";
+"alert_view_send"     = "send";
 
 "alert_view_confirm"    = "confirm";
 
@@ -134,4 +135,24 @@
 "input_content" = "Please input your content...";
 // 服务连接中,请稍候
 "service_connectting_wait" = "Service is connectting,please waitting";
+
+"mq_direct_content" = "You will be assisted by %@";
+"mq_send" = "Send";
+"mq_delete" = "Delete";
+"mq_record_count_down" = "You can talk for %li more seconds";
+"mq_record_will_send" = "Recording will be send in %li seconds";
+"mq_audio_status_normal" = "Press to talk";
+"mq_display_preview" = "Display the preview";
+"mq_open_file" = "Open the file";
+
+"mq_solved" = "soved";
+"mq_unsolved" = "unsolved";
+"mq_commited" = "commited";
+
+"mq_evaluation_title" = "Are you satisfied with this service?";
+"mq_evaluation_good" = "good";
+"mq_evaluation_middle" = "middle";
+"mq_evaluation_bad" = "bad";
+"mq_evaluation_content" = "input content(optional)";
+
 

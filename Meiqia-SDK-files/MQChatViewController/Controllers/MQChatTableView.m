@@ -12,7 +12,7 @@
 #import "MQBundleUtil.h"
 #import "MQToolUtil.h"
 
-static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
+//static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 
 @interface MQChatTableView()
 
@@ -66,11 +66,18 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 }
 
 - (BOOL)isTableViewScrolledToBottom {
-    if(self.contentOffset.y + self.frame.size.height + kMQChatScrollBottomDistanceThreshold > self.contentSize.height){
-        return true;
-    } else {
-        return false;
+//    if(self.contentOffset.y + self.frame.size.height + kMQChatScrollBottomDistanceThreshold > self.contentSize.height){
+//        return true;
+//    } else {
+//        return false;
+//    }
+    CGFloat distanceFromBottom = self.contentSize.height - self.contentOffset.y;
+    
+    if (distanceFromBottom <= self.frame.size.height + 200){
+        return YES;
     }
+    return NO;
+
 }
 
 @end
