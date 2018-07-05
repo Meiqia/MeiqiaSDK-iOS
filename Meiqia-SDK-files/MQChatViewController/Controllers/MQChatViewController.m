@@ -153,7 +153,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     [MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^(NSDictionary *userInfo){
         
-        NSLog(@"检测是否显示讯前表单的回调成功后返回的userInfo=%@",userInfo);
+//        NSLog(@"检测是否显示讯前表单的回调成功后返回的userInfo=%@",userInfo);
         NSString *targetType = userInfo[@"targetType"];
         NSString *target = userInfo[@"target"];
         NSString *menu = userInfo[@"menu"];
