@@ -140,7 +140,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)addCellModelAndReloadTableViewWithModel:(id<MQCellModelProtocol>)cellModel {
     [self.cellModels addObject:cellModel];
     [self.delegate insertCellAtBottomForModelCount: 1];
-//    [self reloadChatTableView];
 }
 
 /**
@@ -753,7 +752,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)addTipCellModelWithTips:(NSString *)tips enableLinesDisplay:(BOOL)enableLinesDisplay {
     MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tips cellWidth:self.chatViewWidth enableLinesDisplay:enableLinesDisplay];
     [self.cellModels addObject:cellModel];
-//    [self reloadChatTableView];
     [self.delegate insertCellAtBottomForModelCount: 1];
     
     if (self.delegate) {
@@ -792,7 +790,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self.cellModels addObject:cellModel];
         [self.delegate insertCellAtBottomForModelCount: 1];
     }
-//    [self reloadChatTableView];
     [self scrollToButton];
 }
 
@@ -816,7 +813,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self.delegate reloadChatTableView];
     MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initWaitingInQueueTipCellModelWithCellWidth:self.chatViewWidth position:position tipType:MQTipTypeWaitingInQueue];
     [self.cellModels addObject:cellModel];
-//    [self reloadChatTableView];
     [self.delegate insertCellAtBottomForModelCount: 1];
     [self scrollToButton];
 }
@@ -1130,8 +1126,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [self.delegate didGetHistoryMessagesWithCommitTableAdjustment:^{
                 __strong typeof (wself) sself = wself;
                 if (messages.count > 0) {
-                    [sself saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
-                    [sself.delegate reloadChatTableView]; // 这个地方不使用 [self.delegate insertCellAtBottomForModelCount: ]; 因为需要整体重新加载之后移动 table 的偏移量
+                     [sself saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
+                    [sself.delegate reloadChatTableView]; 
                 }
             }];
         }
@@ -1356,11 +1352,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     
     [self didReceiveNewMessages:@[textMessage]];
     
-//    MQTextCellModel *textCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:textMessage cellWidth:self.chatViewWidth delegate:self];
-//    [self.cellModels addObject:textCellModel];
-////    [self reloadChatTableView];
-//    [self.delegate insertCellAtBottomForModelCount: 1];
-//    [self playReceivedMessageSound];
 }
 
 /**

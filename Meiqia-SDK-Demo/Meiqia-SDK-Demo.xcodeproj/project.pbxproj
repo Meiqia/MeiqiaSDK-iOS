@@ -620,11 +620,11 @@
 		8964BB02204EAA8900EB9473 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				8964BB0F204EAA8900EB9473 /* MQMessageFormConfig.h */,
 				8964BB03204EAA8900EB9473 /* MQMessageFormConfig.m */,
+				8964BB10204EAA8900EB9473 /* MQMessageFormViewManager.h */,
 				8964BB04204EAA8900EB9473 /* MQMessageFormViewManager.m */,
 				8964BB05204EAA8900EB9473 /* Styles */,
-				8964BB0F204EAA8900EB9473 /* MQMessageFormConfig.h */,
-				8964BB10204EAA8900EB9473 /* MQMessageFormViewManager.h */,
 				8964BB11204EAA8900EB9473 /* MessageFormInputModel */,
 			);
 			path = Config;
@@ -634,8 +634,8 @@
 			isa = PBXGroup;
 			children = (
 				8964BB06204EAA8900EB9473 /* MQMessageFormViewStyle.h */,
-				8964BB07204EAA8900EB9473 /* PreDefined */,
 				8964BB0E204EAA8900EB9473 /* MQMessageFormViewStyle.m */,
+				8964BB07204EAA8900EB9473 /* PreDefined */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -913,12 +913,12 @@
 		8964BB6C204EAA8900EB9473 /* Config */ = {
 			isa = PBXGroup;
 			children = (
-				8964BB6D204EAA8900EB9473 /* MQChatViewManager.h */,
-				8964BB6E204EAA8900EB9473 /* Style */,
 				8964BB78204EAA8900EB9473 /* MQChatViewConfig.h */,
-				8964BB79204EAA8900EB9473 /* MQChatViewManager.m */,
-				8964BB7A204EAA8900EB9473 /* CustomizedText */,
 				8964BB7D204EAA8900EB9473 /* MQChatViewConfig.m */,
+				8964BB6D204EAA8900EB9473 /* MQChatViewManager.h */,
+				8964BB79204EAA8900EB9473 /* MQChatViewManager.m */,
+				8964BB6E204EAA8900EB9473 /* Style */,
+				8964BB7A204EAA8900EB9473 /* CustomizedText */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -1002,37 +1002,37 @@
 		8964BB9C204EAA8900EB9473 /* CellModel */ = {
 			isa = PBXGroup;
 			children = (
-				8964BB9D204EAA8900EB9473 /* MQBotMenuWebViewBubbleAnswerCellModel.h */,
+				8964BBAB204EAA8900EB9473 /* MQCellModelProtocol.h */,
+				8964BBAE204EAA8900EB9473 /* MQVoiceCellModel.h */,
 				8964BB9E204EAA8900EB9473 /* MQVoiceCellModel.m */,
+				8964BBAD204EAA8900EB9473 /* MQWebViewBubbleCellModel.h */,
 				8964BB9F204EAA8900EB9473 /* MQWebViewBubbleCellModel.m */,
+				8964BBB0204EAA8900EB9473 /* MQEvaluationResultCellModel.h */,
 				8964BBA0204EAA8900EB9473 /* MQEvaluationResultCellModel.m */,
-				8964BBA1204EAA8900EB9473 /* MQBotMenuAnswerCellModel.m */,
 				8964BBA2204EAA8900EB9473 /* MQEventCellModel.h */,
-				8964BBA3204EAA8900EB9473 /* MQBotWebViewBubbleAnswerCellModel.h */,
-				8964BBA4204EAA8900EB9473 /* MQBotAnswerCellModel.m */,
+				8964BBB2204EAA8900EB9473 /* MQEventCellModel.m */,
+				8964BBBB204EAA8900EB9473 /* MQImageCellModel.h */,
 				8964BBA5204EAA8900EB9473 /* MQImageCellModel.m */,
 				8964BBA6204EAA8900EB9473 /* MQMessageDateCellModel.h */,
-				8964BBA7204EAA8900EB9473 /* MQTextCellModel.h */,
-				8964BBA8204EAA8900EB9473 /* MQRichTextViewModel.h */,
-				8964BBA9204EAA8900EB9473 /* MQTipsCellModel.m */,
-				8964BBAA204EAA8900EB9473 /* MQBotMenuCellModel.h */,
-				8964BBAB204EAA8900EB9473 /* MQCellModelProtocol.h */,
-				8964BBAC204EAA8900EB9473 /* MQFileDownloadCellModel.m */,
-				8964BBAD204EAA8900EB9473 /* MQWebViewBubbleCellModel.h */,
-				8964BBAE204EAA8900EB9473 /* MQVoiceCellModel.h */,
-				8964BBAF204EAA8900EB9473 /* MQBotMenuWebViewBubbleAnswerCellModel.m */,
-				8964BBB0204EAA8900EB9473 /* MQEvaluationResultCellModel.h */,
-				8964BBB1204EAA8900EB9473 /* MQBotWebViewBubbleAnswerCellModel.m */,
-				8964BBB2204EAA8900EB9473 /* MQEventCellModel.m */,
-				8964BBB3204EAA8900EB9473 /* MQBotMenuAnswerCellModel.h */,
-				8964BBB4204EAA8900EB9473 /* MQFileDownloadCellModel.h */,
-				8964BBB5204EAA8900EB9473 /* MQBotMenuCellModel.m */,
-				8964BBB6204EAA8900EB9473 /* MQTipsCellModel.h */,
-				8964BBB7204EAA8900EB9473 /* MQRichTextViewModel.m */,
-				8964BBB8204EAA8900EB9473 /* MQTextCellModel.m */,
 				8964BBB9204EAA8900EB9473 /* MQMessageDateCellModel.m */,
+				8964BBA7204EAA8900EB9473 /* MQTextCellModel.h */,
+				8964BBB8204EAA8900EB9473 /* MQTextCellModel.m */,
+				8964BBA8204EAA8900EB9473 /* MQRichTextViewModel.h */,
+				8964BBB7204EAA8900EB9473 /* MQRichTextViewModel.m */,
+				8964BBB6204EAA8900EB9473 /* MQTipsCellModel.h */,
+				8964BBA9204EAA8900EB9473 /* MQTipsCellModel.m */,
+				8964BBB4204EAA8900EB9473 /* MQFileDownloadCellModel.h */,
+				8964BBAC204EAA8900EB9473 /* MQFileDownloadCellModel.m */,
 				8964BBBA204EAA8900EB9473 /* MQBotAnswerCellModel.h */,
-				8964BBBB204EAA8900EB9473 /* MQImageCellModel.h */,
+				8964BBA4204EAA8900EB9473 /* MQBotAnswerCellModel.m */,
+				8964BBAA204EAA8900EB9473 /* MQBotMenuCellModel.h */,
+				8964BBB5204EAA8900EB9473 /* MQBotMenuCellModel.m */,
+				8964BBB3204EAA8900EB9473 /* MQBotMenuAnswerCellModel.h */,
+				8964BBA1204EAA8900EB9473 /* MQBotMenuAnswerCellModel.m */,
+				8964BBA3204EAA8900EB9473 /* MQBotWebViewBubbleAnswerCellModel.h */,
+				8964BBB1204EAA8900EB9473 /* MQBotWebViewBubbleAnswerCellModel.m */,
+				8964BB9D204EAA8900EB9473 /* MQBotMenuWebViewBubbleAnswerCellModel.h */,
+				8964BBAF204EAA8900EB9473 /* MQBotMenuWebViewBubbleAnswerCellModel.m */,
 			);
 			path = CellModel;
 			sourceTree = "<group>";
@@ -1044,6 +1044,7 @@
 				8964BBCB204EAA8900EB9473 /* MQChatBaseCell.m */,
 				8964BBDE204EAA8900EB9473 /* MQTipsCell.h */,
 				8964BBCA204EAA8900EB9473 /* MQTipsCell.m */,
+
 				8964BBD2204EAA8900EB9473 /* MQTextMessageCell.h */,
 				8964BBBD204EAA8900EB9473 /* MQTextMessageCell.m */,
 				8964BBBE204EAA8900EB9473 /* MQRichTextViewCell.h */,
@@ -1060,6 +1061,7 @@
 				8964BBC3204EAA8900EB9473 /* MQEventMessageCell.m */,
 				8964BBC2204EAA8900EB9473 /* MQWebViewBubbleCell.h */,
 				8964BBD6204EAA8900EB9473 /* MQWebViewBubbleCell.m */,
+
 				8964BBC6204EAA8900EB9473 /* MQMessageDateCell.h */,
 				8964BBD9204EAA8900EB9473 /* MQMessageDateCell.m */,
 				8964BBDA204EAA8900EB9473 /* MQEvaluationResultCell.h */,
@@ -1094,34 +1096,34 @@
 		8964BBE6204EAA8900EB9473 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				8964BBF7204EAA8900EB9473 /* MQStringSizeUtil.h */,
 				8964BBE7204EAA8900EB9473 /* MQStringSizeUtil.m */,
+				8964BBFB204EAA8900EB9473 /* MQChatAudioTypes.h */,
+				8964BBF6204EAA8900EB9473 /* MQChatAudioPlayer.h */,
 				8964BBE8204EAA8900EB9473 /* MQChatAudioPlayer.m */,
 				8964BBE9204EAA8900EB9473 /* MQChatAudioRecorder.h */,
-				8964BBEA204EAA8900EB9473 /* MQChatRegexUtil.h */,
+				8964BBF5204EAA8900EB9473 /* MQChatAudioRecorder.m */,
+				8964BBFA204EAA8900EB9473 /* MQBundleUtil.h */,
 				8964BBEB204EAA8900EB9473 /* MQBundleUtil.m */,
 				8964BBEC204EAA8900EB9473 /* MQChatEmojize.h */,
+				8964BBF9204EAA8900EB9473 /* MQChatEmojize.m */,
 				8964BBED204EAA8900EB9473 /* MQChatFileUtil.h */,
+				8964BBF8204EAA8900EB9473 /* MQChatFileUtil.m */,
 				8964BBEE204EAA8900EB9473 /* MQImageUtil.h */,
+				8964BC05204EAA8900EB9473 /* MQImageUtil.m */,
 				8964BBEF204EAA8900EB9473 /* MQChatDeviceUtil.h */,
+				8964BBFD204EAA8900EB9473 /* MQChatDeviceUtil.m */,
 				8964BBF0204EAA8900EB9473 /* MQToolUtil.h */,
+				8964BBFC204EAA8900EB9473 /* MQToolUtil.m */,
+				8964BC08204EAA8900EB9473 /* MQWindowUtil.h */,
 				8964BBF1204EAA8900EB9473 /* MQWindowUtil.m */,
+				8964BC06204EAA8900EB9473 /* MQAssetUtil.h */,
 				8964BBF2204EAA8900EB9473 /* MQAssetUtil.m */,
 				8964BBF3204EAA8900EB9473 /* MQDateFormatterUtil.h */,
-				8964BBF4204EAA8900EB9473 /* MQChatRegexUtil.m */,
-				8964BBF5204EAA8900EB9473 /* MQChatAudioRecorder.m */,
-				8964BBF6204EAA8900EB9473 /* MQChatAudioPlayer.h */,
-				8964BBF7204EAA8900EB9473 /* MQStringSizeUtil.h */,
-				8964BBF8204EAA8900EB9473 /* MQChatFileUtil.m */,
-				8964BBF9204EAA8900EB9473 /* MQChatEmojize.m */,
-				8964BBFA204EAA8900EB9473 /* MQBundleUtil.h */,
-				8964BBFB204EAA8900EB9473 /* MQChatAudioTypes.h */,
-				8964BBFC204EAA8900EB9473 /* MQToolUtil.m */,
-				8964BBFD204EAA8900EB9473 /* MQChatDeviceUtil.m */,
-				8964BBFE204EAA8900EB9473 /* UIMaker */,
-				8964BC05204EAA8900EB9473 /* MQImageUtil.m */,
-				8964BC06204EAA8900EB9473 /* MQAssetUtil.h */,
 				8964BC07204EAA8900EB9473 /* MQDateFormatterUtil.m */,
-				8964BC08204EAA8900EB9473 /* MQWindowUtil.h */,
+				8964BBEA204EAA8900EB9473 /* MQChatRegexUtil.h */,
+				8964BBF4204EAA8900EB9473 /* MQChatRegexUtil.m */,
+				8964BBFE204EAA8900EB9473 /* UIMaker */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1275,6 +1277,7 @@
 		8964BC3B204EAA8A00EB9473 /* MQWebView */ = {
 			isa = PBXGroup;
 			children = (
+
 				8964BC3F204EAA8A00EB9473 /* MQWebViewController.h */,
 				8964BC3C204EAA8A00EB9473 /* MQWebViewController.m */,
 				8964BC40204EAA8A00EB9473 /* MQBotWebViewController.h */,
@@ -1911,6 +1914,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1950,6 +1954,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;

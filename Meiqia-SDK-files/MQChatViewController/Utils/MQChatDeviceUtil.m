@@ -55,7 +55,7 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         //iOS7以上系统
         AVAuthorizationStatus status =[AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-        if ((int)sourceType == UIImagePickerControllerSourceTypeCamera && (status == AVAuthorizationStatusDenied || status == AVAuthorizationStatusRestricted)) {
+        if (status == AVAuthorizationStatusDenied || status == AVAuthorizationStatusRestricted) {
             if ((int)sourceType == UIImagePickerControllerSourceTypeCamera){
                 return @"not_access_camera";
             } else if ((int)sourceType == UIImagePickerControllerSourceTypePhotoLibrary) {

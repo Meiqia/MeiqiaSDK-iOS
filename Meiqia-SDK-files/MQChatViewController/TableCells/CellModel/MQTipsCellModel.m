@@ -108,7 +108,7 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
             if ([[tips substringToIndex:3] isEqualToString:@"接下来"]) {
                 NSRange firstRange = [tips rangeOfString:@" "];
                 NSString *subTips = [tips substringFromIndex:firstRange.location+1];
-                NSRange lastRange = [subTips rangeOfString:@"为您服务"];
+                NSRange lastRange = [subTips rangeOfString:@"为你服务"];
                 NSRange agentNameRange = NSMakeRange(firstRange.location+1, lastRange.location-1);
                 self.tipExtraAttributesRange = agentNameRange;
                 self.tipExtraAttributes = @{

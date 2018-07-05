@@ -36,6 +36,8 @@
  */
 - (void)reloadChatTableView;
 
+
+
 /*
  call after add model
  */
