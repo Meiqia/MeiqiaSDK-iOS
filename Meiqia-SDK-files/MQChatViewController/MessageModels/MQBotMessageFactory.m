@@ -55,7 +55,7 @@
 - (MQBaseMessage *)getNormalBotAnswerMessage:(NSDictionary *)data subType:(NSString *)subType {
     NSString *content = @"";
     MQBotMenuMessage *embedMenuMessage;
-    NSLog(@"====收到的信息的内容为===%@",data);
+//    NSLog(@"====收到的信息的内容为===%@",data);
     if ([subType isEqualToString:@"queueing"]) {
         content = @"暂无空闲客服，您已进入排队等待。";
         subType = @"redirect";

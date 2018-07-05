@@ -1044,7 +1044,6 @@
 				8964BBCB204EAA8900EB9473 /* MQChatBaseCell.m */,
 				8964BBDE204EAA8900EB9473 /* MQTipsCell.h */,
 				8964BBCA204EAA8900EB9473 /* MQTipsCell.m */,
-
 				8964BBD2204EAA8900EB9473 /* MQTextMessageCell.h */,
 				8964BBBD204EAA8900EB9473 /* MQTextMessageCell.m */,
 				8964BBBE204EAA8900EB9473 /* MQRichTextViewCell.h */,
@@ -1061,7 +1060,6 @@
 				8964BBC3204EAA8900EB9473 /* MQEventMessageCell.m */,
 				8964BBC2204EAA8900EB9473 /* MQWebViewBubbleCell.h */,
 				8964BBD6204EAA8900EB9473 /* MQWebViewBubbleCell.m */,
-
 				8964BBC6204EAA8900EB9473 /* MQMessageDateCell.h */,
 				8964BBD9204EAA8900EB9473 /* MQMessageDateCell.m */,
 				8964BBDA204EAA8900EB9473 /* MQEvaluationResultCell.h */,
@@ -1277,7 +1275,6 @@
 		8964BC3B204EAA8A00EB9473 /* MQWebView */ = {
 			isa = PBXGroup;
 			children = (
-
 				8964BC3F204EAA8A00EB9473 /* MQWebViewController.h */,
 				8964BC3C204EAA8A00EB9473 /* MQWebViewController.m */,
 				8964BC40204EAA8A00EB9473 /* MQBotWebViewController.h */,
@@ -2109,6 +2106,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 				);
 				MODULEMAP_FILE = "${SRCROOT}/Meiqia/Meiqia.modulemap";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = Meiqia.Meiqia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
