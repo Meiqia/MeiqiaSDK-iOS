@@ -34,11 +34,9 @@
          UIRemoteNotificationTypeSound];
 #endif
     
-    // 009c6d3b9af54a81653c1982a1425e7b
-    //app7 1e50ad71cc22cf98400a934b4a0d3f0a
-
 #pragma mark  集成第一步: 初始化,  参数:appkey
-    [MQManager initWithAppkey:@"d840152748fb1be270847656a4b35294" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
+
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {
