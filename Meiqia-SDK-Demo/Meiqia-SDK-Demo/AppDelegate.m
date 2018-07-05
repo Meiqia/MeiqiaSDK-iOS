@@ -35,7 +35,7 @@
 #endif
     
 #pragma mark  集成第一步: 初始化,  参数:appkey
-    [MQManager initWithAppkey:@"009c6d3b9af54a81653c1982a1425e7b" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
 
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
