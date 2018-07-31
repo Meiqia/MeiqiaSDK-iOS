@@ -6,7 +6,7 @@
 //  Copyright © 2016年 MeiQia Inc. All rights reserved.
 //
 
-#import <MeiQiaSDK/MeiQiaSDK.h>
+//#import <MeiQiaSDK/MeiQiaSDK.h>
 
 @interface MQTickerClientInfo : MQModel
 

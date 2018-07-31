@@ -174,7 +174,7 @@ void inputBufferHandler(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRe
     //计算估算的缓存区大小
     int frames = (int)ceil(self.bufferDurationSeconds * _recordFormat.mSampleRate);
     int bufferByteSize = frames * _recordFormat.mBytesPerFrame;
-    DLOG(@"缓冲区大小:%d",bufferByteSize);
+//    DLOG(@"缓冲区大小:%d",bufferByteSize);
     
     //创建缓冲器
     for (int i = 0; i < kNumberAudioQueueBuffers; ++i){
