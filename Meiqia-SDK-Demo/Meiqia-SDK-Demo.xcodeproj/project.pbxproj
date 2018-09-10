@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5545979D21466A9A00B602D1 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5545979B21466A9900B602D1 /* libopencore-amrwb.a */; };
+		5545979E21466A9A00B602D1 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5545979C21466A9A00B602D1 /* libopencore-amrnb.a */; };
 		8964BC55204EAA8A00EB9473 /* MeiQiaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8964BAFD204EAA8900EB9473 /* MeiQiaSDK.framework */; };
 		8964BC56204EAA8A00EB9473 /* MQServiceToViewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 8964BB00204EAA8900EB9473 /* MQServiceToViewInterface.m */; };
 		8964BC57204EAA8A00EB9473 /* MQMessageFormConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8964BB03204EAA8900EB9473 /* MQMessageFormConfig.m */; };
@@ -34,8 +36,6 @@
 		8964BC6D204EAA8A00EB9473 /* XlpEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8964BB3E204EAA8900EB9473 /* XlpEmojiCell.m */; };
 		8964BC6E204EAA8A00EB9473 /* MEIQIA_CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8964BB43204EAA8900EB9473 /* MEIQIA_CustomIOSAlertView.m */; };
 		8964BC6F204EAA8A00EB9473 /* MEIQIA_AmrRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8964BB4A204EAA8900EB9473 /* MEIQIA_AmrRecordWriter.m */; };
-		8964BC70204EAA8A00EB9473 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8964BB55204EAA8900EB9473 /* libopencore-amrwb.a */; };
-		8964BC71204EAA8A00EB9473 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8964BB56204EAA8900EB9473 /* libopencore-amrnb.a */; };
 		8964BC72204EAA8A00EB9473 /* MEIQIA_CafRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8964BB57204EAA8900EB9473 /* MEIQIA_CafRecordWriter.m */; };
 		8964BC73204EAA8A00EB9473 /* MEIQIA_MLAudioMeterObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8964BB58204EAA8900EB9473 /* MEIQIA_MLAudioMeterObserver.m */; };
 		8964BC74204EAA8A00EB9473 /* MEIQIA_MLAudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8964BB59204EAA8900EB9473 /* MEIQIA_MLAudioRecorder.m */; };
@@ -212,6 +212,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5545979B21466A9900B602D1 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libopencore-amrwb.a"; path = "../../../../../../../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrwb.a"; sourceTree = "<group>"; };
+		5545979C21466A9A00B602D1 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libopencore-amrnb.a"; path = "../../../../../../../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrnb.a"; sourceTree = "<group>"; };
 		8964BAFD204EAA8900EB9473 /* MeiQiaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MeiQiaSDK.framework; sourceTree = "<group>"; };
 		8964BAFF204EAA8900EB9473 /* MQServiceToViewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQServiceToViewInterface.h; sourceTree = "<group>"; };
 		8964BB00204EAA8900EB9473 /* MQServiceToViewInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQServiceToViewInterface.m; sourceTree = "<group>"; };
@@ -274,8 +276,6 @@
 		8964BB50204EAA8900EB9473 /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
 		8964BB52204EAA8900EB9473 /* interf_dec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
 		8964BB53204EAA8900EB9473 /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
-		8964BB55204EAA8900EB9473 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
-		8964BB56204EAA8900EB9473 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
 		8964BB57204EAA8900EB9473 /* MEIQIA_CafRecordWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_CafRecordWriter.m; sourceTree = "<group>"; };
 		8964BB58204EAA8900EB9473 /* MEIQIA_MLAudioMeterObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_MLAudioMeterObserver.m; sourceTree = "<group>"; };
 		8964BB59204EAA8900EB9473 /* MEIQIA_MLAudioRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_MLAudioRecorder.m; sourceTree = "<group>"; };
@@ -543,16 +543,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8964BC71204EAA8A00EB9473 /* libopencore-amrnb.a in Frameworks */,
 				E41DDDA61DD18DE0000B3083 /* libz.tbd in Frameworks */,
 				E44A5EA51D5AF47D000481E8 /* Accelerate.framework in Frameworks */,
 				E45CA12D1CCA33EF000B8917 /* libsqlite3.tbd in Frameworks */,
 				CCE9D1481C18139E004E862E /* MobileCoreServices.framework in Frameworks */,
 				CCE9D1461C181399004E862E /* SystemConfiguration.framework in Frameworks */,
 				CCE9D1441C181393004E862E /* CoreTelephony.framework in Frameworks */,
-				8964BC70204EAA8A00EB9473 /* libopencore-amrwb.a in Frameworks */,
 				CCE9D1421C18138C004E862E /* AVFoundation.framework in Frameworks */,
+				5545979E21466A9A00B602D1 /* libopencore-amrnb.a in Frameworks */,
 				CCE9D1401C181385004E862E /* libicucore.tbd in Frameworks */,
+				5545979D21466A9A00B602D1 /* libopencore-amrwb.a in Frameworks */,
 				8964BC55204EAA8A00EB9473 /* MeiQiaSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -874,8 +874,8 @@
 		8964BB54204EAA8900EB9473 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				8964BB55204EAA8900EB9473 /* libopencore-amrwb.a */,
-				8964BB56204EAA8900EB9473 /* libopencore-amrnb.a */,
+				5545979C21466A9A00B602D1 /* libopencore-amrnb.a */,
+				5545979B21466A9900B602D1 /* libopencore-amrwb.a */,
 			);
 			path = lib;
 			sourceTree = "<group>";
