@@ -563,4 +563,8 @@
 + (BOOL)getLoginStatus;
 /*获取网络是否可用*/
 + (BOOL)obtainNetIsReachable;
+
++ (void)refreshPushInfoWithToken:(NSString *)token
+                         Success:(void (^)(BOOL completion))success
+                         failure:(void (^)(NSError *error))failure;
 @end
