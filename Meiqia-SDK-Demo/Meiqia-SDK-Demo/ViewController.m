@@ -125,7 +125,7 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     [messageFormViewManager setCustomMessageFormInputModelArray:nil];
     [messageFormViewManager presentMQMessageFormViewControllerInViewController:self];
 }
-#pragma 开发者的高级功能，其中有调用美洽SDK的API接口
+#pragma 开发者的高级功能 其中有调用美洽SDK的API接口
 - (void)didTapDevFunctionBtn:(UIButton *)button {
     //开发者功能
     DevelopViewController *viewController = [[DevelopViewController alloc] init];

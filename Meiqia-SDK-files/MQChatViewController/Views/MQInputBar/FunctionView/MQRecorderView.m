@@ -13,7 +13,7 @@
 #import "MQBundleUtil.h"
 
 
-@interface MQRecorderView()<MQChatAudioRecorderDelegate>
+@interface MQRecorderView() //<MQChatAudioRecorderDelegate>
 
 
 

@@ -41,7 +41,9 @@
 }
 
 - (float)colorNumber {
-    double r,g,b,a;
+//    double r,g,b,a;
+//    [self getRed:&r green:&g blue:&b alpha:&a];
+    CGFloat r,g,b,a;
     [self getRed:&r green:&g blue:&b alpha:&a];
     return r + g + b + a;
 }
