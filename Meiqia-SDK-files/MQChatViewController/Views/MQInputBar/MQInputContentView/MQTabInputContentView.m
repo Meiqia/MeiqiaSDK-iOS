@@ -20,8 +20,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.textField = [[MEIQIA_HPGrowingTextView alloc] init];
-//        self.textField.placeholder = @"输入消息 ...";
-        //xlp
         self.textField.placeholder = [MQBundleUtil localizedStringForKey:@"input_content"];
 
         self.textField.font = [UIFont systemFontOfSize:15];

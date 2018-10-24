@@ -801,9 +801,9 @@
 		8964BB3C204EAA8900EB9473 /* XlpEmojiView */ = {
 			isa = PBXGroup;
 			children = (
+				8964BB3F204EAA8900EB9473 /* XLPInputView.h */,
 				8964BB3D204EAA8900EB9473 /* XLPInputView.m */,
 				8964BB3E204EAA8900EB9473 /* XlpEmojiCell.m */,
-				8964BB3F204EAA8900EB9473 /* XLPInputView.h */,
 				8964BB40204EAA8900EB9473 /* XlpEmojiCell.h */,
 			);
 			path = XlpEmojiView;
