@@ -52,6 +52,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     #pragma mark  集成第二步: 进入前台 打开meiqia服务
     [MQManager openMeiqiaService];
+    
 }
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     #pragma mark  集成第三步: 进入后台 关闭美洽服务
@@ -65,6 +66,7 @@
      let devicetokenStr = (NSData.init(data: deviceToken).description as NSString).trimmingCharacters(in: NSCharacterSet(charactersIn: "<>") as CharacterSet).replacingOccurrences(of: " ", with: "", options: .literal, range: nil)
      MQManager.registerDeviceTokenString(devicetokenStr)
      */
+    
 }
 
 

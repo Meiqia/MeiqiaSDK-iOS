@@ -832,11 +832,19 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #pragma mark - rotation
 
 // ios7以下系统的横屏的事件
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
+//- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+//{
+//    [self updateTableCells];
+//    [self.view endEditing:YES];
+//}
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self updateTableCells];
     [self.view endEditing:YES];
+    
 }
+#else
+#endif
 
 // ios8以上系统的横屏的事件
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -1070,7 +1078,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 #pragma mark - MCRecorderViewDelegate
-
 - (void)recordEnd {
     [self finishRecord:CGPointZero];
 }

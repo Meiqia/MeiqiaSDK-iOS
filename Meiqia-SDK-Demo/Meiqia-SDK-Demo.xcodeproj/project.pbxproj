@@ -801,9 +801,9 @@
 		8964BB3C204EAA8900EB9473 /* XlpEmojiView */ = {
 			isa = PBXGroup;
 			children = (
+				8964BB3F204EAA8900EB9473 /* XLPInputView.h */,
 				8964BB3D204EAA8900EB9473 /* XLPInputView.m */,
 				8964BB3E204EAA8900EB9473 /* XlpEmojiCell.m */,
-				8964BB3F204EAA8900EB9473 /* XLPInputView.h */,
 				8964BB40204EAA8900EB9473 /* XlpEmojiCell.h */,
 			);
 			path = XlpEmojiView;
@@ -1242,8 +1242,8 @@
 		8964BC2E204EAA8A00EB9473 /* MQInputBar */ = {
 			isa = PBXGroup;
 			children = (
-				8964BC30204EAA8A00EB9473 /* MQBottomBar.m */,
 				8964BC35204EAA8A00EB9473 /* MQBottomBar.h */,
+				8964BC30204EAA8A00EB9473 /* MQBottomBar.m */,
 				8964BC2F204EAA8A00EB9473 /* MQButtonGroupBar.h */,
 				8964BC31204EAA8A00EB9473 /* MQButtonGroupBar.m */,
 				8964BC32204EAA8A00EB9473 /* FunctionView */,
@@ -1916,13 +1916,13 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 68;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DEVELOPMENT_TEAM = H22N8T6DAX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(SRCROOT)/../Meiqia-SDK-files",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/MeiqiaSDK",
 				);
 				INFOPLIST_FILE = "Meiqia-SDK-Demo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1930,7 +1930,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
-					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
@@ -1938,6 +1937,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 arm64";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1956,13 +1956,13 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 68;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = H22N8T6DAX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(SRCROOT)/../Meiqia-SDK-files",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/MeiqiaSDK",
 				);
 				INFOPLIST_FILE = "Meiqia-SDK-Demo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1970,13 +1970,13 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
-					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 arm64";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

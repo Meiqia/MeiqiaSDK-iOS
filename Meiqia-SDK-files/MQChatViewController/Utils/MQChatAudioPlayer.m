@@ -86,6 +86,7 @@
     NSLog(@"audioPlayerDidFinishPlaying");
 }
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
 - (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player {
     NSLog(@"audioPlayerBeginInterruption");
     [self.player pause];
@@ -95,6 +96,9 @@
     NSLog(@"audioPlayerEndInterruption");
     [self.player play];
 }
+#else
+#endif
+
 
 - (void)stopSound
 {

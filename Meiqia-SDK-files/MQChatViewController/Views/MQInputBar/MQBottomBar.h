@@ -60,5 +60,5 @@
 /**
  *  给inputView复制，并设置当InputBar失去焦点时的回调。
  */
-- (void)setInputView:(UIView *)inputView resignFirstResponderBlock:(void (^)())block;
+- (void)setInputView:(UIView *)inputView resignFirstResponderBlock:(void (^)(void))block;
 @end

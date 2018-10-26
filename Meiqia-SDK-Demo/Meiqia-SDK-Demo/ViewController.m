@@ -10,12 +10,15 @@
 #import "MQChatViewManager.h"
 #import "MQChatDeviceUtil.h"
 #import "DevelopViewController.h"
-#import <MeiQiaSDK/MeiQiaSDK.h>
+#import <MeiQiaSDK/MeiqiaSDK.h>
 #import "NSArray+MQFunctional.h"
 #import "MQBundleUtil.h"
 #import "MQAssetUtil.h"
 #import "MQImageUtil.h"
 #import "MQToast.h"
+
+#import "MQMessageFormInputModel.h"
+#import "MQMessageFormViewManager.h"
 @interface ViewController ()
 @property (nonatomic, strong) NSNumber *unreadMessagesCount;
 
@@ -47,14 +50,14 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 #pragma mark 总之, 要自定义UI层  请参考 MQChatViewStyle.h类中的相关的方法 ,要修改逻辑相关的 请参考MQChatViewManager.h中相关的方法
     
 #pragma mark  最简单的集成方法: 全部使用meiqia的,  不做任何自定义UI.
-//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-//    [chatViewManager pushMQChatViewControllerInViewController:self];
-    
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+//
 #pragma mark  觉得返回按钮系统的太丑 想自定义 采用下面的方法
 //    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 //    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
-//    [aStyle setNavBarTintColor:[UIColor blueColor]];
-////    [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
+////    [aStyle setNavBarTintColor:[UIColor blueColor]];
+//    [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
 //    [chatViewManager pushMQChatViewControllerInViewController:self];
 #pragma mark 觉得头像 方形不好看 ,设置为圆形.
 //    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
@@ -64,16 +67,17 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 //    [aStyle setEnableIncomingAvatar:NO]; //不显示客服头像
 //    [chatViewManager pushMQChatViewControllerInViewController:self];
 #pragma mark 导航栏 右按钮 想自定义 ,但是不到万不得已,不推荐使用这个,会造成meiqia功能的缺失,因为这个按钮 1 当你在工作台打开机器人开关后 显示转人工,点击转为人工客服. 2在人工客服时 还可以评价客服
-    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
-    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
-    [bt setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-    [aStyle setNavBarRightButton:bt];
-    [chatViewManager pushMQChatViewControllerInViewController:self];
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+//    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [bt setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+//    [aStyle setNavBarRightButton:bt];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
 #pragma mark 客户自定义信息
 //    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-////    [chatViewManager setClientInfo:@{@"name":@"123测试",@"gender":@"man11",@"age":@"100"} override:YES];
+//    [chatViewManager setClientInfo:@{@"name":@"美洽测试777",@"gender":@"woman22",@"age":@"400",@"address":@"北京昌平回龙观"} override:YES];
 //    [chatViewManager setClientInfo:@{@"name":@"123测试123",@"gender":@"man11",@"age":@"100"}];
+//    [chatViewManager setLoginCustomizedId:@"12313812381263786786123698"];
 //    [chatViewManager pushMQChatViewControllerInViewController:self];
 
 #pragma mark 预发送消息
@@ -92,9 +96,36 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 //        //[chatViewManager setLoginCustomizedId:@"notadda"];
 //    }
 //    [chatViewManager pushMQChatViewControllerInViewController:self];
+#pragma mark 留言模式 适用于 刚起步,人工客服成本没有,只能留言.
+//    [self feedback];
 }
 
-#pragma 开发者的高级功能，其中有调用美洽SDK的API接口
+- (void)feedback
+{
+    MQMessageFormInputModel *emailMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    emailMessageFormInputModel.key = @"email";
+    emailMessageFormInputModel.isSingleLine = YES;
+    emailMessageFormInputModel.isRequired = NO;
+    emailMessageFormInputModel.keyboardType = UIKeyboardTypeEmailAddress;
+    
+    MQMessageFormInputModel *phoneMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    phoneMessageFormInputModel.key = @"tel";
+    phoneMessageFormInputModel.isSingleLine = YES;
+    phoneMessageFormInputModel.isRequired = NO;
+    phoneMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
+    
+    NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
+    [customMessageFormInputModelArray addObject:emailMessageFormInputModel];
+    [customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
+    
+    MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
+    
+    MQMessageFormViewStyle *style = [messageFormViewManager messageFormViewStyle];
+    style.navBarColor = [UIColor whiteColor];
+    [messageFormViewManager setCustomMessageFormInputModelArray:nil];
+    [messageFormViewManager presentMQMessageFormViewControllerInViewController:self];
+}
+#pragma 开发者的高级功能 其中有调用美洽SDK的API接口
 - (void)didTapDevFunctionBtn:(UIButton *)button {
     //开发者功能
     DevelopViewController *viewController = [[DevelopViewController alloc] init];

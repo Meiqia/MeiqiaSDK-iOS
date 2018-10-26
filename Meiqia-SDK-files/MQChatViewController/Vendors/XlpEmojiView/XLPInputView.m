@@ -46,7 +46,7 @@
     //初始化emojiCollectionView
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
-    layout.itemSize = CGSizeMake(45, 35);
+    layout.itemSize = CGSizeMake(emojCellWidth, emojCellHeight);
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
     layout.minimumLineSpacing = 0;

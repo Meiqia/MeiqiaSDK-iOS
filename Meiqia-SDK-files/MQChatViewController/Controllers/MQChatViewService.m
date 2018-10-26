@@ -30,7 +30,7 @@
 #import "MQBundleUtil.h"
 #import "MQFileDownloadCellModel.h"
 #import "MQServiceToViewInterface.h"
-#import <MeiQiaSDK/MeiQiaSDK.h>
+#import <MeiQiaSDK/MeiqiaSDK.h>
 #import "MQBotMenuAnswerCellModel.h"
 #import "MQWebViewBubbleCellModel.h"
 #import "MQBotWebViewBubbleAnswerCellModel.h"
@@ -169,7 +169,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (NSDate *)getFirstServiceCellModelDate {
     for (NSInteger index = 0; index < self.cellModels.count; index++) {
         id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
-#pragma 开发者可在下面添加自己更多的业务cellModel，以便能正确获取历史消息
+#pragma 开发者可在下面添加自己更多的业务cellModel 以便能正确获取历史消息
         if ([cellModel isKindOfClass:[MQTextCellModel class]] ||
             [cellModel isKindOfClass:[MQImageCellModel class]] ||
             [cellModel isKindOfClass:[MQVoiceCellModel class]] ||
@@ -188,7 +188,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
       
         if (index == self.cellModels.count - 1) {
 
-#pragma 开发者可在下面添加自己更多的业务cellModel，以便能正确获取历史消息
+#pragma 开发者可在下面添加自己更多的业务cellModel 以便能正确获取历史消息
             if ([cellModel isKindOfClass:[MQTextCellModel class]] ||
                 [cellModel isKindOfClass:[MQImageCellModel class]] ||
                 [cellModel isKindOfClass:[MQVoiceCellModel class]] ||

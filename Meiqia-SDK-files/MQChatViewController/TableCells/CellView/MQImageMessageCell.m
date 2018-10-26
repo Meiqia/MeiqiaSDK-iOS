@@ -142,7 +142,7 @@
     [cellModel showImageViewerFromRect:[bubbleImageView.superview convertRect:bubbleImageView.frame toView:[UIApplication sharedApplication].keyWindow]];
 }
 
-#pragma 点击发送失败消息，重新发送事件
+#pragma 点击发送失败消息 重新发送事件
 - (void)tapFailImage:(id)sender {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"retry_send_message"] message:nil delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] otherButtonTitles:[MQBundleUtil localizedStringForKey:@"alert_view_confirm"], nil];
     [alertView show];

@@ -30,6 +30,7 @@ static void * kMQKeyboardControllerKeyValueObservingContext = &kMQKeyboardContro
     NSParameterAssert(panGestureRecognizer != nil);
     for (NSObject *responder in responders) {
          NSParameterAssert([responder isKindOfClass:UIView.class]);
+        NSLog(@"%@",responder);
     }
     
     if (self = [self init]) {

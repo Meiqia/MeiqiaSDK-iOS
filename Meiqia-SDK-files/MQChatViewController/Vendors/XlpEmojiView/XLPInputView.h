@@ -10,6 +10,8 @@
 
 #define emojikeyboardHeight 260
 #define bottomHeight 30 // 底部按钮的高度
+#define emojCellWidth  54
+#define emojCellHeight 42
 #define emojiBackColor [UIColor colorWithRed:245/255.0 green:245/255.0 blue:245/255.0 alpha:1.0]
 
 @protocol XLPInputViewDelegate  <NSObject>

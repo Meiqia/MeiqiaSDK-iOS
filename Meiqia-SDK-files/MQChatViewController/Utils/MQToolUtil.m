@@ -39,6 +39,10 @@
     if ([deviceString isEqualToString:@"iPhone10,2"] || [deviceString isEqualToString:@"iPhone10,5"])    return @"iPhone8Plus";
     if ([deviceString isEqualToString:@"iPhone10,3"] || [deviceString isEqualToString:@"iPhone10,6"])    return @"iPhoneX";
     
+    if ([deviceString isEqualToString:@"iPhone11,8"])    return @"iPhoneXR";
+    if ([deviceString isEqualToString:@"iPhone11,2"])    return @"iPhoneXS";
+    if ([deviceString isEqualToString:@"iPhone11,4"] || [deviceString isEqualToString:@"iPhone11,6"])    return @"iPhoneXSMAX";
+    
     //模拟机
     if ([deviceString isEqualToString:@"x86_64"])        return @"Simulator";
 
@@ -90,7 +94,7 @@
 + (BOOL)kXlpObtainDeviceVersionIsIphoneX{
     //xlp 最后要去掉
     NSString * str = [self kXlpObtainDeviceVersion];
-    if ([str isEqualToString:@"iPhoneX"] || [str isEqualToString:@"Simulator1"]) {
+    if ([str containsString:@"X"] || [str isEqualToString:@"Simulator"]) {
         return YES;
     } else {
         return NO;

@@ -193,7 +193,7 @@ static NSString * const kMQMessageFormImageViewCellHeaderID = @"MQMessageFormIma
     switch (buttonIndex) {
         case 0: {
             if ([self.choosePictureDelegate respondsToSelector:@selector(choosePictureWithSourceType:)]) {
-                [self.choosePictureDelegate choosePictureWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+                [self.choosePictureDelegate choosePictureWithSourceType:(NSInteger*)UIImagePickerControllerSourceTypePhotoLibrary];
             }
             break;
         }

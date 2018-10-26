@@ -96,7 +96,7 @@
     }];
 }
 
-- (void)setInputView:(UIView *)inputView resignFirstResponderBlock:(void (^)())block
+- (void)setInputView:(UIView *)inputView resignFirstResponderBlock:(void (^)(void))block
 {
     _inputView = inputView;
     resignFirstResponderBlock = block;
@@ -157,7 +157,7 @@
 {
     _inputView = nil;
     if (resignFirstResponderBlock) {
-        ((void (^)())resignFirstResponderBlock)();
+        ((void (^)(void))resignFirstResponderBlock)();
     }
     return [super resignFirstResponder];
 }
