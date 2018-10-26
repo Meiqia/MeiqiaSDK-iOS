@@ -39,9 +39,9 @@
     if ([deviceString isEqualToString:@"iPhone10,2"] || [deviceString isEqualToString:@"iPhone10,5"])    return @"iPhone8Plus";
     if ([deviceString isEqualToString:@"iPhone10,3"] || [deviceString isEqualToString:@"iPhone10,6"])    return @"iPhoneX";
     
-    if ([deviceString isEqualToString:@"iPhone11,1"] || [deviceString isEqualToString:@"iPhone11,4"])    return @"iPhoneXR";
-    if ([deviceString isEqualToString:@"iPhone11,2"] || [deviceString isEqualToString:@"iPhone11,5"])    return @"iPhoneXS";
-    if ([deviceString isEqualToString:@"iPhone11,3"] || [deviceString isEqualToString:@"iPhone11,6"])    return @"iPhoneXSMAX";
+    if ([deviceString isEqualToString:@"iPhone11,8"])    return @"iPhoneXR";
+    if ([deviceString isEqualToString:@"iPhone11,2"])    return @"iPhoneXS";
+    if ([deviceString isEqualToString:@"iPhone11,4"] || [deviceString isEqualToString:@"iPhone11,6"])    return @"iPhoneXSMAX";
     
     //模拟机
     if ([deviceString isEqualToString:@"x86_64"])        return @"Simulator";
