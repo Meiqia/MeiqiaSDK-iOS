@@ -1923,6 +1923,7 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/../Meiqia-SDK-files",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/MeiqiaSDK",
 				);
 				INFOPLIST_FILE = "Meiqia-SDK-Demo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1930,6 +1931,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
+					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
@@ -1963,6 +1965,7 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/../Meiqia-SDK-files",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/MeiqiaSDK",
 				);
 				INFOPLIST_FILE = "Meiqia-SDK-Demo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1970,6 +1973,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
+					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
