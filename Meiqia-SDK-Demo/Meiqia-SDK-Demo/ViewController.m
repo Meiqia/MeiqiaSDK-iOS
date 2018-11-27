@@ -19,6 +19,8 @@
 
 #import "MQMessageFormInputModel.h"
 #import "MQMessageFormViewManager.h"
+
+#import <MeiQiaSDK/MQManager.h>
 @interface ViewController ()
 @property (nonatomic, strong) NSNumber *unreadMessagesCount;
 

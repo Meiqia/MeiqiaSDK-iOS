@@ -34,7 +34,7 @@
          UIRemoteNotificationTypeSound];
 #endif
     
-#pragma mark  集成第一步: 初始化,  参数:appkey  //0be5c8f39d8959c7f70aab0949b5d3ab 009c6d3b9af54a81653c1982a1425e7b
+#pragma mark  集成第一步: 初始化,  参数:appkey  //0be5c8f39d8959c7f70aab0949b5d3ab 009c6d3b9af54a81653c1982a1425e7b 4fa38cc3e75af7bd2b99c9e986baac64 eeac62b7893951af67be97251f3d1a00
     [MQManager initWithAppkey:@"009c6d3b9af54a81653c1982a1425e7b" completion:^(NSString *clientId, NSError *error) {
 
         if (!error) {

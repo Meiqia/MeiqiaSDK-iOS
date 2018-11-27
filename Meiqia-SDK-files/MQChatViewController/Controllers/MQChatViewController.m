@@ -70,6 +70,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     //xlp  是否开启访客无消息过滤的标志
     BOOL openVisitorNoMessageBool; // 默认值 在presentUI里分2种情况初始化 在发送各种消息前检测 若为真 打开 则需手动上线  若为假 则不做操作
+    
+    BOOL shouldSendInputtingMessageToServer;
+
 }
 
 - (void)dealloc {
@@ -80,10 +83,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self closeMeiqiaChatView];
     [MQCustomizedUIText reset];
 
-    //xlp 清楚
-    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"xlpOldInputStr"];
-    [[NSUserDefaults standardUserDefaults]synchronize];
-    sendTime = 0;
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -129,6 +128,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     
     [self presentUI];
+    
+    shouldSendInputtingMessageToServer = YES;
     
         //xlp
 //    [self addTestBt];
@@ -565,31 +566,17 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)inputContentTextDidChange:(NSString *)newString {
     
-    //xlp 判断当前是否已分配人工客服
-    //xlp 页面消失时,清楚该两个字段  xlpOldInputStr sendTime
-    
     if ([MQManager getCurrentState] == MQStateAllocatedAgent){
-        
-        //  前后内容 作对比 若不同 则发送,若相同则不送, 且每隔一次 发送一次
-        NSString *oldInputStr = [[NSUserDefaults standardUserDefaults]objectForKey:@"xlpOldInputStr"];
-        NSString *newInputStr = newString;
-        
-        static int sendTime = 2;
-        
-        if (![oldInputStr isEqualToString:newInputStr] && sendTime%2 == 0) {
-            //用户正在输入
-            
-            [self.chatViewService sendUserInputtingWithContent:newInputStr];
-            
-            [[NSUserDefaults standardUserDefaults]setObject:newInputStr forKey:@"xlpOldInputStr"];
-            [[NSUserDefaults standardUserDefaults]synchronize];
-            
-            
+
+        if (shouldSendInputtingMessageToServer && newString.length > 0) {
+            shouldSendInputtingMessageToServer = NO;
+            [self.chatViewService sendUserInputtingWithContent:newString];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                shouldSendInputtingMessageToServer = YES;
+
+            });
         }
-        sendTime ++;
     }
-    
-    
 }
 
 - (void)chatTableViewScrollToBottomWithAnimated:(BOOL)animated {
