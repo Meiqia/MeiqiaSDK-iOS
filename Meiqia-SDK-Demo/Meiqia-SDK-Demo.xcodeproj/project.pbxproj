@@ -958,34 +958,34 @@
 		8964BB7E204EAA8900EB9473 /* MessageModels */ = {
 			isa = PBXGroup;
 			children = (
+				8964BB88204EAA8900EB9473 /* MQBaseMessage.h */,
+				8964BB96204EAA8900EB9473 /* MQBaseMessage.m */,
 				8964BB7F204EAA8900EB9473 /* MQTextMessage.h */,
-				8964BB80204EAA8900EB9473 /* MQBotAnswerMessage.h */,
+				8964BB8F204EAA8900EB9473 /* MQTextMessage.m */,
+				8964BB84204EAA8900EB9473 /* MQImageMessage.h */,
+				8964BB93204EAA8900EB9473 /* MQImageMessage.m */,
+				8964BB8D204EAA8900EB9473 /* MQFileDownloadMessage.h */,
 				8964BB81204EAA8900EB9473 /* MQFileDownloadMessage.m */,
 				8964BB82204EAA8900EB9473 /* MQEventMessage.h */,
+				8964BB95204EAA8900EB9473 /* MQEventMessage.m */,
 				8964BB83204EAA8900EB9473 /* MQEventMessageFactory.h */,
-				8964BB84204EAA8900EB9473 /* MQImageMessage.h */,
-				8964BB85204EAA8900EB9473 /* MQBotMessageFactory.h */,
-				8964BB86204EAA8900EB9473 /* MQBotMenuMessage.h */,
-				8964BB87204EAA8900EB9473 /* MQBotRichTextMessage.m */,
-				8964BB88204EAA8900EB9473 /* MQBaseMessage.h */,
+				8964BB94204EAA8900EB9473 /* MQEventMessageFactory.m */,
+				8964BB9A204EAA8900EB9473 /* MQVisialMessageFactory.h */,
 				8964BB89204EAA8900EB9473 /* MQVisialMessageFactory.m */,
 				8964BB8A204EAA8900EB9473 /* MQMessageFactoryHelper.h */,
-				8964BB8B204EAA8900EB9473 /* MQVoiceMessage.h */,
-				8964BB8C204EAA8900EB9473 /* MQRichTextMessage.m */,
-				8964BB8D204EAA8900EB9473 /* MQFileDownloadMessage.h */,
-				8964BB8E204EAA8900EB9473 /* MQBotAnswerMessage.m */,
-				8964BB8F204EAA8900EB9473 /* MQTextMessage.m */,
-				8964BB90204EAA8900EB9473 /* MQBotRichTextMessage.h */,
-				8964BB91204EAA8900EB9473 /* MQBotMessageFactory.m */,
-				8964BB92204EAA8900EB9473 /* MQBotMenuMessage.m */,
-				8964BB93204EAA8900EB9473 /* MQImageMessage.m */,
-				8964BB94204EAA8900EB9473 /* MQEventMessageFactory.m */,
-				8964BB95204EAA8900EB9473 /* MQEventMessage.m */,
-				8964BB96204EAA8900EB9473 /* MQBaseMessage.m */,
-				8964BB97204EAA8900EB9473 /* MQRichTextMessage.h */,
-				8964BB98204EAA8900EB9473 /* MQVoiceMessage.m */,
 				8964BB99204EAA8900EB9473 /* MQMessageFactoryHelper.m */,
-				8964BB9A204EAA8900EB9473 /* MQVisialMessageFactory.h */,
+				8964BB8B204EAA8900EB9473 /* MQVoiceMessage.h */,
+				8964BB98204EAA8900EB9473 /* MQVoiceMessage.m */,
+				8964BB97204EAA8900EB9473 /* MQRichTextMessage.h */,
+				8964BB8C204EAA8900EB9473 /* MQRichTextMessage.m */,
+				8964BB85204EAA8900EB9473 /* MQBotMessageFactory.h */,
+				8964BB91204EAA8900EB9473 /* MQBotMessageFactory.m */,
+				8964BB86204EAA8900EB9473 /* MQBotMenuMessage.h */,
+				8964BB92204EAA8900EB9473 /* MQBotMenuMessage.m */,
+				8964BB90204EAA8900EB9473 /* MQBotRichTextMessage.h */,
+				8964BB87204EAA8900EB9473 /* MQBotRichTextMessage.m */,
+				8964BB80204EAA8900EB9473 /* MQBotAnswerMessage.h */,
+				8964BB8E204EAA8900EB9473 /* MQBotAnswerMessage.m */,
 			);
 			path = MessageModels;
 			sourceTree = "<group>";
@@ -1925,6 +1925,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/MeiqiaSDK",
 				);
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "Meiqia-SDK-Demo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
