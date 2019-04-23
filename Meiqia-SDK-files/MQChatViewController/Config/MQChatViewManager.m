@@ -125,7 +125,7 @@
         }
         
         if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypeDefault) {
-            viewController.navigationItem.leftBarButtonItem = customizedBackItem ?: [[UIBarButtonItem alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_cance_sheet"] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
+            viewController.navigationItem.leftBarButtonItem = customizedBackItem ?: [[UIBarButtonItem alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_cance_sheet"] style:(UIBarButtonItemStylePlain) target:viewController action:@selector(dismissChatViewController)];
         } else {
             viewController.navigationItem.leftBarButtonItem = customizedBackItem ?: [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissChatViewController)];
             

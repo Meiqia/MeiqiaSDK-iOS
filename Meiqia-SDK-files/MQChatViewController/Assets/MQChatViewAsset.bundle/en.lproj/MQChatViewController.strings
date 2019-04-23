@@ -34,9 +34,9 @@
 
 "save_text_success"     = "Copied";
 
-"save_photo"            = "save";
+"save_photo"            = "Save";
 
-"save_text"             = "copy";
+"save_text"             = "Copy";
 
 "record_error"          = "Sorry, failed to record-_-";
 
