@@ -1,0 +1,147 @@
+"new_message"         = "메시지를 전송중입니다";
+
+"record_speak"        = "버튼을 누른 채로 말씀하세요";
+
+"record_end"          = "버튼을 놓으면 전송됩니다";
+
+"cancel"              = "취소";
+
+"select_gallery"      = "앨범에서 선택하기";
+
+"select_camera"       = "카메라";
+
+"wait_agent"          = "컨설턴트를 연결하고 있습니다";
+
+"not_access_camera"   = "[설정 - 개인 정보 보호 - 카메라]에서 Uhomes 앱을 ON으로 설정하세요";
+
+"not_access_photos"   = "[설정 - 개인 정보 보호 - 사진]에서 Uhomes 앱을 ON으로 설정하세요";
+
+"display_new_message" = "신규 메시지";
+
+"network_jam"         = "인터넷 연결 상태를 확인한 후 다시 접속하세요";
+
+"simulator_not_support_camera" = "카메라에 접근할 수 없습니다 ";
+
+"simulator_not_support_microphone" = "마이크에 접근할 수 없습니다";
+
+"recode_time_too_short" = "메시지가 너무 짧습니다";
+
+"record_cancel_swipe"   = "위로 올려서 취소하기";
+
+"record_cancel_realse"  = "버튼을 놓으면 취소됩니다";
+
+"save_photo_error"      = "사진을 저장할 수 없습니다";
+
+"save_photo_success"    = "사진 저장됨";
+
+"save_text_success"     = "복사됨";
+
+"save_photo"            = "저장";
+
+"save_text"             = "복사";
+
+"record_error"          = "녹음할 수 없습니다";
+
+"user_confirm"          = "확인";
+
+"no_more_messages"      = "더 이상 메시지가 없습니다";
+
+"welcome_chat"          = "";
+
+"default_assistant"     = "어시스턴트";
+
+"no_agent_title"        = "메시지 남기기";
+
+"no_agent_tips"         = "컨설턴트를 찾을 수 없습니다. \n 회원님의 연락처 정보를 남겨주시면 최대한 빨리 연락드리겠습니다.";
+
+"retry_send_message"    = "메시지를 재전송하시겠습니까?";
+
+"alert_view_cancel"     = "취소";
+
+"alert_view_confirm"    = "확인";
+
+"cannot_refresh"        = "새로고침할 수 없습니다";
+
+"make_call_to"          = "통화하기 ";
+
+"send_message_to"       = "에 메시지 전송 ";
+
+"open_url_by_safari"    = "Safari에서 링크 열기";
+
+"make_email_to"         = "이메일 전송";
+
+"load_history_message_error"    = "메시지 내역을 불러올 수 없습니다";
+
+"microphone_denied"     = "설정에서 Uhomes 앱의 마이크 접근을 허용해주세요";
+
+"meiqia_communication_failed" = "커뮤니케이션 서버에 접근할 수 없습니다. 네트워크 변경 후 다시 시도하세요";
+
+"meiqia_evaluation_sheet"     = "평가";
+
+"meiqia_redirect_sheet"     = "다른 컨설턴트 찾기";
+
+"file_download_file_is_expired" = "파일 만료됨";
+"file_download_canceld" = "다운로드 취소됨";
+"file_download_failed" = "다운로드 실패";
+"file_download_downloading" = "다운로드 중…";
+"file_download_complete" = "다운로드 완료";
+"file_download_ %@ ∙ %@overdue" = "%@ ∙ %@시간 후에 만료됩니다";
+
+"message_tips_send_message_fail_listed_in_black_list" = "CS시스템에 오류가 있습니다";
+
+"message_tips_online_failed_listed_in_black_list" = "CS시스템에 오류가 있습니다";
+
+"reply_tip_text"        = "컨설턴트를 찾을 수 없습니다. 회원님의 연락처 정보를 남겨주시면 최대한 빨리 연락드리겠습니다.";
+
+"bot_redirect_tip_text"  = "컨설턴트와 직접 대화하고 싶은 경우, 이 곳을 클릭하세요";
+
+"bot_manual_redirect_tip_text" = "お困りですか？ここをタップするとコンサルタントにつながります。";
+
+"cannot_text_client_is_onlining"  = "컨설턴트를 찾고있습니다. 잠시 후 재전송해주세요.";
+
+"message_tips_online_failed_listed_in_black_list" = "CS시스템에 오류가 있습니다";
+
+"send_to_fast"  = "잠시 더 기다린 후에 재전송해주세요";
+"leave_a_message" = "메시지 남기기";
+"reply_tip_text"        = "컨설턴트를 찾을 수 없습니다. 회원님의 연락처 정보를 남겨주시면 최대한 빨리 연락드리겠습니다.";
+"bot_redirect_tip_text"  = "컨설턴트와 직접 대화하고 싶은 경우, 이 곳을 클릭하세요";
+
+"cannot_text_client_is_onlining"  = "컨설턴트를 찾고있습니다. 잠시 후 재전송해주세요.";
+
+"send_to_fast"  = "잠시 더 기다린 후에 재전송해주세요";
+"leave_a_message" = "메시지 남기기";
+"submit" = "제출";
+"leave_a_message_placeholder" = "메시지를 입력하세요";
+"param_not_allow_null" = "%@ - 비우실 수 없습니다.";
+"contact_at_lease_enter_one" = "최소 하나의 연락처는 입력하셔야 합니다";
+"submit_failure" = "전송 실패";
+"add_picture" = "이미지 추가";
+"tel" = "휴대전화번호";
+"tel_placeholder" = "휴대전화번호를 입력하세요";
+"email" = "이메일";
+"email_placeholder" = "이메일 주소를 입력하세요";
+"qq" = "QQ";
+"qq_placeholder" = "QQ번호를 입력하세요";
+"wechat" = "WeChat";
+"wechat_placeholder" = "WeChat ID를 입력하세요 ";
+"name" = "이름";
+"name_placeholder" = "이름을 입력하세요";
+
+"wating_in_queue_tip_text" = "%d명의 회원이 대기중입니다. 잠시 기다리시거나 메시지를 남길 수 있습니다.";
+
+//询前表单
+"pre_chat_list_title" = "고객 지원";
+"pre_chat_form_title" =  "아래 빈칸을 채워주세요";
+"pre_chat_form_mutiple_selection_label" = "(복수 선택 가능)";
+"pre_chat_form_black_alert_label" = "붉은 색으로 표기된 칸을 채워주세요";
+
+//pull refresh
+"pull_refresh_normal" = "아래로 내려서 채팅 내역을 확인하세요";
+"pull_refresh_triggered" = "놓으면 로딩됩니다";
+
+//xlp
+// 请输入消息
+"input_content" = "메시지를 입력하세요";
+// 服务连接中,请稍候
+"service_connectting_wait" = "연결 중입니다. 잠시만 기다려주세요";
+

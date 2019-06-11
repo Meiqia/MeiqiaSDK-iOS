@@ -1,0 +1,147 @@
+"new_message"         = "Gửi tin nhắn";
+
+"record_speak"        = "Giữ để nói";
+
+"record_end"          = "Thả để gửi";
+
+"cancel"              = "Hủy";
+
+"select_gallery"      = "Lựa chọn từ album";
+
+"select_camera"       = "Chụp ảnh";
+
+"wait_agent"          = "Bố trí một đại lý cho bạn";
+
+"not_access_camera"   = "Xin hãy lựa chọn Cài đặt - Riêng tư - Chụp ảnh. Sau đó chọn ON cho ứng dụng Uhomes";
+
+"not_access_photos"   = "Xin hãy lựa chọn Cài đặt - Riêng tư - Chụp ảnh. Sau đó chọn ON cho ứng dụng này";
+
+"display_new_message" = "Tin nhắn mới";
+
+"network_jam"         = "Xin kiểm tra kết nối internet và thử lại lần nữa";
+
+"simulator_not_support_camera" = "Không thể tiếp cận camera";
+
+"simulator_not_support_microphone" = "Không thể tiếp cận loa";
+
+"recode_time_too_short" = "Tin nhắn quá ngắn";
+
+"record_cancel_swipe"   = "Trượt lên để hủy";
+
+"record_cancel_realse"  = "Thả để hủy";
+
+"save_photo_error"      = "Xin lỗi, không thể lưu ảnh";
+
+"save_photo_success"    = "Ảnh được lưu";
+
+"save_text_success"     = "Đã sao chép";
+
+"save_photo"            = "Lưu";
+
+"save_text"             = "Sao chép";
+
+"record_error"          = "Xin lỗi, không thể ghi âm";
+
+"user_confirm"          = "OK";
+
+"no_more_messages"      = "Không có tin nhắn mới";
+
+"welcome_chat"          = "";
+
+"default_assistant"     = "Hỗ trợ";
+
+"no_agent_title"        = "Rời tin nhắn";
+
+"no_agent_tips"         = "Xin lỗi, hiện không có đại lý.\n Xin hãy gửi thông tin liên hệ của bạn và chúng tôi sẽ liên lạc ngay khi có thể";
+
+"retry_send_message"    = "Gửi lại tin nhắn?";
+
+"alert_view_cancel"     = "Hủy";
+
+"alert_view_confirm"    = "Xác nhận";
+
+"cannot_refresh"        = "Không thể làm mới";
+
+"make_call_to"          = "Gọi ";
+
+"send_message_to"       = "Gửi một tin nhắn tới ";
+
+"open_url_by_safari"    = "Mở đường dẫn trên Safari";
+
+"make_email_to"         = "Gửi email";
+
+"load_history_message_error"    = "Xin lỗi, không thể tải lịch sử tin nhắn";
+
+"microphone_denied"     = "Xin đi đến phần Cài đặt và cho phép mở loa trên ứng dụng Uhomes";
+
+"meiqia_communication_failed" = "Không thể tiếp cận máy chủ giao tiếp, xin hãy thay đổi mạng và thử lại";
+
+"meiqia_evaluation_sheet"     = "Xem lại";
+
+"meiqia_redirect_sheet"     = "Chuyển hướng";
+
+"file_download_file_is_expired" = "File hết hạn";
+"file_download_canceld" = "Tải xuống bị hủy bỏ";
+"file_download_failed" = "Tải xuống lỗi";
+"file_download_downloading" = "Đang tải";
+"file_download_complete" = "Tải xuống hoàn tất";
+"file_download_ %@ ∙ %@overdue" = "Tải xuống hoàn tất";
+
+"message_tips_send_message_fail_listed_in_black_list" = "Xin lỗi, hệ thống CS đang lỗi";
+
+"message_tips_online_failed_listed_in_black_list" = "Xin lỗi, hệ thống CS đang lỗi";
+
+"reply_tip_text"        = "Xin lỗi, hiện không có đại lý. Xin hãy gửi thông tin liên hệ của bạn và chúng tôi sẽ liên lạc ngay khi có thể";
+
+"bot_redirect_tip_text"  = "Máy eh? Chạm vào đây để chuyển hướng tới một tư vấn viên";
+
+"bot_manual_redirect_tip_text" = "Cần giúp đỡ? Chạm vào đây để chuyển hướng tới một tư vấn viên";
+
+"cannot_text_client_is_onlining"  = "Bố trí một tư vấn viên cho bạn. Xin hãy chờ và gửi lại";
+
+"message_tips_online_failed_listed_in_black_list" = "Xin lỗi, hệ thống CS đang lỗi";
+
+"send_to_fast"  = "Bạn thật nhanh chóng! Hãy tạm nghỉ ngơi trước khi gửi lại";
+"leave_a_message" = "Rời tin nhắn";
+"reply_tip_text"        = "Xin lỗi, hiện không có đại lý. Xin hãy gửi thông tin liên hệ của bạn và chúng tôi sẽ liên lạc ngay khi có thể";
+"bot_redirect_tip_text"  = "Máy eh? Chạm vào đây để chuyển hướng tới một tư vấn viên";
+
+"cannot_text_client_is_onlining"  = "Bố trí một tư vấn viên cho bạn. Xin hãy chờ và gửi lại";
+
+"send_to_fast"  = "Bạn thật nhanh chóng! Hãy tạm nghỉ ngơi trước khi gửi lại";
+"leave_a_message" = "Rời tin nhắn";
+"submit" = "Nộp";
+"leave_a_message_placeholder" = "Nhập tin nhắn";
+"param_not_allow_null" = "%@ không thể để trống";
+"contact_at_lease_enter_one" = "Xin hoàn tất ít nhất một thông tin liên lạc";
+"submit_failure" = "Không thể nộp";
+"add_picture" = "Thêm hình ảnh";
+"tel" = "Số điện thoại";
+"tel_placeholder" = "Xin hãy nhập số điện thoại";
+"email" = "Email";
+"email_placeholder" = "Xin hãy nhập email";
+"qq" = "QQ";
+"qq_placeholder" = "Xin hãy nhập số QQ của bạn";
+"wechat" = "WeChat";
+"wechat_placeholder" = "Xin hãy nhập ID WeChat của bạn";
+"name" = "Tên";
+"name_placeholder" = "Xin hãy nhập tên";
+
+"wating_in_queue_tip_text" = "Xin hãy chờ, %d người dùng đang trong danh sách chờ trước bạn. Bạn có thể để lại một tin nhắn";
+
+//询前表单
+"pre_chat_list_title" = "Hỗ trợ khách hàng";
+"pre_chat_form_title" =  "Hỗ trợ khách hàng";
+"pre_chat_form_mutiple_selection_label" = "(đa)";
+"pre_chat_form_black_alert_label" = "Xin hãy hoàn thành những mục được bôi đỏ";
+
+//pull refresh
+"pull_refresh_normal" = "Kéo xuống để xem lịch sử trò chuyện";
+"pull_refresh_triggered" = "Thả ra để tải";
+
+//xlp
+// 请输入消息
+"input_content" = "Xin hãy nhập tin nhắn của bạn";
+// 服务连接中,请稍候
+"service_connectting_wait" = "Đang kết nối… xin chờ";
+

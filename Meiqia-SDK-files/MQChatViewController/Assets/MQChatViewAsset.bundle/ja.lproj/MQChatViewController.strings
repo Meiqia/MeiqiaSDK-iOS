@@ -1,0 +1,147 @@
+"new_message"         = "メッセージを送信...";
+
+"record_speak"        = "通話を保留";
+
+"record_end"          = "指をはなすと送信されます";
+
+"cancel"              = "キャンセル";
+
+"select_gallery"      = "アルバムから選択";
+
+"select_camera"       = "カメラ";
+
+"wait_agent"          = "担当コンサルタントを割り当てています......";
+
+"not_access_camera"   = "カメラのプライバシー設定をオンにして、Uhomesアプリがカメラにアクセスできるようにしてください。";
+
+"not_access_photos"   = "写真のプライバシー設定をオンにして、Uhomesアプリがカメラにアクセスできるようにしてください。";
+
+"display_new_message" = "新しいメッセージ";
+
+"network_jam"         = "インターネット接続を確認して、再度お試しください";
+
+"simulator_not_support_camera" = "カメラにアクセスすることができません";
+
+"simulator_not_support_microphone" = "マイクにアクセスすることができません";
+
+"recode_time_too_short" = "メッセージが短すぎます";
+
+"record_cancel_swipe"   = "上にスワイプするとキャンセルされます";
+
+"record_cancel_realse"  = "指をはなすとキャンセルされます";
+
+"save_photo_error"      = "写真を保存できませんでした";
+
+"save_photo_success"    = "保存した写真";
+
+"save_text_success"     = "コピーされました";
+
+"save_photo"            = "保存";
+
+"save_text"             = "コピー";
+
+"record_error"          = "録音に失敗しました-_-";
+
+"user_confirm"          = "OK";
+
+"no_more_messages"      = "これ以上メッセージはありません";
+
+"welcome_chat"          = "";
+
+"default_assistant"     = "アシスタント";
+
+"no_agent_title"        = "メッセージを残す";
+
+"no_agent_tips"         = "申し訳ありませんが、現在オンラインのカスタマーサービスはご利用いただけません。\n 連絡先をお送りいただくと当社からできるだけ早くご連絡いたします。";
+
+"retry_send_message"    = "メッセージを再送信しますか？";
+
+"alert_view_cancel"     = "キャンセル";
+
+"alert_view_confirm"    = "確定";
+
+"cannot_refresh"        = "更新できません";
+
+"make_call_to"          = "電話 ";
+
+"send_message_to"       = "XXにメッセージを送ります ";
+
+"open_url_by_safari"    = "Safariでこのリンクを開きます";
+
+"make_email_to"         = "メールを送信";
+
+"load_history_message_error"    = "メッセージの履歴の読み込みに失敗しました-_-";
+
+"microphone_denied"     = "システム設定でUhomesアプリがマイクにアクセスできるようにしてください";
+
+"meiqia_communication_failed" = "通信サーバにアクセスすることができません。ネットワークを変更して再試行してください。";
+
+"meiqia_evaluation_sheet"     = "レビュー";
+
+"meiqia_redirect_sheet"     = "リダイレクト";
+
+"file_download_file_is_expired" = "ファイルの有効期限切れ";
+"file_download_canceld" = "ダウンロードがキャンセルされました";
+"file_download_failed" = "ダウンロードに失敗しました";
+"file_download_downloading" = "ダウンロード中...";
+"file_download_complete" = "ダウンロード完了";
+"file_download_ %@ ∙ %@overdue" = "％@∙は@％時間内に期限切れになります";
+
+"message_tips_send_message_fail_listed_in_black_list" = "申し訳ありませんが、現在カスタマーサービスシステムは一時的にご利用いただけません。";
+
+"message_tips_online_failed_listed_in_black_list" = "申し訳ありませんが、現在カスタマーサービスシステムは一時的にご利用いただけません。";
+
+"reply_tip_text"        = "申し訳ありませんが、現在オンラインのカスタマーサービスはご利用いただけません。メッセージをお送りいただくと当社からできるだけ早くご連絡いたします。";
+
+"bot_redirect_tip_text"  = "機械の操作にお困りですか？ここをタップするとコンサルタントにつながります。";
+
+"bot_manual_redirect_tip_text" = "お困りですか？ここをタップするとコンサルタントにつながります。";
+
+"cannot_text_client_is_onlining"  = "コンサルタントがあなたに割り当てられています。後ほど再送信してください。";
+
+"message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
+
+"send_to_fast"  = "少し待ってから再送信してください";
+"leave_a_message" = "メッセージを残す";
+"reply_tip_text"        = "申し訳ありませんが、現在オンラインのカスタマーサービスはご利用いただけません。メッセージをお送りいただくと当社からできるだけ早くご連絡いたします。";
+"bot_redirect_tip_text"  = "機械の操作にお困りですか？ここをタップするとコンサルタントにつながります。";
+
+"cannot_text_client_is_onlining"  = "コンサルタントがあなたに割り当てられています。後ほど再送信してください。";
+
+"send_to_fast"  = "少し待ってから再送信してください";
+"leave_a_message" = "メッセージを残す";
+"submit" = "送信";
+"leave_a_message_placeholder" = "メッセージを入力";
+"param_not_allow_null" = "％@を空欄にすることはできません";
+"contact_at_lease_enter_one" = "少なくとも1つの連絡方法を入力してください";
+"submit_failure" = "送信できませんでした";
+"add_picture" = "画像を追加";
+"tel" = "電話番号";
+"tel_placeholder" = "電話番号を入力してください";
+"email" = "Eメール";
+"email_placeholder" = "メールアドレスを入力してください";
+"qq" = "QQ";
+"qq_placeholder" = "あなたのQQ番号を入力してください";
+"wechat" = "WeChat";
+"wechat_placeholder" = "あなたWeChat IDを入力してください";
+"name" = "氏名";
+"name_placeholder" = "お名前を入力してください";
+
+"wating_in_queue_tip_text" = "少々お待ちください。お客様の前に％D人のユーザーがお待ちです。メッセージを残すこともできます。";
+
+//询前表单
+"pre_chat_list_title" = "カスタマーサポート";
+"pre_chat_form_title" =  "空欄にご記入ください";
+"pre_chat_form_mutiple_selection_label" = "（複数）";
+"pre_chat_form_black_alert_label" = "赤で示された欄に入力してください";
+
+//pull refresh
+"pull_refresh_normal" = "下に引くとチャット履歴が表示されます";
+"pull_refresh_triggered" = "指をはなすと読み込みできます";
+
+//xlp
+// 请输入消息
+"input_content" = "メッセージを入力してください...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "接続中...お待ちください.";
+
