@@ -77,6 +77,7 @@
 "meiqia_communication_failed" = "커뮤니케이션 서버에 접근할 수 없습니다. 네트워크 변경 후 다시 시도하세요";
 
 "meiqia_evaluation_sheet"     = "평가";
+"meiqia_cance_sheet"         = "취소";
 
 "meiqia_redirect_sheet"     = "다른 컨설턴트 찾기";
 

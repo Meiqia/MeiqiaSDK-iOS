@@ -77,6 +77,7 @@
 "meiqia_communication_failed" = "通信サーバにアクセスすることができません。ネットワークを変更して再試行してください。";
 
 "meiqia_evaluation_sheet"     = "レビュー";
+"meiqia_cance_sheet"         = "キャンセル";
 
 "meiqia_redirect_sheet"     = "リダイレクト";
 
