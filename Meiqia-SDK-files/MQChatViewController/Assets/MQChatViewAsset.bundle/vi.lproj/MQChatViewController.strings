@@ -59,6 +59,11 @@
 "alert_view_cancel"     = "Hủy";
 
 "alert_view_confirm"    = "Xác nhận";
+"mq_evaluate_good"      = "Tốt";
+"mq_evaluate_medium"    = "Hội chợ";
+"mq_evaluate_bad"       = "Xấu";
+"mq_evaluate_hint"      = "Vui lòng để lại một bình luận (Tùy chọn)";
+"mq_evaluate_title"     = "Bạn đánh giá cuộc trò chuyện này như thế nào?";
 
 "cannot_refresh"        = "Không thể làm mới";
 
@@ -77,7 +82,7 @@
 "meiqia_communication_failed" = "Không thể tiếp cận máy chủ giao tiếp, xin hãy thay đổi mạng và thử lại";
 
 "meiqia_evaluation_sheet"     = "Xem lại";
-
+"meiqia_cance_sheet"         = "Hủy";
 "meiqia_redirect_sheet"     = "Chuyển hướng";
 
 "file_download_file_is_expired" = "File hết hạn";

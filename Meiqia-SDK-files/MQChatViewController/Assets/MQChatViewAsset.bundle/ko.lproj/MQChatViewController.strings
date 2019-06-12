@@ -60,6 +60,15 @@
 
 "alert_view_confirm"    = "확인";
 
+"mq_evaluate_good"      = "좋은";
+"mq_evaluate_medium"    = "공정한";
+"mq_evaluate_bad"       = "나쁜";
+"mq_evaluate_hint"      = "코멘트를 남겨주세요 (선택 사항)";
+"mq_evaluate_title"     = "이 채팅에 대해 어떻게 평가합니까?";
+
+
+
+
 "cannot_refresh"        = "새로고침할 수 없습니다";
 
 "make_call_to"          = "통화하기 ";

@@ -60,6 +60,13 @@
 
 "alert_view_confirm"    = "確定";
 
+"mq_evaluate_good"      = "良い";
+"mq_evaluate_medium"    = "フェア";
+"mq_evaluate_bad"       = "悪い";
+"mq_evaluate_hint"      = "コメントを残してください（任意）";
+"mq_evaluate_title"     = "あなたはこのチャットをどのように評価しますか？";
+
+
 "cannot_refresh"        = "更新できません";
 
 "make_call_to"          = "電話 ";
