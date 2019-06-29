@@ -1,0 +1,145 @@
+"new_message"         = "Envoies ton message…";
+
+"record_speak"        = "Tenir pour parler";
+
+"record_end"          = "Relâcher pour envoyer";
+
+"cancel"              = "Annuler";
+
+"select_gallery"      = "Choisir depuis un album";
+
+"select_camera"       = "Appareil photo";
+
+"wait_agent"          = "Nous affectons un conseiller pour toi …";
+
+"not_access_camera"   = "Aller dans Paramètres - Confidentialité - Puis activer Caméra pour l'appli Uhomes";
+
+"not_access_photos"   = "Aller dans Paramètres - Confidentialité - Puis activer Caméra pour l'appli Uhomes";
+
+"display_new_message" = "Nouveaux messages";
+
+"network_jam"         = "Vérifiez votre connexion internet et réessayez";
+
+"simulator_not_support_camera" = "Impossible d'accéder à l'appareil photo";
+
+"simulator_not_support_microphone" = "Impossible d'accéder au micro";
+
+"recode_time_too_short" = "Message trop court";
+
+"record_cancel_swipe"   = "Glisser vers le haut pour annuler";
+
+"record_cancel_realse"  = "Relâchez pour annuler";
+
+"save_photo_error"      = "Désolé, impossible d'enregistrer la photo";
+
+"save_photo_success"    = "Photo enregistrée";
+
+"save_text_success"     = "Copié";
+
+"save_photo"            = "Enregistrer";
+
+"save_text"             = "Copier";
+
+"record_error"          = "Désolé, impossible d'enregistrer";
+
+"user_confirm"          = "Ok";
+
+"no_more_messages"      = "Plus de message";
+
+"welcome_chat"          = "";
+
+"default_assistant"     = "Assistant";
+
+"no_agent_title"        = "Laisser un message";
+
+"no_agent_tips"         = "Désolé, il n'y a pas de conseiller pour le moment. Envoies tes coordonnées et nous te contacterons dès que possible";
+
+"retry_send_message"    = "Renvoyer le message?";
+
+"alert_view_cancel"     = "Annuler";
+
+"alert_view_confirm"    = "Confirmer";
+
+"cannot_refresh"        = "Impossible de rafraichir";
+
+"make_call_to"          = "Appeler ";
+
+"send_message_to"       = "Envoyer un message à  ";
+
+"open_url_by_safari"    = "Ouvrir ce lien dans Safari";
+
+"make_email_to"         = "Envoyer un email";
+
+"load_history_message_error"    = "Désolé, impossible de charger l'historique des messages";
+
+"microphone_denied"     = "Aller dans Paramètres et autoriser accès du microphone pour l'appli Uhomes ";
+
+"meiqia_communication_failed" = "Impossible d'accéder au serveur de communication, changez votre réseau et réessayez.";
+
+"meiqia_evaluation_sheet"     = "Evaluer";
+
+"meiqia_redirect_sheet"     = "Réorienter";
+
+"file_download_file_is_expired" = "Fichier expiré";
+"file_download_canceld" = "Téléchargement annulé";
+"file_download_failed" = "Échec du téléchargement";
+"file_download_downloading" = "Téléchargement..";
+"file_download_complete" = "Téléchargement terminé";
+"file_download_ %@ ∙ %@overdue" = "% @ ∙ expire dans% @ heures";
+
+"message_tips_send_message_fail_listed_in_black_list" = "Désolé, le système CS est en panne";
+
+"message_tips_online_failed_listed_in_black_list" = "Désolé, le système CS est en panne";
+
+"reply_tip_text"        = "Désolé, aucun conseiller n'est disponible. Envoies nous un message et nous te contacterons dès que possible.";
+
+"bot_redirect_tip_text"  = "Ah la technologie… Cliques ici pour être rediriger vers un conseiller.";
+
+"bot_manual_redirect_tip_text" = "Besoin d'aide? Cliques ici pour être rediriger vers un conseiller.";
+
+"cannot_text_client_is_onlining"  = "Nous affectons un conseiller pour toi. Tu peux renvoyer dans un petit moment.";
+
+"message_tips_online_failed_listed_in_black_list" = "Désolé, le système CS est en panne";
+
+"send_to_fast"  = "Tu es trop rapide! Essaies de renvoyer dans un petit moment.";
+"leave_a_message" = "Laisses un message";
+"reply_tip_text"        = "Désolé, aucun conseiller n'est disponible. Envoies nous un message et nous te contacterons dès que possible.";
+"bot_redirect_tip_text"  = "Ah la technologie… Cliques ici pour être rediriger vers un conseiller.";
+
+"cannot_text_client_is_onlining"  = "Nous affectons un conseiller pour toi. Tu peux renvoyer dans un petit moment.";
+
+"submit" = "Soumettre";
+"leave_a_message_placeholder" = "Entrer ton message";
+"param_not_allow_null" = "%@ ne peux pas être vide";
+"contact_at_lease_enter_one" = "Veuillez renseigner au moins un champ d'informations de contact.";
+"submit_failure" = "Échec de la soumission";
+"add_picture" = "Ajouter une image";
+"tel" = "Numéro de téléphone";
+"tel_placeholder" = "SVP entrez votre numéro de téléphone";
+"email" = "Adresse email";
+"email_placeholder" = "Entrez votre adresse email SVP";
+"qq" = "QQ";
+"qq_placeholder" = "SVP entrez votre numéro QQ";
+"wechat" = "WeChat";
+"wechat_placeholder" = "SVP veuillez entrer votre identifiant WeChat ID";
+"name" = "Prénom";
+"name_placeholder" = "Entres ton prénom";
+
+"wating_in_queue_tip_text" = "Veuillez patienter,% d utilisateurs sont dans la file d'attente devant vous. Vous pouvez toujours laisser un message";
+
+//询前表单
+"pre_chat_list_title" = "Support client";
+"pre_chat_form_title" =  "S'il vous plaît remplir les blancs";
+"pre_chat_form_mutiple_selection_label" = "(multiple)";
+"pre_chat_form_black_alert_label" = "Veuillez compléter les champs indiqués en rouge";
+
+//pull refresh
+"pull_refresh_normal" = "Déroulez pour voir l'historique des discussions";
+"pull_refresh_triggered" = "Relâchez pour charger";
+
+//xlp
+// 请输入消息
+"input_content" = "S'il vous plaît entrez votre message …";
+// 服务连接中,请稍候
+"service_connectting_wait" = "Connexion en cours ... veuillez patienter";
+
