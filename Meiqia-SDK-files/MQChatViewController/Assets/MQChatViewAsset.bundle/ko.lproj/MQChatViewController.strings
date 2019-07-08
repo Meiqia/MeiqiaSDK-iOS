@@ -155,3 +155,8 @@
 // 服务连接中,请稍候
 "service_connectting_wait" = "연결 중입니다. 잠시만 기다려주세요";
 
+"mq_evaluate_good" = "좋은"
+"mq_evaluate_medium" = "공정한"
+"mq_evaluate_bad" = "나쁜"
+"mq_evaluate_hint" = "코멘트를 남겨주세요 (선택 사항)"
+"mq_evaluate_title" = "이 채팅에 대해 어떻게 평가합니까?"

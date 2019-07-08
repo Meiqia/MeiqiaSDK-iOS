@@ -142,3 +142,8 @@
 // 服务连接中,请稍候
 "service_connectting_wait" = "Service is connectting,please waitting";
 
+"mq_evaluate_good" = "Good"
+"mq_evaluate_medium" = "Fair"
+"mq_evaluate_bad" = "Bad"
+"mq_evaluate_hint" = "Please leave a comment (Optional)"
+"mq_evaluate_title" = "How would you rate this chat?"
