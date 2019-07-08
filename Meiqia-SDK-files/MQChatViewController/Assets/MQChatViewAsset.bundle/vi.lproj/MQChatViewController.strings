@@ -149,8 +149,8 @@
 "input_content" = "Xin hãy nhập tin nhắn của bạn";
 // 服务连接中,请稍候
 "service_connectting_wait" = "Đang kết nối… xin chờ";
-"mq_evaluate_good" = "Tốt"
-"mq_evaluate_medium" = "Hội chợ"
-"mq_evaluate_bad" = "Xấu"
-"mq_evaluate_hint" = "Vui lòng để lại một bình luận (Tùy chọn)"
-"mq_evaluate_title" = "Bạn đánh giá cuộc trò chuyện này như thế nào?"
+"mq_evaluate_good" = "Tốt";
+"mq_evaluate_medium" = "Hội chợ";
+"mq_evaluate_bad" = "Xấu";
+"mq_evaluate_hint" = "Vui lòng để lại một bình luận (Tùy chọn)";
+"mq_evaluate_title" = "Bạn đánh giá cuộc trò chuyện này như thế nào?";

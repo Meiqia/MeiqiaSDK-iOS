@@ -143,8 +143,8 @@
 // 服务连接中,请稍候
 "service_connectting_wait" = "Connexion en cours ... veuillez patienter";
 
-"mq_evaluate_good" = "Bon"
-"mq_evaluate_medium" = "Juste"
-"mq_evaluate_bad" = "Mauvais"
+"mq_evaluate_good" = "Bon";
+"mq_evaluate_medium" = "Juste";
+"mq_evaluate_bad" = "Mauvais";
 "mq_evaluate_hint" = "S'il vous plaît laissez un commentaire (facultatif)"
-"mq_evaluate_title" = "Comment évalueriez-vous ce chat?"
+"mq_evaluate_title" = "Comment évalueriez-vous ce chat?";

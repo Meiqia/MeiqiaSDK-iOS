@@ -153,3 +153,8 @@
 // 服务连接中,请稍候
 "service_connectting_wait" = "接続中...お待ちください.";
 
+"mq_evaluate_good" = "良い";
+"mq_evaluate_medium" = "普通";
+"mq_evaluate_bad" = "悪い";
+"mq_evaluate_hint" = "コメントを記入してください (任意)";
+"mq_evaluate_title" = "このサービスを評価してください。";

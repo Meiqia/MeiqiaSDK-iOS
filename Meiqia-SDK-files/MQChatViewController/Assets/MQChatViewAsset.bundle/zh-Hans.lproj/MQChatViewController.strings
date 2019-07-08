@@ -150,8 +150,8 @@
 // 服务连接中,请稍候
 "service_connectting_wait" = "服务连接中,请稍候...";
 
-"mq_evaluate_good" = "好评"
-"mq_evaluate_medium" = "中评"
-"mq_evaluate_bad" = "差评"
-"mq_evaluate_hint" = "填写评价内容 (选填)"
-"mq_evaluate_title" = "你对本次服务满意吗？"
+"mq_evaluate_good" = "好评";
+"mq_evaluate_medium" = "中评";
+"mq_evaluate_bad" = "差评";
+"mq_evaluate_hint" = "填写评价内容 (选填)";
+"mq_evaluate_title" = "你对本次服务满意吗？";
