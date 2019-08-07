@@ -1,0 +1,155 @@
+"new_message"         = "Enviar mensaje...";
+
+"record_speak"        = "Presiona para grabar";
+
+"record_end"          = "Suelta para enviar";
+
+"cancel"              = "Cancelar";
+
+"select_gallery"      = "Seleccionar del álbum";
+
+"select_camera"       = "Cámara";
+
+"wait_agent"          = "Te estamos asignando un asesor...";
+
+"not_access_camera"   = "Ve a Configuración - Privacidad - Cámara. Activa la función Cámara para la aplicación Uhomes";
+
+"not_access_photos"   = "Ve a Configuración - Privacidad - Fotos. Activa la función Fotos para la aplicación Uhomes";
+
+"display_new_message" = "Nuevos mensajes";
+
+"network_jam"         = "Por favor, comprueba tu conexión a internet e inténtalo de nuevo";
+
+"simulator_not_support_camera" = "Error al acceder a la cámara";
+
+"simulator_not_support_microphone" = "Error al acceder al micrófono";
+
+"recode_time_too_short" = "Mensaje demasiado corto";
+
+"record_cancel_swipe"   = "Desliza para arriba para cancelar";
+
+"record_cancel_realse"  = "Suelta para cancelar";
+
+"save_photo_error"      = "Error al guardar la foto. Lo sentimos";
+
+"save_photo_success"    = "Foto guardada";
+
+"save_text_success"     = "Copiado";
+
+"save_photo"            = "Guardar";
+
+"save_text"             = "Copiar";
+
+"record_error"          = "Error al grabar. Lo sentimos";
+
+"user_confirm"          = "OK";
+
+"no_more_messages"      = "No hay más mensajes";
+
+"welcome_chat"          = "";
+
+"default_assistant"     = "Asistente";
+
+"no_agent_title"        = "Deja un mensaje";
+
+"no_agent_tips"         = "Lo sentimos, no hay ningún asesor disponible. Mándanos tus datos y nos pondremos en contacto contigo lo antes posible ";
+
+"retry_send_message"    = "¿Reenviar mensaje?";
+
+"alert_view_cancel"     = "Cancelar";
+
+"alert_view_confirm"    = "Confirmar";
+"alert_view_send"       = "Enviar";
+//@"你对本次服务满意吗？"
+//@"填写评价内容（选填）"
+//@"差评";@"中评";@"好评";
+
+"mq_evaluate_good"      = "Bueno";
+"mq_evaluate_medium"    = "Normal";
+"mq_evaluate_bad"       = "Malo";
+"mq_evaluate_hint"      = "Por favor, deja un mensaje (opcional)";
+"mq_evaluate_title"     = "¿Cómo valorarías este chat?";
+
+
+"cannot_refresh"        = "Error al actualizar";
+
+"make_call_to"          = "Llamada ";
+
+"send_message_to"       = "Enviar un mensaje a ";
+
+"open_url_by_safari"    = "Abre este enlace en Safari";
+
+"make_email_to"         = "Enviar mensaje";
+
+"load_history_message_error"    = "Error al cargar el historial de mensajes. Lo sentimos";
+
+"microphone_denied"     = "Ve a Configuración y permite el acceso al micrófono para la aplicación Uhomes";
+
+"meiqia_communication_failed" = "Error al acceder al servidor de comunicación. Por favor, cambia de red e inténtalo de nuevo";
+
+"meiqia_evaluation_sheet"     = "Danos tu opinión";
+"meiqia_cance_sheet"          = "Cancelar";
+
+"meiqia_redirect_sheet"     = "Redireccionar";
+
+"file_download_file_is_expired" = "Archivo caducado";
+"file_download_canceld" = "Descarga cancelada";
+"file_download_failed" = "Error al descargar";
+"file_download_downloading" = "Descargando...";
+"file_download_complete" = "Descarga completa";
+"file_download_ %@ ∙ %@overdue" = "%@ caducará en %@ horas";
+
+"message_tips_send_message_fail_listed_in_black_list" = "Lo sentimos, el sistema CS está fuera de servicio";
+
+"message_tips_online_failed_listed_in_black_list" = "Lo sentimos, el sistema CS está fuera de servicio";
+
+"reply_tip_text"        = "Lo sentimos, no hay ningún asesor disponible. Mándanos tus datos y nos pondremos en contacto contigo lo antes posible ";
+
+"bot_redirect_tip_text"  = "Ay, la tecnología... Haz clic aquí para redirigirte a un asesor";
+
+"bot_manual_redirect_tip_text" = "¿Necesitas ayuda? Haz clic aquí para redirigirte a un asesor";
+
+"cannot_text_client_is_onlining"  = "Te estamos asignando un asesor. Por favor, espera y reenvíalo";
+
+"message_tips_online_failed_listed_in_black_list" = "Lo sentimos, el sistema CS está fuera de servicio";
+
+"send_to_fast"  = "您发送的太快啦，请休息一下吧~";
+"leave_a_message" = "Deja un mensaje";
+"reply_tip_text"        = "Lo sentimos, no hay ningún asesor disponible. Mándanos tus datos y nos pondremos en contacto contigo lo antes posible ";
+"bot_redirect_tip_text"  = "Ay, la tecnología... Haz clic aquí para redirigirte a un asesor";
+
+"submit" = "Enviar";
+"leave_a_message_placeholder" = "Escribe tu mensaje";
+"param_not_allow_null" = "%@ no puede quedar vacío";
+"contact_at_lease_enter_one" = "Por favor, rellena los campos de información de cómo mínimo un contacto";
+"submit_failure" = "Envío fallido";
+"add_picture" = "Añade imagen";
+"tel" = "Número de teléfono";
+"tel_placeholder" = "Por favor, introduce tu número de teléfono";
+"email" = "Correo electrónico";
+"email_placeholder" = "Por favor, introduce tu correo electrónico";
+"qq" = "QQ";
+"qq_placeholder" = "Por favor, introduce tu número QQ";
+"wechat" = "WeChat";
+"wechat_placeholder" = "Por favor, introduce tu identificador de WeChat";
+"name" = "Nombre";
+"name_placeholder" = "Por favor, introduce tu nombre";
+
+"wating_in_queue_tip_text" = "Por favor, espera. Hay %@ usuarios delante de ti en la cola. Siempre puedes dejarnos un mensaje";
+
+//询前表单
+"pre_chat_list_title" = "Atención al cliente";
+"pre_chat_form_title" =  "Por favor, rellena los espacios en blanco";
+"pre_chat_form_mutiple_selection_label" = "(múltiple)";
+"pre_chat_form_black_alert_label" = "Por favor, rellena los espacios indicados en rojo";
+
+//pull refresh
+"pull_refresh_normal" = "Despliega para ver el historial de chats";
+"pull_refresh_triggered" = "Suelta para cargar";
+
+//xlp
+// 请输入消息
+"input_content" = "Por favor, introduce tu mensaje";
+// 服务连接中,请稍候
+"service_connectting_wait" = "Conectando... por favor espera";
+
