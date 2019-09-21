@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
-@interface MQEmbededWebView : UIWebView
+@interface MQEmbededWebView : WKWebView
 
 @property (nonatomic, copy)void(^loadComplete)(CGFloat);
 @property (nonatomic, copy)void(^tappedLink)(NSURL *);

@@ -9,7 +9,7 @@
 #import "MQEmbededWebView.h"
 #import "UIView+MQLayout.h"
 
-@interface MQEmbededWebView()<UIWebViewDelegate>
+@interface MQEmbededWebView()<WKNavigationDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, assign) NSInteger requestCount;
@@ -22,12 +22,13 @@
     if (self = [super init]) {
         self.backgroundColor = [UIColor clearColor];
         self.opaque = false;
-        self.delegate = self;
+        self.navigationDelegate = self;
+        self.configuration.dataDetectorTypes = UIDataDetectorTypeNone;
         self.scrollView.showsVerticalScrollIndicator = NO;
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.scrollEnabled = NO;
         self.clipsToBounds = YES;
-        self.dataDetectorTypes = UIDataDetectorTypeNone;
+        self.configuration.dataDetectorTypes = UIDataDetectorTypeNone;
         self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleGray)];
 
     }
@@ -52,39 +53,57 @@
 }
 
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    NSURLRequest *request = navigationAction.request;
     if (request.URL.path) {
         if (self.tappedLink) {
             self.tappedLink(request.URL);
         }
     }
-    
-    return request.URL.path.length == 0;
+    if (request.URL.path.length == 0) {
+        decisionHandler(WKNavigationActionPolicyAllow);
+    }else {
+        decisionHandler(WKNavigationActionPolicyCancel);
+    }
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
+    NSString *injectionJSString = @"var script = document.createElement('meta');"
+    "script.name = 'viewport';"
+    "script.content=\"width=device-width, user-scalable=no\";"
+    "document.getElementsByTagName('head')[0].appendChild(script);";
+    [webView evaluateJavaScript:injectionJSString completionHandler:nil];
+    
     self.requestCount ++;
     [self addSubview:self.loadingIndicator];
     [self.loadingIndicator startAnimating];
     [self.loadingIndicator align:(ViewAlignmentCenter) relativeToPoint:CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    
     self.requestCount --;
     
     if (self.requestCount == 0) {
         [self.loadingIndicator stopAnimating];
     }
     
-//    CGFloat height = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
-    CGFloat height = [webView sizeThatFits:CGSizeZero].height;
-
-    if (self.loadComplete) {
-        self.loadComplete(height);
-    }
+    [webView evaluateJavaScript:@"document.body.scrollHeight" completionHandler:^(id _Nullable result,NSError * _Nullable error){
+        CGFloat height = [result doubleValue];
+        if (self.loadComplete) {
+            self.loadComplete(height);
+        }
+    }];
+    
+//    CGFloat height = [[webView  evaluateJavaScript:@"document.body.scrollHeight"] floatValue];
+//    CGFloat height = [webView sizeThatFits:CGSizeZero].height;
+//
+//    if (self.loadComplete) {
+//        self.loadComplete(height);
+//    }
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     self.requestCount --;
     
     if (self.requestCount == 0) {
