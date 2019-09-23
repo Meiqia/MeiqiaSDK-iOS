@@ -530,6 +530,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.sourceType               = (int)sourceType;
         picker.delegate                 = (id)self;
+        picker.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:picker animated:YES completion:nil];
     }];
 }

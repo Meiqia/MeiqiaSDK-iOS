@@ -436,6 +436,7 @@ static NSString * const kMessageFormMessageKey = @"message";
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.sourceType               = (int)sourceType;
         picker.delegate                 = (id)self;
+        picker.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:picker animated:YES completion:nil];
     }];
 }

@@ -63,6 +63,7 @@
     } else {
         viewController = [[UINavigationController alloc] initWithRootViewController:messageFormViewController];
         [self updateNavAttributesWithViewController:messageFormViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         [rootViewController presentViewController:viewController animated:YES completion:nil];
     }
 }

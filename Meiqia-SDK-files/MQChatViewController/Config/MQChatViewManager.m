@@ -70,6 +70,7 @@
     } else {
         viewController = [[UINavigationController alloc] initWithRootViewController:self.chatViewController];
         [self updateNavAttributesWithViewController:self.chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         [rootViewController presentViewController:viewController animated:YES completion:nil];
     }
 }
@@ -79,7 +80,7 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
         [self updateNavAttributesWithViewController:rootViewController navigationController:(UINavigationController *)navigationController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
         [navigationController setTransitioningDelegate:[MQTransitioningAnimation transitioningDelegateImpl]];
-//        [navigationController setModalPresentationStyle:UIModalPresentationCustom];
+        [navigationController setModalPresentationStyle:UIModalPresentationCustom];
     } else {
         [self updateNavAttributesWithViewController:self.chatViewController navigationController:(UINavigationController *)navigationController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
         [rootViewController.view.window.layer addAnimation:[MQTransitioningAnimation createPresentingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
