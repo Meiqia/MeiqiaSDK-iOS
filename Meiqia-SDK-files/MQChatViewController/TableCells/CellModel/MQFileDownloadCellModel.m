@@ -142,7 +142,7 @@
 - (void)previewFileFromController:(UIViewController *)controller {
     QLPreviewController *previewController = [QLPreviewController new];
     previewController.dataSource = self;
-    
+    previewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [controller presentViewController:previewController animated:YES completion:nil];
 }
 

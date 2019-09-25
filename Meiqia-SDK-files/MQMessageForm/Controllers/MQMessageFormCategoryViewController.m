@@ -26,6 +26,7 @@
         if ([categories count] > 0) {
             self.categories = categories;
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self];
+            nav.modalPresentationStyle = UIModalPresentationFullScreen;
             [controller presentViewController:nav animated:YES completion:nil];
         }
     }];

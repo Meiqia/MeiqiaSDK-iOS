@@ -68,6 +68,7 @@
             nav.navigationBar.barTintColor = controller.navigationController.navigationBar.barTintColor;
             nav.navigationBar.tintColor = controller.navigationController.navigationBar.tintColor;
             if (nav) {
+                nav.modalPresentationStyle = UIModalPresentationFullScreen;
                 [controller presentViewController:nav animated:YES completion:nil];
             } else {
                 if (block) {
