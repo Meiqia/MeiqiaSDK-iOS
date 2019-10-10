@@ -1,0 +1,94 @@
+"new_message" = "Invia un messaggio...";
+"record_speak" = "Tieni premuto per registrare";
+"record_end" = "Rilascia per inviare";
+"cancel" = "Annulla";
+"select_gallery" = "Scegli da album";
+"select_camera" = "Fotocamera";
+"wait_agent" = "Ti stiamo assegnando un consulente...";
+"not_access_camera" = "Vai in impostazioni - Privacy - Foto. Seleziona 'autorizza' per questa APP.";
+"not_access_photos" = "Vai in impostazioni - Privacy - Foto. Seleziona 'autorizza' per questa APP.";
+"display_new_message" = "Nuovi messaggi";
+"network_jam" = "Controlla la connessione internet e ritenta";
+"simulator_not_support_camera" = "Impossibile accedere alla camera";
+"simulator_not_support_microphone" = "Impossibile accedere al microfono";
+"recode_time_too_short" = "Messaggio troppo breve";
+"record_cancel_swipe" = "Striscia in alto per annullare";
+"record_cancel_realse" = "Rilascia per annullare";
+"save_photo_error" = "Spiacente, salvataggio foto fallito";
+"save_photo_success" = "Foto salvata";
+"save_text_success" = "Copiato";
+"save_photo" = "Salva";
+"save_text" = "Copia";
+"record_error" = "Spiacente, registrazione fallita";
+"user_confirm" = "OK";
+"no_more_messages" = "nessun altro messaggio";
+"welcome_chat"          = "";
+"default_assistant" = "Assistente";
+"no_agent_title" = "Lascia un messaggio";
+"no_agent_tips" = "Spiacente, non ci sono consulenti \n Invia pure i tuoi dati e ti contatteremo al più presto.";
+"retry_send_message" = "Reinviare messaggio?";
+"alert_view_cancel" = "Annulla";
+"alert_view_confirm" = "Conferma";
+"alert_view_send"       = "Invia";
+"cannot_refresh" = "Impossibile aggiornare";
+"make_call_to" = "Chiama";
+"send_message_to" = "Inviare messaggio a XX";
+"open_url_by_safari" = "Apri link in Safari";
+"make_email_to" = "Invia email";
+"load_history_message_error" = "Spiacente, impossibile caricare storico conversazione";
+"microphone_denied" = "Vai in impostazioni e attiva i permessi microfono per Uhomes";
+"meiqia_communication_failed" = "Impossibile accedere al server, cambiare rete e riprovare.";
+"meiqia_evaluation_sheet" = "Valuta";
+"meiqia_cance_sheet"          = "Annulla";
+"meiqia_redirect_sheet" = "Reindirizza";
+"file_download_file_is_expired" = "File Scaduto";
+"file_download_canceld" = "Download annullato";
+"file_download_failed" = "Download fallito";
+"file_download_downloading" = "Sto scaricando...";
+"file_download_complete" = "Download completato";
+"file_download_ %@ ∙ %@overdue" = "%@ ∙ scade tra %@ ore";
+"message_tips_send_message_fail_listed_in_black_list" = "Spiacente, il sistema è inaccessibile al momento";
+"message_tips_online_failed_listed_in_black_list" = "Spiacente, sistema fuori servizio";
+"reply_tip_text" = "Spiacente, nessun consulente disponibile. Lascia un messaggio e sarai contattato al più presto.";
+"bot_redirect_tip_text" = "Ah la tecnologia... Premi qui per rivolgerti a un consulente";
+"bot_manual_redirect_tip_text" = "Serve aiuto? Premi qui per rivolgerti a un consulente";
+"cannot_text_client_is_onlining" = "Ti stiamo assegnando un consulente...";
+"send_to_fast" = "Che velocità! Aspetta un attimo prima di ritentare.";
+"leave_a_message" = "Lascia un messaggio";
+"submit" = "Invia";
+"leave_a_message_placeholder" = "Scrivi qui";
+"param_not_allow_null" = "%@ non può restare vuoto";
+"contact_at_lease_enter_one" = "Completa con almeno un contatto";
+"submit_failure" = "Invio fallito";
+"tel" = "N. Tel.";
+"tel_placeholder" = "Inserisci";
+"email" = "Email";
+"email_placeholder" = "Inserisci";
+"qq" = "QQ";
+"qq_placeholder" = "Inserisci numero QQ";
+"wechat" = "Wechat";
+"wechat_placeholder" = "Inserisce utente";
+"name" = "Nome";
+"name_placeholder" = "Inserisci";
+"wating_in_queue_tip_text" = "Attendere. %d ci sono altri utenti in fila. Lascia un messaggio se ti va";
+
+//询前表单
+"pre_chat_list_title" = "Supporto Cliente";
+"pre_chat_form_title" = "Inserisci informazioni";
+"pre_chat_form_mutiple_selection_label" = "(scelta multipla)";
+"pre_chat_form_black_alert_label" = "Completare i campi indicati";
+
+//pull refresh
+"pull_refresh_normal" = "Scorri per mostrare storico conversazioni";
+"pull_refresh_triggered" = "Rilascia per caricare";
+
+//xlp
+// 请输入消息
+"input_content" = "Inserisci la foto...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "Sto connettendo...attendere";
+"mq_evaluate_good" = "Buono";
+"mq_evaluate_medium" = "sufficiente";
+"mq_evaluate_bad" = "cattivo";
+"mq_evaluate_hint" = "Lascia un commento (opzionale)";
+"mq_evaluate_title" = "Sei soddisfatto del servizio?";
