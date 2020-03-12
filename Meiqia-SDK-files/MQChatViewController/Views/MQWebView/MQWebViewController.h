@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
 @interface MQWebViewController : UIViewController
 
 @property (nonatomic, copy) NSString *url;
 @property (nonatomic, copy) NSString *contentHTML;
-@property (nonatomic, strong) UIWebView *webView;
+@property (nonatomic, strong) WKWebView *webView;
 
 @end

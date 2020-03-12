@@ -9,98 +9,59 @@ edition: m2016
 
 > 在您阅读此文档之前，我们假定您已经具备了基础的 iOS 应用开发经验，并能够理解相关基础概念。
 
-> 如有疑问，欢迎加入 美洽 SDK 开发 QQ 群：295646206
+> 请您首先把文档全部仔细阅读完毕,再进行您的开发, 如还有疑问，欢迎加入 美洽 SDK 开发 QQ 群：295646206
 
 > *请注意，如果你是旧版 SDK 更换到新版 SDK，我们的推送数据格式统一成了 JSON 格式，具体请参见[消息推送](#消息推送)
 
+* [一 导入美洽SDK](#一导入美洽SDK)
+* [二 开始你的集成之旅](#二开始你的集成之旅)
+* [三 说好的推送呢](#三好的推送呢)
+* [四 SDK工作流程](#四SDK工作流程)
+* [五 接口介绍](#五接口介绍)
+* [六 美洽 API 接口介绍](#六美洽API接口介绍)
+* [七 SDK中嵌入美洽SDK](#七sdk中嵌入美洽sdk )
+* [八 留言表单](#八留言表单)
+* [九 名词解释](#九名词解释)
+* [十 常见问题](#十常见问题)
+* [十一 更新日志](#十一更新日志)
 
-## 目录
-* [SDK 工作流程](#sdk-工作流程)
-* [手动导入美洽 SDK](#导入美洽-sdk)
-* [CocoaPods 导入](#CocoaPods-导入)
-* [快速集成 SDK](#快速集成-sdk)
-* [名词解释](#名词解释)
-* [美洽开源聊天界面集成客服功能](#使用美洽开源聊天界面集成客服功能)
-* [美洽 API 接口介绍](#美洽-api-接口介绍)
-* [消息推送](#消息推送)
-* [留言表单](#留言表单)
-* [常见问题](#常见问题)
-* [更新日志](#更新日志)
+>进行您的开发之前,请您一定下载我们的[官方Demo](https://github.com/Meiqia/MeiqiaSDK-iOS),参考我们的使用方法.
 
-# SDK 工作流程
+>'墙裂'建议开发者使用最新的版本。
 
-美洽 SDK 的工作流程如下图所示。
+- 请查看[Meiqia在Github上的网页](https://github.com/Meiqia/MeiqiaSDK-iOS/releases) ，确认最新的版本号。
+- Demo开发者功能 ->点击查看当前SDK版本号
+- 查看SDK中MQManager.h类中 **#define MQSDKVersion **
+- 进入美洽 SDK 开发 QQ 群(295646206),向iOS技术支持人员询问最新版本号**
+- pod search Meiqia(此方法由于本地pod缓存,导致获取不到最新的)
 
-![SDK工作流程图](DemoScreen/WechatIMG193.jpeg)
+#一 导入美洽 SDK
 
-说明：
-* 自定义用户数据将会在美洽客服工作台上显示；
-* 当打开美洽推送服务后，客服发送的消息，将会发送至开发者的推送服务器。如果开发者需要推送，请务必在美洽工作台中设置推送的服务器地址，请使用美洽管理员帐号登录[美洽](http://www.meiqia.com)，在「设置」-「SDK」中设置。
+ **推荐你使用CocoaPods导入我们的SDK,原因如下:**
 
-![设置推送地址](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/8fbdaa6076d0b9d0)
+- 后期 sdk更新会很方便.
+- 手动更新你需要删除旧库,下载新库,再重新配置等很麻烦,且由于删除旧库时未删除干净,再迁入新库时会导致很多莫名其妙的问题. 
+- CocoaPods的安装使用很简单,简书上的教程一大堆.
+- Swift项目已经完美支持CocoPods
 
-
-# 手动导入美洽 SDK
-
-## 文件介绍
-
-Demo中的文件 | 说明
----- | -----
-[MeiQiaSDK.framework](https://github.com/Meiqia/MeiqiaSDK-iOS/tree/master/Meiqia-SDK-Demo/MeiQiaSDK.framework) | 美洽 SDK 的 framework 。
-[MQChatViewController/](https://github.com/Meiqia/MeiqiaSDK-iOS/tree/master/Meiqia-SDK-Demo/MQChatViewController) | 美洽提供的开源聊天界面 Library，详细介绍请移步 [github](https://github.com/Meiqia/MQChatViewController) 。
-[MeiqiaSDKViewInterface](https://github.com/Meiqia/MeiqiaSDK-iOS/tree/master/Meiqia-SDK-Demo/MeiqiaSDKViewInterface) | 美洽的 SDK 逻辑接口层 与 开源聊天 Library 的中间层，调用美洽 SDK 的接口，完成界面所需的功能。
-[MQMessageForm](https://github.com/Meiqia/MeiqiaSDK-iOS/tree/master/Meiqia-SDK-files/MQMessageForm) | 留言表单
-
-
-
-framework中的文件 | 说明
----- | -----
-[MQManager.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQManager.h) | 美洽 SDK 提供的逻辑 API，开发者可调用其中的逻辑接口，实现自定义在线客服界面
-[MCDefination.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQDefinition.h) | 美洽 SDK 所用的枚举分类
-[MQAgent.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQAgent.h) | 实体类：客服
-[MQMessage.h](https://github.com/Meiqia/MeiqiaSDK-iOS/blob/master/Meiqia-SDK-Demo/MeiQiaSDK.framework/Headers/MQMessage.h) | 实体类：消息
-
-
-## 导入美洽 SDK
-
-### Objective-C 项目
-
-把美洽 SDK 文件夹中的 `MeiQiaSDK.framework` 、 `MQChatViewController/` 和 `MeiqiaSDKViewInterface/` 文件夹（选做）拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者将这两个个文件拖入 Xcode 工程目录结构中。
-
-### Swift 项目
-
-* 按照上面的方法引入美洽 SDK 的文件。
-* 在 Bridging Header 头文件中，‘#import <MeiQiaSDK/MQManager.h>’、'#import "MQChatViewManager.h"'。注：[如何添加 Bridging Header](http://bencoding.com/2015/04/15/adding-a-swift-bridge-header-manually/)。
-
-## 引入依赖库
-
-美洽 SDK 的实现，依赖了一些系统框架，在开发应用时，要在工程里加入这些框架。开发者首先点击工程右边的工程名,然后在工程名右边依次选择 *TARGETS* -> *BuiLd Phases* -> *Link Binary With Libraries*，展开 *LinkBinary With Libraries* 后点击展开后下面的 *+* 来添加下面的依赖项:
-
-- libsqlite3.tbd
-- libicucore.tbd
-- AVFoundation.framework
-- CoreTelephony.framework
-- SystemConfiguration.framework
-- MobileCoreServices.framework
-- QuickLook.framework
-
-# CocoaPods 导入
+##1.1  CocoaPods 导入
 
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.3.9'
+pod 'Meiqia', '~> 3.4.9'
 ```
-
 接着安装美洽 pod 即可：
 
 ```
 $ pod install
 ```
 
-# Carthage 集成
+## 1.2 Carthage 集成
 
-在 Cartfile 中增加:
+>温馨提示:Swift项目已经完美支持CocoPods,推荐你使用CocoPods集成
+
+ 1.在 Cartfile 中增加:
 
 ```
 github "meiqia/MeiqiaSDK-iOS"
@@ -112,86 +73,165 @@ github "meiqia/MeiqiaSDK-iOS"
 
 4. 将 Meiqia.framework 拖入 Embedded Binearies 中
 
+## 1.3 手动导入美洽SDK
+###1.3.1 导入到OC 项目
+打开下载到本地的文件, 找到Meiqia-SDK-files文件夹下的四个文件件 `MeiQiaSDK.framework` 、 `MQChatViewController`  `MeiqiaSDKViewInterface` 和 `MQMessageForm`,将这四个文件夹拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者直接拖入 Xcode 工程目录结构中。
 
-# 快速集成 SDK
+###1.3.2  导入到Swift 项目
 
-美洽开源了一套[聊天界面 Library](https://github.com/Meiqia/MQChatViewController)，帮助开发者快速生成聊天视图，并提供自定义接口，满足一定定制需求。
+* 按照上面的方法引入美洽 SDK 的文件。
+* 在 Bridging Header 头文件中，‘#import <MeiQiaSDK/MQManager.h>’、'#import "MQChatViewManager.h"'。注：[如何添加 Bridging Header](http://bencoding.com/2015/04/15/adding-a-swift-bridge-header-manually/)。
+
+###1.3.3 引入依赖库
+
+美洽 SDK 的实现，依赖了一些系统框架，在开发应用时，要在工程里加入这些框架。开发者首先点击工程右边的工程名,然后在工程名右边依次选择 *TARGETS* -> *BuiLd Phases* -> *Link Binary With Libraries*，展开 *LinkBinary With Libraries* 后点击展开后下面的 *+* 来添加下面的依赖项:
+
+- libsqlite3.tbd
+- libicucore.tbd
+- AVFoundation.framework
+- CoreTelephony.framework
+- SystemConfiguration.framework
+- MobileCoreServices.framework
+- QuickLook.framework
+
+# 二 开始你的集成之旅
+>如果导入sdk到你的工程没有问题,接下来只需5步就ok了,能满足一般的需求.
+
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+#pragma mark  集成第一步: 初始化,  参数:appkey  ,尽可能早的初始化appkey.
+    [MQManager initWithAppkey:@"009c6d3b9af54a81653c1982a1425e7b" completion:^(NSString *clientId, NSError *error) {
+        if (!error) {
+            NSLog(@"美洽 SDK：初始化成功");
+        } else {
+            NSLog(@"error:%@",error);
+        }
+    }];
+  /*你自己的代码*/
+    return YES;
+}
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    #pragma mark  集成第二步: 进入前台 打开meiqia服务
+    [MQManager openMeiqiaService];
+}
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    #pragma mark  集成第三步: 进入后台 关闭美洽服务
+    [MQManager closeMeiqiaService];
+}
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    #pragma mark  集成第四步: 上传设备deviceToken
+    [MQManager registerDeviceToken:deviceToken];
+}
+
+#pragma mark  集成第五步: 跳转到聊天界面(button的点击方法)
+- (void)pushToMeiqiaVC:(UIButton *)button {
+#pragma mark 总之, 要自定义UI层  请参考 MQChatViewStyle.h类中的相关的方法 ,要修改逻辑相关的 请参考MQChatViewManager.h中相关的方法
+    
+#pragma mark  最简单的集成方法: 全部使用meiqia的,  不做任何自定义UI.
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager setoutgoingDefaultAvatarImage:[UIImage imageNamed:@"meiqia-icon"]];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+#pragma mark  觉得返回按钮系统的太丑 想自定义 采用下面的方法
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+//    [aStyle setNavBarTintColor:[UIColor redColor]];
+//    [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+#pragma mark 觉得头像 方形不好看 ,设置为圆形.
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+//    [aStyle setEnableRoundAvatar:YES];
+//    [aStyle setEnableOutgoingAvatar:NO]; //不显示用户头像
+//    [aStyle setEnableIncomingAvatar:NO]; //不显示客服头像
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+#pragma mark 导航栏 右按钮 想自定义 ,但是不到万不得已,不推荐使用这个,会造成meiqia功能的缺失,因为这个按钮 1 当你在工作台打开机器人开关后 显示转人工,点击转为人工客服. 2在人工客服时 还可以评价客服
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+//    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [bt setImage:[UIImage imageNamed:@"meiqia-icon"] forState:UIControlStateNormal];
+//    [aStyle setNavBarRightButton:bt];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+#pragma mark 客户自定义信息
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+////    [chatViewManager setClientInfo:@{@"name":@"123测试",@"gender":@"man11",@"age":@"100"} override:YES];
+//    [chatViewManager setClientInfo:@{@"name":@"123测试",@"gender":@"man11",@"age":@"100"}];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+
+#pragma mark 预发送消息
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    [chatViewManager setPreSendMessages: @[@"我想咨询的订单号：【1705045496811】"]];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+    
+#pragma mark 如果你想绑定自己的用户系统 ,当然推荐你使用 客户自定义信息来绑定用户的相关个人信息
+#pragma mark 切记切记切记  一定要确保 customId 是唯一的,这样保证  customId和meiqia生成的用户ID是一对一的
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    NSString *customId = @"获取你们自己的用户ID 或 其他唯一标识的";
+//    if (customId){
+//        [chatViewManager setLoginCustomizedId:customId];
+//    }else{
+//   #pragma mark 切记切记切记 下面这一行是错误的写法 , 这样会导致 ID = "notadda" 和 meiqia多个用户绑定,最终导致 对话内容错乱 A客户能看到 B C D的客户的对话内容
+//        //[chatViewManager setLoginCustomizedId:@"notadda"];
+//    }
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+```
+
+>请保证自己的集成代码和上述代码一致,请保证自己的集成代码和上述代码一致,请保证自己的集成代码和上述代码一致,重要的事情说三遍!!!
+
+# 三 说好的推送呢
+
+当前仅支持一种推送方案，当APP切换到后台时,美洽服务端发送消息至开发者的服务端，开发者再通过极光等第三方推送推送消息到 App，可见 [SDK 工作流程](#SDK-工作流程) 。
+
+设置服务器地址，请使用美洽管理员帐号登录 [美洽](http://www.meiqia.com)，在「设置」 -\> 「SDK」中设置。
+
+![设置推送地址](http://upload-images.jianshu.io/upload_images/639412-6ee1c7a0dd702508?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+### 推送消息数据结构
+
+当有消息需要推送时，美洽服务器会向开发者设置的服务器地址发送推送消息，方法类型为 *POST*，数据格式为 *JSON* 。
+
+发送的请求格式介绍：
+
+request.header.authorization 为数据签名。
+
+request.body 为消息数据，数据结构为：
+
+|Key|说明|
+|---|---|
+|messageId|消息 id|
+|content|消息内容|
+|messageTime|发送时间|
+|fromName|发送人姓名|
+|deviceToken|发送对象设备的 deviceToken，格式为字符串|
+|clientId|发送对象的顾客 id|
+|customizedId|开发者传的自定义 id|
+|contentType|消息内容类型 - text/photo/audio|
+|deviceOS|设备系统|
+|customizedData|开发者上传的自定义的属性|
+|type|消息类型 - mesage 普通消息 / welcome 欢迎消息 / ending 结束消息 / remark 评价消息 / 留言消息|
+
+开发者可以根据请求中的签名，对推送消息进行数据验证，美洽提供了 `Java、Python、Ruby、JavaScript、PHP` 5种语言的计算签名的代码，具体请移步 [美洽 SDK 3.0 推送的数据结构签名算法](https://github.com/Meiqia/MeiqiaSDK-Push-Signature-Example)。
+
+#至此,集成结束.
+
+
+# 四  SDK 工作流程
+
+美洽 SDK 的工作流程如下图所示。
+
+![SDK工作流程图](https://github.com/Meiqia/MeiqiaSDK-iOS/raw/master/DemoScreen/WechatIMG193.jpeg)
+
 
 **注意：**
 * 如果开发者对美洽的开源界面进行了定制，最好 Fork 一份 github 上的代码。这以后美洽对开源界面进行了更新，开发者只需 merge 美洽的代码，就可以免去定制后更新的麻烦。
 
-## 三分钟快速应用 SDK
-
-如上所述，使用美洽 SDK ，必不可少的一步便是[初始化 SDK](#初始化-sdk)，完成初始化后便可操作 SDK 其他功能和接口，比如退出视图等。美洽提供的 UI 简化了开发流程，使得为 APP 添加客服功能最低仅需几行代码和一个 `info.plist` 配置：
-
-```objc
-//在AppDelegate.m增加如下 SDK 设置
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-[MQManager initWithAppkey:@"开发者的美洽AppKey" completion:^(NSString *clientId, NSError *error) {
-}];
-return YES;
-}
-
-//App 进入后台时，关闭美洽服务
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-[MQManager closeMeiqiaService];
-}
-
-//App 进入前台时，开启美洽服务
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-[MQManager openMeiqiaService];
-}
-```
-
-```objc
-//在开发者需要调出聊天界面的位置，增加如下代码
-MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-[chatViewManager pushMQChatViewControllerInViewController:self];
-```
-
-# 名词解释
-
-### 开发者的推送消息服务器
-
-目前美洽是把 SDK 的 `离线消息` 通过 webhook 形式发送给 - 开发者提供的 URL。
-
-接收美洽 SDK 离线消息的服务器即为 `开发者的推送消息服务器`。
 
 
-### 客服 id
+# 五 接口介绍
 
-美洽企业每一位注册客服均有一个唯一 id。通过此 id 开发者可用 SDK 接口指定分配对话给该客服。
-
-
-### 客服组 id
-
-美洽工作台支持为不同的客服分组，每一个组都有一个唯一id。通过此 id 开发者可用 SDK 接口指定分配对话给该客服组。
-
-
-### 美洽顾客 id
-
-美洽 SDK 在上线后（或称为分配对话后），均有一个唯一 id。
-
-开发者可保存此 id，在其他设备上进行上线操作。这样此 id 的顾客信息和历史对话，都会同步到其他设备。
-
-
-### 开发者自定义 id
-
-即开发者自己定义的 id，例如开发者账号系统下的 user_id。
-
-开发者可用此 id 进行上线，上线成功后，此 id 会绑定一个 `美洽顾客 id`。开发者在其他设备用自己的 id 上线后，可以同步之前的数据。
-
-**注意**，如果开发者自己的 id 过于简单（例如自增长的数字），安全起见，建议开发者保存 `美洽顾客 id`，来进行上线操作。
-
-
-# 使用美洽开源聊天界面集成客服功能
-
-此小节介绍如何使用美洽的开源聊天界面快速集成客服功能。
-
-## 初始化 SDK
-
-**注意：**
-* 所有操作都必须在初始化 SDK ，并且美洽服务端返回可用的 clientId 后才能正常执行。
+##初始化sdk
+所有操作都必须在初始化 SDK ，并且美洽服务端返回可用的 clientId 后才能正常执行。
 
 开发者在美洽工作台注册 App 后，可获取到一个可用的 AppKey。在 `AppDelegate.m` 的系统回调 `didFinishLaunchingWithOptions` 中调用初始化 SDK 接口：
 
@@ -202,26 +242,13 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 如果您不知道 *AppKey* ，请使用美洽管理员帐号登录 [美洽](http://www.meiqia.com)，在「设置」 -> 「SDK」 菜单中查看。如下图：
 
-![美洽 AppKey 查看界面图片](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/5a999b67233e77dc)
+![美洽 AppKey 查看界面图片](http://upload-images.jianshu.io/upload_images/639412-87a5209ecf18ef44?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-## 上传设备的 deviceToken
+##  添加自定义信息
 
-App 进入后台后，美洽推送给开发者服务端的消息数据格式中，会有 deviceToken 的字段。
-
-将下列代码添加到 `AppDelegate.m` 中系统回调 `didRegisterForRemoteNotificationsWithDeviceToken` 中：
-
-```objc
-[MQManager registerDeviceToken:deviceToken];
-```
-
-美洽推送消息给开发者服务端的数据格式，可参考 [推送消息数据结构](#推送消息数据结构)。
-
-
-## 添加自定义信息
 功能效果展示：
-
-![美洽工作台顾客自定义信息图片](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/655e72343423c8f7)
+![美洽工作台顾客自定义信息图片](http://upload-images.jianshu.io/upload_images/639412-2621629005ccda8c?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 为了让客服能更准确帮助用户，开发者可上传不同用户的属性信息。示例如下：
 
@@ -236,6 +263,9 @@ NSDictionary* clientCustomizedAttrs = @{
 @"场上位置"      : @"得分后卫",
 @"球衣号码"      : @"24号"
 };
+
+[chatViewManager setClientInfo:clientCustomizedAttrs ];
+或者
 [MQManager setClientInfo:clientCustomizedAttrs completion:^(BOOL success) {
 }];
 ```
@@ -267,7 +297,7 @@ NSDictionary* clientCustomizedAttrs = @{
 
 ```objc
 MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-[chatViewManager setScheduledAgentToken:agentToken];
+[chatViewManager setScheduledAgentId:agentToken];
 ```
 
 如果您自定义 UI，可直接使用如下美洽 SDK 逻辑接口：
@@ -281,13 +311,12 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 * 该选项需要在用户上线前设置。
 * 客服组 ID 和客服 ID 可以通过管理员帐号在后台的「设置」中查看。
 
-![查看ID](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/8cde8b54491c203e)
+![查看ID](http://upload-images.jianshu.io/upload_images/639412-2703d2f0e7a8796f?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 ## 调出视图
-美洽开源了一套 [聊天界面 Library](https://github.com/Meiqia/MQChatViewController)，完成了一整套 `MQManager` 中的接口。让开发者免去 UI 开发工作。并在 `MQChatViewController` 类中添加其他自定义选项和功能扩展。
 
-你只需要在用户需要客服服务的时候，退出美洽 UI。如下所示：
+你只需要在用户需要客服服务的时候，调出美洽 UI。如下所示：
 
 ```objc
 //当用户需要使用客服服务时，创建并退出视图
@@ -295,7 +324,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 [chatViewManager pushMQChatViewControllerInViewController:self];
 ```
 
-**注意**，如果这样不对 `MQChatViewManager` 进行任何配置直接调出视图，实际上是用美洽 初始化SDK后的顾客进行上线。如果开发者需要指定顾客上线，可参考:
+**注意**，此时使用美洽 初始化SDK后的顾客进行上线。如果开发者需要指定顾客上线，可参考:
 
 [设置登录客服的开发者自定义 id](#设置登录客服的开发者自定义-id)
 
@@ -303,13 +332,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 `MQServiceToViewInterface` 文件是开源聊天界面调用美洽 SDK 接口的中间层，目的是剥离开源界面中的美洽业务逻辑。这样就能让该聊天界面用于非美洽项目中，开发者只需要实现 `MQServiceToViewInterface` 中的方法，即可将自己项目的业务逻辑和该聊天界面对接。
 
-**更多开源聊天界面 Library 详细介绍和使用方法，请移步 [github](https://github.com/Meiqia/MQChatViewController)。**
-
-
-## 配置开源 UI 实现更多客服功能
-下面介绍开源 UI 中的美洽逻辑的配置，开发者可根据需求对其进行配置，再调出聊天视图。
-
-### 开启同步服务端消息设置
+## 开启同步服务端消息设置
 
 如果开启消息同步，在聊天界面中下拉刷新，将会获取服务端的历史消息；
 
@@ -361,21 +384,23 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 
 开发者需要获取 clientId，可使用接口`[MQManager getCurrentClientId]`。
 
-### 设置自定义上传数据
-```objc
-MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-[chatViewManager setClientInfo:@{@"name":@"my name", @"tel":@"13333333333"}];
-[chatViewManager pushMQChatViewControllerInViewController:self];
+
+
+### 真机调试时,语言没有切换为中文
+
+为了能正常识别App的系统语言，开发者的 App 的 info.plist 中需要有添加 Localizations 配置。如果需要支持英文、简体中文、繁体中文，info.plist 的 Souce Code 中需要有如下配置：
+
 ```
-其中，系统定义 key 参见 [添加自定义信息](#添加自定义信息)
-
-### 国际化
-
-请参考 [美洽开源聊天界面的国际化说明](https://github.com/Meiqia/MQChatViewController#localization---国际化本地化)。
-
+<key>CFBundleLocalizations</key>
+<array>
+	<string>zh_CN</string>
+	<string>zh_TW</string>
+	<string>en</string>
+</array>
+```
 开源聊天界面的更多配置，可参见 [MQChatViewManager.h](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/Config/MQChatViewManager.h) 文件。
 
-# 美洽 API 接口介绍
+# 六 美洽 API 接口介绍
 
 **本节主要介绍部分重要的接口。在`MeiqiaSDK.framework`的`MQManager.h`中，所有接口都有详细注释。**
 
@@ -500,12 +525,11 @@ NSString *clientId = [MQManager setClientOffline];
 
 **注意**，如果顾客退出聊天界面，开发者没有调用设置顾客离线接口的话，以后该顾客收到新消息，仍能收到`有新消息的广播`。
 
-``` objc
-
-#pragma 在合适的地方监听有新消息的广播
+``` 
+### 在合适的地方监听有新消息的广播
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMQMessages:) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
 
-#pragma 监听收到美洽聊天消息的广播
+### 监听收到美洽聊天消息的广播
 - (void)didReceiveNewMQMessages:(NSNotification *)notification {
 //广播中的消息数组
 NSArray *messages = [notification.userInfo objectForKey:@"messages"];
@@ -518,7 +542,7 @@ NSLog(@"监听到了收到客服消息的广播");
 
 开发者可用此接口获取当前正在接待顾客的客服信息：
 
-```objc
+```
 MQAgent *agent = [MQManager getCurrentAgent];
 ```
 
@@ -629,7 +653,7 @@ MQAgent *agent = [MQManager getCurrentAgent];
 当用户被客服接入时，会受到 `MQ_NOTIFICATION_QUEUEING_END` 通知。
 
 
-# SDK 中嵌入美洽 SDK
+# 七  SDK 中嵌入美洽 SDK
 如果你的开发项目也是 SDK，那么在了解常规 App 嵌入美洽 SDK 的基础上，还需要注意其他事项。
 
 与 App 嵌入美洽 SDK 的步骤相同，需要 导入美洽 SDK -\> 引入依赖库 -\> 初始化 SDK -\> 使用美洽 SDK。
@@ -641,73 +665,8 @@ MQAgent *agent = [MQManager getCurrentAgent];
 在之后发布你的 SDK 时，将 `MQChatViewAsset.bundle` 一起打包即可。
 
 
-# 消息推送
 
-当前仅支持一种推送方案，即美洽服务端发送消息至开发者的服务端，开发者再推送消息到 App，可见 [SDK 工作流程](#SDK-工作流程) 。
-
-### 设置接收推送的服务器地址
-
-推送消息将会发送至开发者的服务器。
-
-设置服务器地址，请使用美洽管理员帐号登录 [美洽](http://www.meiqia.com)，在「设置」 -\> 「SDK」中设置。
-
-![设置推送地址](https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/8fbdaa6076d0b9d0)
-
-
-### 通知美洽服务端发送消息至开发者的服务端
-
-目前，美洽的推送是通过推送消息给开发者提供的 URL 上来实现的。
-
-在 App 进入后台时，应该通知美洽服务端，让其将以后的消息推送给开发者提供的服务器地址。
-
-开发者需要在 `AppDelegate.m` 的系统回调 `applicationDidEnterBackground` 调用关闭美洽服务接口，如下代码：
-
-```objc
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-[MQManager closeMeiQiaService];
-}
-```
-
-### 关闭美洽推送
-
-在 App 进入前台时，应该通知美洽服务端，让其将以后的消息发送给SDK，而不再推送给开发者提供的服务端。
-
-开发者需要在 `AppDelegate.m` 的系统回调 `applicationWillEnterForeground` 调用开启美洽服务接口，如下代码：
-
-```objc
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-[MQManager openMeiQiaService];
-}
-```
-
-
-#### 推送消息数据结构
-
-当有消息需要推送时，美洽服务器会向开发者设置的服务器地址发送推送消息，方法类型为 *POST*，数据格式为 *JSON* 。
-
-发送的请求格式介绍：
-
-request.header.authorization 为数据签名。
-
-request.body 为消息数据，数据结构为：
-
-|Key|说明|
-|---|---|
-|messageId|消息 id|
-|content|消息内容|
-|messageTime|发送时间|
-|fromName|发送人姓名|
-|deviceToken|发送对象设备的 deviceToken，格式为字符串|
-|clientId|发送对象的顾客 id|
-|customizedId|开发者传的自定义 id|
-|contentType|消息内容类型 - text/photo/audio|
-|deviceOS|设备系统|
-|customizedData|开发者上传的自定义的属性|
-|type|消息类型 - mesage 普通消息 / welcome 欢迎消息 / ending 结束消息 / remark 评价消息 / 留言消息|
-
-开发者可以根据请求中的签名，对推送消息进行数据验证，美洽提供了 `Java、Python、Ruby、JavaScript、PHP` 5种语言的计算签名的代码，具体请移步 [美洽 SDK 3.0 推送的数据结构签名算法](https://github.com/Meiqia/MeiqiaSDK-Push-Signature-Example)。
-
-# 留言表单
+# 八 留言表单
 
 目前是两种模式：
 
@@ -761,8 +720,44 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 [messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
 ```
 
-# 常见问题
+# 九 名词解释
 
+### 开发者的推送消息服务器
+
+目前美洽是把 SDK 的 `离线消息` 通过 webhook 形式发送给 - 开发者提供的 URL。
+
+接收美洽 SDK 离线消息的服务器即为 `开发者的推送消息服务器`。
+
+
+### 客服 id
+
+美洽企业每一位注册客服均有一个唯一 id。通过此 id 开发者可用 SDK 接口指定分配对话给该客服。
+
+
+### 客服组 id
+
+美洽工作台支持为不同的客服分组，每一个组都有一个唯一id。通过此 id 开发者可用 SDK 接口指定分配对话给该客服组。
+
+
+### 美洽顾客 id
+
+美洽 SDK 在上线后（或称为分配对话后），均有一个唯一 id。
+
+开发者可保存此 id，在其他设备上进行上线操作。这样此 id 的顾客信息和历史对话，都会同步到其他设备。
+
+
+### 开发者自定义 id
+
+即开发者自己定义的 id，例如开发者账号系统下的 user_id。
+
+开发者可用此 id 进行上线，上线成功后，此 id 会绑定一个 `美洽顾客 id`。开发者在其他设备用自己的 id 上线后，可以同步之前的数据。
+
+**注意**，如果开发者自己的 id 过于简单（例如自增长的数字），安全起见，建议开发者保存 `美洽顾客 id`，来进行上线操作。
+
+
+# 十 常见问题
+- [更新SDK](#更新SDK)
+- [iOS 11下 SDK 的聊天界面底部输入框出现绿色条状,且无法输入](#ios11下sdk的聊天界面底部输入框出现绿色条状,且无法输入)
 - [SDK 初始化失败](#sdk-初始化失败)
 - [没有显示 导航栏栏/UINavgationBar](#没有显示-导航栏栏uinavgationbar)
 - [Xcode Warning: was built for newer iOS version (7.0) than being linked (6.0)](#xcode-warning-was-built-for-newer-ios-version-70-than-being-linked-60)
@@ -776,6 +771,27 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 - [工作台顾客信息显示应用的名称不正确](#工作台顾客信息显示应用的名称不正确)
 - [编译中出现 undefined symbols](#编译中出现-undefined-symbols)
 
+## 更新SDK
+### 1.pod集成的用户
+  
+  直接在工程中修改 podfile里面 meiqia 的版本号为最新的版本号,然后 终端 cd到项目工程目录下,执行 **pod update Meiqia**即可完成SDK的更新.
+  
+### 2.手动集成的客户比较麻烦,我们这边探索的办法为:
+
+1通过**show In finder** 删除自己项目工程中的Meiqia的四个文件
+
+**`MeiQiaSDK.framework` 、 `MQChatViewController`  `MeiqiaSDKViewInterface` 和 `MQMessageForm`**
+
+2 cleanXcode, 
+
+3 从github上下载新版Demo,然后找到
+**`MeiQiaSDK.framework` 、 `MQChatViewController`  `MeiqiaSDKViewInterface` 和 `MQMessageForm`**,复制粘贴到 项目工程中 **show in  finder**之前存放SDK 4个文件的地方
+
+4 然后通过 **add files to** ,将复制的sdk下的四个文件夹 添加到工程中的原来放置这4个文件的地方
+
+## iOS 11下 SDK 的聊天界面底部输入框出现绿色条状,且无法输入
+请升级到最新版本, 已完成iOS 11的适配. 
+**温馨提示: 遇到iOS 有重大更新的时候,请提前进入技术支持群,询问SDK是否要更新.**
 ## SDK 初始化失败
 
 ### 1. 美洽的 AppKey 版本不正确
@@ -865,39 +881,70 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [CustomIOSAlertView](https://github.com/wimagguc/ios-custom-alertview) | 自定义 | 自定义的 AlertView，用于显示本项目的评价弹出框；**注意**，我们队该开源项目进行了修改，增加了按钮之间的分隔线条、判断当前是否已经有 AlertView 在显示、以及键盘弹出时界面 frame 计算，该修改版本可以见 [CustomIOSAlertView](https://github.com/ijinmao/ios-custom-alertview)；
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
-# 更新日志
+# 十一 更新日志
 
-**v3.4.2 2017 年 9月 8 日**
+**v3.4.9  2018 年 12 月 3 日**
 
-- iOS 11适配 输入框底部预留字国际化处理
-- 修复bug
-- 添加 连接断掉时,发送信息时主动重连
+* 新增创建工单时关联上一个对话
+* 新增SDK中增加请求来源
+* 修复一些bug
 
-**v3.3.9 2017 年 6 月 20 日**
-* 修复使用私有API导致苹果审核被拒问题
-* 添加iPhone5SE来源信息
-* 添加无消息访客过滤
+**v3.4.8  2018 年 10 月 26 日**
 
-**v3.3.8 2017 年 4 月 10 日**
+* 添加推送刷新的api
+* 机型判断,添加XR XS XSMAX系列
+* 降低警告的个数
+* 修复部分类名大小写不统一
+
+**v3.4.7  2018 年 7 月 5 日**
+
+* 修复转接类型信息错误
+* 修复下拉获取历史记录的偏移
+* 优化打开相机或相册时的交互体验
+
+
+**v3.4.6  2018 年 6 月 8 日**
+
+* 修复评价弹窗在x上被键盘部分遮挡
+* 国际化文本补充
+* 内存优化
+* 修复若干bug
+
+**v3.4.5/3.4.4  2018 年 3 月 6 日**
+
+* 优化socket性能
+* 添加预发送消息的功能,方便客服在工作台实时了解访客输入的内容
+* 修复表情键盘等若干bug
+
+
+**v3.4.3  2017 年 10 月 30 日**
+* iPhoneX适配
+* 修复开启访客无消息过滤后 产生的bug
+* 修复企业欢迎消息关闭时 出现空消息的bug
+
+**v3.4.2  2017 年 9 月 12 日**
+* iOS 11适配
+* 修复若干bug
+* 聊天界面输入框预留字国际化处理
+*  socket主动重连
+
+
+**v3.3.9  2017 年 8 月 4 日**
+* 添加无消息访客过滤功能
+* 修复使用私有api导致appstore上线被拒问题
+* 添加iPhone5SE来源
+
+**v3.3.8  2017 年 4 月 10 日**
 * 修复如果在对话没有结束，连接正常的情况下，重新指定客服或者客服组没有效果的问题
 
-**v3.3.7 2017 年 4 月 7 日**
-* 修复当对话结束时，如果有自动邀请评价，并且没有设置结束对话语的时候，会导致结束失败。
+**v3.3.6  2017 年 3 月 3 日**
+* 优化UI
 
-**v3.3.6 2017 年 3 月 3 日**
-* 替换下来刷新组件。
-* 修复当对话结束邀请客服评价没有生效。
-
-**v3.3.5 2017 年 1 月 20 日**
-* 优化错误处理
-* 移除发送预发送消息时，必须客服已经成功分配的限制
-* 移除可能引起开发者工程对象名冲突的变量命名
-* 按时间获取 n 条消息时，当服务器未返回正确数量消息的时候，不再显示为到达末页
-* 修复批量获取消息的时候，日期 cell 显示错误的问题
-* 修复评价按钮没有按照设置隐藏
+**v3.3.5  2017 年 2 月 9 日**
+* 重写下拉控件,优化动画
+* 修复对话结束后,对客服评价没有记录
 
 **v3.3.4.1 2016 年 12 月 13 日**
-
 * 移除 ATS 配置检查
 
 **v3.3.4 2016 年 12 月 7 日**

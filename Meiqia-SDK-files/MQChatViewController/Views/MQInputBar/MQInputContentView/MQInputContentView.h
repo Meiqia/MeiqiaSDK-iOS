@@ -52,9 +52,9 @@
 @property (strong, nonatomic) UIView *inputView;
 @property (strong, nonatomic) UIView *inputAccessoryView;
 
-- (BOOL)isFirstResponder;
-- (BOOL)becomeFirstResponder;
-- (BOOL)resignFirstResponder;
+//- (BOOL)isFirstResponder;
+//- (BOOL)becomeFirstResponder;
+//- (BOOL)resignFirstResponder;
 
 - (UIView *)inputView;
 - (void)setInputView:(UIView *)inputview;

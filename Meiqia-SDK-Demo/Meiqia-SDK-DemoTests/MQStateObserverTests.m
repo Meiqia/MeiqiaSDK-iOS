@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <MeiQiaSDK/MeiQiaSDK.h>
+#import <MeiQiaSDK/MeiqiaSDK.h>
 #import <XCTest/XCTest.h>
 
 @interface MQStateObserverTests : XCTestCase

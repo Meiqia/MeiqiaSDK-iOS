@@ -11,6 +11,7 @@
 #import "UIView+MQLayout.h"
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
+#import "MQBundleUtil.h"
 
 
 #define TAG_MENUS 10
@@ -25,13 +26,13 @@
 
 @interface MQBotWebViewBubbleAnswerCell()
 
-@property (nonatomic, strong) UIImageView *itemsView;
+@property (nonatomic, strong) UIImageView *itemsView; //底部气泡
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) MQEmbededWebView *contentWebView;
-@property (nonatomic, strong) MQBotWebViewBubbleAnswerCellModel *viewModel;
-@property (nonatomic, strong) UIView *evaluateView;
-@property (nonatomic, strong) UIView *evaluatedView;
+@property (nonatomic, strong) UIView *evaluateView; //包含已解决 未解决2个按钮
+@property (nonatomic, strong) UIView *evaluatedView; //包含 已反馈 按钮
 @property (nonatomic, assign) BOOL manuallySetToEvaluated;
+@property (nonatomic, strong) MQBotWebViewBubbleAnswerCellModel *viewModel;
 
 @end
 
@@ -92,7 +93,6 @@
     [self.avatarImageView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarToHorizontalEdgeSpacing)];
     [self.itemsView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.avatarImageView.viewRightEdge + kMQCellAvatarToBubbleSpacing, self.avatarImageView.viewY)];
     self.itemsView.viewWidth = self.contentView.viewWidth - kMQCellBubbleMaxWidthToEdgeSpacing - self.avatarImageView.viewRightEdge;
-    
     self.contentWebView.viewWidth = self.itemsView.viewWidth - 8;
     self.contentWebView.viewX = 8;
 }
@@ -104,6 +104,7 @@
     UIView *evaluateView = [self evaluateRelatedView];
     [[self.itemsView viewWithTag:evaluateView.tag] removeFromSuperview];
     [self.itemsView addSubview:evaluateView];
+    
     [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
     
     CGFloat bubbleHeight = MAX(self.avatarImageView.viewHeight, evaluateView.viewBottomEdge);
@@ -234,7 +235,7 @@
     usefulButton.viewY = 0.5;
     [usefulButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
     usefulButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
-    [usefulButton setTitle:@"已解决" forState:(UIControlStateNormal)];
+    [usefulButton setTitle:[MQBundleUtil localizedStringForKey:@"mq_solved"] forState:(UIControlStateNormal)];
     [usefulButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
     [usefulButton addTarget:self action:@selector(didTapPositive) forControlEvents:(UIControlEventTouchUpInside)];
     
@@ -247,7 +248,7 @@
     
     UIButton *uselessButton = [UIButton new];
     [uselessButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
-    [uselessButton setTitle:@"未解决" forState:(UIControlStateNormal)];
+    [uselessButton setTitle:[MQBundleUtil localizedStringForKey:@"mq_unsolved"] forState:(UIControlStateNormal)];
     [uselessButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
     [uselessButton addTarget:self action:@selector(didTapNegative) forControlEvents:(UIControlEventTouchUpInside)];
     uselessButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin;
@@ -284,7 +285,7 @@
     button.viewY = 0.5;
     [button setTitleColor:[UIColor lightGrayColor] forState:(UIControlStateNormal)];
     [button.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
-    [button setTitle:@"已提交" forState:(UIControlStateNormal)];
+    [button setTitle:[MQBundleUtil localizedStringForKey:@"mq_commited"] forState:(UIControlStateNormal)];
     [button setAutoresizingMask:(UIViewAutoresizingFlexibleWidth)];
     [_evaluatedView addSubview:button];
     //    }

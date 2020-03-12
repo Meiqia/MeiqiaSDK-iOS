@@ -50,7 +50,10 @@
     
     //刷新时间label
     NSMutableAttributedString *tipsString = [[NSMutableAttributedString alloc] initWithString:cellModel.tipText];
-    [tipsString addAttributes:cellModel.tipExtraAttributes range:cellModel.tipExtraAttributesRange];
+    if (cellModel.tipExtraAttributesRange.length + cellModel.tipExtraAttributesRange.location <= tipsString.length) {
+        
+        [tipsString addAttributes:cellModel.tipExtraAttributes range:cellModel.tipExtraAttributesRange];
+    }
     tipsLabel.attributedText = tipsString;
     tipsLabel.frame = cellModel.tipLabelFrame;
     

@@ -59,6 +59,7 @@
     if (animation == MQTransiteAnimationTypePush) {
         viewController = [self createNavigationControllerWithWithAnimationSupport:messageFormViewController presentedViewController:rootViewController];
         BOOL shouldUseUIKitAnimation = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7;
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         [rootViewController presentViewController:viewController animated:shouldUseUIKitAnimation completion:nil];
     } else {
         viewController = [[UINavigationController alloc] initWithRootViewController:messageFormViewController];

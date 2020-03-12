@@ -45,7 +45,7 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
 - (void)initCustomAlertView {
     evaluationAlertView = [[CustomIOSAlertView alloc] init];
     [evaluationAlertView setContainerView:[self getCustomAlertView]];
-    [evaluationAlertView setButtonTitles:[NSMutableArray arrayWithObjects:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"], [MQBundleUtil localizedStringForKey:@"alert_view_confirm"], nil]];
+    [evaluationAlertView setButtonTitles:[NSMutableArray arrayWithObjects:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"], [MQBundleUtil localizedStringForKey:@"alert_view_send"], nil]];
     [evaluationAlertView setDelegate:self];
     [evaluationAlertView setUseMotionEffects:true];
 }
@@ -60,10 +60,13 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     
     //alertView 标题
     UILabel *alertViewTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, kMQEvaluationVerticalSpacing, customView.frame.size.width, 24)];
-    alertViewTitle.text = [MQBundleUtil localizedStringForKey:@"mq_evaluate_title"];
+    alertViewTitle.text = [MQBundleUtil localizedStringForKey:@"mq_evaluation_title"];
     alertViewTitle.textColor = [UIColor colorWithWhite:0.22 alpha:1];
     alertViewTitle.textAlignment = NSTextAlignmentCenter;
     alertViewTitle.font = [UIFont systemFontOfSize:17.0];
+    alertViewTitle.numberOfLines = 0;
+    alertViewTitle.adjustsFontSizeToFitWidth = YES;
+
     [customView addSubview:alertViewTitle];
     
     [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:YES complete:^(MQEnterprise *enterprise, NSError *error) {
@@ -92,7 +95,7 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     
     //评价的输入文字框
     commentTextField = [[UITextField alloc] initWithFrame:CGRectMake(kMQEvaluationHorizontalSpacing, tableBottomLine.frame.origin.y+tableBottomLine.frame.size.height+kMQEvaluationVerticalSpacing, tableView.frame.size.width - kMQEvaluationHorizontalSpacing, 34)];
-    commentTextField.placeholder = [MQBundleUtil localizedStringForKey:@"mq_evaluate_hint"];
+    commentTextField.placeholder =[MQBundleUtil localizedStringForKey:@"mq_evaluation_content"];
     commentTextField.delegate = self;
     commentTextField.returnKeyType = UIReturnKeyDone;
     commentTextField.font = [UIFont systemFontOfSize:15.0];

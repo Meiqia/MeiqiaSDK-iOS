@@ -1,33 +1,34 @@
 //
 //  ViewController.m
-//  MQEcoboostSDK-test
+//  Meiqia-SDK-Demo
 //
-//  Created by ijinmao on 15/11/11.
-//  Copyright © 2015年 ijinmao. All rights reserved.
+//  Created by xulianpeng on 2017/12/18.
+//  Copyright © 2017年 Meiqia. All rights reserved.
 //
 
 #import "ViewController.h"
 #import "MQChatViewManager.h"
 #import "MQChatDeviceUtil.h"
 #import "DevelopViewController.h"
-#import <MeiQiaSDK/MeiQiaSDK.h>
+#import <MeiQiaSDK/MeiqiaSDK.h>
 #import "NSArray+MQFunctional.h"
 #import "MQBundleUtil.h"
 #import "MQAssetUtil.h"
 #import "MQImageUtil.h"
 #import "MQToast.h"
 
-static CGFloat const kMQButtonVerticalSpacing   = 16.0;
-static CGFloat const kMQButtonHeight            = 42.0;
-static CGFloat const kMQButtonToBottomSpacing   = 128.0;
+#import "MQMessageFormInputModel.h"
+#import "MQMessageFormViewManager.h"
 
+#import <MeiQiaSDK/MQManager.h>
 @interface ViewController ()
-
 @property (nonatomic, strong) NSNumber *unreadMessagesCount;
 
 @end
-
-@implementation ViewController {
+static CGFloat const kMQButtonVerticalSpacing   = 16.0;
+static CGFloat const kMQButtonHeight            = 42.0;
+static CGFloat const kMQButtonToBottomSpacing   = 128.0;
+@implementation ViewController{
     UIImageView *appIconImageView;
     UIButton *basicFunctionBtn;
     UIButton *devFunctionBtn;
@@ -37,95 +38,100 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
     
     deviceFrame = [MQChatDeviceUtil getDeviceFrameRect:self];
     buttonWidth = deviceFrame.size.width / 2;
     self.navigationItem.title = @"美洽 SDK";
-
+    
     [self initAppIcon];
     [self initFunctionButtons];
+}
+#pragma mark  集成第五步: 跳转到聊天界面
+
+- (void)pushToMeiqiaVC:(UIButton *)button {
+#pragma mark 总之, 要自定义UI层  请参考 MQChatViewStyle.h类中的相关的方法 ,要修改逻辑相关的 请参考MQChatViewManager.h中相关的方法
     
+#pragma mark  最简单的集成方法: 全部使用meiqia的,  不做任何自定义UI.
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+//
+#pragma mark  觉得返回按钮系统的太丑 想自定义 采用下面的方法
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+////    [aStyle setNavBarTintColor:[UIColor blueColor]];
+//    [aStyle setNavBackButtonImage:[UIImage imageNamed:@"meiqia-icon"]];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+#pragma mark 觉得头像 方形不好看 ,设置为圆形.
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+//    [aStyle setEnableRoundAvatar:YES];
+//    [aStyle setEnableOutgoingAvatar:NO]; //不显示用户头像
+//    [aStyle setEnableIncomingAvatar:NO]; //不显示客服头像
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+#pragma mark 导航栏 右按钮 想自定义 ,但是不到万不得已,不推荐使用这个,会造成meiqia功能的缺失,因为这个按钮 1 当你在工作台打开机器人开关后 显示转人工,点击转为人工客服. 2在人工客服时 还可以评价客服
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    MQChatViewStyle *aStyle = [chatViewManager chatViewStyle];
+//    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [bt setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+//    [aStyle setNavBarRightButton:bt];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+#pragma mark 客户自定义信息
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    [chatViewManager setClientInfo:@{@"name":@"美洽测试777",@"gender":@"woman22",@"age":@"400",@"address":@"北京昌平回龙观"} override:YES];
+//    [chatViewManager setClientInfo:@{@"name":@"123测试123",@"gender":@"man11",@"age":@"100"}];
+//    [chatViewManager setLoginCustomizedId:@"12313812381263786786123698"];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+
+#pragma mark 预发送消息
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    [chatViewManager setPreSendMessages: @[@"我想咨询的订单号：【1705045496811】"]];
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
     
-    
-//    [[UINavigationBar appearance] setTranslucent:YES];
-    
-//    self.navigationController.navigationBar.translucent = NO;
-    
-//    [[UINavigationBar appearance] setTranslucent:NO];
-    
-//    [self.navigationController setNavigationBarHidden:YES];
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onlineSuccessed) name:MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadMessageCount) name:MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION object:nil];
-    
-//    [self getUnreadMessageswithIds:@[@"123",@"111",@"3"] complete:^(NSArray *messages, NSString *id, NSString *clientId) {
-//        NSLog(@"message count: %d, client id:%@", (int)messages.count, clientId);
-//    }];
+#pragma mark 如果你想绑定自己的用户系统 ,当然推荐你使用 客户自定义信息来绑定用户的相关个人信息
+#pragma mark 切记切记切记  一定要确保 customId 是唯一的,这样保证  customId和meiqia生成的用户ID是一对一的
+//    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+//    NSString *customId = @"获取你们自己的用户ID 或 其他唯一标识的";
+//    if (customId){
+//        [chatViewManager setLoginCustomizedId:customId];
+//    }else{
+//   #pragma mark 切记切记切记 下面这一行是错误的写法 , 这样会导致 ID = "notadda" 和 meiqia多个用户绑定,最终导致 对话内容错乱 A客户能看到 B C D的客户的对话内容
+//        //[chatViewManager setLoginCustomizedId:@"notadda"];
+//    }
+//    [chatViewManager pushMQChatViewControllerInViewController:self];
+#pragma mark 留言模式 适用于 刚起步,人工客服成本没有,只能留言.
+//    [self feedback];
 }
 
-- (void)_getUnreadMessages:(NSArray *)ids index:(NSUInteger)index complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
-    [MQManager refreshLocalClientWithCustomizedId:ids[index] complete:^(NSString *clientId) {
-        NSLog(@"getting for (%@ - %@)",ids[index], clientId);
-        [MQManager getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
-            NSLog(@"got %d messages for (%@ - %@)", (int)messages.count, [MQManager getCurrentCustomizedId], clientId);
-            if (index < ids.count - 1) {
-                [self _getUnreadMessages:ids index:index + 1 complete:action];
-                action(messages, [MQManager getCurrentCustomizedId], [MQManager getCurrentClientId]);
-            } else {
-                action(messages, [MQManager getCurrentCustomizedId], [MQManager getCurrentClientId]);
-            }
-        }];
-    }];
+- (void)feedback
+{
+    MQMessageFormInputModel *emailMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    emailMessageFormInputModel.key = @"email";
+    emailMessageFormInputModel.isSingleLine = YES;
+    emailMessageFormInputModel.isRequired = NO;
+    emailMessageFormInputModel.keyboardType = UIKeyboardTypeEmailAddress;
+    
+    MQMessageFormInputModel *phoneMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    phoneMessageFormInputModel.key = @"tel";
+    phoneMessageFormInputModel.isSingleLine = YES;
+    phoneMessageFormInputModel.isRequired = NO;
+    phoneMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
+    
+    NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
+    [customMessageFormInputModelArray addObject:emailMessageFormInputModel];
+    [customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
+    
+    MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
+    
+    MQMessageFormViewStyle *style = [messageFormViewManager messageFormViewStyle];
+    style.navBarColor = [UIColor whiteColor];
+    [messageFormViewManager setCustomMessageFormInputModelArray:nil];
+    [messageFormViewManager presentMQMessageFormViewControllerInViewController:self];
 }
-
-- (void)getUnreadMessageswithIds:(NSArray *)ids complete:(void(^)(NSArray *messages, NSString *id, NSString *clientId))action {
-    [self _getUnreadMessages:ids index:0 complete:action];
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-
-}
-
-- (void)onlineSuccessed {
-//    [MQManager sendTextMessageWithContent:@"text" completion:nil];
-}
-
-- (void)updateIndicator {
-    if ([DevelopViewController shouldShowUnreadMessageCount]) {
-        [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
-            self.unreadMessagesCount = @(messages.count);
-            
-            if (self.unreadMessagesCount.intValue > 0) {
-                [self showIndicatorWithNumber:self.unreadMessagesCount onView:basicFunctionBtn];
-            } else {
-                [self removeIndecatorForView:basicFunctionBtn];
-            }
-        }];
-    }
-
-}
-
-- (void)updateUnreadMessageCount {
-    [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
-        
-        NSUInteger count = [[messages filter:^BOOL(MQMessage *message) {
-            return message.fromType != MQMessageFromTypeClient;
-        }] count];
-        
-        NSLog(@"unreade message count: %lu",(unsigned long)count);
-    }];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma 开发者的高级功能 其中有调用美洽SDK的API接口
+- (void)didTapDevFunctionBtn:(UIButton *)button {
+    //开发者功能
+    DevelopViewController *viewController = [[DevelopViewController alloc] init];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)initAppIcon {
@@ -152,60 +158,11 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     [self.view addSubview:basicFunctionBtn];
     
     [devFunctionBtn addTarget:self action:@selector(didTapDevFunctionBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [basicFunctionBtn addTarget:self action:@selector(didTapBasicFunctionBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [basicFunctionBtn addTarget:self action:@selector(pushToMeiqiaVC:) forControlEvents:UIControlEventTouchUpInside];
     
 }
-
-static int indicator_tag = 10;
-- (void)showIndicatorWithNumber:(NSNumber *)number onView:(UIView *)view {
-    UILabel *indicator = [[UILabel alloc] initWithFrame:CGRectMake(view.bounds.size.width - 10, -10, 20, 20)];
-    indicator.tag = indicator_tag;
-    indicator.backgroundColor = [UIColor redColor];
-    indicator.layer.cornerRadius = 10;
-    indicator.font = [UIFont systemFontOfSize:9];
-    indicator.textAlignment = NSTextAlignmentCenter;
-    indicator.layer.masksToBounds = YES;
-    indicator.text = number.stringValue;
-    indicator.textColor = [UIColor whiteColor];
-    [view addSubview:indicator];
-}
-
-- (void)removeIndecatorForView:(UIView *)view {
-    UIView *v = [view viewWithTag:indicator_tag];
-    if (v) {
-        [v removeFromSuperview];
-    }
-}
-
-#pragma 最基本功能
-
-
-
-- (void)didTapBasicFunctionBtn:(UIButton *)button {
-    //基本功能 - 在线客服
-    
-    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-//    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:NO];
-//    [chatViewManager.chatViewStyle setEnableRoundAvatar:
-//    [chatViewManager setClientInfo:@{@"name" : @"123"} override:YES];
-//    [chatViewManager setChatWelcomeText:@"asfafsaaaaasgastag？"];
-    [chatViewManager pushMQChatViewControllerInViewController:self];
-//    [chatViewManager setLoginCustomizedId:@"10"];
-//    [chatViewManager setPreSendMessages: @[@"我想咨询的订单号：【1705045496811】"]];
-// //   [chatViewManager setScheduledAgentId:@""];
-//    //[chatViewManager setScheduleLogicWithRule:MQChatScheduleRulesRedirectNone];
-//    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:YES];
-//    [self removeIndecatorForView:basicFunctionBtn];
-//    
-//    [chatViewManager setRecordMode:MQRecordModeDuckOther];
-//    [chatViewManager setPlayMode:MQPlayModeMixWithOther];
-}
-
-#pragma 开发者的高级功能，其中有调用美洽SDK的API接口
-- (void)didTapDevFunctionBtn:(UIButton *)button {
-    //开发者功能
-    DevelopViewController *viewController = [[DevelopViewController alloc] init];
-    [self.navigationController pushViewController:viewController animated:YES];
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
 }
 
 

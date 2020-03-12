@@ -10,8 +10,9 @@
 #import "MQChatViewConfig.h"
 #import "MQStringSizeUtil.h"
 #import "MQBundleUtil.h"
+#import "MQToolUtil.h"
 
-static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
+//static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 
 @interface MQChatTableView()
 
@@ -20,21 +21,31 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 @implementation MQChatTableView
 
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
+    
+    //xlp 适配iphonex todo
+    if (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX) {
+        CGFloat newHeight = frame.size.height - 34;
+        frame.size.height = newHeight;
+    }
+    
     self = [super initWithFrame:frame style:style];
     if (self) {
+        
         self.backgroundColor = [UIColor clearColor];
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
         UITapGestureRecognizer *tapViewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapChatTableView:)];
         tapViewGesture.cancelsTouchesInView = false;
         self.userInteractionEnabled = true;
         [self addGestureRecognizer:tapViewGesture];
+        
+        
     }
     return self;
 }
 
 - (void)updateTableViewAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < [self numberOfRowsInSection:0]) {
-        [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
@@ -55,11 +66,18 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 }
 
 - (BOOL)isTableViewScrolledToBottom {
-    if(self.contentOffset.y + self.frame.size.height + kMQChatScrollBottomDistanceThreshold > self.contentSize.height){
-        return true;
-    } else {
-        return false;
+//    if(self.contentOffset.y + self.frame.size.height + kMQChatScrollBottomDistanceThreshold > self.contentSize.height){
+//        return true;
+//    } else {
+//        return false;
+//    }
+    CGFloat distanceFromBottom = self.contentSize.height - self.contentOffset.y;
+    
+    if (distanceFromBottom <= self.frame.size.height + 200){
+        return YES;
     }
+    return NO;
+
 }
 
 @end

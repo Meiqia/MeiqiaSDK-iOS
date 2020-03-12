@@ -399,6 +399,8 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
             [chatViewManager pushMQChatViewControllerInViewController:self];
         }
     }];
+    
+    
 }
 
 /**

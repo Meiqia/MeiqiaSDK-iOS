@@ -15,8 +15,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.4.1"
-
+#define MQSDKVersion @"3.5.0"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -74,6 +73,11 @@
  @param deviceToken 去掉特殊符号和空格之后的字符串，若使用 swift 集成 MeiQiaSDK 的时候，NSData 会被自动转为 Data，这个时候无法用上面的方法正确获取 deviceToken，需要使用这个方法。
  */
 + (void)registerDeviceTokenString:(NSString *)token;
+/**
+ @param deviceToken  强制上传devicetoken给后端 以上2种办法失效时的补充方法
+ */
++ (void)LastRegisterDeviceToken:(NSData *)deviceToken; //oc
++ (void)LastRegisterDeviceTokenString:(NSString *)token;//swift
 
 /**
  * 初始化SDK。美洽建议开发者在AppDelegate.m中的系统回调didFinishLaunchingWithOptions中进行SDK初始化。
@@ -83,6 +87,7 @@
  * @param completion 如果初始化成功，将会返回clientId，并且error为nil；如果初始化失败，clientId为空，会返回error
  */
 + (void)initWithAppkey:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error))completion;
+
 
 /**
     获取本地初始化过的 app key
@@ -561,6 +566,10 @@
  获取是否第一次上线
  */
 + (BOOL)getLoginStatus;
+/*获取网络是否可用*/
++ (BOOL)obtainNetIsReachable;
 
-
++ (void)refreshPushInfoWithToken:(NSString *)token
+                         Success:(void (^)(BOOL completion))success
+                         failure:(void (^)(NSError *error))failure;
 @end

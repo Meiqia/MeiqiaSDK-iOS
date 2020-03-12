@@ -66,9 +66,11 @@
     if (animation == MQTransiteAnimationTypePush) {
         viewController = [self createNavigationControllerWithWithAnimationSupport:self.chatViewController presentedViewController:rootViewController];
         BOOL shouldUseUIKitAnimation = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7;
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         [rootViewController presentViewController:viewController animated:shouldUseUIKitAnimation completion:nil];
     } else {
         viewController = [[UINavigationController alloc] initWithRootViewController:self.chatViewController];
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         [self updateNavAttributesWithViewController:self.chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         [rootViewController presentViewController:viewController animated:YES completion:nil];
@@ -290,7 +292,12 @@
 }
 
 - (void)setChatWelcomeText:(NSString *)welcomText {
+
     if (!welcomText) {
+        return;
+    }
+    NSString *str = [welcomText stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (str.length <= 0){
         return;
     }
     chatViewConfig.chatWelcomeText = [welcomText copy];

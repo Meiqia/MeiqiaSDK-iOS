@@ -16,6 +16,7 @@
 #import "MQMessageFormInputView.h"
 #import "MQMessageFormViewService.h"
 #import "MQMessageFormCategoryViewController.h"
+#import "MQToolUtil.h"
 
 static CGFloat const kMQMessageFormSpacing   = 16.0;
 static NSString * const kMessageFormMessageKey = @"message";
@@ -136,11 +137,12 @@ static NSString * const kMessageFormMessageKey = @"message";
 //    viewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
 //}
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self refreshFrame];
-    [self.view endEditing:YES];
-}
+    [self.view endEditing:YES];}
+#else
+#endif
 
 #pragma ios8以上系统的横屏的事件
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -386,8 +388,8 @@ static NSString * const kMessageFormMessageKey = @"message";
             offsetY = keyboardHeight + firstResponderUITextView.frame.size.height - (screenHeight - responderMinY);
         }
         // 处理UITextView被导航栏遮挡的情况
-        if (responderMinY < 64) {
-            offsetY = responderMinY - 64;
+        if (responderMinY < MQToolUtil.kXlpObtainNaviHeight) {
+            offsetY = responderMinY - MQToolUtil.kXlpObtainNaviHeight;
         }
         if (offsetY != 0) {
             [UIView animateWithDuration:duration animations:^{

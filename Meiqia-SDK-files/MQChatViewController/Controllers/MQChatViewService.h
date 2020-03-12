@@ -36,6 +36,8 @@
  */
 - (void)reloadChatTableView;
 
+
+
 /*
  call after add model
  */
@@ -126,7 +128,7 @@
  * 获取更多历史聊天消息
  */
 - (void)startGettingHistoryMessages;
-
+- (void)startGettingHistoryMessagesFromLastMessage;
 /**
  * 发送文字消息
  */

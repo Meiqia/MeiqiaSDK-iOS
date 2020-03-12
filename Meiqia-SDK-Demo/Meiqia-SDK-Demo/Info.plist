@@ -25,11 +25,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.4.2</string>
+	<string>3.4.9</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>68</string>
+	<string>75</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -41,6 +41,8 @@
 	<string>发送照片</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>使用麦克风录音</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>发送图片</string>
 	<key>UILaunchStoryboardName</key>
@@ -54,7 +56,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -64,6 +65,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<true/>
 </dict>
 </plist>

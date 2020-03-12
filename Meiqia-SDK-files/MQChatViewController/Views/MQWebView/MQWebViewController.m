@@ -9,7 +9,7 @@
 #import "MQWebViewController.h"
 #import "MQAssetUtil.h"
 
-@interface MQWebViewController()<UIWebViewDelegate>
+@interface MQWebViewController()<WKNavigationDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView *indicator;
 @property (nonatomic, strong) NSValue *backBarTitleOffset;
@@ -22,10 +22,12 @@
     //xlptodo
     [super viewDidLoad];
 
-    self.webView = [UIWebView new];
-    self.webView.delegate = self;
+    
+    self.webView = [WKWebView new];
+    self.webView.navigationDelegate = self;
+    self.webView.backgroundColor = [UIColor whiteColor];
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
+//    self.webView.dataDetectorTypes = UIDataDetectorTypeNone; daizqtodo
     
     [self.view addSubview:self.webView];
     
@@ -55,29 +57,36 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    NSURLRequest *request = navigationAction.request;
     if (![request.URL.absoluteString isEqualToString:@"about:blank"]) {
         [[UIApplication sharedApplication] openURL:request.URL];
-        return NO;
+        decisionHandler(WKNavigationActionPolicyCancel);
     }
     
-    return YES;
+    decisionHandler(WKNavigationActionPolicyAllow);
 }
-- (void)webViewDidStartLoad:(UIWebView *)webView {
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
     [self.indicator startAnimating];
     
-    NSString *title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    if (title.length > 0) {
-        self.title = title;
-    }
+    [self.webView evaluateJavaScript:@"document.title" completionHandler:^(NSString *title, NSError * _Nullable error) {
+        if (title.length > 0) {
+            self.title = title;
+        }
+    }];
+    
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     [self.indicator stopAnimating];
+    NSString *injectionJSString = @"var script = document.createElement('meta');"
+    "script.name = 'viewport';"
+    "script.content=\"width=device-width, user-scalable=no\";"
+    "document.getElementsByTagName('head')[0].appendChild(script);";
+    [webView evaluateJavaScript:injectionJSString completionHandler:nil];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error{
     [self.indicator stopAnimating];
 }
 

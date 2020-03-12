@@ -12,6 +12,7 @@
 #import "MQBundleUtil.h"
 #import "MQBotMenuCellModel.h"
 #import "MEIQIA_TTTAttributedLabel.h"
+#import "MQBundleUtil.h"
 
 static const NSInteger kMQBotMenuCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQBotMenuCellSelectedNumberActionSheetTag = 2001;
@@ -298,7 +299,7 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
     
 }
 
-#pragma 点击发送失败消息，重新发送事件
+#pragma 点击发送失败消息 重新发送事件
 - (void)tapFailImage:(id)sender {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"重新发送吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alertView show];

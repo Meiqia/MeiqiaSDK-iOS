@@ -36,7 +36,7 @@
         _tipStringMap = @{
                 @(MQChatEventTypeAgentDidCloseConversation):@"",
                 @(MQChatEventTypeEndConversationTimeout):@"",
-                @(MQChatEventTypeRedirect):[NSString stringWithFormat:@"接下来由 %@ 为您服务", self.userName],
+                @(MQChatEventTypeRedirect):[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"mq_direct_content"], self.userName],
                 @(MQChatEventTypeClientEvaluation):@"",
                 @(MQChatEventTypeInviteEvaluation):@"",
                 @(MQChatEventTypeAgentUpdate):@"",

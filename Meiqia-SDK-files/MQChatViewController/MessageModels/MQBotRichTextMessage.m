@@ -8,10 +8,14 @@
 
 #import "MQBotRichTextMessage.h"
 
-@interface MQBotRichTextMessage()
-
-@end
-
 @implementation MQBotRichTextMessage
+- (id)initWithDictionary:(NSDictionary *)dictionary {
+    if (self = [super init]) {
+        self.summary = dictionary[@"summary"] ?: @"";
+        self.thumbnail = dictionary[@"thumbnail"] ?: @"";
+        self.content = dictionary[@"content"] ?: @"";
+    }
+    return self;
+}
 
 @end

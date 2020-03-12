@@ -59,13 +59,6 @@
 "alert_view_confirm"    = "Confirm";
 "alert_view_send"       = "Send";
 
-"mq_evaluate_good"      = "Good";
-"mq_evaluate_medium"    = "Fair";
-"mq_evaluate_bad"       = "Bad";
-"mq_evaluate_hint"      = "Please leave a comment (Optional)";
-"mq_evaluate_title"     = "How would you rate this chat?";
-
-
 "cannot_refresh"        = "Cannot refresh anymore~";
 
 "make_call_to"          = "Call ";
@@ -125,7 +118,7 @@
 "name" = "Name";
 "name_placeholder" = "Please enter your name";
 
-"wating_in_queue_tip_text" = "please hold on, %d visitors in front, of you can leave a message";
+"wating_in_queue_tip_text" = "please hold on, %d visitors in front, or you can leave a message";
 
 //询前表单
 "pre_chat_list_title" = "Client Support";
@@ -142,8 +135,20 @@
 // 服务连接中,请稍候
 "service_connectting_wait" = "Service is connectting,please waitting";
 
-"mq_evaluate_good" = "Good";
-"mq_evaluate_medium" = "Fair";
-"mq_evaluate_bad" = "Bad";
+"mq_evaluation_good" = "Good";
+"mq_evaluation_middle" = "Fair";
+"mq_evaluation_bad" = "Bad";
 "mq_evaluate_hint" = "Please leave a comment (Optional)";
-"mq_evaluate_title" = "How would you rate this chat?";
+"mq_evaluation_content" = "How would you rate this chat?";
+"mq_direct_content" = "You will be assisted by %@";
+"mq_send" = "Send";
+"mq_delete" = "Delete";
+"mq_record_count_down" = "You can talk for %li more seconds";
+"mq_record_will_send" = "Recording will be send in %li seconds";
+"mq_audio_status_normal" = "Press to talk";
+"mq_display_preview" = "Display the preview";
+"mq_open_file" = "Open the file";
+
+"mq_solved" = "soved";
+"mq_unsolved" = "unsolved";
+"mq_commited" = "commited";

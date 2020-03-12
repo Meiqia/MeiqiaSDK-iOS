@@ -37,7 +37,7 @@
     //建立amr文件
     _file = fopen((const char *)[self.filePath UTF8String], "wb+");
     if (_file==0) {
-        DLOG(@"建立文件失败:%s",__FUNCTION__);
+        NSLog(@"建立文件失败:%s",__FUNCTION__);
         return NO;
     }
     
@@ -78,7 +78,7 @@
     }
     if (pcmLen%2!=0){
         pcmLen--; //防止意外，如果不是偶数，情愿减去最后一个字节。
-        DLOG(@"不是偶数");
+        NSLog(@"不是偶数");
     }
     
     unsigned char buffer[320];

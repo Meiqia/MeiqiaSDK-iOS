@@ -98,9 +98,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
+#else
+#endif
+
+
+
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [self.collectionView.collectionViewLayout invalidateLayout];

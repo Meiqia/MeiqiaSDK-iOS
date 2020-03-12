@@ -1,30 +1,34 @@
 //
-//  MCInputToolBar.h
+//  MQInputToolView.h
 //  Meiqia
 //
-//  Created by Injoy on 16/4/1.
-//  Copyright © 2016年 Injoy. All rights reserved.
+//  Created by xulianpeng on 2017/8/31.
+//  Copyright © 2017年 Injoy. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "MQButtonGroupBar.h"
 #import "MQInputContentView.h"
 
-@class MQInputToolBar;
+@class MQBottomBar;
 
-@protocol MQInputToolBarDelegate <UIToolbarDelegate>
+
+
+@protocol MQBottomBarDelegate<NSObject>
 
 @optional
-- (void)inputBar:(MQInputToolBar *)inputBar willChangeHeight:(CGFloat)height;
-- (void)inputBar:(MQInputToolBar *)inputBar didChangeHeight:(CGFloat)height;
+- (void)inputBar:(MQBottomBar *)inputBar willChangeHeight:(CGFloat)height;
+- (void)inputBar:(MQBottomBar *)inputBar didChangeHeight:(CGFloat)height;
 - (void)textContentDidChange:(NSString *)newString;
 
 @end
 
 
-@interface MQInputToolBar : UIToolbar <MQInputContentViewDelegate, MQInputContentViewLayoutDelegate>
 
-@property (weak, nonatomic) id<MQInputToolBarDelegate> delegate;
+@interface MQBottomBar : UIView<MQInputContentViewDelegate, MQInputContentViewLayoutDelegate>
+
+
+@property (weak, nonatomic) id<MQBottomBarDelegate> delegate;
 @property (weak, nonatomic) id<MQInputContentViewDelegate> contentViewDelegate;
 @property (weak, nonatomic) id<MQButtonGroupBarDelegate> buttonGroupDelegate;
 
@@ -56,6 +60,5 @@
 /**
  *  给inputView复制，并设置当InputBar失去焦点时的回调。
  */
-- (void)setInputView:(UIView *)inputView resignFirstResponderBlock:(void (^)())block;
-
+- (void)setInputView:(UIView *)inputView resignFirstResponderBlock:(void (^)(void))block;
 @end

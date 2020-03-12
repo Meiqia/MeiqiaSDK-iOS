@@ -111,12 +111,15 @@
         }
         else {
             [self.placeholderColor set];
-//            [self.placeholder drawInRect:CGRectMake(8.0f, 8.0f, self.frame.size.width - 16.0f, self.frame.size.height - 16.0f) withFont:self.font];
             //xlp
             if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
                 [self.placeholder drawInRect:CGRectMake(8.0f, 8.0f, self.frame.size.width - 16.0f, self.frame.size.height - 16.0f) withAttributes:@{NSFontAttributeName:self.font}];
             } else {
+                
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
                 [self.placeholder drawInRect:CGRectMake(8.0f, 8.0f, self.frame.size.width - 16.0f, self.frame.size.height - 16.0f) withFont:self.font];
+#else
+#endif
             }
             
         }
