@@ -1148,7 +1148,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         _bottomBar.delegate = self;
         _bottomBar.contentViewDelegate = self;
         [contentView setupButtons];
-        _chatInputBar.backgroundColor = [UIColor colorWithHexString:chatbg];
+        contentView.backgroundColor = [UIColor colorWithHexString:chatbg];
     }
     return _bottomBar;
 }

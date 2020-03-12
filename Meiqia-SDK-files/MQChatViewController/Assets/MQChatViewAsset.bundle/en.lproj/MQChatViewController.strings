@@ -140,6 +140,9 @@
 "mq_evaluation_bad" = "Bad";
 "mq_evaluate_hint" = "Please leave a comment (Optional)";
 "mq_evaluation_content" = "How would you rate this chat?";
+"mq_evaluation_title" = "How would you rate this chat?";
+"mq_evaluation_content" = "Please leave a comment (Optional)";
+
 "mq_direct_content" = "You will be assisted by %@";
 "mq_send" = "Send";
 "mq_delete" = "Delete";
