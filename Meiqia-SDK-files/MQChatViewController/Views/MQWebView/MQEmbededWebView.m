@@ -23,14 +23,15 @@
         self.backgroundColor = [UIColor clearColor];
         self.opaque = false;
         self.navigationDelegate = self;
-        self.configuration.dataDetectorTypes = UIDataDetectorTypeNone;
         self.scrollView.showsVerticalScrollIndicator = NO;
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.scrollEnabled = NO;
         self.clipsToBounds = YES;
-        self.configuration.dataDetectorTypes = UIDataDetectorTypeNone;
         self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleGray)];
-
+        
+        #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_10_0
+                self.configuration.dataDetectorTypes = UIDataDetectorTypeNone;
+        #endif
     }
     return self;
 }
