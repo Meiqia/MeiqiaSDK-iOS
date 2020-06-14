@@ -27,7 +27,10 @@
 @property (nonatomic, copy) NSString *content;
 @property (nonatomic, copy) NSString *iconPath;
 @property (nonatomic, strong) UIImage *avartarImage;
+@property (nonatomic, readonly, assign) CGRect avatarFrame;
 @property (nonatomic, strong) UIImage *iconImage;
+
+@property (nonatomic, assign) CGFloat cachedWetViewHeight;
 
 @property (nonatomic, assign) BOOL isEvaluated;
 

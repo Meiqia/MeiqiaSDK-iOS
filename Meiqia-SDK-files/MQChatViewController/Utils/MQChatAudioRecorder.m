@@ -88,7 +88,6 @@
     AVAudioSessionInterruptionType interruptionType = [[[notification userInfo]
                                                         objectForKey:AVAudioSessionInterruptionTypeKey] unsignedIntegerValue];
     if (AVAudioSessionInterruptionTypeBegan == interruptionType){
-        NSLog(@"begin recording");
         if (self.delegate) {
             if ([self.delegate respondsToSelector:@selector(didBeginRecording)]) {
                 [self.delegate didBeginRecording];
@@ -96,7 +95,6 @@
         }
     }
     else if (AVAudioSessionInterruptionTypeEnded == interruptionType){
-        NSLog(@"end recording");
         if (self.delegate) {
             if ([self.delegate respondsToSelector:@selector(didEndRecording)]) {
                 [self.delegate didEndRecording];

@@ -31,6 +31,10 @@
 
 @property (nonatomic, copy) NSString *ticketContactFillInRule;
 
+@property (nonatomic, assign) bool  queueStatus; //排队是否开启,true为开启
+
+@property (nonatomic, copy) NSString *queueIntro; //排队文案
+
 @property (nonatomic, strong) MQPreChatData *preChatData; //讯前表单数据模型
 
 @end

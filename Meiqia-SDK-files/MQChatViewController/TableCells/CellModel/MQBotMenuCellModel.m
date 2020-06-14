@@ -151,8 +151,13 @@
         } else {
             [contentAttributes setObject:(__bridge id)[MQChatViewConfig sharedConfig].incomingMsgTextColor.CGColor forKey:(__bridge id)kCTForegroundColorAttributeName];
         }
-        self.cellTextAttributes = [[NSDictionary alloc] initWithDictionary:contentAttributes];
-        self.cellText = [[NSAttributedString alloc] initWithString:message.content attributes:self.cellTextAttributes];
+        
+//        self.cellTextAttributes = [[NSDictionary alloc] initWithDictionary:contentAttributes];
+//        self.cellText = [[NSAttributedString alloc] initWithString:message.content attributes:self.cellTextAttributes];
+        
+        NSMutableAttributedString * nameText = [[NSMutableAttributedString alloc] initWithData:[message.richContent?:message.content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes: nil error:nil];
+        self.cellText = nameText;
+
         self.date = message.date;
         self.cellHeight = 44.0;
         self.delegate = delegator;

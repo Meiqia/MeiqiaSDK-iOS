@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, MQState) {
     MQStateInitialized,
     MQStateOffline, // not using
     MQStateUnallocatedAgent,
-    MQStateAllocatingAgent,
+    MQStateAllocatingAgent,// 正在分配客服
     MQStateAllocatedAgent,
     MQStateBlacklisted,
     MQStateQueueing,

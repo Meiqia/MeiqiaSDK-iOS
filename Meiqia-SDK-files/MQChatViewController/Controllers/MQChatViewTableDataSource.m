@@ -38,6 +38,7 @@
 {
     id<MQCellModelProtocol> cellModel = [self.chatViewService.cellModels objectAtIndex:indexPath.row];
     NSString *cellModelName = NSStringFromClass([cellModel class]);
+//    NSString *messageId = [cellModel getCellMessageId]?:NSStringFromClass([cellModel class]);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellModelName];
     if (!cell){
         cell = [cellModel getCellWithReuseIdentifier:cellModelName];

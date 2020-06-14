@@ -88,6 +88,6 @@ typedef NS_ENUM(NSUInteger, MQTipType) {
  */
 - (MQTipsCellModel *)initBotTipCellModelWithCellWidth:(CGFloat)cellWidth tipType:(MQTipType)tipType;
 
-- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth position:(int)position tipType:(MQTipType)tipType;
+- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth withIntro:(NSString *)intro position:(int)position tipType:(MQTipType)tipType;
 
 @end

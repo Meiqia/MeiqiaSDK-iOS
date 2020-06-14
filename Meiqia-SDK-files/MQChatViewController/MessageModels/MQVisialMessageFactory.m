@@ -10,8 +10,10 @@
 #import "MQTextMessage.h"
 #import "MQImageMessage.h"
 #import "MQVoiceMessage.h"
+#import "MQCardMessage.h"
 #import "MQFileDownloadMessage.h"
 #import "MQRichTextMessage.h"
+#import "MQWithDrawMessage.h"
 
 @implementation MQVisialMessageFactory
 
@@ -48,8 +50,21 @@
             toMessage = richTextMessage;
             break;
         }
+        case MQMessageContentTypeCard: {
+            MQCardMessage *cardMessage = [[MQCardMessage alloc] init];
+            cardMessage.cardData = plainMessage.cardData;
+            toMessage = cardMessage;
+            break;
+        }
         default:
             break;
+    }
+    // 消息撤回
+    if (plainMessage.isMessageWithDraw) {
+        MQWithDrawMessage *withDrawMessage = [[MQWithDrawMessage alloc] init];
+        withDrawMessage.isMessageWithDraw = plainMessage.isMessageWithDraw;
+        withDrawMessage.content = @"消息已被客服撤回";
+        toMessage = withDrawMessage;
     }
     toMessage.messageId = plainMessage.messageId;
     toMessage.date = plainMessage.createdOn;

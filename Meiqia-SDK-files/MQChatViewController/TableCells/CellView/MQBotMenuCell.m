@@ -24,7 +24,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
 
 @implementation MQBotMenuCell  {
     UIImageView *avatarImageView;
-    TTTAttributedLabel *textLabel;
+    UILabel *textLabel;
     UIImageView *bubbleImageView;
     UIActivityIndicatorView *sendingIndicator;
     UIImageView *failureImageView;
@@ -45,15 +45,18 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
         [bubbleImageView addGestureRecognizer:longPressBubbleGesture];
         [self.contentView addSubview:bubbleImageView];
         //初始化文字
-        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-            textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
-            textLabel.delegate = self;
-        } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wincompatible-pointer-types"
-            textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
-#pragma clang diagnostic pop
-        }
+//        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
+//            textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+//            textLabel.delegate = self;
+//        } else {
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Wincompatible-pointer-types"
+//            textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+//#pragma clang diagnostic pop
+//        }
+        
+        textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+
         textLabel.numberOfLines = 0;
         textLabel.textAlignment = NSTextAlignmentLeft;
         textLabel.userInteractionEnabled = true;
@@ -117,47 +120,48 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
     //刷新聊天文字
     textLabel.frame = cellModel.textLabelFrame;
     if ([textLabel isKindOfClass:[TTTAttributedLabel class]]) {
-        textLabel.text = cellModel.cellText;
+        textLabel.attributedText = cellModel.cellText;
     } else {
         textLabel.attributedText = cellModel.cellText;
     }
-    //获取文字中的可选中的元素
-    if (cellModel.numberRangeDic.count > 0) {
-        NSString *longestKey = @"";
-        for (NSString *key in cellModel.numberRangeDic.allKeys) {
-            //找到最长的key
-            if (key.length > longestKey.length) {
-                longestKey = key;
-            }
-        }
-        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-            [textLabel addLinkToPhoneNumber:longestKey withRange:[cellModel.numberRangeDic[longestKey] rangeValue]];
-        }
-    }
-    if (cellModel.linkNumberRangeDic.count > 0) {
-        NSString *longestKey = @"";
-        for (NSString *key in cellModel.linkNumberRangeDic.allKeys) {
-            //找到最长的key
-            if (key.length > longestKey.length) {
-                longestKey = key;
-            }
-        }
-        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-            [textLabel addLinkToURL:[NSURL URLWithString:longestKey] withRange:[cellModel.linkNumberRangeDic[longestKey] rangeValue]];
-        }
-    }
-    if (cellModel.emailNumberRangeDic.count > 0) {
-        NSString *longestKey = @"";
-        for (NSString *key in cellModel.emailNumberRangeDic.allKeys) {
-            //找到最长的key
-            if (key.length > longestKey.length) {
-                longestKey = key;
-            }
-        }
-        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-            [textLabel addLinkToTransitInformation:@{@"email" : longestKey} withRange:[cellModel.emailNumberRangeDic[longestKey] rangeValue]];
-        }
-    }
+    
+//    //获取文字中的可选中的元素
+//    if (cellModel.numberRangeDic.count > 0) {
+//        NSString *longestKey = @"";
+//        for (NSString *key in cellModel.numberRangeDic.allKeys) {
+//            //找到最长的key
+//            if (key.length > longestKey.length) {
+//                longestKey = key;
+//            }
+//        }
+//        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
+//            [textLabel addLinkToPhoneNumber:longestKey withRange:[cellModel.numberRangeDic[longestKey] rangeValue]];
+//        }
+//    }
+//    if (cellModel.linkNumberRangeDic.count > 0) {
+//        NSString *longestKey = @"";
+//        for (NSString *key in cellModel.linkNumberRangeDic.allKeys) {
+//            //找到最长的key
+//            if (key.length > longestKey.length) {
+//                longestKey = key;
+//            }
+//        }
+//        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
+//            [textLabel addLinkToURL:[NSURL URLWithString:longestKey] withRange:[cellModel.linkNumberRangeDic[longestKey] rangeValue]];
+//        }
+//    }
+//    if (cellModel.emailNumberRangeDic.count > 0) {
+//        NSString *longestKey = @"";
+//        for (NSString *key in cellModel.emailNumberRangeDic.allKeys) {
+//            //找到最长的key
+//            if (key.length > longestKey.length) {
+//                longestKey = key;
+//            }
+//        }
+//        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
+//            [textLabel addLinkToTransitInformation:@{@"email" : longestKey} withRange:[cellModel.emailNumberRangeDic[longestKey] rangeValue]];
+//        }
+//    }
     
     //刷新出错图片
     failureImageView.hidden = true;

@@ -668,7 +668,6 @@
     //Added by bretdabaker: sometimes we want to handle this ourselves
     if ([delegate respondsToSelector:@selector(growingTextView:shouldChangeTextInRange:replacementText:)])
         return [delegate growingTextView:self shouldChangeTextInRange:range replacementText:atext];
-    
     if ([atext isEqualToString:@"\n"]) {
         if ([delegate respondsToSelector:@selector(growingTextViewShouldReturn:)]) {
             if (![delegate performSelector:@selector(growingTextViewShouldReturn:) withObject:self]) {

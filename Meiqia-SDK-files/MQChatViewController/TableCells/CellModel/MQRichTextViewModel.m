@@ -9,6 +9,7 @@
 #import "MQRichTextViewModel.h"
 #import "MQRichTextMessage.h"
 #import "MQRichTextViewCell.h"
+#import "MQWebViewBubbleCell.h"
 #import "MQServiceToViewInterface.h"
 #import "MQWebViewController.h"
 #import "MQAssetUtil.h"
@@ -98,6 +99,15 @@
 - (MQRichTextViewCell *)getCellWithReuseIdentifier:(NSString *)cellReuseIdentifer {
     return [[MQRichTextViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifer];
 }
+
+//- ( MQNewRichMessageCell*)getCellWithReuseIdentifier:(NSString *)cellReuseIdentifer {
+//    return [[MQNewRichMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifer];
+//}
+
+//- (MQWebViewBubbleCell*)getCellWithReuseIdentifier:(NSString *)cellReuseIdentifer {
+//    return [[MQWebViewBubbleCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifer];
+//}
+
 
 - (NSDate *)getCellDate {
     return self.message.date;
