@@ -75,6 +75,17 @@
  */
 - (void)reloadCellAsContentUpdated:(UITableViewCell *)cell;
 
+/**
+ 删除cell
+ */
+- (void)deleteCell:(UITableViewCell *)cell withTipMsg:(NSString *)tipMsg enableLinesDisplay:(BOOL)enable;
+
+/**
+ 更换tipCell
+ */
+- (void)replaceTipCell:(UITableViewCell *)cell;
+
+
 @end
 
 

@@ -115,8 +115,10 @@
             break;
         case MQPreChatFormItemInputTypeSingleSelection:
             cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(MQPreChatSelectionCell.class) forIndexPath:indexPath];
-            cell.textLabel.text = formItem.choices[indexPath.row];
-            [cell setSelected:([cell.textLabel.text isEqualToString:[self.viewModel valueForFieldIndex:indexPath.section]]) animated:NO];
+            if (![formItem.choices isEqual:[NSNull null]] && formItem.choices.count > 0) {
+                cell.textLabel.text = formItem.choices[indexPath.row];
+                [cell setSelected:([cell.textLabel.text isEqualToString:[self.viewModel valueForFieldIndex:indexPath.section]]) animated:NO];
+            }
             break;
         case MQPreChatFormItemInputTypeMultipleSelection:
             cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(MQPreChatSelectionCell.class) forIndexPath:indexPath];

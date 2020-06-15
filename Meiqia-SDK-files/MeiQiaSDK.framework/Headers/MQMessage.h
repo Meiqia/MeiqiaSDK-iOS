@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MQAgent.h"
+#import "MQCardInfo.h"
 
 #define QUEUEING_SYMBOL 999
 
@@ -26,6 +27,8 @@ typedef enum : NSUInteger {
     MQMessageActionRemovedFromBlackList         = 11,  //被客户从黑名单中移除
     MQMessageActionQueueingAdd                  = 12,  //顾客被添加到等待客服队列
     MQMessageActionQueueingRemoved              = 13,  //顾客从等待队列中移除
+    MQMessageActionWithdrawMessage              = 14,  //消息撤回(withdraw_msg)
+    MQMessageActionAgentSendCard                = 15   // 线索卡片
 } MQMessageAction;
 
 typedef enum : NSUInteger {
@@ -35,6 +38,8 @@ typedef enum : NSUInteger {
     MQMessageContentTypeFile                 = 3, //文件传输
     MQMessageContentTypeBot                  = 4,  //机器人消息
     MQMessageContentTypeRichText             = 5, //图文消息
+    MQMessageContentTypeCard                 = 6, //卡片消息
+    MQMessageContentTypeHybrid                 = 7, //混合消息
 } MQMessageContentType;
 
 typedef enum : NSUInteger {
@@ -124,6 +129,12 @@ typedef enum : NSUInteger {
  }
  **/
 @property (nonatomic, copy) id accessoryData;
+
+/** 线索卡片数据 */
+@property (nonatomic, strong) NSArray *cardData;
+
+/** 消息是否为撤回消息，默认不撤回 */
+@property (nonatomic, assign) BOOL isMessageWithDraw;
 
 + (instancetype)createBlacklistMessageWithAction:(NSString *)action;
 

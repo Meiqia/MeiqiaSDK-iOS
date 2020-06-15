@@ -47,6 +47,8 @@
 
 - (void)removeCellAtIndex:(NSInteger)index;
 
+- (void)insertCellAtCurrentIndex:(NSInteger)currentRow modelCount:(NSInteger)count;
+
 /**
  *  通知viewController将tableView滚动到底部
  */
@@ -128,6 +130,7 @@
  * 获取更多历史聊天消息
  */
 - (void)startGettingHistoryMessages;
+- (void)startGettingDateBaseHistoryMessages;
 - (void)startGettingHistoryMessagesFromLastMessage;
 /**
  * 发送文字消息
@@ -149,6 +152,12 @@
  * 发送“用户正在输入”的消息
  */
 - (void)sendUserInputtingWithContent:(NSString *)content;
+
+
+/**
+  删除消息
+ */
+- (void)deleteMessageAtIndex:(NSInteger)index withTipMsg:(NSString *)tipMsg enableLinesDisplay:(BOOL)enable;
 
 /**
  * 重新发送消息
@@ -224,6 +233,11 @@
  手动上线当前顾客
  */
 - (void)setClientOnline;
+
+/**
+初始化历史消息
+*/
+- (void)onceLoadHistoryAndRefreshWithSendMsg:(NSString *)message;
 
 #ifndef INCLUDE_MEIQIA_SDK
 /**

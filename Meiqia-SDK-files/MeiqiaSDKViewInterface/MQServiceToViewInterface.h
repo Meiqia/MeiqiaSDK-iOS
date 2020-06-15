@@ -67,6 +67,9 @@
  */
 - (void)didRedirectWithAgentName:(NSString *)agentName;
 
+// 客服分配完成
+- (void)didScheduleResult:(MQClientOnlineResult)onLineResult withResultMessages:(NSArray<MQMessage *> *)message;
+
 @end
 
 /**

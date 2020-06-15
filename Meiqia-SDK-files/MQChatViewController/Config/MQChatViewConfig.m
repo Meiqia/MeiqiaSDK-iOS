@@ -87,6 +87,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK
     self.enableSyncServerMessage = true;
+    self.enableInitHistoryMessage = YES;
     self.MQClientId             = @"";
     
     self.scheduleRule                   = 0;

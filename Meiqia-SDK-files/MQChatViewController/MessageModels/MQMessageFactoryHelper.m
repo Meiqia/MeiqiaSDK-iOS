@@ -14,7 +14,7 @@
 @implementation MQMessageFactoryHelper
 
 + (id<MQMessageFactory>)factoryWithMessageAction:(MQMessageAction)action contentType:(MQMessageContentType)contenType {
-    if (action == MQMessageActionMessage || action == MQMessageActionTicketReply) {
+    if (action == MQMessageActionMessage || action == MQMessageActionTicketReply || action == MQMessageActionAgentSendCard) {
         if (contenType == MQMessageContentTypeBot) {
             return [MQBotMessageFactory new];
         } else {

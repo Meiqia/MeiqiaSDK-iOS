@@ -151,7 +151,6 @@
 #pragma UIAlertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        NSLog(@"重新发送");
         [self.chatCellDelegate resendMessageInCell:self resendData:@{@"image" : bubbleImageView.image}];
     }
 }

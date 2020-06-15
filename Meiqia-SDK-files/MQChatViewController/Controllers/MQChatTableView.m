@@ -22,10 +22,13 @@
 
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     
-    //xlp 适配iphonex todo
     if (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX) {
         CGFloat newHeight = frame.size.height - 34;
         frame.size.height = newHeight;
+    }
+    
+    if (MQToolUtil.kXlpObtainStatusBarHeight == 0 && frame.size.width > frame.size.height) {
+        frame.size.width = frame.size.width - 64;
     }
     
     self = [super initWithFrame:frame style:style];
@@ -49,6 +52,7 @@
     }
 }
 
+
 /** 点击tableView的事件 */
 - (void)tapChatTableView:(id)sender {
     if (self.chatTableViewDelegate) {
@@ -60,6 +64,7 @@
 
 - (void)scrollToCellIndex:(NSInteger)index {
     if ([self numberOfRowsInSection:0] > 0) {
+        
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
         [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }

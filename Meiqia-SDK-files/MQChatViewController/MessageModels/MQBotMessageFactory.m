@@ -93,10 +93,15 @@
 
 - (MQBaseMessage *)getMenuBotMessage:(NSDictionary *)data {
     NSString *content = @"";
+    NSString *richContent = @"";
     NSMutableArray *menu = [NSMutableArray new];
     NSArray *contentRobot = [data objectForKey:@"content_robot"] ?: [NSArray new];
     for (NSInteger i=0; i < [contentRobot count]; i++) {
         NSDictionary *subContent = [contentRobot objectAtIndex:i];
+        if ([subContent objectForKey:@"rich_text"]) {
+            // 强制转为富文本
+            richContent = [subContent objectForKey:@"rich_text"];
+        }
         if (i == 0 && [[subContent objectForKey:@"type"] isEqualToString:@"text"]) {
             content = [subContent objectForKey:@"text"];
         } else if ([[subContent objectForKey:@"type"] isEqualToString:@"menu"]) {
@@ -110,6 +115,7 @@
     }
     content = [MQManager convertToUnicodeWithEmojiAlias:content];
     MQBotMenuMessage *botMessage = [[MQBotMenuMessage alloc] initWithContent:content menu:menu];
+    botMessage.richContent = richContent;
     return botMessage;
 }
 

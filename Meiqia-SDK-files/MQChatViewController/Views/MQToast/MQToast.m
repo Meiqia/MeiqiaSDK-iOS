@@ -49,7 +49,7 @@ static const float kMQToastVerticalSpacing = 6.0;
             dispatch_time_t popTime =
             dispatch_time(DISPATCH_TIME_NOW, (int64_t)(interval * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [UIView animateWithDuration:.25 animations:^{
+                [UIView animateWithDuration:interval animations:^{
                     view.alpha = 0;
                 } completion:^(BOOL finished) {
                     [view removeFromSuperview];

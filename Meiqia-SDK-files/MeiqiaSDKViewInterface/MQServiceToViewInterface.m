@@ -38,7 +38,6 @@
             }
         }
     } failure:^(NSError *error) {
-        NSLog(@"美洽SDK: 获取历史消息失败\nerror = %@", error);
         if (errorDelegate) {
             if ([errorDelegate respondsToSelector:@selector(getLoadHistoryMessageError)]) {
                 [errorDelegate getLoadHistoryMessageError];
@@ -411,8 +410,8 @@
     [MQManager evaluateBotMessage:messageId isUseful:isUseful completion:completion];
 }
 
-#pragma MQManagerDelegate
-//webSocket收到消息的代理方法
+#pragma mark - MQManagerDelegate
+
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)messages {
     if (!self.serviceToViewDelegate) {
         return;
@@ -423,6 +422,11 @@
     }
 }
 
+- (void)didScheduleResult:(MQClientOnlineResult)onLineResult withResultMessages:(NSArray<MQMessage *> *)message{
+    if ([self.serviceToViewDelegate respondsToSelector:@selector(didScheduleResult:withResultMessages:)]) {
+        [self.serviceToViewDelegate didScheduleResult:onLineResult withResultMessages:message];
+    }
+}
 
 //强制转人工
 - (void)forceRedirectHumanAgentWithSuccess:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success

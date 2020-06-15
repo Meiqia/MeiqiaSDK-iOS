@@ -94,7 +94,6 @@
         __strong typeof (wself) sself = wself;
         sself.avatarImageView.image = avatar;
     }];
-    
     [self.contentWebView loadHTML:self.viewModel.content WithCompletion:^(CGFloat height) {
         __strong typeof (wself) sself = wself;
         if (height != self.viewModel.cachedWebViewHeight) {

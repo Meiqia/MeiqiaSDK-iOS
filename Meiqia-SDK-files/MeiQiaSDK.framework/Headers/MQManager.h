@@ -11,11 +11,12 @@
 #import "MQMessage.h"
 #import "MQDefinition.h"
 #import "MQAgent.h"
+#import "MQCardInfo.h"
 #import "MQEnterprise.h"
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.5.0"
+#define MQSDKVersion @"3.5.2"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -23,6 +24,14 @@
  *  @param message 消息
  */
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)message;
+
+/**
+ *  分配完成
+ *  @param onLineResult 分配状态
+ *  @param message 消息
+ */
+- (void)didScheduleResult:(MQClientOnlineResult)onLineResult withResultMessages:(NSArray<MQMessage *> *)message;
+
 
 @end
 
@@ -437,6 +446,14 @@
 + (void)updateMessageWithId:(NSString *)messageId forAccessoryData:(NSDictionary *)accessoryData;
 
 /**
+ 将消息标记为撤回
+ 
+ @param isWithDraw YES为已撤回消息、NO为普通消息
+ */
++ (void)updateMessageWithDrawWithId:(NSString *)messageId withIsWithDraw:(BOOL)isWithDraw;
+
+
+/**
  对机器人的回答做评价
  @param messageId 消息 id
  */
@@ -561,6 +578,11 @@
  提交用户填写的留言工单
  */
 + (void)submitTicketForm:(NSString *)content userInfo:(NSDictionary *)userInfo completion:(void(^)(MQTicket *ticket, NSError *))block;
+
+/**
+更新线索卡片
+*/
++ (void)updateCardInfo:(NSDictionary *)param completion:(void(^)(BOOL success, NSError *error))completion;
 
 /**
  获取是否第一次上线
