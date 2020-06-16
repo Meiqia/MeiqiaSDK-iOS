@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
 
   s.homepage         = "https://github.com/Meiqia/MeiqiaSDK-iOS"
   s.license          = 'MIT'
-  s.author           = { "ijinmao" => "340052204@qq.com" }
+  s.author           = { "yuhao" => "yuwowowo@126.com" }
   s.source           = { :git => "https://github.com/Meiqia/MeiqiaSDK-iOS.git", :tag => "v3.5.2" }
   s.social_media_url = "https://meiqia.com"
   s.documentation_url = "https://github.com/Meiqia/MeiqiaSDK-iOS/wiki"
