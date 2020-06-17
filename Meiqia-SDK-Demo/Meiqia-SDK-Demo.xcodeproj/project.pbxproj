@@ -60,16 +60,6 @@
 		F3B2CA202495E37C00FDADAF /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8BD2495E37B00FDADAF /* amrFileCodec.mm */; };
 		F3B2CA212495E37C00FDADAF /* XLPInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8C12495E37B00FDADAF /* XLPInputView.m */; };
 		F3B2CA222495E37C00FDADAF /* XlpEmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8C22495E37B00FDADAF /* XlpEmojiCell.m */; };
-		F3B2CA232495E37C00FDADAF /* NSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8C72495E37B00FDADAF /* NSLayoutConstraint+MASDebugAdditions.m */; };
-		F3B2CA242495E37C00FDADAF /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8D02495E37B00FDADAF /* ViewController+MASAdditions.m */; };
-		F3B2CA252495E37C00FDADAF /* MASCompositeConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8D42495E37B00FDADAF /* MASCompositeConstraint.m */; };
-		F3B2CA262495E37C00FDADAF /* MASConstraintMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8D52495E37B00FDADAF /* MASConstraintMaker.m */; };
-		F3B2CA272495E37C00FDADAF /* MASLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8D62495E37B00FDADAF /* MASLayoutConstraint.m */; };
-		F3B2CA282495E37C00FDADAF /* NSArray+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8D72495E37B00FDADAF /* NSArray+MASAdditions.m */; };
-		F3B2CA292495E37C00FDADAF /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8D82495E37B00FDADAF /* View+MASAdditions.m */; };
-		F3B2CA2A2495E37C00FDADAF /* MASConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8DB2495E37B00FDADAF /* MASConstraint.m */; };
-		F3B2CA2B2495E37C00FDADAF /* MASViewConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8DD2495E37B00FDADAF /* MASViewConstraint.m */; };
-		F3B2CA2C2495E37C00FDADAF /* MASViewAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8DE2495E37B00FDADAF /* MASViewAttribute.m */; };
 		F3B2CA2D2495E37C00FDADAF /* MEIQIA_CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8E12495E37B00FDADAF /* MEIQIA_CustomIOSAlertView.m */; };
 		F3B2CA2E2495E37C00FDADAF /* MEIQIA_AmrRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8E82495E37B00FDADAF /* MEIQIA_AmrRecordWriter.m */; };
 		F3B2CA2F2495E37C00FDADAF /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3B2C8F32495E37B00FDADAF /* libopencore-amrwb.a */; };
@@ -312,31 +302,6 @@
 		F3B2C8C22495E37B00FDADAF /* XlpEmojiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XlpEmojiCell.m; sourceTree = "<group>"; };
 		F3B2C8C32495E37B00FDADAF /* XLPInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLPInputView.h; sourceTree = "<group>"; };
 		F3B2C8C42495E37B00FDADAF /* XlpEmojiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XlpEmojiCell.h; sourceTree = "<group>"; };
-		F3B2C8C62495E37B00FDADAF /* MASCompositeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
-		F3B2C8C72495E37B00FDADAF /* NSLayoutConstraint+MASDebugAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+MASDebugAdditions.m"; sourceTree = "<group>"; };
-		F3B2C8C82495E37B00FDADAF /* MASConstraint+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASConstraint+Private.h"; sourceTree = "<group>"; };
-		F3B2C8C92495E37B00FDADAF /* MASLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASLayoutConstraint.h; sourceTree = "<group>"; };
-		F3B2C8CA2495E37B00FDADAF /* NSArray+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MASShorthandAdditions.h"; sourceTree = "<group>"; };
-		F3B2C8CB2495E37B00FDADAF /* MASConstraintMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASConstraintMaker.h; sourceTree = "<group>"; };
-		F3B2C8CC2495E37B00FDADAF /* View+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASAdditions.h"; sourceTree = "<group>"; };
-		F3B2C8CD2495E37B00FDADAF /* NSArray+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MASAdditions.h"; sourceTree = "<group>"; };
-		F3B2C8CE2495E37B00FDADAF /* MASUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASUtilities.h; sourceTree = "<group>"; };
-		F3B2C8CF2495E37B00FDADAF /* MASViewAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASViewAttribute.h; sourceTree = "<group>"; };
-		F3B2C8D02495E37B00FDADAF /* ViewController+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+MASAdditions.m"; sourceTree = "<group>"; };
-		F3B2C8D12495E37B00FDADAF /* MASViewConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASViewConstraint.h; sourceTree = "<group>"; };
-		F3B2C8D22495E37B00FDADAF /* MASConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASConstraint.h; sourceTree = "<group>"; };
-		F3B2C8D32495E37B00FDADAF /* NSLayoutConstraint+MASDebugAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+MASDebugAdditions.h"; sourceTree = "<group>"; };
-		F3B2C8D42495E37B00FDADAF /* MASCompositeConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASCompositeConstraint.m; sourceTree = "<group>"; };
-		F3B2C8D52495E37B00FDADAF /* MASConstraintMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASConstraintMaker.m; sourceTree = "<group>"; };
-		F3B2C8D62495E37B00FDADAF /* MASLayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASLayoutConstraint.m; sourceTree = "<group>"; };
-		F3B2C8D72495E37B00FDADAF /* NSArray+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+MASAdditions.m"; sourceTree = "<group>"; };
-		F3B2C8D82495E37B00FDADAF /* View+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "View+MASAdditions.m"; sourceTree = "<group>"; };
-		F3B2C8D92495E37B00FDADAF /* View+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASShorthandAdditions.h"; sourceTree = "<group>"; };
-		F3B2C8DA2495E37B00FDADAF /* Masonry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Masonry.h; sourceTree = "<group>"; };
-		F3B2C8DB2495E37B00FDADAF /* MASConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASConstraint.m; sourceTree = "<group>"; };
-		F3B2C8DC2495E37B00FDADAF /* ViewController+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+MASAdditions.h"; sourceTree = "<group>"; };
-		F3B2C8DD2495E37B00FDADAF /* MASViewConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewConstraint.m; sourceTree = "<group>"; };
-		F3B2C8DE2495E37B00FDADAF /* MASViewAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewAttribute.m; sourceTree = "<group>"; };
 		F3B2C8DF2495E37B00FDADAF /* MQNamespacedDependencies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQNamespacedDependencies.h; sourceTree = "<group>"; };
 		F3B2C8E12495E37B00FDADAF /* MEIQIA_CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_CustomIOSAlertView.m; sourceTree = "<group>"; };
 		F3B2C8E22495E37B00FDADAF /* MEIQIA_CustomIOSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_CustomIOSAlertView.h; sourceTree = "<group>"; };
@@ -896,7 +861,6 @@
 				F3B2C8B32495E37B00FDADAF /* AGEmojiKeyboard */,
 				F3B2C8B82495E37B00FDADAF /* VoiceConvert */,
 				F3B2C8C02495E37B00FDADAF /* XlpEmojiView */,
-				F3B2C8C52495E37B00FDADAF /* Masonry */,
 				F3B2C8DF2495E37B00FDADAF /* MQNamespacedDependencies.h */,
 				F3B2C8E02495E37B00FDADAF /* CustomIOSAlertView */,
 				F3B2C8E32495E37B00FDADAF /* MLAudioRecorder */,
@@ -958,38 +922,6 @@
 				F3B2C8C42495E37B00FDADAF /* XlpEmojiCell.h */,
 			);
 			path = XlpEmojiView;
-			sourceTree = "<group>";
-		};
-		F3B2C8C52495E37B00FDADAF /* Masonry */ = {
-			isa = PBXGroup;
-			children = (
-				F3B2C8C62495E37B00FDADAF /* MASCompositeConstraint.h */,
-				F3B2C8C72495E37B00FDADAF /* NSLayoutConstraint+MASDebugAdditions.m */,
-				F3B2C8C82495E37B00FDADAF /* MASConstraint+Private.h */,
-				F3B2C8C92495E37B00FDADAF /* MASLayoutConstraint.h */,
-				F3B2C8CA2495E37B00FDADAF /* NSArray+MASShorthandAdditions.h */,
-				F3B2C8CB2495E37B00FDADAF /* MASConstraintMaker.h */,
-				F3B2C8CC2495E37B00FDADAF /* View+MASAdditions.h */,
-				F3B2C8CD2495E37B00FDADAF /* NSArray+MASAdditions.h */,
-				F3B2C8CE2495E37B00FDADAF /* MASUtilities.h */,
-				F3B2C8CF2495E37B00FDADAF /* MASViewAttribute.h */,
-				F3B2C8D02495E37B00FDADAF /* ViewController+MASAdditions.m */,
-				F3B2C8D12495E37B00FDADAF /* MASViewConstraint.h */,
-				F3B2C8D22495E37B00FDADAF /* MASConstraint.h */,
-				F3B2C8D32495E37B00FDADAF /* NSLayoutConstraint+MASDebugAdditions.h */,
-				F3B2C8D42495E37B00FDADAF /* MASCompositeConstraint.m */,
-				F3B2C8D52495E37B00FDADAF /* MASConstraintMaker.m */,
-				F3B2C8D62495E37B00FDADAF /* MASLayoutConstraint.m */,
-				F3B2C8D72495E37B00FDADAF /* NSArray+MASAdditions.m */,
-				F3B2C8D82495E37B00FDADAF /* View+MASAdditions.m */,
-				F3B2C8D92495E37B00FDADAF /* View+MASShorthandAdditions.h */,
-				F3B2C8DA2495E37B00FDADAF /* Masonry.h */,
-				F3B2C8DB2495E37B00FDADAF /* MASConstraint.m */,
-				F3B2C8DC2495E37B00FDADAF /* ViewController+MASAdditions.h */,
-				F3B2C8DD2495E37B00FDADAF /* MASViewConstraint.m */,
-				F3B2C8DE2495E37B00FDADAF /* MASViewAttribute.m */,
-			);
-			path = Masonry;
 			sourceTree = "<group>";
 		};
 		F3B2C8E02495E37B00FDADAF /* CustomIOSAlertView */ = {
@@ -1231,44 +1163,44 @@
 		F3B2C9622495E37B00FDADAF /* CellView */ = {
 			isa = PBXGroup;
 			children = (
-				F3B2C9632495E37B00FDADAF /* MQTextMessageCell.m */,
-				F3B2C9642495E37B00FDADAF /* MQRichTextViewCell.h */,
-				F3B2C9652495E37B00FDADAF /* MQFileDownloadCell.m */,
-				F3B2C9662495E37B00FDADAF /* MQImageMessageCell.m */,
-				F3B2C9672495E37B00FDADAF /* MQBotMenuCell.h */,
-				F3B2C9682495E37B00FDADAF /* MQWebViewBubbleCell.h */,
-				F3B2C9692495E37B00FDADAF /* MQEventMessageCell.m */,
-				F3B2C96A2495E37B00FDADAF /* MQEvaluationCell.h */,
+				F3B2C97B2495E37B00FDADAF /* MQBotAnswerCell.h */,
 				F3B2C96B2495E37B00FDADAF /* MQBotAnswerCell.m */,
-				F3B2C96C2495E37B00FDADAF /* MQBotMenuRichMessageCell.h */,
-				F3B2C96D2495E37B00FDADAF /* MQMessageDateCell.h */,
-				F3B2C96E2495E37B00FDADAF /* MQEvaluationResultCell.m */,
-				F3B2C96F2495E37B00FDADAF /* MQVoiceMessageCell.h */,
-				F3B2C9702495E37B00FDADAF /* MQBotWebViewBubbleAnswerCell.h */,
-				F3B2C9712495E37B00FDADAF /* MQTipsCell.m */,
-				F3B2C9722495E37B00FDADAF /* MQCardMessageCell.m */,
-				F3B2C9732495E37B00FDADAF /* MQChatBaseCell.m */,
-				F3B2C9742495E37B00FDADAF /* MQBotMenuWebViewBubbleAnswerCell.m */,
 				F3B2C9752495E37B00FDADAF /* MQBotMenuAnswerCell.h */,
-				F3B2C9762495E37B00FDADAF /* MQImageMessageCell.h */,
+				F3B2C9842495E37B00FDADAF /* MQBotMenuAnswerCell.m */,
+				F3B2C9672495E37B00FDADAF /* MQBotMenuCell.h */,
 				F3B2C9772495E37B00FDADAF /* MQBotMenuCell.m */,
+				F3B2C96C2495E37B00FDADAF /* MQBotMenuRichMessageCell.h */,
+				F3B2C9832495E37B00FDADAF /* MQBotMenuRichMessageCell.m */,
+				F3B2C9852495E37B00FDADAF /* MQBotMenuWebViewBubbleAnswerCell.h */,
+				F3B2C9742495E37B00FDADAF /* MQBotMenuWebViewBubbleAnswerCell.m */,
+				F3B2C9702495E37B00FDADAF /* MQBotWebViewBubbleAnswerCell.h */,
+				F3B2C97F2495E37B00FDADAF /* MQBotWebViewBubbleAnswerCell.m */,
+				F3B2C9862495E37B00FDADAF /* MQCardMessageCell.h */,
+				F3B2C9722495E37B00FDADAF /* MQCardMessageCell.m */,
+				F3B2C9872495E37B00FDADAF /* MQChatBaseCell.h */,
+				F3B2C9732495E37B00FDADAF /* MQChatBaseCell.m */,
+				F3B2C96A2495E37B00FDADAF /* MQEvaluationCell.h */,
+				F3B2C97C2495E37B00FDADAF /* MQEvaluationCell.m */,
+				F3B2C9822495E37B00FDADAF /* MQEvaluationResultCell.h */,
+				F3B2C96E2495E37B00FDADAF /* MQEvaluationResultCell.m */,
+				F3B2C97D2495E37B00FDADAF /* MQEventMessageCell.h */,
+				F3B2C9692495E37B00FDADAF /* MQEventMessageCell.m */,
 				F3B2C9782495E37B00FDADAF /* MQFileDownloadCell.h */,
+				F3B2C9652495E37B00FDADAF /* MQFileDownloadCell.m */,
+				F3B2C9762495E37B00FDADAF /* MQImageMessageCell.h */,
+				F3B2C9662495E37B00FDADAF /* MQImageMessageCell.m */,
+				F3B2C96D2495E37B00FDADAF /* MQMessageDateCell.h */,
+				F3B2C9812495E37B00FDADAF /* MQMessageDateCell.m */,
+				F3B2C9642495E37B00FDADAF /* MQRichTextViewCell.h */,
 				F3B2C9792495E37B00FDADAF /* MQRichTextViewCell.m */,
 				F3B2C97A2495E37B00FDADAF /* MQTextMessageCell.h */,
-				F3B2C97B2495E37B00FDADAF /* MQBotAnswerCell.h */,
-				F3B2C97C2495E37B00FDADAF /* MQEvaluationCell.m */,
-				F3B2C97D2495E37B00FDADAF /* MQEventMessageCell.h */,
-				F3B2C97E2495E37B00FDADAF /* MQWebViewBubbleCell.m */,
-				F3B2C97F2495E37B00FDADAF /* MQBotWebViewBubbleAnswerCell.m */,
-				F3B2C9802495E37B00FDADAF /* MQVoiceMessageCell.m */,
-				F3B2C9812495E37B00FDADAF /* MQMessageDateCell.m */,
-				F3B2C9822495E37B00FDADAF /* MQEvaluationResultCell.h */,
-				F3B2C9832495E37B00FDADAF /* MQBotMenuRichMessageCell.m */,
-				F3B2C9842495E37B00FDADAF /* MQBotMenuAnswerCell.m */,
-				F3B2C9852495E37B00FDADAF /* MQBotMenuWebViewBubbleAnswerCell.h */,
-				F3B2C9862495E37B00FDADAF /* MQCardMessageCell.h */,
-				F3B2C9872495E37B00FDADAF /* MQChatBaseCell.h */,
+				F3B2C9632495E37B00FDADAF /* MQTextMessageCell.m */,
 				F3B2C9882495E37B00FDADAF /* MQTipsCell.h */,
+				F3B2C9712495E37B00FDADAF /* MQTipsCell.m */,
+				F3B2C96F2495E37B00FDADAF /* MQVoiceMessageCell.h */,
+				F3B2C9802495E37B00FDADAF /* MQVoiceMessageCell.m */,
+				F3B2C9682495E37B00FDADAF /* MQWebViewBubbleCell.h */,
+				F3B2C97E2495E37B00FDADAF /* MQWebViewBubbleCell.m */,
 			);
 			path = CellView;
 			sourceTree = "<group>";
@@ -1738,7 +1670,6 @@
 				F3B2CA102495E37C00FDADAF /* MQMessageFormViewStyleGreen.m in Sources */,
 				F3B2CAAC2495E37C00FDADAF /* UIViewController+MQOrientationFix.m in Sources */,
 				F3B2CA0D2495E37C00FDADAF /* MQMessageFormViewManager.m in Sources */,
-				F3B2CA232495E37C00FDADAF /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				F3B2CA702495E37C00FDADAF /* MQEvaluationCell.m in Sources */,
 				CCE9D14D1C1813BE004E862E /* DevelopViewController.m in Sources */,
 				F3B2CA602495E37C00FDADAF /* MQBotMenuRichCellModel.m in Sources */,
@@ -1748,7 +1679,6 @@
 				F3B2CA932495E37C00FDADAF /* MQRefresh.m in Sources */,
 				F3B2CA3C2495E37C00FDADAF /* MQChatViewStyle.m in Sources */,
 				F3B2CA802495E37C00FDADAF /* MQChatRegexUtil.m in Sources */,
-				F3B2CA262495E37C00FDADAF /* MASConstraintMaker.m in Sources */,
 				F3B2CA342495E37C00FDADAF /* MEIQIA_TTTAttributedLabel.m in Sources */,
 				F3B2CA5E2495E37C00FDADAF /* MQEventCellModel.m in Sources */,
 				F3B2CA402495E37C00FDADAF /* MQChatViewManager.m in Sources */,
@@ -1759,14 +1689,11 @@
 				CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */,
 				F3B2CA7B2495E37C00FDADAF /* MQChatAudioPlayer.m in Sources */,
 				F3B2CA952495E37C00FDADAF /* MQRadioButton.m in Sources */,
-				F3B2CA272495E37C00FDADAF /* MASLayoutConstraint.m in Sources */,
 				F3B2CA812495E37C00FDADAF /* MQChatAudioRecorder.m in Sources */,
 				F3B2CA842495E37C00FDADAF /* MQToolUtil.m in Sources */,
 				F3B2CA7A2495E37C00FDADAF /* MQStringSizeUtil.m in Sources */,
-				F3B2CA2B2495E37C00FDADAF /* MASViewConstraint.m in Sources */,
 				F3B2CA3F2495E37C00FDADAF /* MQChatViewStyleDark.m in Sources */,
 				F3B2CA512495E37C00FDADAF /* MQVoiceMessage.m in Sources */,
-				F3B2CA2C2495E37C00FDADAF /* MASViewAttribute.m in Sources */,
 				F3B2CA202495E37C00FDADAF /* amrFileCodec.mm in Sources */,
 				F3B2CAAA2495E37C00FDADAF /* NSString+Name.m in Sources */,
 				F3B2CA2E2495E37C00FDADAF /* MEIQIA_AmrRecordWriter.m in Sources */,
@@ -1781,7 +1708,6 @@
 				F3B2CA782495E37C00FDADAF /* MQTransitioningAnimation.m in Sources */,
 				F3B2CA982495E37C00FDADAF /* MQToast.m in Sources */,
 				F3B2CA3B2495E37C00FDADAF /* MEIQIA_FBSquareFontView.m in Sources */,
-				F3B2CA252495E37C00FDADAF /* MASCompositeConstraint.m in Sources */,
 				F3B2CA9B2495E37C00FDADAF /* MQBottomBar.m in Sources */,
 				F3B2CA212495E37C00FDADAF /* XLPInputView.m in Sources */,
 				F3B2CA1A2495E37C00FDADAF /* MEIQIA_HPTextViewInternal.m in Sources */,
@@ -1800,9 +1726,7 @@
 				F3B2CA6F2495E37C00FDADAF /* MQRichTextViewCell.m in Sources */,
 				F3B2CAA72495E37C00FDADAF /* NSNull+MQSafe.m in Sources */,
 				F3B2CA362495E37C00FDADAF /* MEIQIA_FBSquareFont.m in Sources */,
-				F3B2CA282495E37C00FDADAF /* NSArray+MASAdditions.m in Sources */,
 				F3B2CA672495E37C00FDADAF /* MQEventMessageCell.m in Sources */,
-				F3B2CA292495E37C00FDADAF /* View+MASAdditions.m in Sources */,
 				F3B2CA962495E37C00FDADAF /* MQRecordView.m in Sources */,
 				F3B2CA6C2495E37C00FDADAF /* MQChatBaseCell.m in Sources */,
 				F3B2CA632495E37C00FDADAF /* MQMessageDateCellModel.m in Sources */,
@@ -1821,7 +1745,6 @@
 				F3B2CAA52495E37C00FDADAF /* UIImage+MQGenerate.m in Sources */,
 				F3B2CAA42495E37C00FDADAF /* NSArray+MQFunctional.m in Sources */,
 				F3B2CA0E2495E37C00FDADAF /* MQMessageFormViewStyleDark.m in Sources */,
-				F3B2CA2A2495E37C00FDADAF /* MASConstraint.m in Sources */,
 				F3B2CA192495E37C00FDADAF /* MQMessageFormTextView.m in Sources */,
 				F3B2CA1B2495E37C00FDADAF /* MEIQIA_HPGrowingTextView.m in Sources */,
 				F3B2CA372495E37C00FDADAF /* MEIQIA_FBFontSymbol.m in Sources */,
@@ -1854,7 +1777,6 @@
 				F3B2CA532495E37C00FDADAF /* MQVoiceCellModel.m in Sources */,
 				F3B2CA182495E37C00FDADAF /* MQMessageFormImageView.m in Sources */,
 				F3B2CA642495E37C00FDADAF /* MQTextMessageCell.m in Sources */,
-				F3B2CA242495E37C00FDADAF /* ViewController+MASAdditions.m in Sources */,
 				F3B2CA392495E37C00FDADAF /* MEIQIA_FBBitmapFont.m in Sources */,
 				F3B2CA482495E37C00FDADAF /* MQWithDrawMessage.m in Sources */,
 				F3B2CA772495E37C00FDADAF /* MQAnimatorPush.m in Sources */,

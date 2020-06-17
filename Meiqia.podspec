@@ -30,7 +30,6 @@ Pod::Spec.new do |s|
   end
   s.subspec 'MQChatViewController' do |ss|
     ss.dependency 'Meiqia/MeiqiaSDK'
-    ss.dependency 'Masonry'
     # avoid compile error when using 'use frameworks!',because this header is c++, but in unbrellar header don't know how to compile, there's no '.mm' file in the context.
     ss.private_header_files = 'Meiqia-SDK-files/MQChatViewController/Vendors/VoiceConvert/amrwapper/wav.h'
     ss.source_files = 'Meiqia-SDK-files/MeiqiaSDKViewInterface/*.{h,m}', 'Meiqia-SDK-files/MQChatViewController/**/*.{h,m,mm,cpp}', 'Meiqia-SDK-files/MQMessageForm/**/*.{h,m}'
