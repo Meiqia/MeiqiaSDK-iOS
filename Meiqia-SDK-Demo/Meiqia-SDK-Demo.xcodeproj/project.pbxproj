@@ -1340,14 +1340,14 @@
 			isa = PBXGroup;
 			children = (
 				F3B2C9B62495E37C00FDADAF /* MQChatTableView.h */,
-				F3B2C9B72495E37C00FDADAF /* PreChatForm */,
-				F3B2C9C02495E37C00FDADAF /* MQChatViewService.h */,
-				F3B2C9C12495E37C00FDADAF /* MQChatViewTableDataSource.h */,
-				F3B2C9C22495E37C00FDADAF /* MQChatViewController.m */,
 				F3B2C9C32495E37C00FDADAF /* MQChatTableView.m */,
-				F3B2C9C42495E37C00FDADAF /* MQChatViewTableDataSource.m */,
-				F3B2C9C52495E37C00FDADAF /* MQChatViewService.m */,
 				F3B2C9C62495E37C00FDADAF /* MQChatViewController.h */,
+				F3B2C9C22495E37C00FDADAF /* MQChatViewController.m */,
+				F3B2C9C02495E37C00FDADAF /* MQChatViewService.h */,
+				F3B2C9C52495E37C00FDADAF /* MQChatViewService.m */,
+				F3B2C9C12495E37C00FDADAF /* MQChatViewTableDataSource.h */,
+				F3B2C9C42495E37C00FDADAF /* MQChatViewTableDataSource.m */,
+				F3B2C9B72495E37C00FDADAF /* PreChatForm */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1355,14 +1355,14 @@
 		F3B2C9B72495E37C00FDADAF /* PreChatForm */ = {
 			isa = PBXGroup;
 			children = (
+				F3B2C9BC2495E37C00FDADAF /* MQPreChatCells.h */,
 				F3B2C9B82495E37C00FDADAF /* MQPreChatCells.m */,
 				F3B2C9B92495E37C00FDADAF /* MQPreChatFormListViewController.h */,
-				F3B2C9BA2495E37C00FDADAF /* MQPreChatFormViewModel.h */,
-				F3B2C9BB2495E37C00FDADAF /* MQPreChatSubmitViewController.m */,
-				F3B2C9BC2495E37C00FDADAF /* MQPreChatCells.h */,
-				F3B2C9BD2495E37C00FDADAF /* MQPreChatFormViewModel.m */,
 				F3B2C9BE2495E37C00FDADAF /* MQPreChatFormListViewController.m */,
+				F3B2C9BA2495E37C00FDADAF /* MQPreChatFormViewModel.h */,
+				F3B2C9BD2495E37C00FDADAF /* MQPreChatFormViewModel.m */,
 				F3B2C9BF2495E37C00FDADAF /* MQPreChatSubmitViewController.h */,
+				F3B2C9BB2495E37C00FDADAF /* MQPreChatSubmitViewController.m */,
 			);
 			path = PreChatForm;
 			sourceTree = "<group>";

@@ -100,7 +100,7 @@ github "meiqia/MeiqiaSDK-iOS"
 ```
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 #pragma mark  集成第一步: 初始化,  参数:appkey  ,尽可能早的初始化appkey.
-    [MQManager initWithAppkey:@"009c6d3b9af54a81653c1982a1425e7b" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {
@@ -882,6 +882,14 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十一 更新日志
+
+**v3.5.2  2020 年 6 月 12 日**
+
+* 新增消息撤回功能
+* 新增线索卡片功能
+* 新增富文本和HTML在cell直接显示功能
+* 增加队列等待提醒
+* 修复一些bug
 
 **v3.4.9  2018 年 12 月 3 日**
 
