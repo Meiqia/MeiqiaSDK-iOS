@@ -21,6 +21,15 @@
 #import "UIImageView+WebCache.h"
 #endif
 
+/**
+ * 敏感词汇提示语的长度
+ */
+static CGFloat const kMQTextCellSensitiveWidth = 150.0;
+/**
+ * 敏感词汇提示语的高度
+ */
+static CGFloat const kMQTextCellSensitiveHeight = 25.0;
+
 @interface MQTextCellModel()
 
 /**
@@ -118,7 +127,20 @@
  */
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
 
+/**
+ * @brief 消息文字中，是否包含敏感词汇
+ */
+@property (nonatomic, readwrite, assign) BOOL isSensitive;
+
+/**
+ * @brief 敏感词汇提示语frame
+ */
+@property (nonatomic, readwrite, assign) CGRect sensitiveLableFrame;
+
+
 @property (nonatomic, strong) TTTAttributedLabel *textLabelForHeightCalculation;
+
+@property (nonatomic, strong) NSString *messageContent;
 
 @end
 
@@ -131,9 +153,12 @@
     if (self = [super init]) {
         self.textLabelForHeightCalculation = [TTTAttributedLabel new];
         self.textLabelForHeightCalculation.numberOfLines = 0;
-
         self.messageId = message.messageId;
         self.sendStatus = message.sendStatus;
+        self.isSensitive = message.isSensitive;
+        self.cellFromType = message.fromType == MQChatMessageIncoming ? MQChatCellIncoming : MQChatCellOutgoing;
+        self.messageContent = message.content;
+        self.cellWidth = cellWidth;
         NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];
         contentParagraphStyle.lineSpacing = kMQTextCellLineSpacing;
         contentParagraphStyle.lineHeightMultiple = 1.0;
@@ -179,90 +204,7 @@
                 self.avatarImage = [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage;
             }
         }
-        
-        //文字最大宽度
-        CGFloat maxLabelWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
-        //文字高度
-//        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
-        self.textLabelForHeightCalculation.attributedText = self.cellText;
-        CGFloat messageTextHeight = [self.textLabelForHeightCalculation sizeThatFits:CGSizeMake(maxLabelWidth, MAXFLOAT)].height;
-
-        //判断文字中是否有emoji
-        if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
-            NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
-            CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
-            NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
-            messageTextHeight += 8 * textLines;
-        }
-        //文字宽度
-        CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
-//#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
-        NSRange periodRange = [message.content rangeOfString:@"."];
-        if (periodRange.location != NSNotFound) {
-            messageTextWidth += 8;
-        }
-        if (messageTextWidth > maxLabelWidth) {
-            messageTextWidth = maxLabelWidth;
-        }
-        //气泡高度
-        CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;
-        //气泡宽度
-        CGFloat bubbleWidth = messageTextWidth + kMQCellBubbleToTextHorizontalLargerSpacing + kMQCellBubbleToTextHorizontalSmallerSpacing;
-        
-        //根据消息的来源，进行处理
-        UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
-        if ([MQChatViewConfig sharedConfig].incomingBubbleColor) {
-            bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].incomingBubbleColor];
-        }
-        if (message.fromType == MQChatMessageOutgoing) {
-            //发送出去的消息
-            self.cellFromType = MQChatCellOutgoing;
-            bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
-            if ([MQChatViewConfig sharedConfig].outgoingBubbleColor) {
-                bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].outgoingBubbleColor];
-            }
-            
-            //头像的frame
-            if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
-                self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
-            } else {
-                self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
-            }
-            //气泡的frame
-            self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
-            //文字的frame
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, kMQCellBubbleToTextVerticalSpacing, messageTextWidth, messageTextHeight);
-        } else {
-            //收到的消息
-            self.cellFromType = MQChatCellIncoming;
-            
-            //头像的frame
-            if ([MQChatViewConfig sharedConfig].enableIncomingAvatar) {
-                self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
-            } else {
-                self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
-            }
-            //气泡的frame
-            self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
-            //文字的frame
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, kMQCellBubbleToTextVerticalSpacing, messageTextWidth, messageTextHeight);
-        }
-        
-        //气泡图片
-        self.bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
-        
-        //发送消息的indicator的frame
-        UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter)];
-        self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
-        
-        //发送失败的图片frame
-        UIImage *failureImage = [MQChatViewConfig sharedConfig].messageSendFailureImage;
-        CGSize failureSize = CGSizeMake(ceil(failureImage.size.width * 2 / 3), ceil(failureImage.size.height * 2 / 3));
-        self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureSize.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureSize.height/2, failureSize.width, failureSize.height);
-        
-        //计算cell的高度
-        self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing;
-        
+        [self configCellWidth:cellWidth];
         //匹配消息文字中的正则
         self.numberRangeDic = [self createRegexMap:[MQChatViewConfig sharedConfig].numberRegexs for:message.content];
         self.linkNumberRangeDic = [self createRegexMap:[MQChatViewConfig sharedConfig].linkRegexs for:message.content];
@@ -299,6 +241,92 @@
     NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:r options:(NSRegularExpressionCaseInsensitive) error:nil];
     NSArray *matchResults = [regex matchesInString:string options:0 range:NSMakeRange(0, string.length)];
     return matchResults;
+}
+
+- (void)configCellWidth:(CGFloat)cellWidth {
+    //文字最大宽度
+    CGFloat maxLabelWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
+    //文字高度
+    //        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
+    self.textLabelForHeightCalculation.attributedText = self.cellText;
+    CGFloat messageTextHeight = [self.textLabelForHeightCalculation sizeThatFits:CGSizeMake(maxLabelWidth, MAXFLOAT)].height;
+    
+    //判断文字中是否有emoji
+    if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
+        NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
+        CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
+        NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
+        messageTextHeight += 8 * textLines;
+    }
+    //文字宽度
+    CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
+    //#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
+    NSRange periodRange = [self.messageContent rangeOfString:@"."];
+    if (periodRange.location != NSNotFound) {
+        messageTextWidth += 8;
+    }
+    if (messageTextWidth > maxLabelWidth) {
+        messageTextWidth = maxLabelWidth;
+    }
+    //气泡高度
+    CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;
+    //气泡宽度
+    CGFloat bubbleWidth = messageTextWidth + kMQCellBubbleToTextHorizontalLargerSpacing + kMQCellBubbleToTextHorizontalSmallerSpacing;
+    
+    //根据消息的来源，进行处理
+    UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
+    if ([MQChatViewConfig sharedConfig].incomingBubbleColor) {
+        bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].incomingBubbleColor];
+    }
+    if (self.cellFromType == MQChatMessageOutgoing) {
+        //发送出去的消息
+        bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
+        if ([MQChatViewConfig sharedConfig].outgoingBubbleColor) {
+            bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].outgoingBubbleColor];
+        }
+        
+        //头像的frame
+        if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
+            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        } else {
+            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
+        }
+        //气泡的frame
+        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
+        //文字的frame
+        self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, kMQCellBubbleToTextVerticalSpacing, messageTextWidth, messageTextHeight);
+        //敏感词汇提示语的frame
+        self.sensitiveLableFrame = CGRectMake(CGRectGetMaxX(self.bubbleImageFrame) - kMQTextCellSensitiveWidth, CGRectGetMaxY(self.bubbleImageFrame), kMQTextCellSensitiveWidth, self.isSensitive ? kMQTextCellSensitiveHeight : 0);
+    } else {
+        //收到的消息
+        //头像的frame
+        if ([MQChatViewConfig sharedConfig].enableIncomingAvatar) {
+            self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        } else {
+            self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
+        }
+        //气泡的frame
+        self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
+        //文字的frame
+        self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, kMQCellBubbleToTextVerticalSpacing, messageTextWidth, messageTextHeight);
+        //敏感词汇提示语的frame
+        self.sensitiveLableFrame = CGRectMake(CGRectGetMinX(self.bubbleImageFrame), CGRectGetMaxY(self.bubbleImageFrame), kMQTextCellSensitiveWidth, self.isSensitive ? kMQTextCellSensitiveHeight : 0);
+    }
+    
+    //气泡图片
+    self.bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
+    
+    //发送消息的indicator的frame
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter)];
+    self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
+    
+    //发送失败的图片frame
+    UIImage *failureImage = [MQChatViewConfig sharedConfig].messageSendFailureImage;
+    CGSize failureSize = CGSizeMake(ceil(failureImage.size.width * 2 / 3), ceil(failureImage.size.height * 2 / 3));
+    self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureSize.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureSize.height/2, failureSize.width, failureSize.height);
+    
+    //计算cell的高度
+    self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing + (self.isSensitive ? kMQTextCellSensitiveHeight : 0);
 }
 
 #pragma MQCellModelProtocol
@@ -338,87 +366,15 @@
     self.date = messageDate;
 }
 
+-(void)updateSensitiveState:(BOOL)state cellText:(NSString *)cellText{
+    self.isSensitive = state;
+    self.cellText = [[NSAttributedString alloc] initWithString:[MQServiceToViewInterface convertToUnicodeWithEmojiAlias:cellText] attributes:self.cellTextAttributes];
+    [self configCellWidth:self.cellWidth];
+}
+
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
     self.cellWidth = cellWidth;
-//    if (self.cellFromType == MQChatCellOutgoing) {
-//        //头像的frame
-//        if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
-//            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
-//        } else {
-//            self.avatarFrame = CGRectMake(0, 0, 0, 0);
-//        }
-//        //气泡的frame
-//        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-self.bubbleImageFrame.size.width, kMQCellAvatarToVerticalEdgeSpacing, self.bubbleImageFrame.size.width, self.bubbleImageFrame.size.height);
-//        //发送指示器的frame
-//        self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.origin.y, self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.size.height);
-//        //发送出错图片的frame
-//        self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendFailureFrame.size.width, self.sendFailureFrame.origin.y, self.sendFailureFrame.size.width, self.sendFailureFrame.size.height);
-//    }
-    //文字最大宽度
-    CGFloat maxLabelWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
-    //文字高度
-    CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
-    //判断文字中是否有emoji
-    if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
-        NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
-        CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
-        NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
-        messageTextHeight += 8 * textLines;
-    }
-    //文字宽度
-    CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
-    //#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
-    NSRange periodRange = [self.cellText.string rangeOfString:@"."];
-    if (periodRange.location != NSNotFound) {
-        messageTextWidth += 8;
-    }
-    if (messageTextWidth > maxLabelWidth) {
-        messageTextWidth = maxLabelWidth;
-    }
-    //气泡高度
-    CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;
-    //气泡宽度
-    CGFloat bubbleWidth = messageTextWidth + kMQCellBubbleToTextHorizontalLargerSpacing + kMQCellBubbleToTextHorizontalSmallerSpacing;
-    
-    //根据消息的来源，进行处理
-    UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
-    if ([MQChatViewConfig sharedConfig].incomingBubbleColor) {
-        bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].incomingBubbleColor];
-    }
-    if (self.cellFromType == MQChatMessageOutgoing) {
-        //发送出去的消息
-        bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
-        if ([MQChatViewConfig sharedConfig].outgoingBubbleColor) {
-            bubbleImage = [MQImageUtil convertImageColorWithImage:self.bubbleImage toColor:[MQChatViewConfig sharedConfig].outgoingBubbleColor];
-        }
-        
-        //头像的frame
-        if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
-            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
-        } else {
-            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
-        }
-        //气泡的frame
-        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
-        //文字的frame
-        self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, kMQCellBubbleToTextVerticalSpacing, messageTextWidth, messageTextHeight);
-    } else {
-        //收到的消息
-        
-        //头像的frame
-        if ([MQChatViewConfig sharedConfig].enableIncomingAvatar) {
-            self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
-        } else {
-            self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
-        }
-        //气泡的frame
-        self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
-        //文字的frame
-        self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, kMQCellBubbleToTextVerticalSpacing, messageTextWidth, messageTextHeight);
-    }
-    //气泡图片
-    self.bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
-
+    [self configCellWidth:cellWidth];
 }
 
 - (void)updateOutgoingAvatarImage:(UIImage *)avatarImage {
@@ -426,6 +382,5 @@
         self.avatarImage = avatarImage;
     }
 }
-
 
 @end

@@ -22,6 +22,7 @@
 #import "MQFileDownloadMessage.h"
 #import "MQRichTextMessage.h"
 #import "MQBotRichTextMessage.h"
+#import "MQPhotoCardMessage.h"
 
 /**
  *  该协议是UI层获取数据的委托方法
@@ -53,11 +54,16 @@
 
 /**
  * 发送文字消息结果
- * @param message 发送后的消息（包含该消息当前发送状态）
+ * @param newMessageId 发送成功以后返回的messageid
+ * @param oldMessageId 发送之前messageid
+ * @param newMessageDate 更新的发送时间
+ * @param replacedContent 需要替换的messag.content的内容(处理敏感词汇，替换原来词汇)
+ * @param sendStatus 发送状态
  */
 - (void)didSendMessageWithNewMessageId:(NSString *)newMessageId
                           oldMessageId:(NSString *)oldMessageId
                         newMessageDate:(NSDate *)newMessageDate
+                       replacedContent:(NSString *)replacedContent
                             sendStatus:(MQChatMessageSendStatus)sendStatus;
 
 /**
@@ -202,6 +208,12 @@
  *
  */
 + (void)setNotScheduledAgentWithAgentId:(NSString *)agentId;
+
+/**
+ * 删除指定分配的客服或客服组。
+ *
+*/
++ (void)deleteScheduledAgent;
 
 /**
  * 设置顾客离线

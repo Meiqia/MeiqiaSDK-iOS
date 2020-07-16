@@ -116,7 +116,15 @@
  */
 @property (nonatomic, readonly, strong) NSDictionary *emailNumberRangeDic;
 
+/**
+ * @brief 消息文字中，是否包含敏感词汇
+ */
+@property (nonatomic, readonly, assign) BOOL isSensitive;
 
+/**
+ * @brief 敏感词汇提示语frame
+ */
+@property (nonatomic, readonly, assign) CGRect sensitiveLableFrame;
 
 /**
  * @brief 消息的发送状态

@@ -440,8 +440,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }];
 }
 
-- (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
+- (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath needToBottom:(BOOL)toBottom {
     [self.chatTableView updateTableViewAtIndexPath:indexPath];
+    toBottom ? [self chatTableViewScrollToBottomWithAnimated:false] : nil;
 }
 
 - (void)insertCellAtBottomForModelCount:(NSInteger)count {

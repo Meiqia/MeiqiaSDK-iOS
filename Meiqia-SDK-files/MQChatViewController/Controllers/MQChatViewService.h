@@ -29,7 +29,7 @@
 /**
  *  已经更新了这条消息的数据，通知tableView刷新界面
  */
-- (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath;
+- (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath needToBottom:(BOOL)toBottom;
 
 /**
  *  通知viewController更新tableView；

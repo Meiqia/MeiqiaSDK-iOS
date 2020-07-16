@@ -23,12 +23,12 @@
         self.backgroundColor = [UIColor clearColor];
         self.opaque = false;
         self.navigationDelegate = self;
-        self.configuration.dataDetectorTypes = UIDataDetectorTypeNone;
+//        self.configuration.dataDetectorTypes = UIDataDetectorTypeNone;
         self.scrollView.showsVerticalScrollIndicator = NO;
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.scrollEnabled = NO;
         self.clipsToBounds = YES;
-        self.configuration.dataDetectorTypes = UIDataDetectorTypeNone;
+//        self.configuration.dataDetectorTypes = UIDataDetectorTypeNone;
         self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleGray)];
 
     }
@@ -44,8 +44,9 @@
 }
 
 - (void)loadHTML:(NSString *)html WithCompletion:(void(^)(CGFloat))block {
-    self.viewHeight = 60;
-    [self loadHTMLString:html baseURL:nil];//xlp 修改
+    NSString *htmlStr = [NSString stringWithFormat:@"<html><head><meta content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" name=\"viewport\"><style type=\"text/css\">img{display: inline-block;max-width: 100%%}</style></head><body>%@</body></html>",html];
+    self.viewHeight = 0;
+    [self loadHTMLString:htmlStr baseURL:nil];//xlp 修改
 //    [self loadHTMLString:html baseURL:[[NSBundle mainBundle]bundleURL]];  //不能这样修改 否则导致富文本不显示
 
     self.loadComplete = block;

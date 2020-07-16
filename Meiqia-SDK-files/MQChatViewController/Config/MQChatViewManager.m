@@ -328,10 +328,10 @@
         return;
     }
     chatViewConfig.outgoingDefaultAvatarImage = image;
-//#ifdef INCLUDE_MEIQIA_SDK
-//    [MQServiceToViewInterface uploadClientAvatar:image completion:^(NSString *avatarUrl, NSError *error) {
-//    }];
-//#endif
+#ifdef INCLUDE_MEIQIA_SDK
+    [MQServiceToViewInterface uploadClientAvatar:image completion:^(NSString *avatarUrl, NSError *error) {
+    }];
+#endif
 }
 
 - (void)setPhotoSenderImage:(UIImage *)image

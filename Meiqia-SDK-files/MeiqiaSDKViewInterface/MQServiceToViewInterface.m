@@ -66,7 +66,7 @@
     //将MQMessage转换成UI能用的Message类型
     NSMutableArray *toMessages = [[NSMutableArray alloc] init];
     for (MQMessage *fromMessage in messagesArray) {
-        MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType] createMessage:fromMessage];
+        MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType fromType:fromMessage.fromType] createMessage:fromMessage];
         if (toMessage) {
             [toMessages addObject:toMessage];
         }
@@ -113,14 +113,14 @@
               delegate:(id<MQServiceToViewInterfaceDelegate>)delegate
 {
     if (delegate) {
-        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:sendStatus:)]) {
+        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:sendStatus:)]) {
             MQChatMessageSendStatus sendStatus = MQChatMessageSendStatusSuccess;
             if (sendedMessage.sendStatus == MQMessageSendStatusFailed) {
                 sendStatus = MQChatMessageSendStatusFailure;
             } else if (sendedMessage.sendStatus == MQMessageSendStatusSending) {
                 sendStatus = MQChatMessageSendStatusSending;
             }
-            [delegate didSendMessageWithNewMessageId:sendedMessage.messageId oldMessageId:localMessageId newMessageDate:sendedMessage.createdOn sendStatus:sendStatus];
+            [delegate didSendMessageWithNewMessageId:sendedMessage.messageId oldMessageId:localMessageId newMessageDate:sendedMessage.createdOn replacedContent:sendedMessage.isSensitive ? sendedMessage.content : nil  sendStatus:sendStatus];
         }
     }
 }
@@ -132,8 +132,8 @@
 {
     NSLog(@"美洽SDK: 发送text消息失败\nerror = %@", error);
     if (delegate) {
-        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:sendStatus:)]) {
-            [delegate didSendMessageWithNewMessageId:localMessageId oldMessageId:localMessageId newMessageDate:nil sendStatus:MQChatMessageSendStatusFailure];
+        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:sendStatus:)]) {
+            [delegate didSendMessageWithNewMessageId:localMessageId oldMessageId:localMessageId newMessageDate:nil replacedContent:nil sendStatus:MQChatMessageSendStatusFailure];
         }
     }
 }
@@ -288,6 +288,12 @@
 
 + (void)setNotScheduledAgentWithAgentId:(NSString *)agentId {
     [MQManager setNotScheduledAgentWithAgentId:agentId];
+}
+
++ (void)deleteScheduledAgent {
+    [MQChatViewConfig sharedConfig].scheduledAgentId = nil;
+    [MQChatViewConfig sharedConfig].scheduledGroupId = nil;
+    [MQManager deleteScheduledAgent];
 }
 
 + (void)setEvaluationLevel:(NSInteger)level

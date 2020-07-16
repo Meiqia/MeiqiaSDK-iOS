@@ -19,6 +19,6 @@
 
 @interface MQMessageFactoryHelper : NSObject
 
-+ (id<MQMessageFactory>)factoryWithMessageAction:(MQMessageAction)action contentType:(MQMessageContentType)contenType;
++ (id<MQMessageFactory>)factoryWithMessageAction:(MQMessageAction)action contentType:(MQMessageContentType)contenType fromType:(MQMessageFromType)fromType;
 
 @end

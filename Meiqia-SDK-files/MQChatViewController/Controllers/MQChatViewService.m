@@ -15,6 +15,7 @@
 #import "MQWithDrawMessage.h"
 #import "MQBotAnswerMessage.h"
 #import "MQBotMenuMessage.h"
+#import "MQPhotoCardMessage.h"
 #import "MQTextCellModel.h"
 #import "MQCardCellModel.h"
 #import "MQImageCellModel.h"
@@ -25,6 +26,7 @@
 #import "MQTipsCellModel.h"
 #import "MQEvaluationResultCellModel.h"
 #import "MQMessageDateCellModel.h"
+#import "MQPhotoCardCellModel.h"
 #import <UIKit/UIKit.h>
 #import "MQToast.h"
 #import "VoiceConverter.h"
@@ -191,7 +193,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [cellModel isKindOfClass:[MQImageCellModel class]] ||
             [cellModel isKindOfClass:[MQVoiceCellModel class]] ||
             [cellModel isKindOfClass:[MQEventCellModel class]] ||
-            [cellModel isKindOfClass:[MQFileDownloadCellModel class]])
+            [cellModel isKindOfClass:[MQFileDownloadCellModel class]] ||
+            [cellModel isKindOfClass:[MQPhotoCardCellModel class]])
         {
             return [cellModel getCellDate];
         }
@@ -210,7 +213,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [cellModel isKindOfClass:[MQImageCellModel class]] ||
                 [cellModel isKindOfClass:[MQVoiceCellModel class]] ||
                 [cellModel isKindOfClass:[MQEventCellModel class]] ||
-                [cellModel isKindOfClass:[MQFileDownloadCellModel class]])
+                [cellModel isKindOfClass:[MQFileDownloadCellModel class]] ||
+                [cellModel isKindOfClass:[MQPhotoCardCellModel class]])
             {
                 return [cellModel getCellDate];
             }
@@ -520,7 +524,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (index < 0 || index > self.cellModels.count - 1) {
         return;
     }
-    [self updateCellWithIndex:index];
+    [self updateCellWithIndex:index needToBottom:NO];
 }
 
 - (NSInteger)getIndexOfCellWithMessageId:(NSString *)messageId {
@@ -535,11 +539,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 //通知tableView更新该indexPath的cell
-- (void)updateCellWithIndex:(NSInteger)index {
+- (void)updateCellWithIndex:(NSInteger)index needToBottom:(BOOL)toBottom {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     if (self.delegate) {
-        if ([self.delegate respondsToSelector:@selector(didUpdateCellModelWithIndexPath:)]) {
-            [self.delegate didUpdateCellModelWithIndexPath:indexPath];
+        if ([self.delegate respondsToSelector:@selector(didUpdateCellModelWithIndexPath:needToBottom:)]) {
+            [self.delegate didUpdateCellModelWithIndexPath:indexPath needToBottom:toBottom];
         }
     }
 }
@@ -667,7 +671,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             // 消息撤回
             MQWithDrawMessage *withDrawMessage = (MQWithDrawMessage *)message;
             cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:withDrawMessage.content cellWidth:self.chatViewWidth enableLinesDisplay:NO];
-        }
+        } else if ([message isKindOfClass:[MQPhotoCardMessage class]]) {
+            cellModel = [[MQPhotoCardCellModel alloc] initCellModelWithMessage:(MQPhotoCardMessage *)message cellWidth:self.chatViewWidth delegate:self];
+       }
     }
     return cellModel;
 }
@@ -914,6 +920,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self.serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
         if ([error reason].length == 0) {
+            [strongSelf removeScheduledAgentWithType:agentType];
             if (receivedMessages.count <= 0) {
                 [MQManager getDatabaseHistoryMessagesWithMsgDate:msgDate messagesNumber:0 result:^(NSArray<MQMessage *> *messagesArray) {
                     NSArray *toMessages = [strongSelf convertToChatViewMessageWithMQMessages:messagesArray];
@@ -928,12 +935,18 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     } receiveMessageDelegate:self];
 }
 
+- (void)removeScheduledAgentWithType:(NSString *)agentType {
+    if (![agentType isEqualToString:@"bot"]) {
+        [MQServiceToViewInterface deleteScheduledAgent];
+    }
+}
+
 #pragma mark - message转为UI类型
 - (NSArray *)convertToChatViewMessageWithMQMessages:(NSArray *)messagesArray {
     //将MQMessage转换成UI能用的Message类型
     NSMutableArray *toMessages = [[NSMutableArray alloc] init];
     for (MQMessage *fromMessage in messagesArray) {
-        MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType] createMessage:fromMessage];
+        MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType fromType:fromMessage.fromType] createMessage:fromMessage];
         if (toMessage) {
             [toMessages addObject:toMessage];
         }
@@ -950,6 +963,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self.serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSString *agentType, NSArray *receivedMessages, NSError *error) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
         if ([error reason].length == 0) {
+            [strongSelf removeScheduledAgentWithType:agentType];
             if (receivedMessages.count <= 0) {
                 [MQManager getDatabaseHistoryMessagesWithMsgDate:msgDate messagesNumber:0 result:^(NSArray<MQMessage *> *messagesArray) {
                     NSArray *toMessages = [strongSelf convertToChatViewMessageWithMQMessages:messagesArray];
@@ -1390,6 +1404,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)didSendMessageWithNewMessageId:(NSString *)newMessageId
                           oldMessageId:(NSString *)oldMessageId
                         newMessageDate:(NSDate *)newMessageDate
+                       replacedContent:(NSString *)replacedContent
                             sendStatus:(MQChatMessageSendStatus)sendStatus
 {
     [self playSendedMessageSound];
@@ -1407,10 +1422,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (newMessageDate) {
         [cellModel updateCellMessageDate:newMessageDate];
     }
+    if (replacedContent) {
+        [cellModel updateSensitiveState:YES cellText:replacedContent];
+    }
     
     // 消息发送完成，刷新单行cell
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self updateCellWithIndex:index];
+        [self updateCellWithIndex:index needToBottom:YES];
     });
     
     // 将 messageId 保存到 set，用于去重
@@ -1502,6 +1520,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     NSString *currentAgentId = [MQServiceToViewInterface getCurrentAgentId];
     [MQServiceToViewInterface setNotScheduledAgentWithAgentId:currentAgentId];
     [self setClientOnline];
+    [self removeBotTipCellModels];
+    [self reloadChatTableView];
+    
 }
 
 #pragma mark - lazyload

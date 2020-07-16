@@ -16,7 +16,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.5.2"
+#define MQSDKVersion @"3.6.0"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -130,6 +130,12 @@
  *
 */
 + (void)setNotScheduledAgentWithAgentId:(NSString *)agentId;
+
+/**
+ * 删除指定分配的客服或客服组。
+ *
+*/
++ (void)deleteScheduledAgent;
 
 /**
  * 开发者自定义当前顾客的信息，用于展示给客服。

@@ -13,9 +13,9 @@
 
 @implementation MQMessageFactoryHelper
 
-+ (id<MQMessageFactory>)factoryWithMessageAction:(MQMessageAction)action contentType:(MQMessageContentType)contenType {
++ (id<MQMessageFactory>)factoryWithMessageAction:(MQMessageAction)action contentType:(MQMessageContentType)contenType fromType:(MQMessageFromType)fromType {
     if (action == MQMessageActionMessage || action == MQMessageActionTicketReply || action == MQMessageActionAgentSendCard) {
-        if (contenType == MQMessageContentTypeBot) {
+        if (contenType == MQMessageContentTypeBot || (contenType == MQMessageContentTypeHybrid && fromType == MQMessageFromTypeBot)) {
             return [MQBotMessageFactory new];
         } else {
             return [MQVisialMessageFactory new];

@@ -39,7 +39,7 @@ typedef enum : NSUInteger {
     MQMessageContentTypeBot                  = 4,  //机器人消息
     MQMessageContentTypeRichText             = 5, //图文消息
     MQMessageContentTypeCard                 = 6, //卡片消息
-    MQMessageContentTypeHybrid                 = 7, //混合消息
+    MQMessageContentTypeHybrid               = 7, //混合消息
 } MQMessageContentType;
 
 typedef enum : NSUInteger {
@@ -109,6 +109,9 @@ typedef enum : NSUInteger {
 
 /** 消息是否已读 */
 @property (nonatomic, assign) bool                 isRead;
+
+/** 标记消息是否是敏感消息 */
+@property (nonatomic, assign) bool                 isSensitive;
 
 /*
  该消息对应的 enterprise id, 不一定有值，也不存数据库，仅用来判断该消息属于哪个企业，用来切换数据库, 如果这个地方没有值，查看 agent 对象里面的 enterpriseId 字段

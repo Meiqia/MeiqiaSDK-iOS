@@ -14,6 +14,8 @@
 #import "MQFileDownloadMessage.h"
 #import "MQRichTextMessage.h"
 #import "MQWithDrawMessage.h"
+#import "MQPhotoCardMessage.h"
+#import "MQJsonUtil.h"
 
 @implementation MQVisialMessageFactory
 
@@ -26,6 +28,7 @@
         }
         case MQMessageContentTypeText: {
             MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:plainMessage.content];
+            textMessage.isSensitive = plainMessage.isSensitive;
             toMessage = textMessage;
             break;
         }
@@ -54,6 +57,10 @@
             MQCardMessage *cardMessage = [[MQCardMessage alloc] init];
             cardMessage.cardData = plainMessage.cardData;
             toMessage = cardMessage;
+            break;
+        }
+        case MQMessageContentTypeHybrid: {
+            toMessage = [self messageFromContentTypeHybrid:plainMessage toMQBaseMessage:toMessage];
             break;
         }
         default:
@@ -104,5 +111,21 @@
     }
     return toMessage;
 }
+
+- (MQBaseMessage *)messageFromContentTypeHybrid:(MQMessage *)message toMQBaseMessage:(MQBaseMessage *)baseMessage {
+    NSArray *contentArr = [NSArray array];
+    contentArr = [MQJsonUtil createWithJSONString:message.content];
+    if (contentArr.count > 0) {
+        NSDictionary *contentDic = contentArr.firstObject;
+        if ([contentDic[@"type"] isEqualToString:@"photo_card"]) {
+            MQPhotoCardMessage *photoCard = [[MQPhotoCardMessage alloc] initWithImagePath:contentDic[@"body"][@"pic_url"] andUrlPath:contentDic[@"body"][@"target_url"]];
+            baseMessage = photoCard;
+        } else if ([contentDic[@"type"] isEqualToString:@"mini_program_card"]) {
+
+        }
+    }
+    return baseMessage;
+}
+
 
 @end

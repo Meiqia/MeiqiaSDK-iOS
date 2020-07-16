@@ -165,6 +165,14 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
 - (void)updateOutgoingAvatarImage:(UIImage *)avatarImage;
 
 /**
+ *  更新敏感词汇状态
+ *
+ *  @param state 是否是敏感词汇
+ *  @param cellText 更新的文字（用于处理敏感词汇）
+ */
+- (void)updateSensitiveState:(BOOL)state cellText:(NSString *)cellText;
+
+/**
  通知 cell model，该 model 中所对应的机器人 message 已经被评价过了
  */
 - (void)didEvaluate;

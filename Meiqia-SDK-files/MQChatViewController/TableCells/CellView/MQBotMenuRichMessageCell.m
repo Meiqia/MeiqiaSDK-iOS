@@ -13,6 +13,7 @@
 #import "MQImageUtil.h"
 #import "MQBotMenuMessage.h"
 #import "MQBotMenuRichCellModel.h"
+#import "Masonry.h"
 
 static CGFloat const kMQBotMenuReplyTipSize = 12.0; // 查看提醒的文字大小
 static NSString * const kMQBotMenuTipText = @"点击问题或回复对应数字查看答案"; // 提示文字内容

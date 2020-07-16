@@ -12,6 +12,7 @@
 #import <MeiQiaSDK/MQManager.h>
 #import "MQBotAnswerMessage.h"
 #import "MQBotMenuMessage.h"
+#import <MeiQiaSDK/MQJSONHelper.h>
 
 @implementation MQBotMessageFactory
 
