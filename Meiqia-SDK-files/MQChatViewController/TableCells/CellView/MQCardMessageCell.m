@@ -11,7 +11,6 @@
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
 #import <MeiQiaSDK/MQManager.h>
-#import "Masonry.h"
 #import "MQRadioGroup.h"
 #import "NSString+Regular.h"
 #import "MQToast.h"
@@ -97,12 +96,16 @@
     [sendBtn.layer setCornerRadius:5];
     [sendBtn addTarget:self action:@selector(sendClick:) forControlEvents:UIControlEventTouchUpInside];
     [bubbleImageView addSubview:sendBtn];
-    [sendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(-20);
-        make.left.mas_equalTo(20);
-        make.right.mas_equalTo(-20);
-        make.height.mas_equalTo(40);
-    }];
+    
+    sendBtn.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraints:@[
+    [NSLayoutConstraint constraintWithItem:sendBtn attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeBottom multiplier:1 constant:-20],
+    [NSLayoutConstraint constraintWithItem:sendBtn attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeLeft multiplier:1 constant:20],
+    [NSLayoutConstraint constraintWithItem:sendBtn attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeRight multiplier:1 constant:-20],
+    [NSLayoutConstraint constraintWithItem:sendBtn attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:40],
+    
+    ]];
+    
 
     NSArray *cardItems = cellModel.cardData;
     self.cardData = cellModel.cardData;
@@ -119,18 +122,24 @@
             inputText.delegate = self;
             inputText.tag = info.contentId;
             [bubbleImageView addSubview:inputText];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.mas_equalTo(20);
-                make.top.mas_equalTo(cellHeight + 10);
-                make.right.mas_equalTo(-20);
-                make.height.mas_equalTo(30);
-            }];
-            [inputText mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.mas_equalTo(20);
-                make.right.mas_equalTo(-20);
-                make.top.mas_equalTo(cellHeight + 45);
-                make.height.mas_equalTo(30);
-            }];
+            
+            label.translatesAutoresizingMaskIntoConstraints = NO;
+            [self addConstraints:@[
+            [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeTop multiplier:1 constant:cellHeight + 10],
+            [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeLeft multiplier:1 constant:20],
+            [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeRight multiplier:1 constant:-20],
+            [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30],
+            
+            ]];
+            
+            inputText.translatesAutoresizingMaskIntoConstraints = NO;
+            [self addConstraints:@[
+            [NSLayoutConstraint constraintWithItem:inputText attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeTop multiplier:1 constant:cellHeight + 45],
+            [NSLayoutConstraint constraintWithItem:inputText attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeLeft multiplier:1 constant:20],
+            [NSLayoutConstraint constraintWithItem:inputText attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeRight multiplier:1 constant:-20],
+            [NSLayoutConstraint constraintWithItem:inputText attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30],
+            
+            ]];
             cellHeight += 70;
             if ([info.name isEqualToString:@"tel"]) {
                 inputText.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
@@ -152,7 +161,7 @@
                 self.currentField = inputText;
                 
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                dateFormatter.dateFormat = @"YYYY-MM-dd HH:mm:ss";   
+                dateFormatter.dateFormat = @"YYYY-MM-dd HH:mm:ss";
                 NSString *dateStr = [dateFormatter  stringFromDate:[NSDate date]];
                 inputText.text = dateStr;
                 if (inputText.text) {
@@ -164,12 +173,14 @@
             UILabel *label = [[UILabel alloc] init];
             label.text = [NSString stringWithFormat:@"请选择 %@", info.label];
             [bubbleImageView addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.mas_equalTo(20);
-                make.top.mas_equalTo(cellHeight + 10);
-                make.right.mas_equalTo(-20);
-                make.height.mas_equalTo(30);
-            }];
+            label.translatesAutoresizingMaskIntoConstraints = NO;
+            [self addConstraints:@[
+            [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeTop multiplier:1 constant:cellHeight + 10],
+            [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeLeft multiplier:1 constant:20],
+            [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:bubbleImageView attribute:NSLayoutAttributeRight multiplier:1 constant:-20],
+            [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30],
+            
+            ]];
             NSArray *metaArr = info.metaData;
             __block NSMutableArray *radioMutableArr = [NSMutableArray array];
             [metaArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {

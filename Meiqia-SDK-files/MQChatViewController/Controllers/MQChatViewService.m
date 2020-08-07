@@ -1270,7 +1270,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
     
     // 客服邀请评价、客服主动结束会话
-    if (eventMessage.eventType == MQChatEventTypeInviteEvaluation || eventMessage.eventType == MQChatEventTypeAgentDidCloseConversation) {
+    if (eventMessage.eventType == MQChatEventTypeInviteEvaluation) {
         if (self.delegate) {
             if ([self.delegate respondsToSelector:@selector(showEvaluationAlertView)] && [self.delegate respondsToSelector:@selector(isChatRecording)]) {
                 if (![self.delegate isChatRecording]) {
@@ -1317,9 +1317,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [self saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex: NO];
                 [self.delegate reloadChatTableView];
                 
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self scrollToButton];
-                });
+//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                    [self scrollToButton];
+//                });
             }
             
         }];

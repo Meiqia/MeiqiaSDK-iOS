@@ -39,6 +39,7 @@
 #import "MQChatViewManager.h"
 #import <MeiQiaSDK/MQManager.h>
 #import "XLPInputView.h"
+#import "MQCellModelProtocol.h"
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 @interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQBottomBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate,XLPInputViewDelegate>
@@ -74,6 +75,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     BOOL openVisitorNoMessageBool; // 默认值 在presentUI里分2种情况初始化 在发送各种消息前检测 若为真 打开 则需手动上线  若为假 则不做操作
     
     BOOL shouldSendInputtingMessageToServer;
+    BOOL needToBotttom;
 
 }
 
@@ -100,6 +102,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [MQServiceToViewInterface prepareForChat];
     
     // Do any additional setup after loading the view.
+    needToBotttom = YES;
     previousStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
     previousStatusBarHidden = [UIApplication sharedApplication].statusBarHidden;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
@@ -384,15 +387,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.view endEditing:true];
 }
 
-// TODO crash
-- (void)reloadCellAsContentUpdated:(UITableViewCell *)cell {
-//    NSIndexPath *indexPath = [self.chatTableView indexPathForCell: cell];
-//    if (indexPath) {
-//        [self.chatTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation: UITableViewRowAnimationFade];
-//    }
-    [self.chatTableView reloadData];
-}
-
 - (void)tapNavigationRightBtn:(id)sender {
     [self showEvaluationAlertView];
 }
@@ -416,10 +410,27 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.view endEditing:YES];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.0000001;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.000001;
+}
+
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (self.chatTableView.refreshView.status == MQRefreshStatusTriggered) {
         [self.chatTableView startAnimation];
+    }
+    needToBotttom = false;
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat contentH = scrollView.contentSize.height;
+    CGFloat offsetY = scrollView.contentOffset.y;
+    CGFloat sizeH = scrollView.bounds.size.height;
+    if (offsetY > contentH - 1.5 * sizeH) {
+        needToBotttom = true;
     }
 }
 
@@ -561,8 +572,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         
         //延时2秒 获取所有的历史记录
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            [self dismissActivityIndicatorView];
-            [self.chatViewService onceLoadHistoryAndRefreshWithSendMsg:text];
+            [self.chatViewService sendTextMessageWithContent:text];
         });
         
         openVisitorNoMessageBool = NO;
@@ -744,6 +754,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)replaceTipCell:(UITableViewCell *)cell {
     
+}
+
+- (void)reloadCellAsContentUpdated:(UITableViewCell *)cell messageId:(NSString *)messageId {
+    [self.chatTableView reloadData];
+    [self.chatTableView layoutIfNeeded];
+    if (needToBotttom) {
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+        NSIndexPath* indexPath = [NSIndexPath indexPathForRow: ([weakSelf.chatTableView numberOfRowsInSection:([weakSelf.chatTableView numberOfSections]-1)]-1) inSection:([weakSelf.chatTableView numberOfSections]-1)];
+        [weakSelf.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:false];
+        });
+    }
 }
 
 - (void)deleteCell:(UITableViewCell *)cell withTipMsg:(NSString *)tipMsg enableLinesDisplay:(BOOL)enable{

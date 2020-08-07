@@ -73,7 +73,7 @@
 /**
  重新加载制定 cell
  */
-- (void)reloadCellAsContentUpdated:(UITableViewCell *)cell;
+- (void)reloadCellAsContentUpdated:(UITableViewCell *)cell messageId:(NSString *)messageId;
 
 /**
  删除cell
