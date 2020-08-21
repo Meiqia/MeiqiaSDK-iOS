@@ -128,12 +128,14 @@
     [MQServiceToViewInterface getCaptchaWithURLComplete:^(NSString *token, NSString *url) {
         if (url.length > 0) {
             [MQServiceToViewInterface downloadMediaWithUrlString:url progress:nil completion:^(NSData *mediaData, NSError *error) {
-                UIImage *image = [UIImage imageWithData:mediaData];
-                __strong typeof (wself) sself = wself;
-                if (token) {
-                    sself.captchaToken = token;
+                if (mediaData && mediaData.length > 0) {
+                    UIImage *image = [UIImage imageWithData:mediaData];
+                    __strong typeof (wself) sself = wself;
+                    if (token) {
+                        sself.captchaToken = token;
+                    }
+                    block(image);
                 }
-                block(image);
             }];
         }
     }];

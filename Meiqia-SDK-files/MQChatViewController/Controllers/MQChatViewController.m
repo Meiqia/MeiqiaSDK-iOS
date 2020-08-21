@@ -165,12 +165,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             [MQChatViewConfig sharedConfig].preSendMessages = m;
         }
         // TODO: [MQServiceToViewInterface prepareForChat]也会初始化企业配置，这里会导致获取企业配置的接口调用两次,APP第一次初始化时会调3次
-        [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:NO complete:^(MQEnterprise *enterprise, NSError *e) {
+        [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:YES complete:^(MQEnterprise *enterprise, NSError *e) {
             
             // warning:用之前的绑定的clientId上线,防止出现排队现象
             // 企业配置字段scheduler_after_client_send_msg：客户（访客）是否开启无响应时消息
-            if (enterprise.configInfo.isScheduleAfterClientSendMessage && ![MQManager getLoginStatus]) {
-               
+            if (enterprise.configInfo.isScheduleAfterClientSendMessage && ![MQServiceToViewInterface haveConversation]) {
                 // 设置head title
                 [self updateNavTitleWithAgentName:enterprise.configInfo.public_nickname ?: @"官方客服" agentStatus:MQChatAgentStatusNone];
               
@@ -190,6 +189,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
                     message.userName = enterprise.configInfo.public_nickname;
                     message.userAvatarPath = enterprise.configInfo.avatar;
                     message.sendStatus = MQChatMessageSendStatusSuccess;
+                    message.content = enterprise.configInfo.enterpriseIntro;
                     MQWebViewBubbleCellModel *cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewService.chatViewWidth delegate:(id <MQCellModelDelegate>)self.chatViewService];
                     
                     [self.chatViewService addCellModelAndReloadTableViewWithModel:cellModel];
@@ -548,12 +548,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [MQToast showToast:content duration:1.0 window:self.view];
 }
 
-
-
-
 #pragma mark - MQInputBarDelegate
-// 发送文本消息
--(BOOL)sendTextMessage:(NSString*)text {
+
+
+- (BOOL)sendMessagePrepareWithText:(NSString *)text image:(UIImage *)image andAMRFilePath:(NSString *)filePath {
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
     if (self.chatViewService.clientStatus == MQStateAllocatingAgent || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
         NSString *alertText = self.chatViewService.clientStatus == MQStateAllocatingAgent ? @"cannot_text_client_is_onlining" : @"send_to_fast";
@@ -562,30 +560,39 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         return NO;
     }
     
-    
     if (openVisitorNoMessageBool) {
-//        [self showActivityIndicatorView];
-        [MQServiceToViewInterface prepareForChat]; //初始化
-        
         [self.view endEditing:YES];
         [self.chatViewService setClientOnline];
         
-        //延时2秒 获取所有的历史记录
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.chatViewService sendTextMessageWithContent:text];
-        });
+        if (text) {
+            [self.chatViewService cacheSendText:text];
+        } else if (image) {
+            [self.chatViewService cacheSendImage:image];
+        } else if (filePath) {
+            [self.chatViewService cacheSendAMRFilePath:filePath];
+        }
         
         openVisitorNoMessageBool = NO;
     }else{
-        [self.chatViewService sendTextMessageWithContent:text];
+        if (text) {
+            [self.chatViewService sendTextMessageWithContent:text];
+        } else if (image) {
+            [self.chatViewService sendImageMessageWithImage:image];
+        } else if (filePath) {
+            [self.chatViewService sendVoiceMessageWithAMRFilePath:filePath];
+        }
         sendTime = [NSDate timeIntervalSinceReferenceDate];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                    [self chatTableViewScrollToBottomWithAnimated:YES];
                });
     }
-    
-
     return YES;
+}
+
+// 发送文本消息
+-(BOOL)sendTextMessage:(NSString*)text {
+    // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
+    return [self sendMessagePrepareWithText:text image:nil andAMRFilePath:nil];
 }
 
 -(void)sendImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
@@ -702,8 +709,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 #pragma MQRecordViewDelegate
 - (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath {
-    [self.chatViewService sendVoiceMessageWithAMRFilePath:filePath];
-    [self chatTableViewScrollToBottomWithAnimated:true];
+//    [self.chatViewService sendVoiceMessageWithAMRFilePath:filePath];
+//    [self chatTableViewScrollToBottomWithAnimated:true];
+    [self sendMessagePrepareWithText:nil image:nil andAMRFilePath:filePath];
 }
 
 - (void)didUpdateVolumeInRecordView:(UIView *)recordView volume:(CGFloat)volume {
@@ -719,8 +727,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     UIImage *image          =  [MQImageUtil resizeImage:[MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]]maxSize:CGSizeMake(1000, 1000)];
     [picker dismissViewControllerAnimated:YES completion:^{
-        [self.chatViewService sendImageMessageWithImage:image];
-        [self chatTableViewScrollToBottomWithAnimated:true];
+//        [self.chatViewService sendImageMessageWithImage:image];
+//        [self chatTableViewScrollToBottomWithAnimated:true];
+        [self sendMessagePrepareWithText:nil image:image andAMRFilePath:nil];
     }];
 }
 

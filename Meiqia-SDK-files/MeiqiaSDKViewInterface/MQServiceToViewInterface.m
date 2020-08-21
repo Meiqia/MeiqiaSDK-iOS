@@ -179,6 +179,10 @@
     return [MQManager getCurrentAgent].agentId.length > 0;
 }
 
++ (BOOL)haveConversation {
+    return [MQManager haveConversation];
+}
+
 + (void)downloadMediaWithUrlString:(NSString *)urlString
                           progress:(void (^)(float progress))progressBlock
                         completion:(void (^)(NSData *mediaData, NSError *error))completion

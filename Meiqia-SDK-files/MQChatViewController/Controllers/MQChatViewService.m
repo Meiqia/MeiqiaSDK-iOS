@@ -62,6 +62,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 @property (nonatomic, weak) NSTimer *positionCheckTimer;
 
+@property (nonatomic, strong) NSMutableArray *cacheTextArr;
+
+@property (nonatomic, strong) NSMutableArray *cacheImageArr;
+
+@property (nonatomic, strong) NSMutableArray *cacheFilePathArr;
+
 @end
 #else
 @interface MQChatViewService() <MQCellModelDelegate>
@@ -224,6 +230,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 #pragma mark - 消息发送
+
+- (void)cacheSendText:(NSString *)text {
+    [self.cacheTextArr addObject:text];
+}
+
+- (void)cacheSendImage:(UIImage *)image {
+    [self.cacheImageArr addObject:image];
+}
+
+- (void)cacheSendAMRFilePath:(NSString *)filePath {
+    [self.cacheFilePathArr addObject:filePath];
+}
+
 /**
  * 发送文字消息
  */
@@ -1242,6 +1261,35 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
 }
 
+// 分配客服成功
+- (void)didScheduleResult:(MQClientOnlineResult) onLineResult withResultMessages:(NSArray<MQMessage *> *)message {
+    
+    // 让UI显示历史消息成功了再发送
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.cacheTextArr.count > 0) {
+            for (NSString *text in self.cacheTextArr) {
+                [self sendTextMessageWithContent:text];
+            }
+            [self.cacheTextArr removeAllObjects];
+        }
+        
+        if (self.cacheImageArr.count > 0) {
+            for (UIImage *image in self.cacheImageArr) {
+                [self sendImageMessageWithImage:image];
+            }
+            [self.cacheImageArr removeAllObjects];
+        }
+        
+        if (self.cacheFilePathArr.count > 0) {
+            for (NSString *path in self.cacheFilePathArr) {
+                [self sendVoiceMessageWithAMRFilePath:path];
+            }
+            [self.cacheFilePathArr removeAllObjects];
+        }
+    });
+    
+}
+
 #pragma mark - handle message
 - (void)handleEventMessage:(MQEventMessage *)eventMessage {
     // 撤回消息 
@@ -1533,7 +1581,28 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
     return _serviceToViewInterface;
 }
+
 #endif
 
+-(NSMutableArray *)cacheTextArr {
+    if (!_cacheTextArr) {
+        _cacheTextArr = [NSMutableArray new];
+    }
+    return _cacheTextArr;
+}
+
+-(NSMutableArray *)cacheImageArr {
+    if (!_cacheImageArr) {
+        _cacheImageArr = [NSMutableArray new];
+    }
+    return _cacheImageArr;
+}
+
+-(NSMutableArray *)cacheFilePathArr {
+    if (!_cacheFilePathArr) {
+        _cacheFilePathArr = [NSMutableArray new];
+    }
+    return _cacheFilePathArr;
+}
 
 @end

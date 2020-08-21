@@ -253,6 +253,13 @@
  */
 + (BOOL)isThereAgent;
 
+
+/**
+ *  当前是否有分配对话
+ *
+ */
++ (BOOL)haveConversation;
+
 /**
  *  下载多媒体消息的多媒体内容
  *

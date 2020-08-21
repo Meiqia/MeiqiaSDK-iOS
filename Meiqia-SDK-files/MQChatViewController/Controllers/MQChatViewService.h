@@ -239,7 +239,23 @@
 */
 - (void)onceLoadHistoryAndRefreshWithSendMsg:(NSString *)message;
 
+/**
+ 顾客没上线前缓存需要发送的Text
+ */
+- (void)cacheSendText:(NSString *)text;
+
+/**
+ 顾客没上线前缓存需要发送的Image
+ */
+- (void)cacheSendImage:(UIImage *)image;
+
+/**
+ 顾客没上线前缓存需要发送的语音
+ */
+- (void)cacheSendAMRFilePath:(NSString *)filePath;
+
 #ifndef INCLUDE_MEIQIA_SDK
+
 /**
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
  */

@@ -16,7 +16,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.6.2.1"
+#define MQSDKVersion @"3.6.3"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -54,6 +54,9 @@
 
 /// 获取当前的状态
 + (MQState)getCurrentState;
+
+/// 获取当前顾客是否分配了聊天
++ (BOOL)haveConversation;
 
 /**
  *  开启美洽服务

@@ -98,9 +98,18 @@
     __weak typeof(self) wself = self;
     switch (formItem.type) {
         case MQPreChatFormItemInputTypeSingleLineText:
+        case MQPreChatFormItemInputTypeSingleLineDateText:
+        case MQPreChatFormItemInputTypeSingleLineNumberText:
         {
             MQPrechatSingleLineTextCell *scell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(MQPrechatSingleLineTextCell.class) forIndexPath:indexPath];
-            scell.textField.keyboardType = [self.viewModel keyboardtypeForType:formItem.filedName];
+            if (formItem.type == MQPreChatFormItemInputTypeSingleLineDateText) {
+                scell.textField.keyboardType = UIKeyboardTypeDecimalPad;
+            } else if (formItem.type == MQPreChatFormItemInputTypeSingleLineNumberText) {
+                scell.textField.keyboardType = UIKeyboardTypeNumberPad;
+            } else {
+                scell.textField.keyboardType = [self.viewModel keyboardtypeForType:formItem.filedName];
+            }
+            
             //记录用户输入
             [scell setValueChangedAction:^(NSString *newString) {
                 __strong typeof (wself) sself = wself;

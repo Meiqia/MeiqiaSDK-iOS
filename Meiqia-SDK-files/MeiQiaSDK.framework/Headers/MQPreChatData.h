@@ -17,6 +17,8 @@ typedef NS_ENUM(NSUInteger, MQPreChatFormItemInputType) {
     MQPreChatFormItemInputTypeSingleSelection,
     MQPreChatFormItemInputTypeMultipleSelection,
     MQPreChatFormItemInputTypeSingleLineText,
+    MQPreChatFormItemInputTypeSingleLineNumberText,
+    MQPreChatFormItemInputTypeSingleLineDateText,
     MQPreCHatFormItemInputTypeMultipleLineText,
     MQPreChatFormItemInputTypeCaptcha,
 };
