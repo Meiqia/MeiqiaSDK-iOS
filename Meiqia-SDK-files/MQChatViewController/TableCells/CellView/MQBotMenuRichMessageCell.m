@@ -40,8 +40,8 @@ static CGFloat const kMQBotMenuVerticalSpacingInMenus = 12.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        [self addSubview:self.avatarImageView];
-        [self addSubview:self.bubbleImageView];
+        [self.contentView addSubview:self.avatarImageView];
+        [self.contentView addSubview:self.bubbleImageView];
         [self.bubbleImageView addSubview:self.contentWebView];
         [self.bubbleImageView addSubview:self.itemsView];
         [self.bubbleImageView addSubview:self.replyTipLabel];

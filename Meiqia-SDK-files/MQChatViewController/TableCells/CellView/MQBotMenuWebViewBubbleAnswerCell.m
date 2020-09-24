@@ -57,8 +57,8 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         
-        [self addSubview:self.avatarImageView];
-        [self addSubview:self.itemsView];
+        [self.contentView addSubview:self.avatarImageView];
+        [self.contentView addSubview:self.itemsView];
         
         [self.itemsView addSubview:self.contentWebView];
         

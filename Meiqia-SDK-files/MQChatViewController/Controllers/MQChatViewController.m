@@ -76,7 +76,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     BOOL shouldSendInputtingMessageToServer;
     BOOL needToBotttom;
-
+    BOOL willDisapper; // 页面即将消失
 }
 
 - (void)dealloc {
@@ -203,7 +203,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
                 // TODO: 这个通知什么时候回调（客服离开、隐身、结束对话都不会触发）
                 [MQManager addStateObserverWithBlock:^(MQState oldState, MQState newState, NSDictionary *value, NSError *error) {
                     if (newState == MQStateUnallocatedAgent) { // 离线
-                        [MQManager setClientOffline];
+//                        [MQManager setClientOffline];
                     }
                 } withKey:@"MQChatViewController"];
                 
@@ -247,6 +247,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
     
+    willDisapper = YES;
     [self.keyboardView endListeningForKeyboard];
     
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
@@ -256,6 +257,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    willDisapper = NO;
     [UIView setAnimationsEnabled:YES];
     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
     [self.chatViewService fillTextDraftToFiledIfExists:(UITextField *)[(MQTabInputContentView *)self.bottomBar.contentView textField]];
@@ -496,8 +498,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)showEvaluationAlertView {
-    [self.view.window endEditing:YES];
-    [self.evaluationView showEvaluationAlertView];
+    if (!willDisapper) {
+        [self.view.window endEditing:YES];
+        [self.evaluationView showEvaluationAlertView];
+    }
 }
 
 - (BOOL)isChatRecording {
