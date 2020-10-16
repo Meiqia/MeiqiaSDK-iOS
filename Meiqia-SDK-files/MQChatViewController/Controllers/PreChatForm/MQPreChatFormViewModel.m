@@ -8,10 +8,10 @@
 
 #import "MQPreChatFormViewModel.h"
 #import "MQChatViewConfig.h"
-#import <MeiQiaSDK/MeiqiaSDK.h>
 #import "MQServiceToViewInterface.h"
 #import "NSArray+MQFunctional.h"
 #import "MQChatViewConfig.h"
+#import "MQJsonUtil.h"
 
 @implementation MQPreChatFormViewModel
 
@@ -128,12 +128,14 @@
     [MQServiceToViewInterface getCaptchaWithURLComplete:^(NSString *token, NSString *url) {
         if (url.length > 0) {
             [MQServiceToViewInterface downloadMediaWithUrlString:url progress:nil completion:^(NSData *mediaData, NSError *error) {
-                UIImage *image = [UIImage imageWithData:mediaData];
-                __strong typeof (wself) sself = wself;
-                if (token) {
-                    sself.captchaToken = token;
+                if (mediaData && mediaData.length > 0) {
+                    UIImage *image = [UIImage imageWithData:mediaData];
+                    __strong typeof (wself) sself = wself;
+                    if (token) {
+                        sself.captchaToken = token;
+                    }
+                    block(image);
                 }
-                block(image);
             }];
         }
     }];
@@ -157,7 +159,7 @@
             
             if (e.userInfo[@"com.alamofire.serialization.response.error.data"]) {
                 NSData *data = e.userInfo[@"com.alamofire.serialization.response.error.data"];
-                NSDictionary *info = [MQJSONHelper createWithJSONString:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+                NSDictionary *info = [MQJsonUtil createWithJSONString:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
                 if ([info isKindOfClass:[NSDictionary class]]) {
                     if (info[@"captcha_needed"]) {
                         e = [NSError errorWithDomain:info[@"message"] code:0 userInfo:nil];

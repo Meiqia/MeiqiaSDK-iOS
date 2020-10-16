@@ -52,20 +52,19 @@
     [buttonContainerView addSubview:functionView];
     
     [UIView animateWithDuration:0.25 animations:^{
-        
        
         if (self.delegate && [self.delegate respondsToSelector:@selector(inputBar:willChangeHeight:)]) {
             [self.delegate inputBar:self willChangeHeight:self.contentView.frame.size.height + self.buttonGroupBar.frame.size.height + CGRectGetMaxY(functionView.frame)];
         }
         
-        buttonContainerViewHeightConstraint.constant = CGRectGetMaxY(functionView.frame);
+        self->buttonContainerViewHeightConstraint.constant = CGRectGetMaxY(functionView.frame);
         [self setNeedsUpdateConstraints];
         [self layoutIfNeeded];
     } completion:^(BOOL finished) {
-        _functionViewVisible = true;
+        self->_functionViewVisible = true;
         
         if (self.delegate && [self.delegate respondsToSelector:@selector(inputBar:didChangeHeight:)]) {
-            [self.delegate inputBar:self didChangeHeight:self.contentView.frame.size.height + self.buttonGroupBar.frame.size.height + buttonContainerViewHeightConstraint.constant];
+            [self.delegate inputBar:self didChangeHeight:self.contentView.frame.size.height + self.buttonGroupBar.frame.size.height + self->buttonContainerViewHeightConstraint.constant];
         }
     }];
     

@@ -110,8 +110,8 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [self initTableView];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //等待sdk初始化成功
-        currentClientId = [MQManager getCurrentClientId];
-        [configTableView reloadData];
+        self->currentClientId = [MQManager getCurrentClientId];
+        [self->configTableView reloadData];
     });
     
     //在聊天界面外，监听是否收到了客服消息
@@ -400,7 +400,6 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
         }
     }];
     
-    
 }
 
 /**
@@ -418,9 +417,8 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 - (void)creatMQClient {
     [MQManager createClient:^(NSString *clientId, NSError *error) {
         if (!error) {
-            NSLog(@"新的美洽顾客id为%@", clientId);
-            currentClientId = clientId;
-            [configTableView reloadData];
+            self->currentClientId = clientId;
+            [self->configTableView reloadData];
             NSString *clientId = [MQManager getCurrentClientId];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"新的美洽顾客id为：" message:clientId delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
             [alertView show];
@@ -633,12 +631,16 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                     if (!error) {
                         MQChatViewManager *chatViewManager = [MQChatViewManager new];
                         [chatViewManager pushMQChatViewControllerInViewController:self];
+                    }else{
+                        [MQToast showToast:@"创建appkey失败" duration:1.0 window:self.view];
                     }
                 }];
             }
+                break;
             case MQ_DEMO_ALERTVIEW_TAG_PRESENDMSG: {
                 [self setClientOnlineWithPresendMessage:[alertView textFieldAtIndex:0].text];
             }
+                break;
             default:
                 break;
         }
@@ -710,7 +712,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewManager setIncomingMessageSoundFileName:@"MQNewMessageRingStyleTwo.wav"];
     [chatViewManager setMessageLinkRegex:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"];
     [chatViewManager enableChatWelcome:true];
-    [chatViewManager setChatWelcomeText:@"你好，请问有什么可以帮助到您？"];
+    [chatViewManager setChatWelcomeText:@"yes，你好，请问有什么可以帮助到您？"];
     [chatViewManager enableMessageSound:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
     

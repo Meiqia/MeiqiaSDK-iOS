@@ -41,6 +41,15 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "CCE9D1051C1812F6004E862E"
+            BuildableName = "Meiqia-SDK-Demo.app"
+            BlueprintName = "Meiqia-SDK-Demo"
+            ReferencedContainer = "container:Meiqia-SDK-Demo.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -53,17 +62,6 @@
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CCE9D1051C1812F6004E862E"
-            BuildableName = "Meiqia-SDK-Demo.app"
-            BlueprintName = "Meiqia-SDK-Demo"
-            ReferencedContainer = "container:Meiqia-SDK-Demo.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

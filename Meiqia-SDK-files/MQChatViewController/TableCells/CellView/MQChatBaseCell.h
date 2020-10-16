@@ -73,7 +73,18 @@
 /**
  重新加载制定 cell
  */
-- (void)reloadCellAsContentUpdated:(UITableViewCell *)cell;
+- (void)reloadCellAsContentUpdated:(UITableViewCell *)cell messageId:(NSString *)messageId;
+
+/**
+ 删除cell
+ */
+- (void)deleteCell:(UITableViewCell *)cell withTipMsg:(NSString *)tipMsg enableLinesDisplay:(BOOL)enable;
+
+/**
+ 更换tipCell
+ */
+- (void)replaceTipCell:(UITableViewCell *)cell;
+
 
 @end
 

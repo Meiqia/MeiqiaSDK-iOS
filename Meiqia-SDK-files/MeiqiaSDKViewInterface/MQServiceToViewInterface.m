@@ -38,7 +38,6 @@
             }
         }
     } failure:^(NSError *error) {
-        NSLog(@"美洽SDK: 获取历史消息失败\nerror = %@", error);
         if (errorDelegate) {
             if ([errorDelegate respondsToSelector:@selector(getLoadHistoryMessageError)]) {
                 [errorDelegate getLoadHistoryMessageError];
@@ -67,7 +66,7 @@
     //将MQMessage转换成UI能用的Message类型
     NSMutableArray *toMessages = [[NSMutableArray alloc] init];
     for (MQMessage *fromMessage in messagesArray) {
-        MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType] createMessage:fromMessage];
+        MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType fromType:fromMessage.fromType] createMessage:fromMessage];
         if (toMessage) {
             [toMessages addObject:toMessage];
         }
@@ -114,14 +113,14 @@
               delegate:(id<MQServiceToViewInterfaceDelegate>)delegate
 {
     if (delegate) {
-        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:sendStatus:)]) {
+        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:sendStatus:)]) {
             MQChatMessageSendStatus sendStatus = MQChatMessageSendStatusSuccess;
             if (sendedMessage.sendStatus == MQMessageSendStatusFailed) {
                 sendStatus = MQChatMessageSendStatusFailure;
             } else if (sendedMessage.sendStatus == MQMessageSendStatusSending) {
                 sendStatus = MQChatMessageSendStatusSending;
             }
-            [delegate didSendMessageWithNewMessageId:sendedMessage.messageId oldMessageId:localMessageId newMessageDate:sendedMessage.createdOn sendStatus:sendStatus];
+            [delegate didSendMessageWithNewMessageId:sendedMessage.messageId oldMessageId:localMessageId newMessageDate:sendedMessage.createdOn replacedContent:sendedMessage.isSensitive ? sendedMessage.content : nil  sendStatus:sendStatus];
         }
     }
 }
@@ -133,8 +132,8 @@
 {
     NSLog(@"美洽SDK: 发送text消息失败\nerror = %@", error);
     if (delegate) {
-        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:sendStatus:)]) {
-            [delegate didSendMessageWithNewMessageId:localMessageId oldMessageId:localMessageId newMessageDate:nil sendStatus:MQChatMessageSendStatusFailure];
+        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:sendStatus:)]) {
+            [delegate didSendMessageWithNewMessageId:localMessageId oldMessageId:localMessageId newMessageDate:nil replacedContent:nil sendStatus:MQChatMessageSendStatusFailure];
         }
     }
 }
@@ -178,6 +177,10 @@
 
 + (BOOL)isThereAgent {
     return [MQManager getCurrentAgent].agentId.length > 0;
+}
+
++ (BOOL)haveConversation {
+    return [MQManager haveConversation];
 }
 
 + (void)downloadMediaWithUrlString:(NSString *)urlString
@@ -289,6 +292,12 @@
 
 + (void)setNotScheduledAgentWithAgentId:(NSString *)agentId {
     [MQManager setNotScheduledAgentWithAgentId:agentId];
+}
+
++ (void)deleteScheduledAgent {
+    [MQChatViewConfig sharedConfig].scheduledAgentId = nil;
+    [MQChatViewConfig sharedConfig].scheduledGroupId = nil;
+    [MQManager deleteScheduledAgent];
 }
 
 + (void)setEvaluationLevel:(NSInteger)level
@@ -411,8 +420,8 @@
     [MQManager evaluateBotMessage:messageId isUseful:isUseful completion:completion];
 }
 
-#pragma MQManagerDelegate
-//webSocket收到消息的代理方法
+#pragma mark - MQManagerDelegate
+
 - (void)didReceiveMQMessages:(NSArray<MQMessage *> *)messages {
     if (!self.serviceToViewDelegate) {
         return;
@@ -423,6 +432,11 @@
     }
 }
 
+- (void)didScheduleResult:(MQClientOnlineResult)onLineResult withResultMessages:(NSArray<MQMessage *> *)message{
+    if ([self.serviceToViewDelegate respondsToSelector:@selector(didScheduleResult:withResultMessages:)]) {
+        [self.serviceToViewDelegate didScheduleResult:onLineResult withResultMessages:message];
+    }
+}
 
 //强制转人工
 - (void)forceRedirectHumanAgentWithSuccess:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success

@@ -40,8 +40,8 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        [self addSubview:self.avatarImageView];
-        [self addSubview:self.itemsView];
+        [self.contentView addSubview:self.avatarImageView];
+        [self.contentView addSubview:self.itemsView];
         [self.itemsView addSubview:self.contentWebView];
         [self layoutUI];
         [self updateUI:0];
@@ -50,42 +50,45 @@
 }
 
 - (void)updateCellWithCellModel:(id<MQCellModelProtocol>)model {
-    self.manuallySetToEvaluated = NO;
-    self.viewModel = model;
-    
-    __weak typeof(self) wself = self;
-    
-    [self.viewModel setCellHeight:^CGFloat{
-        __strong typeof (wself) sself = wself;
-        if (sself.viewModel.cachedWebViewHeight > 0) {
-            return sself.viewModel.cachedWebViewHeight + kMQCellAvatarToVerticalEdgeSpacing + kMQCellAvatarToVerticalEdgeSpacing + HEIHGT_VIEW_EVALUATE + SPACE_INTERNAL_VERTICAL;
+    if ([model isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]]) {
+        MQBotWebViewBubbleAnswerCellModel * tempModel = model;
+        self.manuallySetToEvaluated = NO;
+        self.viewModel = model;
+        
+        __weak typeof(self) wself = self;
+        __weak typeof(tempModel) weakTempModel = tempModel;
+        [tempModel setCellHeight:^CGFloat{
+            __strong typeof (wself) sself = wself;
+            if (weakTempModel.cachedWebViewHeight > 0) {
+                return weakTempModel.cachedWebViewHeight + kMQCellAvatarToVerticalEdgeSpacing + kMQCellAvatarToVerticalEdgeSpacing + HEIHGT_VIEW_EVALUATE + SPACE_INTERNAL_VERTICAL;
+            }
+            return sself.viewHeight;
+        }];
+        
+        [tempModel setAvatarLoaded:^(UIImage *avatar) {
+           __strong typeof (wself) sself = wself;
+            sself.avatarImageView.image = avatar;
+        }];
+        
+        [self.contentWebView loadHTML:tempModel.content WithCompletion:^(CGFloat height) {
+            __strong typeof (wself) sself = wself;
+            if (height != tempModel.cachedWebViewHeight) {
+                [tempModel setCachedWebViewHeight:height];
+                [sself updateUI:height];
+                [sself.chatCellDelegate reloadCellAsContentUpdated:sself messageId:[tempModel getCellMessageId]];
+            }
+        }];
+        
+        [self.contentWebView setTappedLink:^(NSURL *url) {
+            [[UIApplication sharedApplication] openURL:url];
+        }];
+        
+        if (tempModel.cachedWebViewHeight > 0) {
+            [self updateUI:tempModel.cachedWebViewHeight];
         }
-        return sself.viewHeight;
-    }];
-    
-    [self.viewModel setAvatarLoaded:^(UIImage *avatar) {
-       __strong typeof (wself) sself = wself;
-        sself.avatarImageView.image = avatar;
-    }];
-    
-    [self.contentWebView loadHTML:self.viewModel.content WithCompletion:^(CGFloat height) {
-        __strong typeof (wself) sself = wself;
-        if (height != self.viewModel.cachedWebViewHeight) {
-            [sself.viewModel setCachedWebViewHeight:height];
-            [sself updateUI:height];
-            [sself.chatCellDelegate reloadCellAsContentUpdated:sself];
-        }
-    }];
-    
-    [self.contentWebView setTappedLink:^(NSURL *url) {
-        [[UIApplication sharedApplication] openURL:url];
-    }];
-    
-    if (self.viewModel.cachedWebViewHeight > 0) {
-        [self updateUI:self.viewModel.cachedWebViewHeight];
+        
+        [tempModel bind];
     }
-    
-    [self.viewModel bind];
 }
 
 - (void)layoutUI {

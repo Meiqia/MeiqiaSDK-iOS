@@ -218,6 +218,9 @@
 + (void)makeMaskView:(UIView *)view withImage:(UIImage *)image {
     UIImageView *imageViewMask = [[UIImageView alloc] initWithImage:image];
     imageViewMask.frame = CGRectInset(CGRectMake(0, 0, view.frame.size.width, view.frame.size.height), 0.0f, 0.0f);
+    if (@available(iOS 14.0, *)) {
+        imageViewMask.layer.contents = (__bridge id _Nullable)(image.CGImage);
+    }
     view.layer.mask = imageViewMask.layer;
 }
 

@@ -19,7 +19,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.textField = [[MEIQIA_HPGrowingTextView alloc] init];
+        self.textField = [[MEIQIA_HPGrowingTextView alloc] initWithFrame:CGRectMake(0, 1, self.frame.size.width, self.frame.size.height)];
         self.textField.placeholder = [MQBundleUtil localizedStringForKey:@"input_content"];
 
         self.textField.font = [UIFont systemFontOfSize:15];
@@ -35,15 +35,7 @@
         tabBackgroud = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         tabBackgroud.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:253/255.0 alpha:1];
         [self addSubview:tabBackgroud];
-        
-        self.textField.translatesAutoresizingMaskIntoConstraints = NO;
-        tabBackgroud.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-1-[_textField]-0-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(tabBackgroud, _textField)]];
-        
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[tabBackgroud]-0-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(tabBackgroud)]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_textField]-0-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(_textField)]];
-        
+            
     }
     return self;
 }

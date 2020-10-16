@@ -82,6 +82,12 @@
             eventType = MQChatEventTypeQueueingAdd;
             break;
         }
+        case MQMessageActionWithdrawMessage:
+        {
+            eventContent = @"消息撤回";
+            eventType = MQChatEventTypeWithdrawMsg;
+            break;
+        }
         default:
             break;
     }
@@ -93,6 +99,7 @@
     toMessage.date = plainMessage.createdOn;
     toMessage.content = eventContent;
     toMessage.userName = plainMessage.agent.nickname;
+    toMessage.cardData = plainMessage.cardData;
     
     if (plainMessage.action == MQMessageActionListedInBlackList) {
         toMessage.eventType = MQChatEventTypeBackList;

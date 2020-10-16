@@ -16,6 +16,7 @@
 static const NSInteger kMQTextCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;
 static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
+static const NSString *kMQTextCellsensitiveWords = @"！消息包含不规范用语";
 
 @interface MQTextMessageCell() <MEIQIA_TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
@@ -24,6 +25,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
 @implementation MQTextMessageCell  {
     UIImageView *avatarImageView;
     TTTAttributedLabel *textLabel;
+    UILabel *sensitiveTextLabel;
     UIImageView *bubbleImageView;
     UIActivityIndicatorView *sendingIndicator;
     UIImageView *failureImageView;
@@ -66,6 +68,13 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         failureImageView.userInteractionEnabled = true;
         [failureImageView addGestureRecognizer:tapFailureImageGesture];
         [self.contentView addSubview:failureImageView];
+        sensitiveTextLabel = [[UILabel alloc] init];
+        sensitiveTextLabel.text = [NSString stringWithFormat:@"%@",kMQTextCellsensitiveWords];
+        sensitiveTextLabel.textColor = [UIColor grayColor];
+        sensitiveTextLabel.font = [UIFont systemFontOfSize:14];
+        [sensitiveTextLabel setHidden:YES];
+        [self.contentView addSubview:sensitiveTextLabel];
+        
     }
     return self;
 }
@@ -131,6 +140,10 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         failureImageView.hidden = false;
         failureImageView.frame = cellModel.sendFailureFrame;
     }
+    
+    [sensitiveTextLabel setHidden:!cellModel.isSensitive];
+    sensitiveTextLabel.frame = cellModel.sensitiveLableFrame;
+        
 }
 
 #pragma TTTAttributedLabelDelegate 点击事件

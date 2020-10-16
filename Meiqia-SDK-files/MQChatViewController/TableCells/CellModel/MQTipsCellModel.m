@@ -166,11 +166,11 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
     return self;
 }
 
-- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth position:(int)position tipType:(MQTipType)tipType {
+- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth withIntro:(NSString *)intro position:(int)position tipType:(MQTipType)tipType {
     if (self = [super init]) {
         self.tipType = tipType;
         self.date = [NSDate date];
-        self.tipText = [NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_text"], position];
+        self.tipText = [NSString stringWithFormat:@"%@\n%@",intro,[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_text"], position]];
         self.enableLinesDisplay = false;
         
         //tip frame

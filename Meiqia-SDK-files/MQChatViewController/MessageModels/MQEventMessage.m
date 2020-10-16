@@ -35,6 +35,7 @@
     if (!_tipStringMap) {
         _tipStringMap = @{
                 @(MQChatEventTypeAgentDidCloseConversation):@"",
+                @(MQChatEventTypeWithdrawMsg):@"",
                 @(MQChatEventTypeEndConversationTimeout):@"",
                 @(MQChatEventTypeRedirect):[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"mq_direct_content"], self.userName],
                 @(MQChatEventTypeClientEvaluation):@"",

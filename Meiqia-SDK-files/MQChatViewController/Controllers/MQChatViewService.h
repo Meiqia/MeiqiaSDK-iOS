@@ -29,7 +29,7 @@
 /**
  *  已经更新了这条消息的数据，通知tableView刷新界面
  */
-- (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath;
+- (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath needToBottom:(BOOL)toBottom;
 
 /**
  *  通知viewController更新tableView；
@@ -46,6 +46,8 @@
 - (void)insertCellAtTopForModelCount:(NSInteger)count;
 
 - (void)removeCellAtIndex:(NSInteger)index;
+
+- (void)insertCellAtCurrentIndex:(NSInteger)currentRow modelCount:(NSInteger)count;
 
 /**
  *  通知viewController将tableView滚动到底部
@@ -128,6 +130,7 @@
  * 获取更多历史聊天消息
  */
 - (void)startGettingHistoryMessages;
+- (void)startGettingDateBaseHistoryMessages;
 - (void)startGettingHistoryMessagesFromLastMessage;
 /**
  * 发送文字消息
@@ -149,6 +152,12 @@
  * 发送“用户正在输入”的消息
  */
 - (void)sendUserInputtingWithContent:(NSString *)content;
+
+
+/**
+  删除消息
+ */
+- (void)deleteMessageAtIndex:(NSInteger)index withTipMsg:(NSString *)tipMsg enableLinesDisplay:(BOOL)enable;
 
 /**
  * 重新发送消息
@@ -225,7 +234,28 @@
  */
 - (void)setClientOnline;
 
+/**
+初始化历史消息
+*/
+- (void)onceLoadHistoryAndRefreshWithSendMsg:(NSString *)message;
+
+/**
+ 顾客没上线前缓存需要发送的Text
+ */
+- (void)cacheSendText:(NSString *)text;
+
+/**
+ 顾客没上线前缓存需要发送的Image
+ */
+- (void)cacheSendImage:(UIImage *)image;
+
+/**
+ 顾客没上线前缓存需要发送的语音
+ */
+- (void)cacheSendAMRFilePath:(NSString *)filePath;
+
 #ifndef INCLUDE_MEIQIA_SDK
+
 /**
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
  */

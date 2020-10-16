@@ -12,11 +12,19 @@
 
 #endif /* MQLog_h */
 
-#ifdef DEBUG
+static BOOL MQIsLogEnabled = NO; //发布时默认关闭NO
 #define FILENAME [[[NSString alloc] initWithUTF8String:__FILE__] lastPathComponent]
-#define MQInfo(str,...) NSLog(@"[%@,%d]↓↓",FILENAME, __LINE__);NSLog(str,##__VA_ARGS__);
-#define MQError(str,...) NSLog(@"[*ERROR*][%@,%d]☟☟",FILENAME, __LINE__);NSLog(str,##__VA_ARGS__);
-#else
-#define MQInfo(str,...)
-#define MQError(str,...)
-#endif
+
+#define MQInfo(str, ...) {\
+if(MQIsLogEnabled){\
+NSLog(@"MeiQia [%@,%d]↓↓", FILENAME, __LINE__); \
+NSLog(str, ##__VA_ARGS__);\
+}\
+}
+
+#define MQError(str, ...){\
+if(MQIsLogEnabled){\
+NSLog(@"MeiQia [*ERROR*][%@,%d]☟☟", FILENAME, __LINE__); \
+NSLog(str, ##__VA_ARGS__);\
+}\
+}

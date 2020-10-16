@@ -13,6 +13,8 @@
 
 /** 消息content */
 @property (nonatomic, copy) NSString *content;
+/** 消息是否包含敏感词汇 */
+@property (nonatomic, assign) BOOL isSensitive;
 @property (nonatomic, assign) BOOL isHTML;
 
 /**

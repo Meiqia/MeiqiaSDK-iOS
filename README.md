@@ -49,7 +49,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.4.9'
+pod 'Meiqia', '~> 3.6.2'
 ```
 接着安装美洽 pod 即可：
 
@@ -100,7 +100,7 @@ github "meiqia/MeiqiaSDK-iOS"
 ```
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 #pragma mark  集成第一步: 初始化,  参数:appkey  ,尽可能早的初始化appkey.
-    [MQManager initWithAppkey:@"009c6d3b9af54a81653c1982a1425e7b" completion:^(NSString *clientId, NSError *error) {
+    [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
             NSLog(@"美洽 SDK：初始化成功");
         } else {
@@ -882,6 +882,41 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十一 更新日志
+
+**v3.6.4  2020 年 9 月 24 日**
+
+* 适配 iOS 14的 UI
+* 修复一些已知bug
+
+**v3.6.3  2020 年 8 月 21 日**
+
+* 优化无消息访客过滤状态下的消息发送逻辑
+* 优化讯前表单的展示逻辑
+* 修复一些已知bug
+
+**v3.6.2  略**
+
+**v3.6.1  2020 年 8 月 7 日**
+
+* 优化数据库
+* 修复一些bug
+
+**v3.6.0  2020 年 7 月 16 日**
+
+* 新增敏感词汇过滤功能
+* 新增红包/优惠券类消息
+* 修复其他三方机器人hybrid类型消息解析不出来问题
+* 修复一些bug
+
+**v3.5.2  2020 年 6 月 12 日**
+
+* 新增消息撤回功能
+* 新增线索卡片功能
+* 新增富文本和HTML在cell直接显示功能
+* 增加队列等待提醒
+* 修复一些bug
+
+**v3.5.0  略**
 
 **v3.4.9  2018 年 12 月 3 日**
 

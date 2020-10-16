@@ -43,6 +43,10 @@
     if ([deviceString isEqualToString:@"iPhone11,2"])    return @"iPhoneXS";
     if ([deviceString isEqualToString:@"iPhone11,4"] || [deviceString isEqualToString:@"iPhone11,6"])    return @"iPhoneXSMAX";
     
+    if ([deviceString isEqualToString:@"iPhone12,1"]) return @"iPhone11";
+    if ([deviceString isEqualToString:@"iPhone12,3"]) return @"iPhone11Pro";
+    if ([deviceString isEqualToString:@"iPhone12,5"]) return @"iPhone11ProMax";
+    
     //模拟机
     if ([deviceString isEqualToString:@"x86_64"])        return @"Simulator";
 
@@ -92,9 +96,8 @@
     return deviceString;
 }
 + (BOOL)kXlpObtainDeviceVersionIsIphoneX{
-    //xlp 最后要去掉
     NSString * str = [self kXlpObtainDeviceVersion];
-    if ([str containsString:@"X"] || [str isEqualToString:@"Simulator"]) {
+    if ([str containsString:@"X"] || [str isEqualToString:@"Simulator"] || [str containsString:@"11"]) {
         return YES;
     } else {
         return NO;

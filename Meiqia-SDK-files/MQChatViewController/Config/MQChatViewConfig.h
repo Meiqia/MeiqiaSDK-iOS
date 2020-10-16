@@ -109,6 +109,7 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK
 @property (nonatomic, assign) BOOL enableSyncServerMessage;
+@property (nonatomic, assign) BOOL enableInitHistoryMessage;
 @property (nonatomic, copy  ) NSString *MQClientId;
 
 
