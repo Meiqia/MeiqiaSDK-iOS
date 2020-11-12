@@ -21,6 +21,8 @@ Pod::Spec.new do |s|
   s.documentation_url = "https://github.com/Meiqia/MeiqiaSDK-iOS/wiki"
   s.platform     = :ios, '8.0'
   s.requires_arc = true
+  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
   s.subspec 'MeiqiaSDK' do |ss|
     ss.frameworks =  'AVFoundation', 'CoreTelephony', 'SystemConfiguration', 'MobileCoreServices'
