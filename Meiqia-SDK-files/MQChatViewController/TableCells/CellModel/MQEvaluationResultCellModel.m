@@ -156,6 +156,10 @@ CGFloat const kMQEvaluationCellFontSize = 14.0;
     return @"";
 }
 
+- (NSString *)getMessageConversionId {
+    return @"";
+}
+
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
     //评价的 label frame
     CGFloat levelTextWidth = [MQStringSizeUtil getWidthForText:self.levelText withFont:[UIFont systemFontOfSize:kMQEvaluationCellFontSize] andHeight:200];

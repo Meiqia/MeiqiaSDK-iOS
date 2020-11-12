@@ -40,6 +40,7 @@ typedef enum : NSUInteger {
     MQMessageContentTypeRichText             = 5, //图文消息
     MQMessageContentTypeCard                 = 6, //卡片消息
     MQMessageContentTypeHybrid               = 7, //混合消息
+    MQMessageContentTypeVideo                = 8, //视频
 } MQMessageContentType;
 
 typedef enum : NSUInteger {

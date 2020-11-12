@@ -58,12 +58,14 @@
  * @param oldMessageId 发送之前messageid
  * @param newMessageDate 更新的发送时间
  * @param replacedContent 需要替换的messag.content的内容(处理敏感词汇，替换原来词汇)
+ * @param mediaPath 用于更新发送媒体消息成功以后缓存地址
  * @param sendStatus 发送状态
  */
 - (void)didSendMessageWithNewMessageId:(NSString *)newMessageId
                           oldMessageId:(NSString *)oldMessageId
                         newMessageDate:(NSDate *)newMessageDate
                        replacedContent:(NSString *)replacedContent
+                       updateMediaPath:(NSString *)mediaPath
                             sendStatus:(MQChatMessageSendStatus)sendStatus;
 
 /**
@@ -174,6 +176,17 @@
                 delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 
 /**
+ * 发送视频消息。使用该接口，需要开发者提供MOV格式.
+ *
+ * @param filePath 需要发送视频的缓存路径。
+ * @param localMessageId 本地消息id
+ * @param delegate 发送消息的代理，会返回完整的消息对象，代理函数：-(void)didSendMessage:expcetion:
+ */
++ (void)sendVideoMessageWithFilePath:(NSString *)filePath
+               messageId:(NSString *)localMessageId
+                delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
+
+/**
  * 将用户正在输入的内容，提供给客服查看。该接口没有调用限制，但每1秒内只会向服务器发送一次数据
  * @param content 提供给客服看到的内容
  */
@@ -259,6 +272,11 @@
  *
  */
 + (BOOL)haveConversation;
+
+/**
+ *  获取当前分配对话的会话id，，没有分配则为nil
+ */
++ (NSString *)getCurrentConversationID;
 
 /**
  *  下载多媒体消息的多媒体内容

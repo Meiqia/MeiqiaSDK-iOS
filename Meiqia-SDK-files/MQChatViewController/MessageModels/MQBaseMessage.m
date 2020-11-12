@@ -13,6 +13,7 @@
 - (instancetype)init {
     if (self = [super init]) {
         self.messageId = [[NSUUID UUID] UUIDString];
+        self.conversionId = @"";
         self.fromType = MQChatMessageOutgoing;
         self.date = [NSDate date];
         self.userName = @"";

@@ -18,6 +18,10 @@
 
 "display_new_message" = "Received a new message";
 
+"display_video_expired" = "Video has expired";
+
+"display_video_more_than_limit" = "Video more than the maximum 400M";
+
 "network_jam"         = "Please check your internet connection and try again.";
 
 "simulator_not_support_camera"      = "Simulator cannot access camera";

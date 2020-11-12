@@ -100,6 +100,7 @@
     toMessage.content = eventContent;
     toMessage.userName = plainMessage.agent.nickname;
     toMessage.cardData = plainMessage.cardData;
+    toMessage.conversionId = plainMessage.conversationId;
     
     if (plainMessage.action == MQMessageActionListedInBlackList) {
         toMessage.eventType = MQChatEventTypeBackList;

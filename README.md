@@ -49,7 +49,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.6.2'
+pod 'Meiqia', '~> 3.6.5'
 ```
 接着安装美洽 pod 即可：
 
@@ -611,6 +611,13 @@ MQAgent *agent = [MQManager getCurrentAgent];
 //消息发送成功后的处理
 }];
 ```
+开发者调用此接口来发送**视频消息**：
+
+```objc
+[MQManager sendVideoMessage:filePath completion:^(MQMessage *sendedMessage, NSError *error) {
+//消息发送成功后的处理
+}];
+```
 
 **注意**，调用发送消息接口后，回调中会返回一个消息实体，开发者可根据此消息的状态，来判断该条消息是发送成功还是发送失败。
 
@@ -882,6 +889,13 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十一 更新日志
+
+**v3.6.5  2020 年 11 月 12 日**
+* 新增发送视频消息功能
+* 新增会话分割线，区分不同的会话
+* 优化conversation的id取值范围，防止值越界
+* 优化键盘弹出崩溃的问题
+* 优化聊天列表下拉刷新顶部遮挡问题
 
 **v3.6.4  2020 年 9 月 24 日**
 

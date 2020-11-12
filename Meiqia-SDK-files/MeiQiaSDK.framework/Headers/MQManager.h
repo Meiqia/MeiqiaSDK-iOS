@@ -16,7 +16,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.6.4"
+#define MQSDKVersion @"3.6.5"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -57,6 +57,11 @@
 
 /// 获取当前顾客是否分配了聊天
 + (BOOL)haveConversation;
+
+/**
+ *  获取当前分配对话的会话id，，没有分配则为nil
+ */
++ (NSString *)getCurrentConversationID;
 
 /**
  *  开启美洽服务
@@ -348,6 +353,18 @@
  * @warning 需要在初始化成功后，且顾客是在线状态时调用才有效
  */
 + (MQMessage *)sendAudioMessage:(NSData *)audio
+                     completion:(void (^)(MQMessage *sendedMessage, NSError *error))completion;
+
+/**
+ * 发送视频消息。
+ *
+ * @param videoPath 需要发送的视频本地路径
+ * @param sendedMessage 返回发送后的消息。如果发送成功，message的content为视频的网络地址。消息是否发送成功，需根据message的sendStatus判断。
+ * @return 该条视频消息。此时该消息状态为发送中，message的content属性是本地视频路径.
+ * @warning 使用该接口，会对提供的视频进行压缩，并且转换为MP4格式发送.
+ * @warning 需要在初始化成功后，且顾客是在线状态时调用才有效
+ */
++ (MQMessage *)sendVideoMessage:(NSString *)videoPath
                      completion:(void (^)(MQMessage *sendedMessage, NSError *error))completion;
 
 /**

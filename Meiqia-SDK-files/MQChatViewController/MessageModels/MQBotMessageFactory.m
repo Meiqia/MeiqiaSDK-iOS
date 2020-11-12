@@ -36,6 +36,7 @@
     message.userName = plainMessage.messageUserName;
     message.userAvatarPath = plainMessage.messageAvatar;
     message.fromType = MQChatMessageIncoming;
+    message.conversionId = plainMessage.conversationId;
     
     return message;
 }

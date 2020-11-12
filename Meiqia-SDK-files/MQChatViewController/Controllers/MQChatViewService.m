@@ -45,6 +45,9 @@
 #import "NSError+MQConvenient.h"
 #import "MQMessageFactoryHelper.h"
 #import "MQBotMenuRichCellModel.h"
+#import "MQSplitLineCellModel.h"
+#import "MQVideoMessage.h"
+#import "MQVideoCellModel.h"
 
 #import "MQBotMenuWebViewBubbleAnswerCellModel.h"
 
@@ -67,6 +70,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 @property (nonatomic, strong) NSMutableArray *cacheImageArr;
 
 @property (nonatomic, strong) NSMutableArray *cacheFilePathArr;
+
+@property (nonatomic, strong) NSMutableArray *cacheVideoPathArr;
 
 @end
 #else
@@ -198,6 +203,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if ([cellModel isKindOfClass:[MQTextCellModel class]] ||
             [cellModel isKindOfClass:[MQImageCellModel class]] ||
             [cellModel isKindOfClass:[MQVoiceCellModel class]] ||
+            [cellModel isKindOfClass:[MQVideoCellModel class]] ||
             [cellModel isKindOfClass:[MQEventCellModel class]] ||
             [cellModel isKindOfClass:[MQFileDownloadCellModel class]] ||
             [cellModel isKindOfClass:[MQPhotoCardCellModel class]])
@@ -218,6 +224,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             if ([cellModel isKindOfClass:[MQTextCellModel class]] ||
                 [cellModel isKindOfClass:[MQImageCellModel class]] ||
                 [cellModel isKindOfClass:[MQVoiceCellModel class]] ||
+                [cellModel isKindOfClass:[MQVideoCellModel class]] ||
                 [cellModel isKindOfClass:[MQEventCellModel class]] ||
                 [cellModel isKindOfClass:[MQFileDownloadCellModel class]] ||
                 [cellModel isKindOfClass:[MQPhotoCardCellModel class]])
@@ -243,12 +250,18 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self.cacheFilePathArr addObject:filePath];
 }
 
+- (void)cacheSendVideoFilePath:(NSString *)filePath {
+    [self.cacheVideoPathArr addObject:filePath];
+}
+
 /**
  * 发送文字消息
  */
 - (void)sendTextMessageWithContent:(NSString *)content {
     MQTextMessage *message = [[MQTextMessage alloc] initWithContent:content];
+    message.conversionId = [MQServiceToViewInterface getCurrentConversationID] ?:@"";
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
+    [self addConversionSplitLineWithCurrentCellModel:cellModel];
     [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
     [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId delegate:self];
@@ -259,7 +272,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  */
 - (void)sendImageMessageWithImage:(UIImage *)image {
     MQImageMessage *message = [[MQImageMessage alloc] initWithImage:image];
+    message.conversionId = [MQServiceToViewInterface getCurrentConversationID] ?:@"";
     MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
+    [self addConversionSplitLineWithCurrentCellModel:cellModel];
     [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
@@ -291,10 +306,31 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  * @param wavData WAV格式的语音数据
  */
 - (void)sendVoiceMessageWithWAVData:(NSData *)wavData voiceMessage:(MQVoiceMessage *)message{
+    message.conversionId = [MQServiceToViewInterface getCurrentConversationID] ?:@"";
     MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
+    [self addConversionSplitLineWithCurrentCellModel:cellModel];
     [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifndef INCLUDE_MEIQIA_SDK
+    //模仿发送成功
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        cellModel.sendStatus = MQChatMessageSendStatusSuccess;
+        [self playSendedMessageSound];
+    });
+#endif
+}
+
+- (void)sendVideoMessageWithFilePath:(NSString *)filePath {
+    MQVideoMessage *message = [[MQVideoMessage alloc] init];
+    message.videoPath = filePath;
+    message.conversionId = [MQServiceToViewInterface getCurrentConversationID] ?:@"";
+    MQVideoCellModel *cellModel = [[MQVideoCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
+    [self addConversionSplitLineWithCurrentCellModel:cellModel];
+    [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
+    [self addCellModelAndReloadTableViewWithModel:cellModel];
+#ifdef INCLUDE_MEIQIA_SDK
+    [MQServiceToViewInterface sendVideoMessageWithFilePath:filePath messageId:message.messageId delegate:self];
+#else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         cellModel.sendStatus = MQChatMessageSendStatusSuccess;
@@ -360,6 +396,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (resendData[@"voice"]) {
         [self sendVoiceMessageWithAMRFilePath:resendData[@"voice"]];
     }
+    if (resendData[@"video"]) {
+        [self sendVideoMessageWithFilePath:resendData[@"video"]];
+    }
 }
 
 /**
@@ -420,6 +459,74 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self.cellModels insertObject:cellModel atIndex:0];
     [self.delegate insertCellAtTopForModelCount: 1];
     return true;
+}
+
+/**
+ *  在尾部增加cellModel之前，先判断两个message 是否是不同会话的，插入一个MQSplitLineCellModel
+ *
+ *  @param beAddedCellModel 准备被add的cellModel
+ *  @return 是否插入
+ */
+- (BOOL)addConversionSplitLineWithCurrentCellModel:(id<MQCellModelProtocol>)beAddedCellModel {
+    if(![MQServiceToViewInterface haveConversation] && beAddedCellModel.getMessageConversionId.length == 0) {
+        if (_cellModels.count == 0) {
+            return false;
+        }
+        id<MQCellModelProtocol> lastCellModel;
+        bool haveSplit = false;
+        for (id<MQCellModelProtocol> cellModel in [_cellModels reverseObjectEnumerator]) {
+            if ([cellModel isKindOfClass:[MQSplitLineCellModel class]]) {
+                haveSplit = true;
+            }
+            if ([cellModel getMessageConversionId].length > 0) {
+                lastCellModel = cellModel;
+                break;
+            }
+        }
+        
+        if (lastCellModel && !haveSplit) {
+            MQSplitLineCellModel *cellModel = [[MQSplitLineCellModel alloc] initCellModelWithCellWidth:self.chatViewWidth];
+            [self.cellModels addObject:cellModel];
+            [self.delegate insertCellAtBottomForModelCount: 1];
+            return true;
+        }
+        return false;
+    }
+    
+    MQSplitLineCellModel *cellModel = [self insertConversionSplitLineWithCellModel:beAddedCellModel withCellModels:_cellModels];
+    if (cellModel) {
+        [self.cellModels addObject:cellModel];
+        [self.delegate insertCellAtBottomForModelCount: 1];
+        return true;
+    }
+    return false;
+}
+
+/**
+ *  判断是否需要加入不同回话的分割线
+ *
+ *  @param beInsertedCellModel 准备被insert的cellModel
+ */
+- (MQSplitLineCellModel *)insertConversionSplitLineWithCellModel:(id<MQCellModelProtocol>)beInsertedCellModel withCellModels:(NSArray *) cellModelArr {
+    if (cellModelArr.count == 0) {
+        return nil;
+    }
+    id<MQCellModelProtocol> lastCellModel;
+    for (id<MQCellModelProtocol> cellModel in [cellModelArr reverseObjectEnumerator]) {
+        if ([cellModel getMessageConversionId].length > 0) {
+            lastCellModel = cellModel;
+            break;
+        }
+    }
+    if (!lastCellModel) {
+        return nil;
+    }
+    
+    if ([beInsertedCellModel getMessageConversionId].length > 0 && ![lastCellModel.getMessageConversionId isEqualToString:beInsertedCellModel.getMessageConversionId]) {
+        MQSplitLineCellModel *cellModel1 = [[MQSplitLineCellModel alloc] initCellModelWithCellWidth:self.chatViewWidth];
+        return cellModel1;
+    }
+    return nil;
 }
 
 /**
@@ -641,6 +748,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:(MQImageMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQVoiceMessage class]]) {
             cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:(MQVoiceMessage *)message cellWidth:self.chatViewWidth delegate:self];
+        } else if ([message isKindOfClass:[MQVideoMessage class]]) {
+            cellModel = [[MQVideoCellModel alloc] initCellModelWithMessage:(MQVideoMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQFileDownloadMessage class]]) {
             cellModel = [[MQFileDownloadCellModel alloc] initCellModelWithMessage:(MQFileDownloadMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQRichTextMessage class]]) {
@@ -738,6 +847,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if ([redundentCellModels count] > 0) {
             [self.cellModels replaceObjectAtIndex:[self.cellModels indexOfObject:[redundentCellModels firstObject]] withObject:newCellModel];
         } else {
+            MQSplitLineCellModel *splitLineCellModel = [self insertConversionSplitLineWithCellModel:newCellModel withCellModels:newCellModels];
+            if (splitLineCellModel) {
+                [newCellModels addObject:splitLineCellModel];
+            }
             [newCellModels addObject:newCellModel];
         }
     }
@@ -747,10 +860,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     NSDate *firstMessageDate = [self.cellModels.firstObject getCellDate];
     NSDate *lastMessageDate = [self.cellModels.lastObject getCellDate];
     [newCellModels enumerateObjectsUsingBlock:^(id<MQCellModelProtocol> newCellModel, NSUInteger idx, BOOL * stop) {
-        if ([firstMessageDate compare:[newCellModel getCellDate]] == NSOrderedDescending) {
-            [positionVector addObject:@"1"];
-        } else if ([lastMessageDate compare:[newCellModel getCellDate]] == NSOrderedAscending) {
-            [positionVector addObject:@"0"];
+        if (![newCellModel isKindOfClass:[MQSplitLineCellModel class]]) {
+            if ([firstMessageDate compare:[newCellModel getCellDate]] == NSOrderedDescending) {
+                [positionVector addObject:@"1"];
+            } else if ([lastMessageDate compare:[newCellModel getCellDate]] == NSOrderedAscending) {
+                [positionVector addObject:@"0"];
+            }
         }
     }];
     
@@ -772,7 +887,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             self.cellModels = [[newCellModels arrayByAddingObjectsFromArray:self.cellModels] mutableCopy];
             break;
         case 0: // bottom
-            [self addMessageDateCellAtLastWithCurrentCellModel:[newCellModels firstObject]]; // 如果需要，底部插入时间
+            [self addMessageDateCellAtLastWithCurrentCellModel:[newCellModels firstObject]];// 如果需要，底部插入时间
             [self.cellModels addObjectsFromArray:newCellModels];
             break;
         default:
@@ -1252,9 +1367,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 if (messages.count > 0) {
                     [sself saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
                     [sself.delegate reloadChatTableView];
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [self scrollToButton];
-                    });
                 }
             }];
         }
@@ -1285,6 +1397,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [self sendVoiceMessageWithAMRFilePath:path];
             }
             [self.cacheFilePathArr removeAllObjects];
+        }
+        
+        if (self.cacheVideoPathArr.count > 0) {
+            for (NSString *path in self.cacheVideoPathArr) {
+                [self sendVideoMessageWithFilePath:path];
+            }
+            [self.cacheVideoPathArr removeAllObjects];
         }
     });
     
@@ -1453,6 +1572,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                           oldMessageId:(NSString *)oldMessageId
                         newMessageDate:(NSDate *)newMessageDate
                        replacedContent:(NSString *)replacedContent
+                       updateMediaPath:(NSString *)mediaPath
                             sendStatus:(MQChatMessageSendStatus)sendStatus
 {
     [self playSendedMessageSound];
@@ -1465,13 +1585,33 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         return;
     }
     id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
-    [cellModel updateCellMessageId:newMessageId];
-    [cellModel updateCellSendStatus:sendStatus];
+    if ([cellModel respondsToSelector:@selector(updateCellMessageId:)]) {
+        [cellModel updateCellMessageId:newMessageId];
+    }
+    if ([cellModel respondsToSelector:@selector(updateCellSendStatus:)]) {
+        [cellModel updateCellSendStatus:sendStatus];
+    }
+    
+    if (cellModel.getMessageConversionId.length < 1) {
+        if ([cellModel respondsToSelector:@selector(updateCellConversionId:)]) {
+            [cellModel updateCellConversionId:[MQServiceToViewInterface getCurrentConversationID]];
+        }
+    }
     if (newMessageDate) {
-        [cellModel updateCellMessageDate:newMessageDate];
+        if ([cellModel respondsToSelector:@selector(updateCellMessageDate:)]) {
+            [cellModel updateCellMessageDate:newMessageDate];
+        }
     }
     if (replacedContent) {
-        [cellModel updateSensitiveState:YES cellText:replacedContent];
+        if ([cellModel respondsToSelector:@selector(updateSensitiveState:cellText:)]) {
+            [cellModel updateSensitiveState:YES cellText:replacedContent];
+        }
+    }
+    
+    if (mediaPath) {
+        if ([cellModel respondsToSelector:@selector(updateMediaServerPath:)]) {
+            [cellModel updateMediaServerPath:mediaPath];
+        }
     }
     
     // 消息发送完成，刷新单行cell
@@ -1603,6 +1743,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         _cacheFilePathArr = [NSMutableArray new];
     }
     return _cacheFilePathArr;
+}
+
+- (NSMutableArray *)cacheVideoPathArr {
+    if (!_cacheVideoPathArr) {
+        _cacheVideoPathArr = [NSMutableArray new];
+    }
+    return _cacheVideoPathArr;
 }
 
 @end

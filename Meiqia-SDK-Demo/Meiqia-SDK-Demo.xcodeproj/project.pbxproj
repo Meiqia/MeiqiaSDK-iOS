@@ -11,6 +11,13 @@
 		3672E68124C03243001BA536 /* MQPhotoCardMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3672E67F24C03243001BA536 /* MQPhotoCardMessage.m */; };
 		3672E68424C03272001BA536 /* MQJsonUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3672E68224C03272001BA536 /* MQJsonUtil.m */; };
 		3672E68724C03291001BA536 /* MQPhotoCardMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3672E68524C03291001BA536 /* MQPhotoCardMessageCell.m */; };
+		36773962255CDF970029B054 /* MQSplitLineCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3677395F255CDF960029B054 /* MQSplitLineCellModel.m */; };
+		36773963255CDF970029B054 /* MQVideoCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 36773961255CDF970029B054 /* MQVideoCellModel.m */; };
+		3677396B255CDFB50029B054 /* MQVideoMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 36773967255CDFB50029B054 /* MQVideoMessageCell.m */; };
+		3677396C255CDFB50029B054 /* MQSplitLineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3677396A255CDFB50029B054 /* MQSplitLineCell.m */; };
+		36773972255CDFCB0029B054 /* MQVideoMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 36773971255CDFCB0029B054 /* MQVideoMessage.m */; };
+		36773979255CDFEA0029B054 /* RoundProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 36773978255CDFEA0029B054 /* RoundProgressView.m */; };
+		36773980255CE0090029B054 /* MQVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3677397F255CE0090029B054 /* MQVideoPlayerViewController.m */; };
 		89B554A01FE75E8100EAC49D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 89B5549F1FE75E8100EAC49D /* ViewController.m */; };
 		CCE9D10B1C1812F6004E862E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10A1C1812F6004E862E /* main.m */; };
 		CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10D1C1812F6004E862E /* AppDelegate.m */; };
@@ -234,6 +241,20 @@
 		3672E68324C03272001BA536 /* MQJsonUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQJsonUtil.h; sourceTree = "<group>"; };
 		3672E68524C03291001BA536 /* MQPhotoCardMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPhotoCardMessageCell.m; sourceTree = "<group>"; };
 		3672E68624C03291001BA536 /* MQPhotoCardMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPhotoCardMessageCell.h; sourceTree = "<group>"; };
+		3677395E255CDF960029B054 /* MQSplitLineCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQSplitLineCellModel.h; sourceTree = "<group>"; };
+		3677395F255CDF960029B054 /* MQSplitLineCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQSplitLineCellModel.m; sourceTree = "<group>"; };
+		36773960255CDF960029B054 /* MQVideoCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQVideoCellModel.h; sourceTree = "<group>"; };
+		36773961255CDF970029B054 /* MQVideoCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQVideoCellModel.m; sourceTree = "<group>"; };
+		36773967255CDFB50029B054 /* MQVideoMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQVideoMessageCell.m; sourceTree = "<group>"; };
+		36773968255CDFB50029B054 /* MQSplitLineCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQSplitLineCell.h; sourceTree = "<group>"; };
+		36773969255CDFB50029B054 /* MQVideoMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQVideoMessageCell.h; sourceTree = "<group>"; };
+		3677396A255CDFB50029B054 /* MQSplitLineCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQSplitLineCell.m; sourceTree = "<group>"; };
+		36773970255CDFCB0029B054 /* MQVideoMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQVideoMessage.h; sourceTree = "<group>"; };
+		36773971255CDFCB0029B054 /* MQVideoMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQVideoMessage.m; sourceTree = "<group>"; };
+		36773977255CDFEA0029B054 /* RoundProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoundProgressView.h; sourceTree = "<group>"; };
+		36773978255CDFEA0029B054 /* RoundProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoundProgressView.m; sourceTree = "<group>"; };
+		3677397E255CE0090029B054 /* MQVideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQVideoPlayerViewController.h; sourceTree = "<group>"; };
+		3677397F255CE0090029B054 /* MQVideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQVideoPlayerViewController.m; sourceTree = "<group>"; };
 		89B5549E1FE75E8100EAC49D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		89B5549F1FE75E8100EAC49D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		CCE9D1061C1812F6004E862E /* Meiqia-SDK-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meiqia-SDK-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -627,6 +648,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		36773976255CDFEA0029B054 /* RoundProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				36773977255CDFEA0029B054 /* RoundProgressView.h */,
+				36773978255CDFEA0029B054 /* RoundProgressView.m */,
+			);
+			path = RoundProgressView;
+			sourceTree = "<group>";
+		};
+		3677397D255CE0090029B054 /* MQVideoPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				3677397E255CE0090029B054 /* MQVideoPlayerViewController.h */,
+				3677397F255CE0090029B054 /* MQVideoPlayerViewController.m */,
+			);
+			path = MQVideoPlayer;
+			sourceTree = "<group>";
+		};
 		CCE9D0FD1C1812F6004E862E = {
 			isa = PBXGroup;
 			children = (
@@ -1119,6 +1158,8 @@
 				F3B2C93C2495E37B00FDADAF /* MQVisialMessageFactory.h */,
 				3672E68024C03243001BA536 /* MQPhotoCardMessage.h */,
 				3672E67F24C03243001BA536 /* MQPhotoCardMessage.m */,
+				36773970255CDFCB0029B054 /* MQVideoMessage.h */,
+				36773971255CDFCB0029B054 /* MQVideoMessage.m */,
 			);
 			path = MessageModels;
 			sourceTree = "<group>";
@@ -1172,6 +1213,10 @@
 				F3B2C9612495E37B00FDADAF /* MQCardCellModel.h */,
 				3672E67C24C03226001BA536 /* MQPhotoCardCellModel.h */,
 				3672E67D24C03226001BA536 /* MQPhotoCardCellModel.m */,
+				3677395E255CDF960029B054 /* MQSplitLineCellModel.h */,
+				3677395F255CDF960029B054 /* MQSplitLineCellModel.m */,
+				36773960255CDF960029B054 /* MQVideoCellModel.h */,
+				36773961255CDF970029B054 /* MQVideoCellModel.m */,
 			);
 			path = CellModel;
 			sourceTree = "<group>";
@@ -1219,6 +1264,10 @@
 				F3B2C97E2495E37B00FDADAF /* MQWebViewBubbleCell.m */,
 				3672E68624C03291001BA536 /* MQPhotoCardMessageCell.h */,
 				3672E68524C03291001BA536 /* MQPhotoCardMessageCell.m */,
+				36773968255CDFB50029B054 /* MQSplitLineCell.h */,
+				3677396A255CDFB50029B054 /* MQSplitLineCell.m */,
+				36773969255CDFB50029B054 /* MQVideoMessageCell.h */,
+				36773967255CDFB50029B054 /* MQVideoMessageCell.m */,
 			);
 			path = CellView;
 			sourceTree = "<group>";
@@ -1322,6 +1371,8 @@
 		F3B2C9C72495E37C00FDADAF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3677397D255CE0090029B054 /* MQVideoPlayer */,
+				36773976255CDFEA0029B054 /* RoundProgressView */,
 				F3B2C9C82495E37C00FDADAF /* MQPullRefreshView */,
 				F3B2C9CB2495E37C00FDADAF /* MQCustom */,
 				F3B2C9D02495E37C00FDADAF /* MQRecordView */,
@@ -1662,6 +1713,8 @@
 			files = (
 				F3B2CA912495E37C00FDADAF /* MQChatViewTableDataSource.m in Sources */,
 				F3B2CA9C2495E37C00FDADAF /* MQButtonGroupBar.m in Sources */,
+				36773980255CE0090029B054 /* MQVideoPlayerViewController.m in Sources */,
+				36773979255CDFEA0029B054 /* RoundProgressView.m in Sources */,
 				F3B2CA502495E37C00FDADAF /* MQBaseMessage.m in Sources */,
 				F3B2CA332495E37C00FDADAF /* MEIQIA_MLAudioRecorder.m in Sources */,
 				F3B2CA7F2495E37C00FDADAF /* MQAssetUtil.m in Sources */,
@@ -1677,8 +1730,10 @@
 				F3B2CA562495E37C00FDADAF /* MQBotMenuAnswerCellModel.m in Sources */,
 				F3B2CA592495E37C00FDADAF /* MQImageCellModel.m in Sources */,
 				F3B2CAA22495E37C00FDADAF /* MQEmbededWebView.m in Sources */,
+				3677396B255CDFB50029B054 /* MQVideoMessageCell.m in Sources */,
 				F3B2CA6A2495E37C00FDADAF /* MQTipsCell.m in Sources */,
 				3672E68124C03243001BA536 /* MQPhotoCardMessage.m in Sources */,
+				36773963255CDF970029B054 /* MQVideoCellModel.m in Sources */,
 				F3B2CA882495E37C00FDADAF /* UIButton+MQButton.m in Sources */,
 				F3B2CA3D2495E37C00FDADAF /* MQChatViewStyleBlue.m in Sources */,
 				F3B2CAA02495E37C00FDADAF /* MQWebViewController.m in Sources */,
@@ -1725,6 +1780,7 @@
 				F3B2CA422495E37C00FDADAF /* MQChatViewConfig.m in Sources */,
 				F3B2CA322495E37C00FDADAF /* MEIQIA_MLAudioMeterObserver.m in Sources */,
 				F3B2CA9D2495E37C00FDADAF /* MQRecorderView.m in Sources */,
+				36773962255CDF970029B054 /* MQSplitLineCellModel.m in Sources */,
 				F3B2CA572495E37C00FDADAF /* MQCardCellModel.m in Sources */,
 				F3B2CA5C2495E37C00FDADAF /* MQBotMenuWebViewBubbleAnswerCellModel.m in Sources */,
 				F3B2CA782495E37C00FDADAF /* MQTransitioningAnimation.m in Sources */,
@@ -1735,6 +1791,7 @@
 				F3B2CA1A2495E37C00FDADAF /* MEIQIA_HPTextViewInternal.m in Sources */,
 				F3B2CA442495E37C00FDADAF /* MQCardMessage.m in Sources */,
 				F3B2CA5B2495E37C00FDADAF /* MQFileDownloadCellModel.m in Sources */,
+				3677396C255CDFB50029B054 /* MQSplitLineCell.m in Sources */,
 				F3B2CA5F2495E37C00FDADAF /* MQBotMenuCellModel.m in Sources */,
 				F3B2CAA82495E37C00FDADAF /* UIView+MQLayout.m in Sources */,
 				F3B2CA4A2495E37C00FDADAF /* MQTextMessage.m in Sources */,
@@ -1764,6 +1821,7 @@
 				F3B2CA542495E37C00FDADAF /* MQWebViewBubbleCellModel.m in Sources */,
 				CCE9D10B1C1812F6004E862E /* main.m in Sources */,
 				F3B2CA762495E37C00FDADAF /* MQBotMenuAnswerCell.m in Sources */,
+				36773972255CDFCB0029B054 /* MQVideoMessage.m in Sources */,
 				F3B2CAA52495E37C00FDADAF /* UIImage+MQGenerate.m in Sources */,
 				F3B2CAA42495E37C00FDADAF /* NSArray+MQFunctional.m in Sources */,
 				F3B2CA0E2495E37C00FDADAF /* MQMessageFormViewStyleDark.m in Sources */,
@@ -2017,7 +2075,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.6.4;
+				MARKETING_VERSION = 3.6.5;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2025,7 +2083,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 arm64";
+				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -2060,14 +2118,14 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.6.4;
+				MARKETING_VERSION = 3.6.5;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 arm64";
+				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

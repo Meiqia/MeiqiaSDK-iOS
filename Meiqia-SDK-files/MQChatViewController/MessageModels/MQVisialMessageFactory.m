@@ -16,6 +16,7 @@
 #import "MQWithDrawMessage.h"
 #import "MQPhotoCardMessage.h"
 #import "MQJsonUtil.h"
+#import "MQVideoMessage.h"
 
 @implementation MQVisialMessageFactory
 
@@ -63,6 +64,12 @@
             toMessage = [self messageFromContentTypeHybrid:plainMessage toMQBaseMessage:toMessage];
             break;
         }
+        case MQMessageContentTypeVideo: {
+            MQVideoMessage *videoMessage = [[MQVideoMessage alloc] initWithVideoServerPath:plainMessage.content];
+            [videoMessage handleAccessoryData:plainMessage.accessoryData];
+            toMessage = videoMessage;
+            break;
+        }
         default:
             break;
     }
@@ -77,6 +84,7 @@
     toMessage.date = plainMessage.createdOn;
     toMessage.userName = plainMessage.messageUserName;
     toMessage.userAvatarPath = plainMessage.messageAvatar;
+    toMessage.conversionId = plainMessage.conversationId;
     switch (plainMessage.sendStatus) {
         case MQMessageSendStatusSuccess:
             toMessage.sendStatus = MQChatMessageSendStatusSuccess;

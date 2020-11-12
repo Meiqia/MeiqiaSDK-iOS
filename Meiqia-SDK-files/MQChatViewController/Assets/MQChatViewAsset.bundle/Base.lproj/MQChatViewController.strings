@@ -18,6 +18,10 @@
 
 "display_new_message" = "下方有新消息";
 
+"display_video_expired" = "视频已过期";
+
+"display_video_more_than_limit" = "视频超过最大限制400M";
+
 "network_jam"         = "网络不太通畅，请检查网络";
 
 "simulator_not_support_camera" = "模拟器无法使用相机";

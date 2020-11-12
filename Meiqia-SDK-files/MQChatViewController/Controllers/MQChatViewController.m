@@ -40,6 +40,8 @@
 #import <MeiQiaSDK/MQManager.h>
 #import "XLPInputView.h"
 #import "MQCellModelProtocol.h"
+#import "MQVideoPlayerViewController.h"
+
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 @interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQBottomBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate,XLPInputViewDelegate>
@@ -58,6 +60,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @property (nonatomic, strong) MQKeyboardController *keyboardView;
 @property (nonatomic, strong) MQRecordView *recordView;
 @property (nonatomic, strong) MQRecorderView *displayRecordView;//只用来显示
+@property (nonatomic, assign) bool sendVideoMsgStatus;
 
 @end
 
@@ -166,6 +169,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         }
         // TODO: [MQServiceToViewInterface prepareForChat]也会初始化企业配置，这里会导致获取企业配置的接口调用两次,APP第一次初始化时会调3次
         [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:YES complete:^(MQEnterprise *enterprise, NSError *e) {
+            
+            self.sendVideoMsgStatus = enterprise.configInfo.videoMsgStatus;
             
             // warning:用之前的绑定的clientId上线,防止出现排队现象
             // 企业配置字段scheduler_after_client_send_msg：客户（访客）是否开启无响应时消息
@@ -544,8 +549,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
         }
     }
-    // 接收新消息滚动到底部
-    [self chatTableViewScrollToBottomWithAnimated: YES];
 }
 
 - (void)showToastViewWithContent:(NSString *)content {
@@ -555,7 +558,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #pragma mark - MQInputBarDelegate
 
 
-- (BOOL)sendMessagePrepareWithText:(NSString *)text image:(UIImage *)image andAMRFilePath:(NSString *)filePath {
+- (BOOL)sendMessagePrepareWithText:(NSString *)text image:(UIImage *)image andAMRFilePath:(NSString *)filePath andVideoFilePath:(NSString *)videoPath {
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
     if (self.chatViewService.clientStatus == MQStateAllocatingAgent || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
         NSString *alertText = self.chatViewService.clientStatus == MQStateAllocatingAgent ? @"cannot_text_client_is_onlining" : @"send_to_fast";
@@ -574,6 +577,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             [self.chatViewService cacheSendImage:image];
         } else if (filePath) {
             [self.chatViewService cacheSendAMRFilePath:filePath];
+        } else if (videoPath) {
+            [self.chatViewService cacheSendVideoFilePath:videoPath];
         }
         
         openVisitorNoMessageBool = NO;
@@ -584,6 +589,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             [self.chatViewService sendImageMessageWithImage:image];
         } else if (filePath) {
             [self.chatViewService sendVoiceMessageWithAMRFilePath:filePath];
+        } else if (videoPath) {
+            [self.chatViewService sendVideoMessageWithFilePath:videoPath];
         }
         sendTime = [NSDate timeIntervalSinceReferenceDate];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -596,7 +603,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 // 发送文本消息
 -(BOOL)sendTextMessage:(NSString*)text {
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
-    return [self sendMessagePrepareWithText:text image:nil andAMRFilePath:nil];
+    return [self sendMessagePrepareWithText:text image:nil andAMRFilePath:nil andVideoFilePath:nil];
 }
 
 -(void)sendImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
@@ -618,11 +625,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     sendTime = [NSDate timeIntervalSinceReferenceDate];
     self.navigationController.delegate = self;
     //兼容ipad打不开相册问题，使用队列延迟
+//    videoExportPreset
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.sourceType               = (int)sourceType;
+        picker.mediaTypes               = self.sendVideoMsgStatus ? @[@"public.movie",@"public.image"] : @[@"public.image"];
+        picker.videoQuality             = UIImagePickerControllerQualityTypeHigh;
         picker.delegate                 = (id)self;
-        picker.modalPresentationStyle = UIModalPresentationFullScreen;
+        picker.allowsEditing            = YES;
+        if (@available(iOS 11.0, *)) {
+            picker.videoExportPreset    = AVAssetExportPresetPassthrough;
+        }
+        picker.modalPresentationStyle   = UIModalPresentationFullScreen;
         [self presentViewController:picker animated:YES completion:nil];
     }];
 }
@@ -715,7 +729,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath {
 //    [self.chatViewService sendVoiceMessageWithAMRFilePath:filePath];
 //    [self chatTableViewScrollToBottomWithAnimated:true];
-    [self sendMessagePrepareWithText:nil image:nil andAMRFilePath:filePath];
+    [self sendMessagePrepareWithText:nil image:nil andAMRFilePath:filePath andVideoFilePath:nil];
 }
 
 - (void)didUpdateVolumeInRecordView:(UIView *)recordView volume:(CGFloat)volume {
@@ -726,15 +740,32 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 -(void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     NSString *type          = [info objectForKey:UIImagePickerControllerMediaType];
     //当选择的类型是图片
-    if (![type isEqualToString:@"public.image"]) {
+    if ([type isEqualToString:@"public.image"]) {
+        // 图片
+        UIImage *image          =  [MQImageUtil resizeImage:[MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]]maxSize:CGSizeMake(1000, 1000)];
+        [picker dismissViewControllerAnimated:YES completion:^{
+    //        [self.chatViewService sendImageMessageWithImage:image];
+    //        [self chatTableViewScrollToBottomWithAnimated:true];
+            [self sendMessagePrepareWithText:nil image:image andAMRFilePath:nil andVideoFilePath:nil];
+        }];
         return;
+    } else if ([type isEqualToString:@"public.movie"]) {
+        // 视频
+        NSURL *videoUrl = [info objectForKey:UIImagePickerControllerMediaURL];
+        if (videoUrl) {
+            float videoSize = [MQChatFileUtil getfileSizeAtPath:[videoUrl path]];
+            if (videoSize > 400 * 1024 * 1024) {
+                [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_video_more_than_limit"] duration:2 window:[UIApplication sharedApplication].keyWindow];
+                [MQChatFileUtil deleteFileAtPath:[videoUrl path]];
+                return;
+            }
+            NSString *resultPath = [MQChatFileUtil saveVideoSourceWith:videoUrl];
+            if (resultPath) {
+                [self sendMessagePrepareWithText:nil image:nil andAMRFilePath:nil andVideoFilePath:resultPath];
+            }
+        }
     }
-    UIImage *image          =  [MQImageUtil resizeImage:[MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]]maxSize:CGSizeMake(1000, 1000)];
-    [picker dismissViewControllerAnimated:YES completion:^{
-//        [self.chatViewService sendImageMessageWithImage:image];
-//        [self chatTableViewScrollToBottomWithAnimated:true];
-        [self sendMessagePrepareWithText:nil image:image andAMRFilePath:nil];
-    }];
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
@@ -818,6 +849,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)didTapMessageInCell:(UITableViewCell *)cell {
     NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
     [self.chatViewService didTapMessageCellAtIndex:indexPath.row];
+}
+
+- (void)showPlayVideoControllerWith:(NSString *)videoLocalPath serverPath:(NSString *)videoServer {
+    MQVideoPlayerViewController *playerVC = [[MQVideoPlayerViewController alloc] initPlayerWithLocalPath:videoLocalPath serverPath:videoServer];
+    [self presentViewController:playerVC animated:YES completion:nil];
 }
 
 #pragma MQEvaluationViewDelegate
@@ -1113,7 +1149,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         
         if (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX ) {
             
-            CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant + 34;
+            CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant + (heightFromBottom == 0 ? 34 : 0);
             if (diff < self.chatTableView.contentInset.top + self.chatTableView.contentSize.height) {
                 self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
             }

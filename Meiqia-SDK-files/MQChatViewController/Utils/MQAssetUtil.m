@@ -149,6 +149,10 @@
     return [MQAssetUtil imageFromBundleWithName:@"MQBubble_outgoing_voice_error"];
 }
 
++ (UIImage *)videoPlayImage {
+    return [MQAssetUtil imageFromBundleWithName:@"message_video_play-icon"];
+}
+
 + (UIImage *)recordBackImage
 {
     return [MQAssetUtil imageFromBundleWithName:@"MQRecord_back"];

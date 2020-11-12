@@ -226,6 +226,10 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
     return @"";
 }
 
+- (NSString *)getMessageConversionId {
+    return @"";
+}
+
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
     CGFloat tipCellHoriSpacing = self.tipType == MQTipTypeRedirect ? kMQMessageTipsCellHorizontalSpacing : kMQMessageReplyTipsCellHorizontalSpacing;
     CGFloat tipCellVerSpacing = self.tipType == MQTipTypeRedirect ? kMQMessageTipsCellVerticalSpacing : kMQMessageReplyTipsCellVerticalSpacing;

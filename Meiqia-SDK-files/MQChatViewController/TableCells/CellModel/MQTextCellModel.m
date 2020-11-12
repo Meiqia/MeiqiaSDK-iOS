@@ -133,6 +133,11 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
 @property (nonatomic, readwrite, assign) BOOL isSensitive;
 
 /**
+ * @brief cell中消息的会话id
+ */
+@property (nonatomic, readwrite, strong) NSString *conversionId;
+
+/**
  * @brief 敏感词汇提示语frame
  */
 @property (nonatomic, readwrite, assign) CGRect sensitiveLableFrame;
@@ -154,6 +159,7 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
         self.textLabelForHeightCalculation = [TTTAttributedLabel new];
         self.textLabelForHeightCalculation.numberOfLines = 0;
         self.messageId = message.messageId;
+        self.conversionId = message.conversionId;
         self.sendStatus = message.sendStatus;
         self.isSensitive = message.isSensitive;
         self.cellFromType = message.fromType == MQChatMessageIncoming ? MQChatCellIncoming : MQChatCellOutgoing;
@@ -354,12 +360,20 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
     return self.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.conversionId;
+}
+
 - (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
     self.sendStatus = sendStatus;
 }
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {

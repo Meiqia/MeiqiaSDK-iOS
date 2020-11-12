@@ -134,6 +134,10 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
  */
 @property (nonatomic, readwrite, assign) BOOL isLoadVoiceSuccess;
 
+/**
+ * @brief cell中消息的会话id
+ */
+@property (nonatomic, readwrite, strong) NSString *conversionId;
 
 @end
 
@@ -157,6 +161,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
         voiceTimeInterval = 0;
         self.delegate = delegator;
         self.messageId = message.messageId;
+        self.conversionId = message.conversionId;
         self.sendStatus = message.sendStatus;
         self.date = message.date;
         self.avatarPath = @"";
@@ -402,12 +407,20 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
     return self.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.conversionId;
+}
+
 - (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
     self.sendStatus = sendStatus;
 }
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {

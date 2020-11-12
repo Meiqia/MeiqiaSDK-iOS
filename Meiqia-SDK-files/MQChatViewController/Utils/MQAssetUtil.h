@@ -50,6 +50,8 @@
 + (UIImage *)voiceAnimationGreen3;
 + (UIImage *)voiceAnimationGreenError;
 
++ (UIImage *)videoPlayImage;
+
 + (UIImage *)recordBackImage;
 
 + (UIImage *)recordVolume:(NSInteger)volume;

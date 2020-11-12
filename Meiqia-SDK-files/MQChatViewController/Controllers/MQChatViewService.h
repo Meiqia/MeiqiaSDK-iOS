@@ -149,6 +149,12 @@
 - (void)sendVoiceMessageWithAMRFilePath:(NSString *)filePath;
 
 /**
+ * 发送视频消息
+ * @param filePath 视频文件的路径
+ */
+- (void)sendVideoMessageWithFilePath:(NSString *)filePath;
+
+/**
  * 发送“用户正在输入”的消息
  */
 - (void)sendUserInputtingWithContent:(NSString *)content;
@@ -253,6 +259,11 @@
  顾客没上线前缓存需要发送的语音
  */
 - (void)cacheSendAMRFilePath:(NSString *)filePath;
+
+/**
+ 顾客没上线前缓存需要发送的视频
+ */
+- (void)cacheSendVideoFilePath:(NSString *)filePath;
 
 #ifndef INCLUDE_MEIQIA_SDK
 

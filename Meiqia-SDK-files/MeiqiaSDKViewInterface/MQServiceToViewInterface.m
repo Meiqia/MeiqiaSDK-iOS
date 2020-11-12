@@ -96,9 +96,15 @@
 
 + (void)sendAudioMessage:(NSData *)audio
                messageId:(NSString *)localMessageId
-                delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
+                delegate:(id<MQServiceToViewInterfaceDelegate>)delegate
 {
     [MQManager sendAudioMessage:audio completion:^(MQMessage *sendedMessage, NSError *error) {
+        [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+    }];
+}
+
++ (void)sendVideoMessageWithFilePath:(NSString *)filePath messageId:(NSString *)localMessageId delegate:(id<MQServiceToViewInterfaceDelegate>)delegate {
+    [MQManager sendVideoMessage:filePath completion:^(MQMessage *sendedMessage, NSError *error) {
         [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
     }];
 }
@@ -113,14 +119,14 @@
               delegate:(id<MQServiceToViewInterfaceDelegate>)delegate
 {
     if (delegate) {
-        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:sendStatus:)]) {
+        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:updateMediaPath:sendStatus:)]) {
             MQChatMessageSendStatus sendStatus = MQChatMessageSendStatusSuccess;
             if (sendedMessage.sendStatus == MQMessageSendStatusFailed) {
                 sendStatus = MQChatMessageSendStatusFailure;
             } else if (sendedMessage.sendStatus == MQMessageSendStatusSending) {
                 sendStatus = MQChatMessageSendStatusSending;
             }
-            [delegate didSendMessageWithNewMessageId:sendedMessage.messageId oldMessageId:localMessageId newMessageDate:sendedMessage.createdOn replacedContent:sendedMessage.isSensitive ? sendedMessage.content : nil  sendStatus:sendStatus];
+            [delegate didSendMessageWithNewMessageId:sendedMessage.messageId oldMessageId:localMessageId newMessageDate:sendedMessage.createdOn replacedContent:sendedMessage.isSensitive ? sendedMessage.content : nil updateMediaPath:sendedMessage.content sendStatus:sendStatus];
         }
     }
 }
@@ -132,8 +138,8 @@
 {
     NSLog(@"美洽SDK: 发送text消息失败\nerror = %@", error);
     if (delegate) {
-        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:sendStatus:)]) {
-            [delegate didSendMessageWithNewMessageId:localMessageId oldMessageId:localMessageId newMessageDate:nil replacedContent:nil sendStatus:MQChatMessageSendStatusFailure];
+        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:updateMediaPath:sendStatus:)]) {
+            [delegate didSendMessageWithNewMessageId:localMessageId oldMessageId:localMessageId newMessageDate:nil replacedContent:nil updateMediaPath:nil sendStatus:MQChatMessageSendStatusFailure];
         }
     }
 }
@@ -181,6 +187,10 @@
 
 + (BOOL)haveConversation {
     return [MQManager haveConversation];
+}
+
++(NSString *)getCurrentConversationID {
+    return [MQManager getCurrentConversationID];
 }
 
 + (void)downloadMediaWithUrlString:(NSString *)urlString

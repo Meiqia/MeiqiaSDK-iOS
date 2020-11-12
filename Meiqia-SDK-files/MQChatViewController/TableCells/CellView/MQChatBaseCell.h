@@ -85,6 +85,12 @@
  */
 - (void)replaceTipCell:(UITableViewCell *)cell;
 
+/**
+ * 显示播放视频的controller
+ * @param videoLocalPath 视频本地缓存路径，
+ * @param videoServer 视频服务器路径，
+ */
+- (void)showPlayVideoControllerWith:(NSString *)videoLocalPath serverPath:(NSString *)videoServer;
 
 @end
 
