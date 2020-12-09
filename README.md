@@ -185,7 +185,7 @@ github "meiqia/MeiqiaSDK-iOS"
 
 设置服务器地址，请使用美洽管理员帐号登录 [美洽](http://www.meiqia.com)，在「设置」 -\> 「SDK」中设置。
 
-![设置推送地址](http://upload-images.jianshu.io/upload_images/639412-6ee1c7a0dd702508?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![设置推送地址](https://media.meiqiausercontent.com/uploads/cdda2abf98e0abbcda72dd279cff77b9.jpeg)
 
 ### 推送消息数据结构
 
@@ -220,7 +220,7 @@ request.body 为消息数据，数据结构为：
 
 美洽 SDK 的工作流程如下图所示。
 
-![SDK工作流程图](https://github.com/Meiqia/MeiqiaSDK-iOS/raw/master/DemoScreen/WechatIMG193.jpeg)
+![SDK工作流程图](https://media.meiqiausercontent.com/uploads/2991275d5a3e268768aa73d9440d2f5e.png)
 
 
 **注意：**
@@ -242,13 +242,13 @@ request.body 为消息数据，数据结构为：
 
 如果您不知道 *AppKey* ，请使用美洽管理员帐号登录 [美洽](http://www.meiqia.com)，在「设置」 -> 「SDK」 菜单中查看。如下图：
 
-![美洽 AppKey 查看界面图片](http://upload-images.jianshu.io/upload_images/639412-87a5209ecf18ef44?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![美洽 AppKey 查看界面图片](https://media.meiqiausercontent.com/uploads/3d989262c06c79684c8f6b70f5659f51.png)
 
 
 ##  添加自定义信息
 
 功能效果展示：
-![美洽工作台顾客自定义信息图片](http://upload-images.jianshu.io/upload_images/639412-2621629005ccda8c?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![美洽工作台顾客自定义信息图片](https://media.meiqiausercontent.com/uploads/3329ac75a3e54a0dc44e81aca9f8c2b3.png)
 
 为了让客服能更准确帮助用户，开发者可上传不同用户的属性信息。示例如下：
 
@@ -311,7 +311,7 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 * 该选项需要在用户上线前设置。
 * 客服组 ID 和客服 ID 可以通过管理员帐号在后台的「设置」中查看。
 
-![查看ID](http://upload-images.jianshu.io/upload_images/639412-2703d2f0e7a8796f?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![查看ID](https://media.meiqiausercontent.com/uploads/931ba715af61490f5528fcc0c45f1983.png)
 
 
 ## 调出视图
