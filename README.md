@@ -49,7 +49,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.6.5'
+pod 'Meiqia', '~> 3.6.6'
 ```
 接着安装美洽 pod 即可：
 
@@ -874,6 +874,9 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十一 更新日志
+
+**v3.6.6  2020 年 12 月 11 日**
+* 更新留言表单功能
 
 **v3.6.5  2020 年 11 月 12 日**
 * 新增发送视频消息功能
