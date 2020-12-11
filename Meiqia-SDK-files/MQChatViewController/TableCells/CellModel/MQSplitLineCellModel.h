@@ -3,7 +3,7 @@
 //  MQEcoboostSDK-test
 //
 //  Created by shunxingzhang on 2020/10/20.
-//  Copyright © 2020 ijinmao. All rights reserved.
+//  Copyright © 2020 MeiQia. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

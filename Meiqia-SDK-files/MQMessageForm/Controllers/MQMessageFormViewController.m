@@ -12,18 +12,22 @@
 #import "MQChatDeviceUtil.h"
 #import "MQAssetUtil.h"
 #import "MQStringSizeUtil.h"
-#import "MQMessageFormImageView.h"
 #import "MQMessageFormInputView.h"
 #import "MQMessageFormViewService.h"
 #import "MQMessageFormCategoryViewController.h"
 #import "MQToolUtil.h"
+#import "MQMessageFormChoiceView.h"
+#import "MQMessageFormTimeView.h"
+#import <MeiqiaSDK/MQEnterprise.h>
 
 static CGFloat const kMQMessageFormSpacing   = 16.0;
 static NSString * const kMessageFormMessageKey = @"message";
 
-@interface MQMessageFormViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, MQMessageFormImageViewDelegate>
+@interface MQMessageFormViewController ()<UINavigationControllerDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary *accessoryData;
+
+@property (nonatomic, strong) MQTicketConfigInfo *ticketConfigInfo;
 
 @end
 
@@ -33,7 +37,6 @@ static NSString * const kMessageFormMessageKey = @"message";
     UIScrollView *scrollView;
     UILabel *tipLabel;
     UIView *formContainer;
-    MQMessageFormImageView *messageFormImageView;
     
     CGSize viewSize;
     
@@ -66,7 +69,6 @@ static NSString * const kMessageFormMessageKey = @"message";
     [self setNavBar];
     [self initScrollView];
     [self initTipLabel];
-//    [self initMQMessageFormImageView];
     
     [self handleLeaveMessageConfig];
     
@@ -103,31 +105,22 @@ static NSString * const kMessageFormMessageKey = @"message";
     if (messageFormConfig.leaveMessageIntro && messageFormConfig.leaveMessageIntro.length > 0) {
         tipLabel.text = messageFormConfig.leaveMessageIntro;
         tipLabel.hidden = NO;
+    }
+    [MQMessageFormViewService getMessageFormConfigComplete:^(MQEnterpriseConfig *config, NSError *error) {
+        if (self->tipLabel.text.length < 1) {
+            if (config.ticketConfigInfo.intro.length > 0) {
+                self->tipLabel.text = config.ticketConfigInfo.intro;
+                self->tipLabel.hidden = NO;
+            } else {
+                self->tipLabel.hidden = YES;
+            }
+        }
+        self.ticketConfigInfo = config.ticketConfigInfo;
+        self->contactAllRequired = ![config.ticketConfigInfo.contactRule isEqualToString:@"single"];
         [self initFormContainer];
         [self refreshFrame];
-    } else {
-        [MQMessageFormViewService getMessageFormConfigComplete:^(MQEnterpriseConfig *config, NSError *error) {
-            if (config.intro.length > 0) {
-                tipLabel.text = config.intro;
-                tipLabel.hidden = NO;
-            } else {
-                tipLabel.hidden = YES;
-            }
-            
-            contactAllRequired = ![config.ticketContactFillInRule isEqualToString:@"single"];
-            
-            NSMutableArray *filedModels = [NSMutableArray new];
-            [config.ticketContactFields enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                MQMessageFormInputModel *model = [self createInputFieldWithKey:obj];
-                model.isRequired = contactAllRequired;
-                [filedModels addObject:model];
-            }];
-            messageFormConfig.customMessageFormInputModelArray = filedModels;
-            
-            [self initFormContainer];
-            [self refreshFrame];
-        }];
-    }
+    }];
+    
 }
 
 #pragma ios7以下系统的横屏的事件
@@ -164,7 +157,6 @@ static NSString * const kMessageFormMessageKey = @"message";
     CGFloat formContainerY = tipLabel.hidden ? kMQMessageFormSpacing : CGRectGetMaxY(tipLabel.frame) + kMQMessageFormSpacing;
     formContainer.frame = CGRectMake(0, formContainerY, viewSize.width, CGRectGetMaxY(lastMessageFormInputView.frame));
     [self refreshFormContainerFrame];
-    [self refreshMessageFormImageViewFrame];
     
     scrollView.frame = CGRectMake(0, 0, viewSize.width, viewSize.height);
     [scrollView setContentSize:CGSizeMake(viewSize.width, CGRectGetMaxY(formContainer.frame) + kMQMessageFormSpacing)];
@@ -187,89 +179,137 @@ static NSString * const kMessageFormMessageKey = @"message";
 - (void)initFormContainer {
     messageFormInputModelArray = [NSMutableArray array];
     
+    // 默认留言输入框的样式根据后台的配置来初始化
     MQMessageFormInputModel *messageMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    messageMessageFormInputModel.tip = [MQBundleUtil localizedStringForKey:@"leave_a_message"];
-    messageMessageFormInputModel.key = kMessageFormMessageKey;
+    messageMessageFormInputModel.tip = self.ticketConfigInfo.content_title.length > 0 ? self.ticketConfigInfo.content_title : [MQBundleUtil localizedStringForKey:@"leave_a_message"];
+    if (self.ticketConfigInfo.content_fill_type.length > 0) {
+        if ([self.ticketConfigInfo.content_fill_type isEqualToString:@"content"]) {
+            messageMessageFormInputModel.text = self.ticketConfigInfo.defaultTemplateContent;
+        } else {
+            messageMessageFormInputModel.placeholder = self.ticketConfigInfo.content_placeholder ?:[MQBundleUtil localizedStringForKey:@"leave_a_message_placeholder"];
+        }
+    } else {
+        messageMessageFormInputModel.placeholder = [MQBundleUtil localizedStringForKey:@"leave_a_message_placeholder"];
+    }
+    messageMessageFormInputModel.inputModelType = InputModelTypeText;
     messageMessageFormInputModel.isSingleLine = NO;
-    messageMessageFormInputModel.placeholder = [MQBundleUtil localizedStringForKey:@"leave_a_message_placeholder"];
+    messageMessageFormInputModel.key = kMessageFormMessageKey;
     messageMessageFormInputModel.isRequired = YES;
     [messageFormInputModelArray addObject:messageMessageFormInputModel];
     
-    // 如果用户配置了自定义输入信息，则使用用户配置的。否则默认添加邮件和手机
-    if (messageFormConfig.customMessageFormInputModelArray.count > 0) {
-        [messageFormInputModelArray addObjectsFromArray:messageFormConfig.customMessageFormInputModelArray];
-    } else {
-        [messageFormInputModelArray addObject:[self createInputFieldWithKey:@"email"]];        
-        [messageFormInputModelArray addObject:[self createInputFieldWithKey:@"tel"]];
+    for (MQTicketConfigContactField *field in self.ticketConfigInfo.custom_fields) {
+        [messageFormInputModelArray addObject:[self getFormInputModelWithTicketConfigContactField:field]];
     }
     
     formContainer = [[UIView alloc] init];
     messageFormInputViewArray = [NSMutableArray array];
-    MQMessageFormInputView *messageFormInputView;
     for (MQMessageFormInputModel * model in messageFormInputModelArray) {
-        messageFormInputView = [[MQMessageFormInputView alloc] initWithScreenWidth:viewSize.width andModel:model];
-        
-        [messageFormInputViewArray addObject:messageFormInputView];
-        [formContainer addSubview:messageFormInputView];
+        if (model.inputModelType == InputModelTypeMultipleChoice || model.inputModelType == InputModelTypeSingleChoice) {
+            // 多选, 单选
+            MQMessageFormChoiceView *messageFormChoiceView = [[MQMessageFormChoiceView alloc] initWithModel:model];
+            [messageFormInputViewArray addObject:messageFormChoiceView];
+            [formContainer addSubview:messageFormChoiceView];
+        } else if (model.inputModelType == InputModelTypeTime) {
+            // 时间选择器
+            MQMessageFormTimeView *messageFormTimeView = [[MQMessageFormTimeView alloc] initWithModel:model];
+            [messageFormInputViewArray addObject:messageFormTimeView];
+            [formContainer addSubview:messageFormTimeView];
+        } else {
+            // 输入框
+            MQMessageFormInputView *messageFormInputView = [[MQMessageFormInputView alloc] initWithScreenWidth:viewSize.width andModel:model];
+            [messageFormInputViewArray addObject:messageFormInputView];
+            [formContainer addSubview:messageFormInputView];
+        }
     }
     
     [self refreshFormContainerFrame];
     [scrollView addSubview:formContainer];
 }
 
-- (MQMessageFormInputModel *)createInputFieldWithKey:(NSString *)key {
-    MQMessageFormInputModel *telMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    telMessageFormInputModel.tip = [MQBundleUtil localizedStringForKey:key];
-    telMessageFormInputModel.key = key;
-    telMessageFormInputModel.isSingleLine = YES;
-    telMessageFormInputModel.placeholder = [MQBundleUtil localizedStringForKey:[NSString stringWithFormat:@"%@_placeholder",key]];
-    telMessageFormInputModel.isRequired = NO;
-    telMessageFormInputModel.keyboardType = [self keyboardWithInputFieldKey:key];
+- (MQMessageFormInputModel *)getFormInputModelWithTicketConfigContactField:(MQTicketConfigContactField *)field {
+    MQMessageFormInputModel *inputModel = [[MQMessageFormInputModel alloc] init];
+    inputModel.key = field.name;
+    inputModel.isRequired = field.required;
+    inputModel.placeholder = field.placeholder ? field.placeholder : @"";
     
-    return telMessageFormInputModel;
+    // 固定字段的key需要转换成对应的name
+    if([field.name isEqualToString:@"name"]){
+        inputModel.tip = [MQBundleUtil localizedStringForKey:@"name"];
+        inputModel.placeholder = inputModel.placeholder.length > 0 ? inputModel.placeholder : [MQBundleUtil localizedStringForKey:@"name_placeholder"];
+    } else if ([field.name isEqualToString:@"contact"]){
+        inputModel.tip = [MQBundleUtil localizedStringForKey:@"contact"];
+        inputModel.placeholder = inputModel.placeholder.length > 0 ? inputModel.placeholder : [MQBundleUtil localizedStringForKey:@"contact_placeholder"];
+    } else if ([field.name isEqualToString:@"gender"]){
+        inputModel.tip = [MQBundleUtil localizedStringForKey:@"gender"];
+    } else if ([field.name isEqualToString:@"age"]){
+        inputModel.tip = [MQBundleUtil localizedStringForKey:@"age"];
+        inputModel.placeholder = inputModel.placeholder.length > 0 ? inputModel.placeholder : [MQBundleUtil localizedStringForKey:@"age_placeholder"];
+    } else if ([field.name isEqualToString:@"tel"]){
+        inputModel.tip = [MQBundleUtil localizedStringForKey:@"tel"];
+        inputModel.placeholder = inputModel.placeholder.length > 0 ? inputModel.placeholder : [MQBundleUtil localizedStringForKey:@"tel_placeholder"];
+    } else if ([field.name isEqualToString:@"qq"]){
+        inputModel.tip = [MQBundleUtil localizedStringForKey:@"qq"];
+        inputModel.placeholder = inputModel.placeholder.length > 0 ? inputModel.placeholder : [MQBundleUtil localizedStringForKey:@"qq_placeholder"];
+    } else if ([field.name isEqualToString:@"weixin"] || [field.name isEqualToString:@"wechat"]){
+        inputModel.tip = [MQBundleUtil localizedStringForKey:@"wechat"];
+        inputModel.placeholder = inputModel.placeholder.length > 0 ? inputModel.placeholder : [MQBundleUtil localizedStringForKey:@"wechat_placeholder"];
+    } else if ([field.name isEqualToString:@"weibo"]){
+        inputModel.tip = [MQBundleUtil localizedStringForKey:@"weibo"];
+        inputModel.placeholder = inputModel.placeholder.length > 0 ? inputModel.placeholder : [MQBundleUtil localizedStringForKey:@"weibo_placeholder"];
+    } else if ([field.name isEqualToString:@"address"]){
+        inputModel.tip = [MQBundleUtil localizedStringForKey:@"address"];
+        inputModel.placeholder = inputModel.placeholder.length > 0 ? inputModel.placeholder : [MQBundleUtil localizedStringForKey:@"address_placeholder"];
+    } else if ([field.name isEqualToString:@"comment"]){
+        inputModel.tip = [MQBundleUtil localizedStringForKey:@"comment"];
+        inputModel.placeholder = inputModel.placeholder.length > 0 ? inputModel.placeholder : [MQBundleUtil localizedStringForKey:@"comment_placeholder"];
+    } else {
+        inputModel.tip = field.name;
+    }
+    
+    switch (field.type) {
+        case MQTicketConfigContactFieldTypeMultipleChoice: // 多选
+            inputModel.inputModelType = InputModelTypeMultipleChoice;
+            inputModel.metainfo = field.metainfo;
+            break;
+        case MQTicketConfigContactFieldTypeSingleChoice: // 单选
+            inputModel.inputModelType = InputModelTypeSingleChoice;
+            inputModel.metainfo = field.metainfo;
+            break;
+        case MQTicketConfigContactFieldTypeTime: // 时间选择器
+            inputModel.inputModelType = InputModelTypeTime;
+            inputModel.placeholder = [MQBundleUtil localizedStringForKey:@"time_placeholder"];
+            break;
+        case MQTicketConfigContactFieldTypeNumber: // 输入框，键盘样式限制为number
+            inputModel.inputModelType = InputModelTypeNumber;
+            break;
+        default:
+            if ([field.name isEqualToString:@"gender"]) { // 为性别的要单独挑选出来做处理
+                inputModel.inputModelType = InputModelTypeSingleChoice;
+                inputModel.metainfo = @[[MQBundleUtil localizedStringForKey:@"man"],[MQBundleUtil localizedStringForKey:@"woman"]];
+            } else {
+                inputModel.inputModelType = InputModelTypeText;
+            }
+            break;
+    }
+    
+    return inputModel;
 }
 
-- (UIKeyboardType)keyboardWithInputFieldKey:(NSString *)key {
-    static dispatch_once_t onceToken;
-    static NSDictionary *map;
-    dispatch_once(&onceToken, ^{
-        map = @{
-                @"qq":@(UIKeyboardTypeNumberPad),
-                @"email":@(UIKeyboardTypeEmailAddress),
-                @"tel":@(UIKeyboardTypePhonePad),
-                @"wechat":@(UIKeyboardTypeDefault),
-                @"name":@(UIKeyboardTypeDefault)
-                };
-    });
-    
-    return (UIKeyboardType)[map[key] intValue];
-}
 
 - (void)refreshFormContainerFrame {
-    MQMessageFormInputView *lastMessageFormInputView;
-    MQMessageFormInputView *currentMessageFormInputView;
-    for (MQMessageFormInputView *messageFormInputView in messageFormInputViewArray) {
-        currentMessageFormInputView = messageFormInputView;
-        if (lastMessageFormInputView) {
-            [currentMessageFormInputView refreshFrameWithScreenWidth:viewSize.width andY:CGRectGetMaxY(lastMessageFormInputView.frame)];
+    MQMessageFormBaseView *lastMessageFormView;
+    MQMessageFormBaseView *currentMessageFormView;
+    for (MQMessageFormBaseView *messageFormView in messageFormInputViewArray) {
+        currentMessageFormView = messageFormView;
+        if (lastMessageFormView) {
+            [currentMessageFormView refreshFrameWithScreenWidth:viewSize.width andY:CGRectGetMaxY(lastMessageFormView.frame)];
         } else {
-            [currentMessageFormInputView refreshFrameWithScreenWidth:viewSize.width andY:0];
+            [currentMessageFormView refreshFrameWithScreenWidth:viewSize.width andY:0];
         }
-        lastMessageFormInputView = currentMessageFormInputView;
+        lastMessageFormView = currentMessageFormView;
     }
     CGFloat formContainerY = tipLabel.hidden ? kMQMessageFormSpacing : CGRectGetMaxY(tipLabel.frame) + kMQMessageFormSpacing;
-    formContainer.frame = CGRectMake(0, formContainerY, viewSize.width, CGRectGetMaxY(lastMessageFormInputView.frame));
-}
-
-- (void)initMQMessageFormImageView {
-    messageFormImageView = [[MQMessageFormImageView alloc] initWithScreenWidth:viewSize.width];
-    messageFormImageView.choosePictureDelegate = self;
-    [self refreshMessageFormImageViewFrame];
-    [scrollView addSubview:messageFormImageView];
-}
-
-- (void)refreshMessageFormImageViewFrame {
-    [messageFormImageView refreshFrameWithScreenWidth:viewSize.width andY:CGRectGetMaxY(formContainer.frame)];
+    formContainer.frame = CGRectMake(0, formContainerY, viewSize.width, CGRectGetMaxY(lastMessageFormView.frame));
 }
 
 - (void)tapSubmitBtn:(id)sender {
@@ -277,41 +317,55 @@ static NSString * const kMessageFormMessageKey = @"message";
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:messageFormInputModelArray.count];
     for (int i = 0; i < messageFormInputModelArray.count; i++) {
         MQMessageFormInputModel *model = [messageFormInputModelArray objectAtIndex:i];
-        NSString *text = [[messageFormInputViewArray objectAtIndex:i] getText];
-        if (model.isRequired && text.length == 0) {
-            [MQToast showToast:[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"param_not_allow_null"], model.tip] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
-            return;
+        id value = [[messageFormInputViewArray objectAtIndex:i] getContentValue];
+        if ([value isKindOfClass:[NSArray class]]) {
+            //数组
+            NSArray *arr = [[NSArray alloc] initWithArray:value];
+            if (model.isRequired && arr.count == 0) {
+                [MQToast showToast:[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"param_not_allow_null"], model.tip] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
+                return;
+            }
+            if (arr.count > 0) {
+                valueCharCount += 1;
+                [dict setObject:arr forKey:model.key];
+            }
+        } else {
+           //字符串
+            NSString *valueStr = [[NSString alloc] initWithFormat:@"%@",value];
+            if (model.isRequired && valueStr.length == 0) {
+                [MQToast showToast:[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"param_not_allow_null"], model.tip] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
+                return;
+            }
+            if (valueStr.length > 0) {
+                valueCharCount += valueStr.length;
+                [dict setObject:valueStr forKey:model.key];
+            }
         }
-        
-        if ([[messageFormConfig.customMessageFormInputModelArray valueForKey:@"key"] containsObject:model.key]) {
-            valueCharCount += text.length;
-        }
-        [dict setObject:text forKey:model.key];
     }
-    
+
     if (self.accessoryData.allKeys.count > 0) {
         for (NSString *key in self.accessoryData.allKeys) {
             dict[key] = self.accessoryData[key];
         }
     }
-    
+
     if (!contactAllRequired && valueCharCount == 0) {
         [MQToast showToast:[MQBundleUtil localizedStringForKey:@"contact_at_lease_enter_one"] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
         return;
     }
-    
+
     NSString *message = [dict objectForKey:kMessageFormMessageKey];
     [dict removeObjectForKey:kMessageFormMessageKey];
-    
+
     [self dismissKeyboard];
     [self showActivityIndicatorView];
     self.navigationItem.rightBarButtonItem.enabled = NO;
-    
-    [MQMessageFormViewService submitMessageFormWithMessage:message images:[messageFormImageView getImages] clientInfo:dict completion:^(BOOL success, NSError *error) {
+
+    [MQMessageFormViewService submitMessageFormWithMessage:message clientInfo:dict completion:^(BOOL success, NSError *error) {
         // 为了让用户得到「提交中」的体验，停顿 1 秒再取消 indicator view
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self dismissActivityIndicatorView];
-            
+
             if (success) {
                 [self dismissMessageFormViewController];
             } else {
@@ -341,7 +395,7 @@ static NSString * const kMessageFormMessageKey = @"message";
     translucentView.alpha = 0;
     [activityIndicatorView startAnimating];
     [UIView animateWithDuration:0.5 animations:^{
-        translucentView.alpha = 0.5;
+        self->translucentView.alpha = 0.5;
     }];
 }
 
@@ -374,98 +428,53 @@ static NSString * const kMessageFormMessageKey = @"message";
     CGFloat keyboardMinY = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].origin.y;
     CGFloat keyboardHeight = screenHeight - keyboardMinY;
     
-    UITextView *firstResponderUITextView = [self findFirstResponderUITextView];
-    // UITextView单独处理
-    if (firstResponderUITextView && keyboardHeight > 0) {
-        CGRect rect = [firstResponderUITextView.superview convertRect:firstResponderUITextView.frame toView:[[[UIApplication sharedApplication] delegate] window]];
-        
+    UIView *firstResponderUIView = [self findFirstResponderUIView];
+    // UIView单独处理
+    if (firstResponderUIView && keyboardHeight > 0) {
+        CGRect rect = [firstResponderUIView.superview convertRect:firstResponderUIView.frame toView:[[[UIApplication sharedApplication] delegate] window]];
+
         CGFloat responderMinY = rect.origin.y;
         CGFloat responderMaxY = CGRectGetMaxY(rect);
-        
+
         CGFloat offsetY = 0;
-        // 处理UITextView被键盘遮挡的情况
+        // 处理UIView被键盘遮挡的情况
         if (responderMaxY > keyboardMinY) {
-            offsetY = keyboardHeight + firstResponderUITextView.frame.size.height - (screenHeight - responderMinY);
+            offsetY = keyboardHeight + firstResponderUIView.frame.size.height - (screenHeight - responderMinY);
         }
-        // 处理UITextView被导航栏遮挡的情况
+        // 处理UIView被导航栏遮挡的情况
         if (responderMinY < MQToolUtil.kXlpObtainNaviHeight) {
             offsetY = responderMinY - MQToolUtil.kXlpObtainNaviHeight;
         }
         if (offsetY != 0) {
             [UIView animateWithDuration:duration animations:^{
-                CGPoint offset = scrollView.contentOffset;
-                scrollView.contentOffset = CGPointMake(offset.x, offset.y + offsetY);
+                CGPoint offset = self->scrollView.contentOffset;
+                self->scrollView.contentOffset = CGPointMake(offset.x, offset.y + offsetY);
             }];
         }
     }
-    
+
     [UIView animateWithDuration:duration animations:^{
-        UIEdgeInsets inset = scrollView.contentInset;
+        UIEdgeInsets inset = self->scrollView.contentInset;
         inset.bottom = keyboardHeight;
-        scrollView.contentInset = inset;
+        self->scrollView.contentInset = inset;
     }];
 }
 
 
 /**
- *  查找UITextView第一键盘响应者
+ *  查找UIView第一键盘响应者
  *
- *  @return UITextView第一键盘响应者
+ *  @return UIView第一键盘响应者
  */
-- (UITextView *)findFirstResponderUITextView {
-    UITextView *firstResponderUITextView;
-    for (MQMessageFormInputView *messageFormInputView in messageFormInputViewArray) {
-        firstResponderUITextView = [messageFormInputView findFirstResponderUITextView];
-        if (firstResponderUITextView) {
-            return firstResponderUITextView;
+- (UIView *)findFirstResponderUIView {
+    UIView *firstResponderUIView;
+    for (MQMessageFormBaseView *messageFormView in messageFormInputViewArray) {
+        firstResponderUIView = [messageFormView findFirstResponderUIView];
+        if (firstResponderUIView) {
+            return firstResponderUIView;
         }
     }
     return nil;
-}
-
-#pragma MQMessageFormImageViewDelegate
-- (void)choosePictureWithSourceType:(UIImagePickerControllerSourceType *)sourceType {
-    NSString *mediaPermission = [MQChatDeviceUtil isDeviceSupportImageSourceType:(int)sourceType];
-    if (!mediaPermission) {
-        return;
-    }
-    if (![mediaPermission isEqualToString:@"ok"]) {
-        [MQToast showToast:[MQBundleUtil localizedStringForKey:mediaPermission] duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
-        return;
-    }
-    //兼容ipad打不开相册问题，使用队列延迟
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.sourceType               = (int)sourceType;
-        picker.delegate                 = (id)self;
-        picker.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:picker animated:YES completion:nil];
-    }];
-}
-
-#pragma UIImagePickerControllerDelegate
-- (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
-    //当选择的类型是图片
-    if (![type isEqualToString:@"public.image"]) {
-        return;
-    }
-    
-    UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    [messageFormImageView addImage:image];
-    
-    [picker dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-    [picker dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    //修改status样式
-    if ([navigationController isKindOfClass:[UIImagePickerController class]]) {
-        [UIApplication sharedApplication].statusBarStyle = currentStatusBarStyle;
-    }
 }
 
 @end

@@ -40,11 +40,4 @@
  */
 - (void)setLeaveMessageIntro:(NSString *)leaveMessageIntro;
 
-/**
- *  设置留言表单的自定义输入信息
- *
- *  @param customMessageFormInputModelArray 留言表单的自定义输入信息
- */
-- (void)setCustomMessageFormInputModelArray:(NSArray *)customMessageFormInputModelArray;
-
 @end

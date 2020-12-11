@@ -498,8 +498,7 @@
     [MQManager getTicketCategoryComplete:action];
 }
 
-+ (void)submitMessageFormWithMessage:(NSString *)message images:(NSArray *)images clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
-//    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
++ (void)submitMessageFormWithMessage:(NSString *)message clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
     [MQManager submitTicketForm:message userInfo:clientInfo completion:^(MQTicket *ticket, NSError *e) {
         if (e) {
             completion(NO, e);

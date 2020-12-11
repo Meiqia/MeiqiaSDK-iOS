@@ -3,7 +3,7 @@
 //  MQEcoboostSDK-test
 //
 //  Created by qipeng_yuhao on 2020/6/1.
-//  Copyright © 2020 ijinmao. All rights reserved.
+//  Copyright © 2020 MeiQia. All rights reserved.
 //
 
 #import "MQBotMenuRichCellModel.h"

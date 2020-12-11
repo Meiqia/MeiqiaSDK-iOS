@@ -20,12 +20,10 @@
  *  提交留言表单
  *
  *  @param message 留言消息
- *  @param images 图片数组
  *  @param clientInfo 顾客的信息
  *  @param completion  提交留言表单的回调
  */
 + (void)submitMessageFormWithMessage:(NSString *)message
-                              images:(NSArray *)images
                           clientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
                           completion:(void (^)(BOOL success, NSError *error))completion;
 

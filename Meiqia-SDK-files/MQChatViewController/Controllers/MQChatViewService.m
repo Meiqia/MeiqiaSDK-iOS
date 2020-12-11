@@ -1155,7 +1155,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
     
     [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:YES complete:^(MQEnterprise *enterprise, NSError *e) {
-        [MQCustomizedUIText setCustomiedTextForKey:(MQUITextKeyNoAgentTip) text:enterprise.configInfo.intro];
+        [MQCustomizedUIText setCustomiedTextForKey:(MQUITextKeyNoAgentTip) text:enterprise.configInfo.ticketConfigInfo.intro];
     }];
 }
 

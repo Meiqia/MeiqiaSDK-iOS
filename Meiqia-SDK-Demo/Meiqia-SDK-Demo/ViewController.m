@@ -104,27 +104,10 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 
 - (void)feedback
 {
-    MQMessageFormInputModel *emailMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    emailMessageFormInputModel.key = @"email";
-    emailMessageFormInputModel.isSingleLine = YES;
-    emailMessageFormInputModel.isRequired = NO;
-    emailMessageFormInputModel.keyboardType = UIKeyboardTypeEmailAddress;
-    
-    MQMessageFormInputModel *phoneMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    phoneMessageFormInputModel.key = @"tel";
-    phoneMessageFormInputModel.isSingleLine = YES;
-    phoneMessageFormInputModel.isRequired = NO;
-    phoneMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
-    
-    NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
-    [customMessageFormInputModelArray addObject:emailMessageFormInputModel];
-    [customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
-    
     MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
     
     MQMessageFormViewStyle *style = [messageFormViewManager messageFormViewStyle];
     style.navBarColor = [UIColor whiteColor];
-    [messageFormViewManager setCustomMessageFormInputModelArray:nil];
     [messageFormViewManager presentMQMessageFormViewControllerInViewController:self];
 }
 #pragma 开发者的高级功能 其中有调用美洽SDK的API接口

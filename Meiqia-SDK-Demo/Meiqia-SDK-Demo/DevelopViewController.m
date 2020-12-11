@@ -818,59 +818,16 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     
     // 如果同时配置了聊天界面和留言表单界面的主题，优先使用留言表单界面的主题。如果两个主题都没有设置，则使用默认的主题
     messageFormViewManager.messageFormViewStyle = [MQMessageFormViewStyle greenStyle];
-//    messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor];
+    
+    // 设置自定义留言表单引导文案，配置了该引导文案后将不会读取工作台配置的引导文案
+//    [messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
+//    MQMessageFormConfig *config = [MQMessageFormConfig sharedConfig];
+//    config.leaveMessageIntro = @"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你";
     
     // 如果没有设置留言表单界面的主题，则使用聊天界面的主题
 //    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 //    chatViewManager.chatViewStyle = [MQChatViewStyle blueStyle];
 //    chatViewManager.chatViewStyle.navTitleColor = [UIColor redColor];
-    
-    MQMessageFormInputModel *emailMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    emailMessageFormInputModel.tip = @"邮箱";
-    emailMessageFormInputModel.key = @"email";
-    emailMessageFormInputModel.isSingleLine = YES;
-    emailMessageFormInputModel.placeholder = @"请输入你的邮箱";
-    emailMessageFormInputModel.isRequired = YES;
-    emailMessageFormInputModel.keyboardType = UIKeyboardTypeEmailAddress;
-    
-    MQMessageFormInputModel *telMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    telMessageFormInputModel.tip = @"电话";
-    telMessageFormInputModel.key = @"tel";
-    telMessageFormInputModel.isSingleLine = YES;
-    telMessageFormInputModel.placeholder = @"请输入你的电话";
-    telMessageFormInputModel.isRequired = NO;
-    telMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
-
-    MQMessageFormInputModel *nameMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    nameMessageFormInputModel.tip = @"姓名";
-    nameMessageFormInputModel.key = @"name";
-    nameMessageFormInputModel.isSingleLine = YES;
-    nameMessageFormInputModel.placeholder = @"请输入你的姓名";
-    nameMessageFormInputModel.isRequired = NO;
-    
-    MQMessageFormInputModel *commentMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    commentMessageFormInputModel.tip = @"备注";
-    commentMessageFormInputModel.key = @"comment";
-    commentMessageFormInputModel.isSingleLine = NO;
-    commentMessageFormInputModel.placeholder = @"请输入你的备注";
-    commentMessageFormInputModel.isRequired = NO;
-    
-    MQMessageFormInputModel *weiboMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    weiboMessageFormInputModel.tip = @"微博";
-    weiboMessageFormInputModel.key = @"weibo";
-    weiboMessageFormInputModel.isSingleLine = YES;
-    weiboMessageFormInputModel.placeholder = @"请输入你的微博";
-    weiboMessageFormInputModel.isRequired = NO;
-    
-    NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
-    [customMessageFormInputModelArray addObject:emailMessageFormInputModel];
-    [customMessageFormInputModelArray addObject:telMessageFormInputModel];
-    [customMessageFormInputModelArray addObject:nameMessageFormInputModel];
-//        [customMessageFormInputModelArray addObject:commentMessageFormInputModel];
-//        [customMessageFormInputModelArray addObject:weiboMessageFormInputModel];
-    
-//    [messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
-//    [messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
     
     [messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
 }

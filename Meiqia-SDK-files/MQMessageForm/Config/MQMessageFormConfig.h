@@ -19,8 +19,6 @@
 
 /** 自定义留言表单引导文案 */
 @property (nonatomic, copy) NSString *leaveMessageIntro;
-/** 留言表单的自定义输入信息 */
-@property (nonatomic, strong) NSArray *customMessageFormInputModelArray;
 
 + (instancetype)sharedConfig;
 

@@ -156,11 +156,4 @@
     messageFormConfig.leaveMessageIntro = leaveMessageIntro;
 }
 
-- (void)setCustomMessageFormInputModelArray:(NSArray *)customMessageFormInputModelArray {
-    if (!customMessageFormInputModelArray) {
-        return;
-    }
-    messageFormConfig.customMessageFormInputModelArray = customMessageFormInputModelArray;
-}
-
 @end

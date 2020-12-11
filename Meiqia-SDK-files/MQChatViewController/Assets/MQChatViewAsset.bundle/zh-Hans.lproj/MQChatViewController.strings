@@ -126,6 +126,20 @@
 "wechat_placeholder" = "请输入你的微信号";
 "name" = "姓名";
 "name_placeholder" = "请输入姓名";
+"gender" = "性别";
+"age" = "年龄";
+"age_placeholder" = "请输入年龄";
+"weibo" = "微博";
+"weibo_placeholder" = "请输入微博号";
+"address" = "地址";
+"address_placeholder" = "请输入地址";
+"comment" = "备注";
+"comment_placeholder" = "请输入备注";
+"contact" = "联系人";
+"contact_placeholder" = "请输入联系人";
+"man" = "男";
+"woman" = "女";
+"time_placeholder" = "年-月-日";
 
 "wating_in_queue_tip_text" = "请稍等，前面还有%d个访客，您也可以选择给我们 留言";
 

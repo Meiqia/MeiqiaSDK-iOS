@@ -122,6 +122,20 @@
 "wechat_placeholder" = "Please enter your WeChat account";
 "name" = "Name";
 "name_placeholder" = "Please enter your name";
+"gender" = "Gender";
+"age" = "Age";
+"age_placeholder" = "Please enter your age";
+"weibo" = "WeiBo";
+"weibo_placeholder" = "Please enter your WeiBo account";
+"address" = "Address";
+"address_placeholder" = "Please enter your address";
+"comment" = "Comment";
+"comment_placeholder" = "Please enter your comment";
+"contact" = "contact";
+"contact_placeholder" = "Please enter your contact";
+"man" = "Man";
+"woman" = "Woman";
+"time_placeholder" = "Year-Month-Day";
 
 "wating_in_queue_tip_text" = "please hold on, %d visitors in front, or you can leave a message";
 

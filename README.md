@@ -697,24 +697,9 @@ MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager al
 
 ### 设置留言表单的自定义输入信息
 
-开发者可根据此接口设置留言表单的自定义输入信息。如果不设置该参数，默认有「留言」、「手机」、「邮箱」这三个文本输入框。MQMessageFormInputModel 中 key 的值参考 [添加自定义信息](#添加自定义信息)。
+开发者可以通过工作台配置留言表单的自定义输入信息。请使用美洽管理员帐号登录 [美洽](http://www.meiqia.com)，在「设置」 -\> 「工单」 -\> 「工单设置」中设置。
 
-```objc
-MQMessageFormInputModel *phoneMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-phoneMessageFormInputModel.tip = @"手机";
-phoneMessageFormInputModel.key = @"tel";
-phoneMessageFormInputModel.isSingleLine = YES;
-phoneMessageFormInputModel.placeholder = @"请输入你的手机号";
-phoneMessageFormInputModel.isRequired = YES;
-phoneMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
-
-NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
-[customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
-
-MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
-[messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
-[messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
-```
+![工单设置地址](https://media.meiqiausercontent.com/uploads/b938413c14481726f0e4632baaf9bde8.png)
 
 ### 设置留言表单主题
 
