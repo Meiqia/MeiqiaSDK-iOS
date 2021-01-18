@@ -29,7 +29,7 @@
 #import "MQPhotoCardCellModel.h"
 #import <UIKit/UIKit.h>
 #import "MQToast.h"
-#import "VoiceConverter.h"
+#import "MEIQIA_VoiceConverter.h"
 #import "MQEventCellModel.h"
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
@@ -171,6 +171,18 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     NSDate *firstMessageDate = [self getFirstServiceCellModelDate];
     if ([MQChatViewConfig sharedConfig].enableSyncServerMessage) {// 默认开启消息同步
         [MQServiceToViewInterface getServerHistoryMessagesWithMsgDate:firstMessageDate messagesNumber:kMQChatGetHistoryMessageNumber successDelegate:self errorDelegate:self.errorDelegate];
+    } else {
+        [MQServiceToViewInterface getDatabaseHistoryMessagesWithMsgDate:firstMessageDate messagesNumber:kMQChatGetHistoryMessageNumber delegate:self];
+    }
+}
+
+/**
+ * 在开启无消息访客过滤的条件下获取历史聊天信息
+ */
+- (void)getMessagesWithScheduleAfterClientSendMessage {
+    NSDate *firstMessageDate = [self getFirstServiceCellModelDate];
+    if ([MQChatViewConfig sharedConfig].enableSyncServerMessage) {// 默认开启消息同步
+        [MQServiceToViewInterface getServerHistoryMessagesAndTicketsWithMsgDate:firstMessageDate messagesNumber:kMQChatGetHistoryMessageNumber successDelegate:self errorDelegate:self.errorDelegate];
     } else {
         [MQServiceToViewInterface getDatabaseHistoryMessagesWithMsgDate:firstMessageDate messagesNumber:kMQChatGetHistoryMessageNumber delegate:self];
     }
@@ -678,7 +690,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (NSData *)convertToWAVDataWithAMRFilePath:(NSString *)amrFilePath {
     NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     tempPath = [tempPath stringByAppendingPathComponent:@"record.wav"];
-    [VoiceConverter amrToWav:amrFilePath wavSavePath:tempPath];
+    [MEIQIA_VoiceConverter amrToWav:amrFilePath wavSavePath:tempPath];
     NSData *wavData = [NSData dataWithContentsOfFile:tempPath];
     [[NSFileManager defaultManager] removeItemAtPath:tempPath error:nil];
     return wavData;

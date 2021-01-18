@@ -1,14 +1,14 @@
 //
-//  NSString+Regular.m
+//  NSString+MQRegular.m
 //  MQEcoboostSDK-test
 //
 //  Created by qipeng_yuhao on 2020/5/26.
 //  Copyright © 2020 MeiQia. All rights reserved.
 //
 
-#import "NSString+Regular.h"
+#import "NSString+MQRegular.h"
 
-@implementation NSString (Regular)
+@implementation NSString (MQRegular)
 
 - (BOOL)match:(NSString *)pattern
 {

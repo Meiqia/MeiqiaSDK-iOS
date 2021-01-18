@@ -6,9 +6,9 @@
 //  Copyright © 2018年 Meiqia. All rights reserved.
 //
 
-#import "XlpEmojiCell.h"
+#import "MEIQIA_EmojiCell.h"
 
-@implementation XlpEmojiCell
+@implementation MEIQIA_EmojiCell
 
 
 - (instancetype)initWithFrame:(CGRect)frame

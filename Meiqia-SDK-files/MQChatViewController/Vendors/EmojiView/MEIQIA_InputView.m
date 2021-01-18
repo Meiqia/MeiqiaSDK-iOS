@@ -6,15 +6,15 @@
 //  Copyright © 2018年 Meiqia. All rights reserved.
 //
 
-#import "XLPInputView.h"
-#import "XlpEmojiCell.h"
+#import "MEIQIA_InputView.h"
+#import "MEIQIA_EmojiCell.h"
 #import "MQAssetUtil.h"
 #import "MQUIMaker.h"
 #import "MQBundleUtil.h"
 
 
 
-@implementation XLPInputView
+@implementation MEIQIA_InputView
 {
     UICollectionView * emojiCollectionView;
     NSDictionary *emojiDic; //表情数据源
@@ -60,7 +60,7 @@
     
     emojiCollectionView.backgroundColor = emojiBackColor;
     [emojiCollectionView reloadData];
-    [emojiCollectionView registerClass:[XlpEmojiCell class] forCellWithReuseIdentifier:@"XlpEmojiCell"];
+    [emojiCollectionView registerClass:[MEIQIA_EmojiCell class] forCellWithReuseIdentifier:@"MEIQIA_EmojiCell"];
 }
 #pragma mark  设置CollectionView的组数
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -80,7 +80,7 @@
 #pragma mark  设置CollectionCell的内容
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    XlpEmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"XlpEmojiCell" forIndexPath:indexPath];
+    MEIQIA_EmojiCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MEIQIA_EmojiCell" forIndexPath:indexPath];
     NSString *key = emojiDic.allKeys[indexPath.section];
     NSArray *sectionEmojiArr =  [emojiDic objectForKey:key];
     NSString * emojiStr = sectionEmojiArr[indexPath.row];
@@ -92,8 +92,8 @@
     NSString *key = emojiDic.allKeys[indexPath.section];
     NSArray *sectionEmojiArr =  [emojiDic objectForKey:key];
     NSString * emojiStr = sectionEmojiArr[indexPath.row];
-    if (self.xlpInputViewDelegate && [self.xlpInputViewDelegate respondsToSelector:@selector(XLPInputViewObtainEmojiStr:)]) {
-        [self.xlpInputViewDelegate XLPInputViewObtainEmojiStr:emojiStr];
+    if (self.inputViewDelegate && [self.inputViewDelegate respondsToSelector:@selector(MQInputViewObtainEmojiStr:)]) {
+        [self.inputViewDelegate MQInputViewObtainEmojiStr:emojiStr];
     }
 }
 
@@ -187,15 +187,15 @@
 
 
 - (void)returnHandle:(UIButton *)bt{
-    if (self.xlpInputViewDelegate && [self.xlpInputViewDelegate respondsToSelector:@selector(XLPInputViewSendEmoji)]) {
+    if (self.inputViewDelegate && [self.inputViewDelegate respondsToSelector:@selector(MQInputViewSendEmoji)]) {
         
-        [self.xlpInputViewDelegate XLPInputViewSendEmoji];
+        [self.inputViewDelegate MQInputViewSendEmoji];
     }
 }
 - (void)deleteHandle:(UIButton *)bt{
-    if (self.xlpInputViewDelegate && [self.xlpInputViewDelegate respondsToSelector:@selector(XLPInputViewDeleteEmoji)]) {
+    if (self.inputViewDelegate && [self.inputViewDelegate respondsToSelector:@selector(MQInputViewDeleteEmoji)]) {
         
-        [self.xlpInputViewDelegate XLPInputViewDeleteEmoji];
+        [self.inputViewDelegate MQInputViewDeleteEmoji];
     }
 }
 @end

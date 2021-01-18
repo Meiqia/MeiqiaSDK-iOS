@@ -6,14 +6,14 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "VoiceConverter.h"
+#import "MEIQIA_VoiceConverter.h"
 #import "wav.h"
 #import "interf_dec.h"
 #import "dec_if.h"
 #import "interf_enc.h"
 #import "amrFileCodec.h"
 
-@implementation VoiceConverter
+@implementation MEIQIA_VoiceConverter
 
 + (int)amrToWav:(NSString*)_amrPath wavSavePath:(NSString*)_savePath{
     

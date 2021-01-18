@@ -12,10 +12,10 @@
 #import "MQImageUtil.h"
 #import <MeiQiaSDK/MQManager.h>
 #import "MQRadioGroup.h"
-#import "NSString+Regular.h"
+#import "NSString+MQRegular.h"
 #import "MQToast.h"
 #import "MQTipsCell.h"
-#import "NSString+Name.h"
+#import "NSString+MQName.h"
 
 
 @interface MQCardMessageCell ()<UITextFieldDelegate>

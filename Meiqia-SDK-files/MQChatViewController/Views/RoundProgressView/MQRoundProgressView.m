@@ -6,10 +6,10 @@
 //  Copyright © 2020 MeiQia. All rights reserved.
 //
 
-#import "RoundProgressView.h"
+#import "MQRoundProgressView.h"
 
 #define kBorderWith 10
-@interface RoundProgressView ()
+@interface MQRoundProgressView ()
 
 @property (nonatomic, strong) UIView *centerView;
 @property (strong, nonatomic) CAShapeLayer *outLayer;
@@ -17,7 +17,7 @@
 
 @end
 
-@implementation RoundProgressView
+@implementation MQRoundProgressView
 
 - (instancetype)initWithFrame:(CGRect)frame centerView:(UIView *)centerView {
     if (self = [super initWithFrame:frame]) {

@@ -1,5 +1,5 @@
 //
-//  XLPInputView.h
+//  MEIQIA_InputView.h
 //  Meiqia-SDK-Demo
 //
 //  Created by xulianpeng on 2018/1/10.
@@ -14,16 +14,16 @@
 #define emojCellHeight 42
 #define emojiBackColor [UIColor colorWithRed:245/255.0 green:245/255.0 blue:245/255.0 alpha:1.0]
 
-@protocol XLPInputViewDelegate  <NSObject>
+@protocol MEIQIA_InputViewDelegate  <NSObject>
 
 @optional
-- (void)XLPInputViewObtainEmojiStr:(NSString *)emojiStr;
-- (void)XLPInputViewDeleteEmoji;
-- (void)XLPInputViewSendEmoji;
+- (void)MQInputViewObtainEmojiStr:(NSString *)emojiStr;
+- (void)MQInputViewDeleteEmoji;
+- (void)MQInputViewSendEmoji;
 
 @end
-@interface XLPInputView : UIView<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface MEIQIA_InputView : UIView<UICollectionViewDelegate,UICollectionViewDataSource>
 
-@property(nonatomic,weak)id<XLPInputViewDelegate>xlpInputViewDelegate;
+@property(nonatomic,weak)id<MEIQIA_InputViewDelegate>inputViewDelegate;
 
 @end

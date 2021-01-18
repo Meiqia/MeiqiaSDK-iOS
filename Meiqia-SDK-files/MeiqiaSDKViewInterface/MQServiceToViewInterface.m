@@ -62,6 +62,27 @@
     }];
 }
 
++ (void)getServerHistoryMessagesAndTicketsWithMsgDate:(NSDate *)msgDate
+                             messagesNumber:(NSInteger)messagesNumber
+                            successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
+                              errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate
+{
+    [MQManager getServerHistoryMessagesAndTicketsWithUTCMsgDate:msgDate messagesNumber:messagesNumber success:^(NSArray<MQMessage *> *messagesArray) {
+        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messagesArray];
+        if (successDelegate) {
+            if ([successDelegate respondsToSelector:@selector(didReceiveHistoryMessages:)]) {
+                [successDelegate didReceiveHistoryMessages:toMessages];
+            }
+        }
+    } failure:^(NSError *error) {
+        if (errorDelegate) {
+            if ([errorDelegate respondsToSelector:@selector(getLoadHistoryMessageError)]) {
+                [errorDelegate getLoadHistoryMessageError];
+            }
+        }
+    }];
+}
+
 + (NSArray *)convertToChatViewMessageWithMQMessages:(NSArray *)messagesArray {
     //将MQMessage转换成UI能用的Message类型
     NSMutableArray *toMessages = [[NSMutableArray alloc] init];

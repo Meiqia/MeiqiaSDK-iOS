@@ -16,7 +16,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.6.6"
+#define MQSDKVersion @"3.6.7"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -277,6 +277,20 @@
  * @warning 需要在初始化成功后调用才有效
  */
 + (void)getServerHistoryMessagesWithUTCMsgDate:(NSDate *)msgDate
+                                messagesNumber:(NSInteger)messagesNumber
+                                       success:(void (^)(NSArray<MQMessage *> *messagesArray))success
+                                       failure:(void (^)(NSError* error))failure;
+
+/**
+ * 从服务端获取某日期之前的历史消息(包含留言信息)
+ *
+ * @param msgDate        获取该日期之前的历史消息，注：该日期是UTC格式的;
+ * @param messagesNumber 获取消息的数量
+ * @param success        回调中，messagesArray:消息数组
+ * @param failure        获取失败，返回错误信息
+ * @warning 需要在初始化成功后调用才有效
+ */
++ (void)getServerHistoryMessagesAndTicketsWithUTCMsgDate:(NSDate *)msgDate
                                 messagesNumber:(NSInteger)messagesNumber
                                        success:(void (^)(NSArray<MQMessage *> *messagesArray))success
                                        failure:(void (^)(NSError* error))failure;

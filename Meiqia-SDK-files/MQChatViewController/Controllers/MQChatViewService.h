@@ -132,6 +132,12 @@
 - (void)startGettingHistoryMessages;
 - (void)startGettingDateBaseHistoryMessages;
 - (void)startGettingHistoryMessagesFromLastMessage;
+
+/**
+ * 在开启无消息访客过滤的条件下获取历史聊天信息
+ */
+- (void)getMessagesWithScheduleAfterClientSendMessage;
+
 /**
  * 发送文字消息
  */

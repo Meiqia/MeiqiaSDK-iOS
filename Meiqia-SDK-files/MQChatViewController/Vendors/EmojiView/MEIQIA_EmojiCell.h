@@ -1,5 +1,5 @@
 //
-//  XlpEmojiCell.h
+//  MEIQIA_EmojiCell.h
 //  Meiqia-SDK-Demo
 //
 //  Created by xulianpeng on 2018/1/10.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XlpEmojiCell : UICollectionViewCell
+@interface MEIQIA_EmojiCell : UICollectionViewCell
 @property(nonatomic,strong)UILabel *emojiLabel;
 @end

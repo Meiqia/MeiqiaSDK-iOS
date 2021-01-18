@@ -121,6 +121,17 @@
                                      delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 
 /**
+ * 从服务端获取留言消息和一般的消息
+ *
+ * @param msgDate 获取该日期之前的历史消息;
+ * @param messagesNum 获取消息的数量
+ */
++ (void)getServerHistoryMessagesAndTicketsWithMsgDate:(NSDate *)msgDate
+                             messagesNumber:(NSInteger)messagesNumber
+                            successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
+                              errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
+
+/**
  * 从服务端获取更多消息
  *
  * @param msgDate 获取该日期之前的历史消息;

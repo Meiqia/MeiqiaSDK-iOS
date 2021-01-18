@@ -38,13 +38,13 @@
 #import "MQToolUtil.h"
 #import "MQChatViewManager.h"
 #import <MeiQiaSDK/MQManager.h>
-#import "XLPInputView.h"
+#import "MEIQIA_InputView.h"
 #import "MQCellModelProtocol.h"
 #import "MQVideoPlayerViewController.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQBottomBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate,XLPInputViewDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQBottomBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate,MEIQIA_InputViewDelegate>
 
 @property(nonatomic, strong)MQChatViewService *chatViewService;
 
@@ -202,8 +202,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
                 
                 
                 // 加载历史消息
-                [self.chatViewService startGettingHistoryMessages];
-                
+                [self.chatViewService getMessagesWithScheduleAfterClientSendMessage];
                 // 注册通知
                 // TODO: 这个通知什么时候回调（客服离开、隐身、结束对话都不会触发）
                 [MQManager addStateObserverWithBlock:^(MQState oldState, MQState newState, NSDictionary *value, NSError *error) {
@@ -1065,8 +1064,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             
             CGFloat emojiViewHeight = MQToolUtil.kXlpObtainDeviceVersionIsIphoneX ? (emojikeyboardHeight + 34) : emojikeyboardHeight;
             
-            XLPInputView * mmView = [[XLPInputView alloc]initWithFrame:CGRectMake(0,0, self.view.frame.size.width, emojiViewHeight)];
-            mmView.xlpInputViewDelegate = self;
+            MEIQIA_InputView * mmView = [[MEIQIA_InputView alloc]initWithFrame:CGRectMake(0,0, self.view.frame.size.width, emojiViewHeight)];
+            mmView.inputViewDelegate = self;
             self.bottomBar.inputView = mmView;
             
             [self.bottomBar becomeFirstResponder];
@@ -1181,18 +1180,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 #pragma mark - emoji delegate and datasource
 
-- (void)XLPInputViewObtainEmojiStr:(NSString *)emojiStr{
+- (void)MQInputViewObtainEmojiStr:(NSString *)emojiStr{
     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.bottomBar.contentView textField];
     textField.text = [textField.text stringByAppendingString:emojiStr];
 }
-- (void)XLPInputViewDeleteEmoji{
+- (void)MQInputViewDeleteEmoji{
     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.bottomBar.contentView textField];
     if (textField.text.length > 0) {
         NSRange lastRange = [textField.text rangeOfComposedCharacterSequenceAtIndex:([textField.text length] - 1)];
         textField.text = [textField.text stringByReplacingCharactersInRange:lastRange withString:@""];
     }
 }
-- (void)XLPInputViewSendEmoji{
+- (void)MQInputViewSendEmoji{
     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.bottomBar.contentView textField];
     if (textField.text.length > 0) {
         

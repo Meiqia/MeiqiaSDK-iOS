@@ -1,15 +1,14 @@
 //
-//  NSString+Name.m
+//  NSString+MQName.m
 //  MQEcoboostSDK-test
 //
 //  Created by qipeng_yuhao on 2020/5/29.
 //  Copyright © 2020 MeiQia. All rights reserved.
 //
 
-#import "NSString+Name.h"
+#import "NSString+MQName.h"
 
-
-@implementation NSString (Name)
+@implementation NSString (MQName)
 
 - (NSString *)resetName{
     if (!self) {

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RoundProgressView : UIView
+@interface MQRoundProgressView : UIView
 
 @property (strong, nonatomic) UIColor *progressColor;
 

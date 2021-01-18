@@ -10,12 +10,12 @@
 #import "MQVideoCellModel.h"
 #import "MQChatViewConfig.h"
 #import "MQAssetUtil.h"
-#import "RoundProgressView.h"
+#import "MQRoundProgressView.h"
 
 @interface MQVideoMessageCell ()
 @property (nonatomic, copy) NSString *mediaPath;
 @property (nonatomic, copy) NSString *mediaServerPath;
-@property (nonatomic, strong) RoundProgressView *progressView;
+@property (nonatomic, strong) MQRoundProgressView *progressView;
 @end
 
 @implementation MQVideoMessageCell {
@@ -50,7 +50,7 @@
         [playBtn setBackgroundImage:[MQAssetUtil videoPlayImage] forState:UIControlStateNormal];
         [playBtn addTarget:self action:@selector(clickPlaybtn) forControlEvents:UIControlEventTouchUpInside];
         
-        self.progressView = [[RoundProgressView alloc] initWithFrame:CGRectMake(0, 0, kMQCellPlayBtnHeight, kMQCellPlayBtnHeight) centerView:playBtn];
+        self.progressView = [[MQRoundProgressView alloc] initWithFrame:CGRectMake(0, 0, kMQCellPlayBtnHeight, kMQCellPlayBtnHeight) centerView:playBtn];
         self.progressView.progressHidden = YES;
         self.progressView.progressColor = [UIColor greenColor];
         [bubbleView addSubview:self.progressView];

@@ -14,10 +14,6 @@
 #define AmrRecordWriter __NS_SYMBOL(AmrRecordWriter)
 #endif
 
-#ifndef AutoPurgeCache
-#define AutoPurgeCache __NS_SYMBOL(AutoPurgeCache)
-#endif
-
 #ifndef CafRecordWriter
 #define CafRecordWriter __NS_SYMBOL(CafRecordWriter)
 #endif
@@ -64,22 +60,6 @@
 
 #ifndef LevelMeterState
 #define LevelMeterState __NS_SYMBOL(LevelMeterState)
-#endif
-
-#ifndef MHFacebookImageViewer
-#define MHFacebookImageViewer __NS_SYMBOL(MHFacebookImageViewer)
-#endif
-
-#ifndef MHFacebookImageViewerCell
-#define MHFacebookImageViewerCell __NS_SYMBOL(MHFacebookImageViewerCell)
-#endif
-
-#ifndef MHFacebookImageViewerTapGestureRecognizer
-#define MHFacebookImageViewerTapGestureRecognizer __NS_SYMBOL(MHFacebookImageViewerTapGestureRecognizer)
-#endif
-
-#ifndef MKAnnotationView
-#define MKAnnotationView __NS_SYMBOL(MKAnnotationView)
 #endif
 
 #ifndef MLAudioMeterObserver
