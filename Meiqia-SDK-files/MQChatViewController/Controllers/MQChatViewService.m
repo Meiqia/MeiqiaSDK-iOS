@@ -218,7 +218,14 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [cellModel isKindOfClass:[MQVideoCellModel class]] ||
             [cellModel isKindOfClass:[MQEventCellModel class]] ||
             [cellModel isKindOfClass:[MQFileDownloadCellModel class]] ||
-            [cellModel isKindOfClass:[MQPhotoCardCellModel class]])
+            [cellModel isKindOfClass:[MQPhotoCardCellModel class]] ||
+            [cellModel isKindOfClass:[MQWebViewBubbleCellModel class]] ||
+            [cellModel isKindOfClass:[MQBotAnswerCellModel class]] ||
+            [cellModel isKindOfClass:[MQBotMenuAnswerCellModel class]] ||
+            [cellModel isKindOfClass:[MQBotMenuCellModel class]] ||
+            [cellModel isKindOfClass:[MQBotMenuWebViewBubbleAnswerCellModel class]] ||
+            [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
+            [cellModel isKindOfClass:[MQEvaluationResultCellModel class]])
         {
             return [cellModel getCellDate];
         }
@@ -239,7 +246,15 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [cellModel isKindOfClass:[MQVideoCellModel class]] ||
                 [cellModel isKindOfClass:[MQEventCellModel class]] ||
                 [cellModel isKindOfClass:[MQFileDownloadCellModel class]] ||
-                [cellModel isKindOfClass:[MQPhotoCardCellModel class]])
+                [cellModel isKindOfClass:[MQPhotoCardCellModel class]] ||
+                [cellModel isKindOfClass:[MQWebViewBubbleCellModel class]] ||
+                [cellModel isKindOfClass:[MQBotAnswerCellModel class]] ||
+                [cellModel isKindOfClass:[MQBotMenuAnswerCellModel class]] ||
+                [cellModel isKindOfClass:[MQBotMenuCellModel class]] ||
+                [cellModel isKindOfClass:[MQBotMenuWebViewBubbleAnswerCellModel class]] ||
+                [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
+                [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
+                [cellModel isKindOfClass:[MQEvaluationResultCellModel class]])
             {
                 return [cellModel getCellDate];
             }
@@ -497,7 +512,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
         
         if (lastCellModel && !haveSplit) {
-            MQSplitLineCellModel *cellModel = [[MQSplitLineCellModel alloc] initCellModelWithCellWidth:self.chatViewWidth];
+            MQSplitLineCellModel *cellModel = [[MQSplitLineCellModel alloc] initCellModelWithCellWidth:self.chatViewWidth withConversionDate:[beAddedCellModel getCellDate]];
             [self.cellModels addObject:cellModel];
             [self.delegate insertCellAtBottomForModelCount: 1];
             return true;
@@ -535,7 +550,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
     
     if ([beInsertedCellModel getMessageConversionId].length > 0 && ![lastCellModel.getMessageConversionId isEqualToString:beInsertedCellModel.getMessageConversionId]) {
-        MQSplitLineCellModel *cellModel1 = [[MQSplitLineCellModel alloc] initCellModelWithCellWidth:self.chatViewWidth];
+        MQSplitLineCellModel *cellModel1 = [[MQSplitLineCellModel alloc] initCellModelWithCellWidth:self.chatViewWidth withConversionDate:[beInsertedCellModel getCellDate]];
         return cellModel1;
     }
     return nil;
@@ -891,8 +906,29 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         position = [obj intValue];
     }];
     
-    NSUInteger newMessageCount = newCellModels.count;
     if (newCellModels.count == 0) { return 0; }
+    // 判断是否需要添加分割线
+    if (position == 1) {
+        id <MQCellModelProtocol> currentFirstCellModel;
+        for (id<MQCellModelProtocol> cellModel in self.cellModels) {
+            if ([cellModel getMessageConversionId].length > 0) {
+                currentFirstCellModel = cellModel;
+                break;
+            }
+        }
+        if (!currentFirstCellModel) {
+            MQSplitLineCellModel *splitLineCellModel = [self insertConversionSplitLineWithCellModel:currentFirstCellModel withCellModels:newCellModels];
+            if (splitLineCellModel) {
+                [newCellModels addObject:splitLineCellModel];
+            }
+        }
+    } else if (position == 0) {
+        MQSplitLineCellModel *splitLineCellModel = [self insertConversionSplitLineWithCellModel:[newCellModels firstObject] withCellModels:self.cellModels];
+        if (splitLineCellModel) {
+            [newCellModels insertObject:splitLineCellModel atIndex:0];
+        }
+    }
+    NSUInteger newMessageCount = newCellModels.count;
     switch (position) {
         case 1: // top
             [self insertMessageDateCellAtFirstWithCellModel:[newCellModels firstObject]]; // 如果需要，顶部插入时间

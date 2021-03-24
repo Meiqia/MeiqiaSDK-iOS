@@ -22,15 +22,16 @@ static CGFloat const kMQSplitLineCellLableWidth = 90.0;
 @property (nonatomic, readwrite, assign) CGRect labelFrame;
 @property (nonatomic, readwrite, assign) CGRect leftLineFrame;
 @property (nonatomic, readwrite, assign) CGRect rightLineFrame;
+@property (nonatomic, readwrite, copy) NSDate *currentDate;
 
 @end
 
 @implementation MQSplitLineCellModel
 
-- (MQSplitLineCellModel *)initCellModelWithCellWidth:(CGFloat)cellWidth {
+- (MQSplitLineCellModel *)initCellModelWithCellWidth:(CGFloat)cellWidth withConversionDate:(NSDate *)date {
     if (self = [super init]) {
         self.cellWidth = cellWidth;
-        
+        self.currentDate = date;
         self.labelFrame = CGRectMake(cellWidth/2.0 - kMQSplitLineCellLableWidth/2.0, (kMQSplitLineCellHeight - kMQSplitLineCellLableHeight)/2.0 - 3, kMQSplitLineCellLableWidth, kMQSplitLineCellLableHeight);
         self.leftLineFrame = CGRectMake(kMQSplitLineCellSpacing, kMQSplitLineCellHeight/2.0, CGRectGetMinX(self.labelFrame) - kMQSplitLineCellSpacing, 0.5);
         self.rightLineFrame = CGRectMake(CGRectGetMaxX(self.labelFrame), CGRectGetMinY(self.leftLineFrame), cellWidth - kMQSplitLineCellSpacing - CGRectGetMaxX(self.labelFrame), 0.5);
@@ -41,7 +42,7 @@ static CGFloat const kMQSplitLineCellLableWidth = 90.0;
 
 #pragma MQCellModelProtocol
 - (NSDate *)getCellDate {
-    return [NSDate date];
+    return self.currentDate;
 }
 
 - (CGFloat)getCellHeight {

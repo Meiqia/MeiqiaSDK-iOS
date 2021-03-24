@@ -88,7 +88,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.chatViewService setCurrentInputtingText:[(MQTabInputContentView *)self.bottomBar.contentView textField].text];
     [self closeMeiqiaChatView];
     [MQCustomizedUIText reset];
-
+    [MQServiceToViewInterface completeChat];
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -235,10 +235,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
     
     [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
-    
-    [MQServiceToViewInterface completeChat];
-    
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -566,7 +562,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         return NO;
     }
     
-    if (openVisitorNoMessageBool) {
+    if (openVisitorNoMessageBool || self.chatViewService.clientStatus == MQStateUnallocatedAgent) {
         [self.view endEditing:YES];
         [self.chatViewService setClientOnline];
         

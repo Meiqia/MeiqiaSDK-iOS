@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, assign) CGRect leftLineFrame;
 @property (nonatomic, readonly, assign) CGRect rightLineFrame;
 
-- (MQSplitLineCellModel *)initCellModelWithCellWidth:(CGFloat)cellWidth;
+- (MQSplitLineCellModel *)initCellModelWithCellWidth:(CGFloat)cellWidth withConversionDate:(NSDate *)date;
 
 @end
 
