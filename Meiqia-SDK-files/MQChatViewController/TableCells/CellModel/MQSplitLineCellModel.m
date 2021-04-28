@@ -12,7 +12,7 @@
 static CGFloat const kMQSplitLineCellSpacing = 20.0;
 static CGFloat const kMQSplitLineCellHeight = 40.0;
 static CGFloat const kMQSplitLineCellLableHeight = 20.0;
-static CGFloat const kMQSplitLineCellLableWidth = 90.0;
+static CGFloat const kMQSplitLineCellLableWidth = 150.0;
 @interface MQSplitLineCellModel()
 
 /**

@@ -593,7 +593,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
 }
 
-- (void)scrollToButton {
+- (void)scrollToBottom {
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(scrollTableViewToBottomAnimated:)]) {
             [self.delegate scrollTableViewToBottomAnimated: NO];
@@ -1024,7 +1024,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self.cellModels addObject:cellModel];
         [self.delegate insertCellAtBottomForModelCount: 1];
     }
-    [self scrollToButton];
+    [self scrollToBottom];
 }
 
 // 清除当前界面的「转人工」「留言」的 tipCell
@@ -1050,7 +1050,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initWaitingInQueueTipCellModelWithCellWidth:self.chatViewWidth withIntro:enterPrise.configInfo.queueIntro position:position tipType:MQTipTypeWaitingInQueue];
             [self.cellModels addObject:cellModel];
             [self.delegate insertCellAtBottomForModelCount: 1];
-            [self scrollToButton];
+            [self scrollToBottom];
         }
     }];
 }
@@ -1166,12 +1166,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         NSInteger newCellCount = [self saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex: NO];
         [UIView setAnimationsEnabled:NO];
         [self.delegate insertCellAtTopForModelCount: newCellCount];
-        [self scrollToButton];
+        [self scrollToBottom];
         [UIView setAnimationsEnabled:YES];
         [self.delegate reloadChatTableView];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self scrollToButton]; // some image may lead the table didn't reach bottom
+            [self scrollToBottom]; // some image may lead the table didn't reach bottom
         });
     }
     
@@ -1533,7 +1533,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [self.delegate reloadChatTableView];
                 
 //                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                    [self scrollToButton];
+//                    [self scrollToBottom];
 //                });
             }
             
@@ -1640,9 +1640,17 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [cellModel updateCellSendStatus:sendStatus];
     }
     
+    BOOL needSplitLine = NO;
     if (cellModel.getMessageConversionId.length < 1) {
         if ([cellModel respondsToSelector:@selector(updateCellConversionId:)]) {
             [cellModel updateCellConversionId:[MQServiceToViewInterface getCurrentConversationID]];
+        }
+    } else {
+        if (cellModel.getMessageConversionId != [MQServiceToViewInterface getCurrentConversationID]) {
+            needSplitLine = YES;
+            if ([cellModel respondsToSelector:@selector(updateCellConversionId:)]) {
+                [cellModel updateCellConversionId:[MQServiceToViewInterface getCurrentConversationID]];
+            }
         }
     }
     if (newMessageDate) {
@@ -1664,7 +1672,15 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     
     // 消息发送完成，刷新单行cell
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self updateCellWithIndex:index needToBottom:YES];
+        if (needSplitLine) {
+            MQSplitLineCellModel *cellModel1 = [[MQSplitLineCellModel alloc] initCellModelWithCellWidth:self.chatViewWidth withConversionDate:newMessageDate];
+            [self.cellModels replaceObjectAtIndex:index withObject:cellModel1];
+            [self.cellModels addObject:cellModel];
+            [self reloadChatTableView];
+            [self scrollToBottom];
+        } else {
+            [self updateCellWithIndex:index needToBottom:YES];
+        }
     });
     
     // 将 messageId 保存到 set，用于去重

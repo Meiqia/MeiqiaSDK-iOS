@@ -17,6 +17,8 @@
 
 - (NSString *)meiqiaStyleDateForDate:(NSDate *)date;
 
+- (NSString *)meiqiaSplitLineDateForDate:(NSDate *)date;
+
 - (NSString *)timestampForDate:(NSDate *)date;
 
 - (NSString *)timeForDate:(NSDate *)date;

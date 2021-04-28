@@ -156,7 +156,7 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
                                      delegate:(id<MQCellModelDelegate>)delegator
 {
     if (self = [super init]) {
-        self.textLabelForHeightCalculation = [TTTAttributedLabel new];
+        self.textLabelForHeightCalculation = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
         self.textLabelForHeightCalculation.numberOfLines = 0;
         self.messageId = message.messageId;
         self.conversionId = message.conversionId;

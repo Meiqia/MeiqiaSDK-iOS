@@ -9,6 +9,7 @@
 #import "MQSplitLineCell.h"
 #import <Foundation/Foundation.h>
 #import "MQSplitLineCellModel.h"
+#import "MQDateFormatterUtil.h"
 #import "UIColor+MQHex.h"
 
 @implementation MQSplitLineCell {
@@ -21,8 +22,7 @@
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         
         UILabel *lable = [[UILabel alloc] init];
-        lable.text = @"· · · ";
-        lable.font = [UIFont boldSystemFontOfSize:40];
+        lable.font = [UIFont boldSystemFontOfSize:14];
         lable.textAlignment = NSTextAlignmentCenter;
         lable.textColor = [UIColor colorWithRed:242/255 green:242/255 blue:247/255 alpha:0.2];
         _lable = lable;
@@ -52,6 +52,7 @@
     _lable.frame = cellModel.labelFrame;
     _leftLine.frame = cellModel.leftLineFrame;
     _rightLine.frame = cellModel.rightLineFrame;
+    _lable.text = [[MQDateFormatterUtil sharedFormatter] meiqiaSplitLineDateForDate:cellModel.getCellDate];
 }
 
 @end

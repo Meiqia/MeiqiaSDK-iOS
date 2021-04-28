@@ -20,7 +20,7 @@
 
 "display_video_expired" = "視頻已過期";
 
-"display_video_more_than_limit" = "視頻超過最大限制400M"
+"display_video_more_than_limit" = "視頻超過最大限制400M";
 
 "network_jam"         = "網絡不太通常，請檢查網絡";
 

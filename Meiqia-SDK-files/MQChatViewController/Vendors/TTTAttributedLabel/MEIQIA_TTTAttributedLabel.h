@@ -1,4 +1,4 @@
-// TTTAttributedLabel.h
+// MEIQIA_TTTAttributedLabel.h
 //
 // Copyright (c) 2011 Mattt Thompson (http://mattt.me)
 // 
@@ -22,13 +22,12 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
-#import "MQNamespacedDependencies.h"
 
-//! Project version number for TTTAttributedLabel.
-FOUNDATION_EXPORT double TTTAttributedLabelVersionNumber;
+//! Project version number for MEIQIA_TTTAttributedLabel.
+FOUNDATION_EXPORT double MEIQIA_TTTAttributedLabelVersionNumber;
 
-//! Project version string for TTTAttributedLabel.
-FOUNDATION_EXPORT const unsigned char TTTAttributedLabelVersionString[];
+//! Project version string for MEIQIA_TTTAttributedLabel.
+FOUNDATION_EXPORT const unsigned char MEIQIA_TTTAttributedLabelVersionString[];
 
 @class MEIQIA_TTTAttributedLabelLink;
 
@@ -36,9 +35,9 @@ FOUNDATION_EXPORT const unsigned char TTTAttributedLabelVersionString[];
  Vertical alignment for text in a label whose bounds are larger than its text bounds
  */
 typedef NS_ENUM(NSInteger, MEIQIA_TTTAttributedLabelVerticalAlignment) {
-    TTTAttributedLabelVerticalAlignmentCenter   = 0,
-    TTTAttributedLabelVerticalAlignmentTop      = 1,
-    TTTAttributedLabelVerticalAlignmentBottom   = 2,
+    MEIQIA_TTTAttributedLabelVerticalAlignmentCenter   = 0,
+    MEIQIA_TTTAttributedLabelVerticalAlignmentTop      = 1,
+    MEIQIA_TTTAttributedLabelVerticalAlignmentBottom   = 2,
 };
 
 /**
@@ -81,11 +80,11 @@ extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
 IB_DESIGNABLE
 
 /**
- `TTTAttributedLabel` is a drop-in replacement for `UILabel` that supports `NSAttributedString`, as well as automatically-detected and manually-added links to URLs, addresses, phone numbers, and dates.
+ `MEIQIA_TTTAttributedLabel` is a drop-in replacement for `UILabel` that supports `NSAttributedString`, as well as automatically-detected and manually-added links to URLs, addresses, phone numbers, and dates.
  
- ## Differences Between `TTTAttributedLabel` and `UILabel`
+ ## Differences Between `MEIQIA_TTTAttributedLabel` and `UILabel`
  
- For the most part, `TTTAttributedLabel` behaves just like `UILabel`. The following are notable exceptions, in which `TTTAttributedLabel` may act differently:
+ For the most part, `MEIQIA_TTTAttributedLabel` behaves just like `UILabel`. The following are notable exceptions, in which `MEIQIA_TTTAttributedLabel` may act differently:
  
  - `text` - This property now takes an `id` type argument, which can either be a kind of `NSString` or `NSAttributedString` (mutable or immutable in both cases)
  - `attributedText` - Do not set this property directly. Instead, pass an `NSAttributedString` to `text`.
@@ -99,7 +98,7 @@ IB_DESIGNABLE
  
  ### NSCoding
  
- `TTTAttributedLabel`, like `UILabel`, conforms to `NSCoding`. However, if the build target is set to less than iOS 6.0, `linkAttributes` and `activeLinkAttributes` will not be encoded or decoded. This is due to an runtime exception thrown when attempting to copy non-object CoreText values in dictionaries.
+ `MEIQIA_TTTAttributedLabel`, like `UILabel`, conforms to `NSCoding`. However, if the build target is set to less than iOS 6.0, `linkAttributes` and `activeLinkAttributes` will not be encoded or decoded. This is due to an runtime exception thrown when attempting to copy non-object CoreText values in dictionaries.
  
  @warning Any properties changed on the label after setting the text will not be reflected until a subsequent call to `setText:` or `setText:afterInheritingLabelAttributesAndConfiguringWithBlock:`. This is to say, order of operations matters in this case. For example, if the label text color is originally black when the text is set, changing the text color to red will have no effect on the display of the label until the text is set once again.
  
@@ -120,18 +119,13 @@ IB_DESIGNABLE
 /**
  The receiver's delegate.
  
- @discussion A `TTTAttributedLabel` delegate responds to messages sent by tapping on links in the label. You can use the delegate to respond to links referencing a URL, address, phone number, date, or date with a specified time zone and duration.
+ @discussion A `MEIQIA_TTTAttributedLabel` delegate responds to messages sent by tapping on links in the label. You can use the delegate to respond to links referencing a URL, address, phone number, date, or date with a specified time zone and duration.
  */
 @property (nonatomic, unsafe_unretained) IBOutlet id <MEIQIA_TTTAttributedLabelDelegate> delegate;
 
 ///--------------------------------------------
 /// @name Detecting, Accessing, & Styling Links
 ///--------------------------------------------
-
-/**
- @deprecated Use `enabledTextCheckingTypes` property instead.
- */
-@property (nonatomic, assign) NSTextCheckingTypes dataDetectorTypes DEPRECATED_ATTRIBUTE;
 
 /**
  A bitmask of `NSTextCheckingType` which are used to automatically detect links in the label text.
@@ -169,7 +163,7 @@ IB_DESIGNABLE
 
 /**
  Indicates if links will be detected within an extended area around the touch
- to emulate the link detection behaviour of UIWebView. 
+ to emulate the link detection behaviour of WKWebView. 
  Default value is NO. Enabling this may adversely impact performance.
  */
 @property (nonatomic, assign) BOOL extendsLinkTouchArea;
@@ -206,14 +200,11 @@ IB_DESIGNABLE
 ///--------------------------------------------
 
 /**
- The distance, in points, from the leading margin of a frame to the beginning of the paragraph's first line. This value is always nonnegative, and is 0.0 by default. 
+ The distance, in points, from the leading margin of a frame to the beginning of the 
+ paragraph's first line. This value is always nonnegative, and is 0.0 by default. 
+ This applies to the full text, rather than any specific paragraph metrics.
  */
 @property (nonatomic, assign) IBInspectable CGFloat firstLineIndent;
-
-/**
- @deprecated Use `lineSpacing` instead.
- */
-@property (nonatomic, assign) IBInspectable CGFloat leading DEPRECATED_ATTRIBUTE;
 
 /**
  The space in points added between lines within the paragraph. This value is always nonnegative and is 0.0 by default.
@@ -237,21 +228,13 @@ IB_DESIGNABLE
 
 /**
  The distance, in points, from the margin to the text container. This value is `UIEdgeInsetsZero` by default.
- 
- @discussion The `UIEdgeInset` members correspond to paragraph style properties rather than a particular geometry, and can change depending on the writing direction. 
- 
- ## `UIEdgeInset` Member Correspondence With `CTParagraphStyleSpecifier` Values:
- 
- - `top`: `kCTParagraphStyleSpecifierParagraphSpacingBefore`
- - `left`: `kCTParagraphStyleSpecifierHeadIndent`
- - `bottom`: `kCTParagraphStyleSpecifierParagraphSpacing`
- - `right`: `kCTParagraphStyleSpecifierTailIndent`
- 
+ sizeThatFits: will have its returned size increased by these margins.
+ drawTextInRect: will inset all drawn text by these margins.
  */
 @property (nonatomic, assign) IBInspectable UIEdgeInsets textInsets;
 
 /**
- The vertical text alignment for the label, for when the frame size is greater than the text rect size. The vertical alignment is `TTTAttributedLabelVerticalAlignmentCenter` by default.
+ The vertical text alignment for the label, for when the frame size is greater than the text rect size. The vertical alignment is `MEIQIA_TTTAttributedLabelVerticalAlignmentCenter` by default.
  */
 @property (nonatomic, assign) MEIQIA_TTTAttributedLabelVerticalAlignment verticalAlignment;
 
@@ -260,17 +243,7 @@ IB_DESIGNABLE
 ///--------------------------------------------
 
 /**
- @deprecated Use `attributedTruncationToken` instead.
- */
-@property (nonatomic, strong) NSString *truncationTokenString DEPRECATED_ATTRIBUTE;
-
-/**
- @deprecated Use `attributedTruncationToken` instead.
- */
-@property (nonatomic, strong) NSDictionary *truncationTokenStringAttributes DEPRECATED_ATTRIBUTE;
-
-/**
- The attributed string to apply to the truncation token at the end of a truncated line. Overrides `truncationTokenStringAttributes` and `truncationTokenString`. If unspecified, attributes will fallback to `truncationTokenStringAttributes` and `truncationTokenString`.
+ The attributed string to apply to the truncation token at the end of a truncated line.
  */
 @property (nonatomic, strong) IBInspectable NSAttributedString *attributedTruncationToken;
 
@@ -340,11 +313,11 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 ///-------------------
 
 /**
- Adds a link. You can customize an individual link's appearance and accessibility value by creating your own @c TTTAttributedLabelLink and passing it to this method. The other methods for adding links will use the label's default attributes.
+ Adds a link. You can customize an individual link's appearance and accessibility value by creating your own @c MEIQIA_TTTAttributedLabelLink and passing it to this method. The other methods for adding links will use the label's default attributes.
  
  @warning Modifying the link's attribute dictionaries must be done before calling this method.
  
- @param link A @c TTTAttributedLabelLink object.
+ @param link A @c MEIQIA_TTTAttributedLabelLink object.
  */
 - (void)addLink:(MEIQIA_TTTAttributedLabelLink *)link;
 
@@ -450,7 +423,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 - (BOOL)containslinkAtPoint:(CGPoint)point;
 
 /**
- Returns the @c TTTAttributedLabelLink at the give point if it exists.
+ Returns the @c MEIQIA_TTTAttributedLabelLink at the give point if it exists.
  
  @discussion This can be used together with @c UIViewControllerPreviewingDelegate to peek into links.
  
@@ -461,7 +434,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 @end
 
 /**
- The `TTTAttributedLabelDelegate` protocol defines the messages sent to an attributed label delegate when links are tapped. All of the methods of this protocol are optional.
+ The `MEIQIA_TTTAttributedLabelDelegate` protocol defines the messages sent to an attributed label delegate when links are tapped. All of the methods of this protocol are optional.
  */
 @protocol MEIQIA_TTTAttributedLabelDelegate <NSObject>
 
@@ -531,7 +504,7 @@ didSelectLinkWithTransitInformation:(NSDictionary *)components;
 /**
  Tells the delegate that the user did select a link to a text checking result.
  
- @discussion This method is called if no other delegate method was called, which can occur by either now implementing the method in `TTTAttributedLabelDelegate` corresponding to a particular link, or the link was added by passing an instance of a custom `NSTextCheckingResult` subclass into `-addLinkWithTextCheckingResult:`.
+ @discussion This method is called if no other delegate method was called, which can occur by either now implementing the method in `MEIQIA_TTTAttributedLabelDelegate` corresponding to a particular link, or the link was added by passing an instance of a custom `NSTextCheckingResult` subclass into `-addLinkWithTextCheckingResult:`.
  
  @param label The label whose link was selected.
  @param result The custom text checking result.
@@ -638,7 +611,7 @@ didLongPressLinkWithTextCheckingResult:(NSTextCheckingResult *)result
 
 @interface MEIQIA_TTTAttributedLabelLink : NSObject <NSCoding>
 
-typedef void (^TTTAttributedLabelLinkBlock) (MEIQIA_TTTAttributedLabel *, MEIQIA_TTTAttributedLabelLink *);
+typedef void (^MEIQIA_TTTAttributedLabelLinkBlock) (MEIQIA_TTTAttributedLabel *, MEIQIA_TTTAttributedLabelLink *);
 
 /**
  An `NSTextCheckingResult` representing the link's location and type.
@@ -668,16 +641,16 @@ typedef void (^TTTAttributedLabelLinkBlock) (MEIQIA_TTTAttributedLabel *, MEIQIA
 /**
  A block called when this link is tapped.
  If non-nil, tapping on this link will call this block instead of the 
- @c TTTAttributedLabelDelegate tap methods, which will not be called for this link.
+ @c MEIQIA_TTTAttributedLabelDelegate tap methods, which will not be called for this link.
  */
-@property (nonatomic, copy) TTTAttributedLabelLinkBlock linkTapBlock;
+@property (nonatomic, copy) MEIQIA_TTTAttributedLabelLinkBlock linkTapBlock;
 
 /**
  A block called when this link is long-pressed.
  If non-nil, long pressing on this link will call this block instead of the
- @c TTTAttributedLabelDelegate long press methods, which will not be called for this link.
+ @c MEIQIA_TTTAttributedLabelDelegate long press methods, which will not be called for this link.
  */
-@property (nonatomic, copy) TTTAttributedLabelLinkBlock linkLongPressBlock;
+@property (nonatomic, copy) MEIQIA_TTTAttributedLabelLinkBlock linkLongPressBlock;
 
 /**
  Initializes a link using the attribute dictionaries specified.

@@ -95,7 +95,7 @@
                                     cellWidth:(CGFloat)cellWidth delegate:(id<MQCellModelDelegate>)delegator
 {
     if (self = [super init]) {
-        self.textLabelForHeightCalculation = [TTTAttributedLabel new];
+        self.textLabelForHeightCalculation = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
         self.textLabelForHeightCalculation.numberOfLines = 0;
         self.conversionId = message.conversionId;
         self.messageId = message.messageId;
