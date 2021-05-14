@@ -16,7 +16,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.6.9"
+#define MQSDKVersion @"3.7.0"
 @protocol MQManagerDelegate <NSObject>
 
 /**
