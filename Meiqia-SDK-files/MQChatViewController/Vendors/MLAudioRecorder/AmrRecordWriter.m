@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 molon. All rights reserved.
 //
 
-#import "MEIQIA_AmrRecordWriter.h"
+#import "AmrRecordWriter.h"
 
 //amr编码
 #import "interf_enc.h"
 
-@interface MEIQIA_AmrRecordWriter()
+@interface AmrRecordWriter()
 {
     FILE *_file;
     void *_destate;
@@ -22,9 +22,9 @@
 
 @end
 
-@implementation MEIQIA_AmrRecordWriter
+@implementation AmrRecordWriter
 
-- (BOOL)createFileWithRecorder:(MEIQIA_MLAudioRecorder*)recoder;
+- (BOOL)createFileWithRecorder:(MLAudioRecorder*)recoder;
 {
     _destate = 0;
     // amr 压缩句柄
@@ -55,7 +55,7 @@
     return YES;
 }
 
-- (BOOL)writeIntoFileWithData:(NSData*)data withRecorder:(MEIQIA_MLAudioRecorder*)recoder inAQ:(AudioQueueRef)						inAQ inStartTime:(const AudioTimeStamp *)inStartTime inNumPackets:(UInt32)inNumPackets inPacketDesc:(const AudioStreamPacketDescription*)inPacketDesc
+- (BOOL)writeIntoFileWithData:(NSData*)data withRecorder:(MLAudioRecorder*)recoder inAQ:(AudioQueueRef)						inAQ inStartTime:(const AudioTimeStamp *)inStartTime inNumPackets:(UInt32)inNumPackets inPacketDesc:(const AudioStreamPacketDescription*)inPacketDesc
 {
     if (self.maxSecondCount>0){
         if (self.recordedSecondCount+recoder.bufferDurationSeconds>self.maxSecondCount){
@@ -112,7 +112,7 @@
     return YES;
 }
 
-- (BOOL)completeWriteWithRecorder:(MEIQIA_MLAudioRecorder*)recoder withIsError:(BOOL)isError
+- (BOOL)completeWriteWithRecorder:(MLAudioRecorder*)recoder withIsError:(BOOL)isError
 {
     //关闭就关闭吧。管他关闭成功与否
     if(_file){

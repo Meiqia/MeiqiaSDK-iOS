@@ -11,9 +11,9 @@
  */
 #import <Foundation/Foundation.h>
 
-#import "MEIQIA_MLAudioRecorder.h"
+#import "MLAudioRecorder.h"
 
-@interface MEIQIA_AmrRecordWriter : NSObject<FileWriterForMLAudioRecorder>
+@interface AmrRecordWriter : NSObject<FileWriterForMLAudioRecorder>
 
 @property (nonatomic, copy) NSString *filePath;
 

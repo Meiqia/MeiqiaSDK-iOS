@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (MQName)
 
-- (NSString *)resetName;
+- (NSString *)mq_resetName;
 
 @end
 

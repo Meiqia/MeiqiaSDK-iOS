@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 molon. All rights reserved.
 //
 
-#import "MEIQIA_MLAudioRecorder.h"
-#import "MQNamespacedDependencies.h"
+#import "MLAudioRecorder.h"
 #import <AVFoundation/AVFoundation.h>
 
 
@@ -35,7 +34,7 @@ return; \
 }   \
 }while(0)
 
-@interface MEIQIA_MLAudioRecorder()
+@interface MLAudioRecorder()
 {
     //音频输入缓冲区
     AudioQueueBufferRef	_audioBuffers[kNumberAudioQueueBuffers];
@@ -47,7 +46,7 @@ return; \
 
 @end
 
-@implementation MEIQIA_MLAudioRecorder
+@implementation MLAudioRecorder
 
 - (instancetype)init
 {
@@ -82,7 +81,7 @@ return; \
 // 回调函数
 void inputBufferHandler(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer, const AudioTimeStamp *inStartTime,UInt32 inNumPackets, const AudioStreamPacketDescription *inPacketDesc)
 {
-    MEIQIA_MLAudioRecorder *recorder = (__bridge MEIQIA_MLAudioRecorder*)inUserData;
+    MLAudioRecorder *recorder = (__bridge MLAudioRecorder*)inUserData;
     
     if (inNumPackets > 0) {
         NSData *pcmData = [[NSData alloc]initWithBytes:inBuffer->mAudioData length:inBuffer->mAudioDataByteSize];

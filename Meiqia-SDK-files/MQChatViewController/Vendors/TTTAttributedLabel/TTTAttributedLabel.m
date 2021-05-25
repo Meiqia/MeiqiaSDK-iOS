@@ -1,4 +1,4 @@
-// MEIQIA_TTTAttributedLabel.m
+// TTTAttributedLabel.m
 //
 // Copyright (c) 2011 Mattt Thompson (http://mattt.me)
 //
@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "MEIQIA_TTTAttributedLabel.h"
+#import "TTTAttributedLabel.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import <Availability.h>
@@ -98,7 +98,7 @@ static inline CGFloat TTTFlushFactorForTextAlignment(NSTextAlignment textAlignme
     }
 }
 
-static inline NSDictionary * NSAttributedStringAttributesFromLabel(MEIQIA_TTTAttributedLabel *label) {
+static inline NSDictionary * NSAttributedStringAttributesFromLabel(TTTAttributedLabel *label) {
     NSMutableDictionary *mutableAttributes = [NSMutableDictionary dictionary];
 
     [mutableAttributes setObject:label.font forKey:(NSString *)kCTFontAttributeName];
@@ -214,18 +214,18 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
 
 @end
 
-@interface MEIQIA_TTTAttributedLabel ()
+@interface TTTAttributedLabel ()
 @property (readwrite, nonatomic, copy) NSAttributedString *inactiveAttributedText;
 @property (readwrite, nonatomic, copy) NSAttributedString *renderedAttributedText;
 @property (readwrite, atomic, strong) NSDataDetector *dataDetector;
 @property (readwrite, nonatomic, strong) NSArray *linkModels;
-@property (readwrite, nonatomic, strong) MEIQIA_TTTAttributedLabelLink *activeLink;
+@property (readwrite, nonatomic, strong) TTTAttributedLabelLink *activeLink;
 @property (readwrite, nonatomic, strong) NSArray *accessibilityElements;
 
 - (void) longPressGestureDidFire:(UILongPressGestureRecognizer *)sender;
 @end
 
-@implementation MEIQIA_TTTAttributedLabel {
+@implementation TTTAttributedLabel {
 @private
     BOOL _needsFramesetter;
     CTFramesetterRef _framesetter;
@@ -476,7 +476,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     }
 }
 
-- (void)addLink:(MEIQIA_TTTAttributedLabelLink *)link {
+- (void)addLink:(TTTAttributedLabelLink *)link {
     [self addLinks:@[link]];
 }
 
@@ -485,7 +485,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     
     NSMutableAttributedString *mutableAttributedString = [self.attributedText mutableCopy];
 
-    for (MEIQIA_TTTAttributedLabelLink *link in links) {
+    for (TTTAttributedLabelLink *link in links) {
         if (link.attributes) {
             [mutableAttributedString addAttributes:link.attributes range:link.result.range];
         }
@@ -499,7 +499,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     self.linkModels = [NSArray arrayWithArray:mutableLinkModels];
 }
 
-- (MEIQIA_TTTAttributedLabelLink *)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result
+- (TTTAttributedLabelLink *)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result
                                                attributes:(NSDictionary *)attributes
 {
     return [self addLinksWithTextCheckingResults:@[result] attributes:attributes].firstObject;
@@ -514,7 +514,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
         NSDictionary *activeAttributes = attributes ? self.activeLinkAttributes : nil;
         NSDictionary *inactiveAttributes = attributes ? self.inactiveLinkAttributes : nil;
         
-        MEIQIA_TTTAttributedLabelLink *link = [[MEIQIA_TTTAttributedLabelLink alloc] initWithAttributes:attributes
+        TTTAttributedLabelLink *link = [[TTTAttributedLabelLink alloc] initWithAttributes:attributes
                                                                          activeAttributes:activeAttributes
                                                                        inactiveAttributes:inactiveAttributes
                                                                        textCheckingResult:result];
@@ -527,35 +527,35 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     return links;
 }
 
-- (MEIQIA_TTTAttributedLabelLink *)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result {
+- (TTTAttributedLabelLink *)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result {
     return [self addLinkWithTextCheckingResult:result attributes:self.linkAttributes];
 }
 
-- (MEIQIA_TTTAttributedLabelLink *)addLinkToURL:(NSURL *)url
+- (TTTAttributedLabelLink *)addLinkToURL:(NSURL *)url
                                withRange:(NSRange)range
 {
     return [self addLinkWithTextCheckingResult:[NSTextCheckingResult linkCheckingResultWithRange:range URL:url]];
 }
 
-- (MEIQIA_TTTAttributedLabelLink *)addLinkToAddress:(NSDictionary *)addressComponents
+- (TTTAttributedLabelLink *)addLinkToAddress:(NSDictionary *)addressComponents
                                    withRange:(NSRange)range
 {
     return [self addLinkWithTextCheckingResult:[NSTextCheckingResult addressCheckingResultWithRange:range components:addressComponents]];
 }
 
-- (MEIQIA_TTTAttributedLabelLink *)addLinkToPhoneNumber:(NSString *)phoneNumber
+- (TTTAttributedLabelLink *)addLinkToPhoneNumber:(NSString *)phoneNumber
                                        withRange:(NSRange)range
 {
     return [self addLinkWithTextCheckingResult:[NSTextCheckingResult phoneNumberCheckingResultWithRange:range phoneNumber:phoneNumber]];
 }
 
-- (MEIQIA_TTTAttributedLabelLink *)addLinkToDate:(NSDate *)date
+- (TTTAttributedLabelLink *)addLinkToDate:(NSDate *)date
             withRange:(NSRange)range
 {
     return [self addLinkWithTextCheckingResult:[NSTextCheckingResult dateCheckingResultWithRange:range date:date]];
 }
 
-- (MEIQIA_TTTAttributedLabelLink *)addLinkToDate:(NSDate *)date
+- (TTTAttributedLabelLink *)addLinkToDate:(NSDate *)date
                                  timeZone:(NSTimeZone *)timeZone
                                  duration:(NSTimeInterval)duration
                                 withRange:(NSRange)range
@@ -563,7 +563,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     return [self addLinkWithTextCheckingResult:[NSTextCheckingResult dateCheckingResultWithRange:range date:date timeZone:timeZone duration:duration]];
 }
 
-- (MEIQIA_TTTAttributedLabelLink *)addLinkToTransitInformation:(NSDictionary *)components
+- (TTTAttributedLabelLink *)addLinkToTransitInformation:(NSDictionary *)components
                                               withRange:(NSRange)range
 {
     return [self addLinkWithTextCheckingResult:[NSTextCheckingResult transitInformationCheckingResultWithRange:range components:components]];
@@ -575,14 +575,14 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     return [self linkAtPoint:point] != nil;
 }
 
-- (MEIQIA_TTTAttributedLabelLink *)linkAtPoint:(CGPoint)point {
+- (TTTAttributedLabelLink *)linkAtPoint:(CGPoint)point {
     
     // Stop quickly if none of the points to be tested are in the bounds.
     if (!CGRectContainsPoint(CGRectInset(self.bounds, -15.f, -15.f), point) || self.links.count == 0) {
         return nil;
     }
     
-    MEIQIA_TTTAttributedLabelLink *result = [self linkAtCharacterIndex:[self characterIndexAtPoint:point]];
+    TTTAttributedLabelLink *result = [self linkAtCharacterIndex:[self characterIndexAtPoint:point]];
     
     if (!result && self.extendsLinkTouchArea) {
         result = [self linkAtRadius:2.5f aroundPoint:point]
@@ -595,7 +595,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     return result;
 }
 
-- (MEIQIA_TTTAttributedLabelLink *)linkAtRadius:(const CGFloat)radius aroundPoint:(CGPoint)point {
+- (TTTAttributedLabelLink *)linkAtRadius:(const CGFloat)radius aroundPoint:(CGPoint)point {
     const CGFloat diagonal = CGFloat_sqrt(2 * radius * radius);
     const CGPoint deltas[] = {
         CGPointMake(0, -radius), CGPointMake(0, radius), // Above and below
@@ -605,7 +605,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     };
     const size_t count = sizeof(deltas) / sizeof(CGPoint);
     
-    MEIQIA_TTTAttributedLabelLink *link = nil;
+    TTTAttributedLabelLink *link = nil;
     
     for (NSUInteger i = 0; i < count && link.result == nil; i ++) {
         CGPoint currentPoint = CGPointMake(point.x + deltas[i].x, point.y + deltas[i].y);
@@ -615,14 +615,14 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     return link;
 }
 
-- (MEIQIA_TTTAttributedLabelLink *)linkAtCharacterIndex:(CFIndex)idx {
+- (TTTAttributedLabelLink *)linkAtCharacterIndex:(CFIndex)idx {
     // Do not enumerate if the index is outside of the bounds of the text.
     if (!NSLocationInRange((NSUInteger)idx, NSMakeRange(0, self.attributedText.length))) {
         return nil;
     }
     
     NSEnumerator *enumerator = [self.linkModels reverseObjectEnumerator];
-    MEIQIA_TTTAttributedLabelLink *link = nil;
+    TTTAttributedLabelLink *link = nil;
     while ((link = [enumerator nextObject])) {
         if (NSLocationInRange((NSUInteger)idx, link.result.range)) {
             return link;
@@ -1002,7 +1002,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     }
 }
 
-#pragma mark - MEIQIA_TTTAttributedLabel
+#pragma mark - TTTAttributedLabel
 
 - (void)setText:(id)text {
     NSParameterAssert(!text || [text isKindOfClass:[NSAttributedString class]] || [text isKindOfClass:[NSString class]]);
@@ -1061,7 +1061,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
     [self setText:mutableAttributedString];
 }
 
-- (void)setActiveLink:(MEIQIA_TTTAttributedLabelLink *)activeLink {
+- (void)setActiveLink:(TTTAttributedLabelLink *)activeLink {
     _activeLink = activeLink;
     
     NSDictionary *activeAttributes = activeLink.activeAttributes ?: self.activeLinkAttributes;
@@ -1148,13 +1148,13 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
     if (textSize.height < bounds.size.height) {
         CGFloat yOffset = 0.0f;
         switch (self.verticalAlignment) {
-            case MEIQIA_TTTAttributedLabelVerticalAlignmentCenter:
+            case TTTAttributedLabelVerticalAlignmentCenter:
                 yOffset = CGFloat_floor((bounds.size.height - textSize.height) / 2.0f);
                 break;
-            case MEIQIA_TTTAttributedLabelVerticalAlignmentBottom:
+            case TTTAttributedLabelVerticalAlignmentBottom:
                 yOffset = bounds.size.height - textSize.height;
                 break;
-            case MEIQIA_TTTAttributedLabelVerticalAlignmentTop:
+            case TTTAttributedLabelVerticalAlignmentTop:
             default:
                 break;
         }
@@ -1279,7 +1279,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
         @synchronized(self) {
             NSMutableArray *mutableAccessibilityItems = [NSMutableArray array];
 
-            for (MEIQIA_TTTAttributedLabelLink *link in self.linkModels) {
+            for (TTTAttributedLabelLink *link in self.linkModels) {
                 
                 if (link.result.range.location == NSNotFound) {
                     continue;
@@ -1351,7 +1351,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
     BOOL isInactive = (self.tintAdjustmentMode == UIViewTintAdjustmentModeDimmed);
 
     NSMutableAttributedString *mutableAttributedString = [self.attributedText mutableCopy];
-    for (MEIQIA_TTTAttributedLabelLink *link in self.linkModels) {
+    for (TTTAttributedLabelLink *link in self.linkModels) {
         NSDictionary *attributesToRemove = isInactive ? link.attributes : link.inactiveAttributes;
         NSDictionary *attributesToAdd = isInactive ? link.inactiveAttributes : link.attributes;
         
@@ -1506,7 +1506,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
     switch (sender.state) {
         case UIGestureRecognizerStateBegan: {
             CGPoint touchPoint = [sender locationInView:self];
-            MEIQIA_TTTAttributedLabelLink *link = [self linkAtPoint:touchPoint];
+            TTTAttributedLabelLink *link = [self linkAtPoint:touchPoint];
             
             if (link) {
                 if (link.linkLongPressBlock) {
@@ -1710,9 +1710,9 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 
 @end
 
-#pragma mark - MEIQIA_TTTAttributedLabelLink
+#pragma mark - TTTAttributedLabelLink
 
-@implementation MEIQIA_TTTAttributedLabelLink
+@implementation TTTAttributedLabelLink
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes
                   activeAttributes:(NSDictionary *)activeAttributes
@@ -1729,7 +1729,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
     return self;
 }
 
-- (instancetype)initWithAttributesFromLabel:(MEIQIA_TTTAttributedLabel*)label
+- (instancetype)initWithAttributesFromLabel:(TTTAttributedLabel*)label
                          textCheckingResult:(NSTextCheckingResult *)result {
     
     return [self initWithAttributes:label.linkAttributes

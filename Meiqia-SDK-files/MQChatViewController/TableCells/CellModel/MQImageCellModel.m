@@ -401,7 +401,7 @@
     }];
     
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    [viewerVC showOn:[UIViewController topMostViewController] fromRectArray:[NSArray arrayWithObject:[NSValue valueWithCGRect:rect]]];
+    [viewerVC showOn:[UIViewController mq_topMostViewController] fromRectArray:[NSArray arrayWithObject:[NSValue valueWithCGRect:rect]]];
 }
 
 @end

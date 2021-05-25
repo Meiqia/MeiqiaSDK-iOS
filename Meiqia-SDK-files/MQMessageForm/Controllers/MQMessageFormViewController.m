@@ -78,12 +78,6 @@ static NSString * const kMessageFormMessageKey = @"message";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
     self.accessoryData = [NSMutableDictionary new];
-    
-    MQMessageFormCategoryViewController *categoryViewController = [MQMessageFormCategoryViewController new];
-    [categoryViewController setCategorySelected:^(NSString *categoryId) {
-        self.accessoryData[@"category_id"] = categoryId;
-    }];
-    [categoryViewController showIfNeededOn:self];
 }
 
 - (void)dismissKeyboard {
@@ -117,10 +111,21 @@ static NSString * const kMessageFormMessageKey = @"message";
         }
         self.ticketConfigInfo = config.ticketConfigInfo;
         self->contactAllRequired = ![config.ticketConfigInfo.contactRule isEqualToString:@"single"];
+        [self configFormCategoryViewController];
         [self initFormContainer];
         [self refreshFrame];
     }];
     
+}
+
+- (void)configFormCategoryViewController {
+    if ([self.ticketConfigInfo.category isEqualToString:@"open"]) {
+        MQMessageFormCategoryViewController *categoryViewController = [MQMessageFormCategoryViewController new];
+        [categoryViewController setCategorySelected:^(NSString *categoryId) {
+            self.accessoryData[@"category_id"] = categoryId;
+        }];
+        [categoryViewController showIfNeededOn:self];
+    }
 }
 
 #pragma ios7以下系统的横屏的事件

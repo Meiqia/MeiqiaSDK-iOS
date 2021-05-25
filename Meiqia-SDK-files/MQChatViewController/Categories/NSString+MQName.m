@@ -10,7 +10,7 @@
 
 @implementation NSString (MQName)
 
-- (NSString *)resetName{
+- (NSString *)mq_resetName{
     if (!self) {
         return @"";
     }

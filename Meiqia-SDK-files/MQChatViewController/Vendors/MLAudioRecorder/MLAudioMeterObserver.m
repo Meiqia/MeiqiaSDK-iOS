@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 molon. All rights reserved.
 //
 
-#import "MEIQIA_MLAudioMeterObserver.h"
+#import "MLAudioMeterObserver.h"
 
 #define kDefaultRefreshInterval 0.1 //默认0.1秒刷新一次
 #define kMLAudioMeterObserverErrorDomain @"MLAudioMeterObserverErrorDomain"
@@ -17,10 +17,10 @@ if(operation!=noErr) { \
 return; \
 }   \
 
-@implementation MEIQIA_LevelMeterState
+@implementation LevelMeterState
 @end
 
-@interface MEIQIA_MLAudioMeterObserver()
+@interface MLAudioMeterObserver()
 
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, assign) NSUInteger channelCount;
@@ -28,7 +28,7 @@ return; \
 @end
 
 
-@implementation MEIQIA_MLAudioMeterObserver
+@implementation MLAudioMeterObserver
 
 - (instancetype)init
 {
@@ -134,7 +134,7 @@ return; \
     
     for (int i=0; i<self.channelCount; i++)
     {
-        MEIQIA_LevelMeterState *state = [[MEIQIA_LevelMeterState alloc]init];
+        LevelMeterState *state = [[LevelMeterState alloc]init];
         state.mAveragePower = _levelMeterStates[i].mAveragePower;
         state.mPeakPower = _levelMeterStates[i].mPeakPower;
         [meters addObject:state];
@@ -165,7 +165,7 @@ return; \
     Float32 averagePowerOfChannels = 0;
     for (int i=0; i<levelMeterStates.count; i++)
     {
-        averagePowerOfChannels+=((MEIQIA_LevelMeterState*)levelMeterStates[i]).mAveragePower;
+        averagePowerOfChannels+=((LevelMeterState*)levelMeterStates[i]).mAveragePower;
     }
     
     //获取音量百分比，姑且这么叫吧

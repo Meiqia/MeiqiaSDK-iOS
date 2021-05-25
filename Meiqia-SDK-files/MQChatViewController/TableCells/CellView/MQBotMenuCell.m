@@ -11,14 +11,14 @@
 #import "MQChatViewConfig.h"
 #import "MQBundleUtil.h"
 #import "MQBotMenuCellModel.h"
-#import "MEIQIA_TTTAttributedLabel.h"
+#import "TTTAttributedLabel.h"
 #import "MQBundleUtil.h"
 
 static const NSInteger kMQBotMenuCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQBotMenuCellSelectedNumberActionSheetTag = 2001;
 static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
 
-@interface MQBotMenuCell() <MEIQIA_TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+@interface MQBotMenuCell() <TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 @end
 

@@ -11,6 +11,6 @@
 
 @interface UIViewController(MQHieriachy)
 
-+ (UIViewController *)topMostViewController;
++ (UIViewController *)mq_topMostViewController;
 
 @end

@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 molon. All rights reserved.
 //
 
-#import "MEIQIA_CafRecordWriter.h"
+#import "CafRecordWriter.h"
 
-@interface MEIQIA_CafRecordWriter()
+@interface CafRecordWriter()
 {
     AudioFileID mRecordFile;
     SInt64 recordPacketCount;
@@ -16,10 +16,10 @@
 
 @end
 
-@implementation MEIQIA_CafRecordWriter
+@implementation CafRecordWriter
 
 
-- (BOOL)createFileWithRecorder:(MEIQIA_MLAudioRecorder*)recoder
+- (BOOL)createFileWithRecorder:(MLAudioRecorder*)recoder
 {
     //建立文件
     recordPacketCount = 0;
@@ -31,7 +31,7 @@
     return err==noErr;
 }
 
-- (BOOL)writeIntoFileWithData:(NSData*)data withRecorder:(MEIQIA_MLAudioRecorder*)recoder inAQ:(AudioQueueRef)						inAQ inStartTime:(const AudioTimeStamp *)inStartTime inNumPackets:(UInt32)inNumPackets inPacketDesc:(const AudioStreamPacketDescription*)inPacketDesc
+- (BOOL)writeIntoFileWithData:(NSData*)data withRecorder:(MLAudioRecorder*)recoder inAQ:(AudioQueueRef)						inAQ inStartTime:(const AudioTimeStamp *)inStartTime inNumPackets:(UInt32)inNumPackets inPacketDesc:(const AudioStreamPacketDescription*)inPacketDesc
 {
     OSStatus err = AudioFileWritePackets(mRecordFile, FALSE, (UInt32)data.length,
                                          inPacketDesc, recordPacketCount, &inNumPackets, data.bytes);
@@ -43,7 +43,7 @@
     return YES;
 }
 
-- (BOOL)completeWriteWithRecorder:(MEIQIA_MLAudioRecorder*)recoder withIsError:(BOOL)isError
+- (BOOL)completeWriteWithRecorder:(MLAudioRecorder*)recoder withIsError:(BOOL)isError
 {
     if (mRecordFile) {
         AudioFileClose(mRecordFile);

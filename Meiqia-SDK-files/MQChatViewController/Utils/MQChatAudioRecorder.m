@@ -7,10 +7,10 @@
 //
 
 #import "MQChatAudioRecorder.h"
-#import "MEIQIA_MLAudioRecorder.h"
-#import "MEIQIA_AmrRecordWriter.h"
+#import "MLAudioRecorder.h"
+#import "AmrRecordWriter.h"
 #import "MQNamespacedDependencies.h"
-#import "MEIQIA_MLAudioMeterObserver.h"
+#import "MLAudioMeterObserver.h"
 #import <UIKit/UIKit.h>
 #import "MQBundleUtil.h"
 

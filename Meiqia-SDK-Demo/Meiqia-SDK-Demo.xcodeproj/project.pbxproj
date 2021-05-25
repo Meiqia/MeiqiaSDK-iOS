@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3656ED08265CD65E00E8E8CE /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656ED07265CD65E00E8E8CE /* TTTAttributedLabel.m */; };
+		3656ED1D265CD69800E8E8CE /* CafRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656ED0A265CD69800E8E8CE /* CafRecordWriter.m */; };
+		3656ED1E265CD69800E8E8CE /* AmrRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656ED0C265CD69800E8E8CE /* AmrRecordWriter.m */; };
+		3656ED1F265CD69800E8E8CE /* MLAudioMeterObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656ED0D265CD69800E8E8CE /* MLAudioMeterObserver.m */; };
+		3656ED20265CD69800E8E8CE /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3656ED17265CD69800E8E8CE /* libopencore-amrwb.a */; };
+		3656ED21265CD69800E8E8CE /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3656ED18265CD69800E8E8CE /* libopencore-amrnb.a */; };
+		3656ED22265CD69800E8E8CE /* MLAudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656ED19265CD69800E8E8CE /* MLAudioRecorder.m */; };
 		3672E67E24C03226001BA536 /* MQPhotoCardCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3672E67D24C03226001BA536 /* MQPhotoCardCellModel.m */; };
 		3672E68124C03243001BA536 /* MQPhotoCardMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3672E67F24C03243001BA536 /* MQPhotoCardMessage.m */; };
 		3672E68424C03272001BA536 /* MQJsonUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3672E68224C03272001BA536 /* MQJsonUtil.m */; };
@@ -75,13 +82,6 @@
 		F3B2CA1F2495E37C00FDADAF /* wav.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8BC2495E37B00FDADAF /* wav.mm */; };
 		F3B2CA202495E37C00FDADAF /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8BD2495E37B00FDADAF /* amrFileCodec.mm */; };
 		F3B2CA2D2495E37C00FDADAF /* MEIQIA_CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8E12495E37B00FDADAF /* MEIQIA_CustomIOSAlertView.m */; };
-		F3B2CA2E2495E37C00FDADAF /* MEIQIA_AmrRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8E82495E37B00FDADAF /* MEIQIA_AmrRecordWriter.m */; };
-		F3B2CA2F2495E37C00FDADAF /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3B2C8F32495E37B00FDADAF /* libopencore-amrwb.a */; };
-		F3B2CA302495E37C00FDADAF /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3B2C8F42495E37B00FDADAF /* libopencore-amrnb.a */; };
-		F3B2CA312495E37C00FDADAF /* MEIQIA_CafRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8F52495E37B00FDADAF /* MEIQIA_CafRecordWriter.m */; };
-		F3B2CA322495E37C00FDADAF /* MEIQIA_MLAudioMeterObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8F62495E37B00FDADAF /* MEIQIA_MLAudioMeterObserver.m */; };
-		F3B2CA332495E37C00FDADAF /* MEIQIA_MLAudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8F72495E37B00FDADAF /* MEIQIA_MLAudioRecorder.m */; };
-		F3B2CA342495E37C00FDADAF /* MEIQIA_TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8F92495E37B00FDADAF /* MEIQIA_TTTAttributedLabel.m */; };
 		F3B2CA352495E37C00FDADAF /* MEIQIA_FBBitmapFontView.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8FC2495E37B00FDADAF /* MEIQIA_FBBitmapFontView.m */; };
 		F3B2CA362495E37C00FDADAF /* MEIQIA_FBSquareFont.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8FD2495E37B00FDADAF /* MEIQIA_FBSquareFont.m */; };
 		F3B2CA372495E37C00FDADAF /* MEIQIA_FBFontSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B2C8FF2495E37B00FDADAF /* MEIQIA_FBFontSymbol.m */; };
@@ -234,6 +234,23 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3656ED06265CD65E00E8E8CE /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
+		3656ED07265CD65E00E8E8CE /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
+		3656ED09265CD69800E8E8CE /* AmrRecordWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmrRecordWriter.h; sourceTree = "<group>"; };
+		3656ED0A265CD69800E8E8CE /* CafRecordWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CafRecordWriter.m; sourceTree = "<group>"; };
+		3656ED0B265CD69800E8E8CE /* CafRecordWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CafRecordWriter.h; sourceTree = "<group>"; };
+		3656ED0C265CD69800E8E8CE /* AmrRecordWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AmrRecordWriter.m; sourceTree = "<group>"; };
+		3656ED0D265CD69800E8E8CE /* MLAudioMeterObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLAudioMeterObserver.m; sourceTree = "<group>"; };
+		3656ED11265CD69800E8E8CE /* if_rom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = if_rom.h; sourceTree = "<group>"; };
+		3656ED12265CD69800E8E8CE /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
+		3656ED14265CD69800E8E8CE /* interf_dec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
+		3656ED15265CD69800E8E8CE /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
+		3656ED17265CD69800E8E8CE /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
+		3656ED18265CD69800E8E8CE /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
+		3656ED19265CD69800E8E8CE /* MLAudioRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLAudioRecorder.m; sourceTree = "<group>"; };
+		3656ED1A265CD69800E8E8CE /* MLAudioMeterObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLAudioMeterObserver.h; sourceTree = "<group>"; };
+		3656ED1B265CD69800E8E8CE /* AMR_Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMR_Debug.h; sourceTree = "<group>"; };
+		3656ED1C265CD69800E8E8CE /* MLAudioRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLAudioRecorder.h; sourceTree = "<group>"; };
 		3672E67C24C03226001BA536 /* MQPhotoCardCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPhotoCardCellModel.h; sourceTree = "<group>"; };
 		3672E67D24C03226001BA536 /* MQPhotoCardCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPhotoCardCellModel.m; sourceTree = "<group>"; };
 		3672E67F24C03243001BA536 /* MQPhotoCardMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPhotoCardMessage.m; sourceTree = "<group>"; };
@@ -345,23 +362,6 @@
 		F3B2C8DF2495E37B00FDADAF /* MQNamespacedDependencies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQNamespacedDependencies.h; sourceTree = "<group>"; };
 		F3B2C8E12495E37B00FDADAF /* MEIQIA_CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_CustomIOSAlertView.m; sourceTree = "<group>"; };
 		F3B2C8E22495E37B00FDADAF /* MEIQIA_CustomIOSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_CustomIOSAlertView.h; sourceTree = "<group>"; };
-		F3B2C8E42495E37B00FDADAF /* MEIQIA_AmrRecordWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_AmrRecordWriter.h; sourceTree = "<group>"; };
-		F3B2C8E52495E37B00FDADAF /* MEIQIA_MLAudioRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_MLAudioRecorder.h; sourceTree = "<group>"; };
-		F3B2C8E62495E37B00FDADAF /* MEIQIA_CafRecordWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_CafRecordWriter.h; sourceTree = "<group>"; };
-		F3B2C8E72495E37B00FDADAF /* MEIQIA_MLAudioMeterObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_MLAudioMeterObserver.h; sourceTree = "<group>"; };
-		F3B2C8E82495E37B00FDADAF /* MEIQIA_AmrRecordWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_AmrRecordWriter.m; sourceTree = "<group>"; };
-		F3B2C8E92495E37B00FDADAF /* MEIQIA_AMR_Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_AMR_Debug.h; sourceTree = "<group>"; };
-		F3B2C8ED2495E37B00FDADAF /* if_rom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = if_rom.h; sourceTree = "<group>"; };
-		F3B2C8EE2495E37B00FDADAF /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
-		F3B2C8F02495E37B00FDADAF /* interf_dec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
-		F3B2C8F12495E37B00FDADAF /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
-		F3B2C8F32495E37B00FDADAF /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
-		F3B2C8F42495E37B00FDADAF /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
-		F3B2C8F52495E37B00FDADAF /* MEIQIA_CafRecordWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_CafRecordWriter.m; sourceTree = "<group>"; };
-		F3B2C8F62495E37B00FDADAF /* MEIQIA_MLAudioMeterObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_MLAudioMeterObserver.m; sourceTree = "<group>"; };
-		F3B2C8F72495E37B00FDADAF /* MEIQIA_MLAudioRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_MLAudioRecorder.m; sourceTree = "<group>"; };
-		F3B2C8F92495E37B00FDADAF /* MEIQIA_TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_TTTAttributedLabel.m; sourceTree = "<group>"; };
-		F3B2C8FA2495E37B00FDADAF /* MEIQIA_TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_TTTAttributedLabel.h; sourceTree = "<group>"; };
 		F3B2C8FC2495E37B00FDADAF /* MEIQIA_FBBitmapFontView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_FBBitmapFontView.m; sourceTree = "<group>"; };
 		F3B2C8FD2495E37B00FDADAF /* MEIQIA_FBSquareFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_FBSquareFont.m; sourceTree = "<group>"; };
 		F3B2C8FE2495E37B00FDADAF /* MEIQIA_FBBitmapFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_FBBitmapFont.h; sourceTree = "<group>"; };
@@ -608,14 +608,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3B2CA302495E37C00FDADAF /* libopencore-amrnb.a in Frameworks */,
+				3656ED21265CD69800E8E8CE /* libopencore-amrnb.a in Frameworks */,
 				E41DDDA61DD18DE0000B3083 /* libz.tbd in Frameworks */,
 				E44A5EA51D5AF47D000481E8 /* Accelerate.framework in Frameworks */,
 				E45CA12D1CCA33EF000B8917 /* libsqlite3.tbd in Frameworks */,
 				CCE9D1481C18139E004E862E /* MobileCoreServices.framework in Frameworks */,
 				CCE9D1461C181399004E862E /* SystemConfiguration.framework in Frameworks */,
 				CCE9D1441C181393004E862E /* CoreTelephony.framework in Frameworks */,
-				F3B2CA2F2495E37C00FDADAF /* libopencore-amrwb.a in Frameworks */,
+				3656ED20265CD69800E8E8CE /* libopencore-amrwb.a in Frameworks */,
 				CCE9D1421C18138C004E862E /* AVFoundation.framework in Frameworks */,
 				CCE9D1401C181385004E862E /* libicucore.tbd in Frameworks */,
 				F3B2CA0A2495E37C00FDADAF /* MeiQiaSDK.framework in Frameworks */,
@@ -651,6 +651,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3656ED0E265CD69800E8E8CE /* amr_en_de */ = {
+			isa = PBXGroup;
+			children = (
+				3656ED0F265CD69800E8E8CE /* include */,
+				3656ED16265CD69800E8E8CE /* lib */,
+			);
+			path = amr_en_de;
+			sourceTree = "<group>";
+		};
+		3656ED0F265CD69800E8E8CE /* include */ = {
+			isa = PBXGroup;
+			children = (
+				3656ED10265CD69800E8E8CE /* opencore-amrwb */,
+				3656ED13265CD69800E8E8CE /* opencore-amrnb */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		3656ED10265CD69800E8E8CE /* opencore-amrwb */ = {
+			isa = PBXGroup;
+			children = (
+				3656ED11265CD69800E8E8CE /* if_rom.h */,
+				3656ED12265CD69800E8E8CE /* dec_if.h */,
+			);
+			path = "opencore-amrwb";
+			sourceTree = "<group>";
+		};
+		3656ED13265CD69800E8E8CE /* opencore-amrnb */ = {
+			isa = PBXGroup;
+			children = (
+				3656ED14265CD69800E8E8CE /* interf_dec.h */,
+				3656ED15265CD69800E8E8CE /* interf_enc.h */,
+			);
+			path = "opencore-amrnb";
+			sourceTree = "<group>";
+		};
+		3656ED16265CD69800E8E8CE /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				3656ED17265CD69800E8E8CE /* libopencore-amrwb.a */,
+				3656ED18265CD69800E8E8CE /* libopencore-amrnb.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
 		36773976255CDFEA0029B054 /* RoundProgressView */ = {
 			isa = PBXGroup;
 			children = (
@@ -984,70 +1029,25 @@
 		F3B2C8E32495E37B00FDADAF /* MLAudioRecorder */ = {
 			isa = PBXGroup;
 			children = (
-				F3B2C8E42495E37B00FDADAF /* MEIQIA_AmrRecordWriter.h */,
-				F3B2C8E52495E37B00FDADAF /* MEIQIA_MLAudioRecorder.h */,
-				F3B2C8E62495E37B00FDADAF /* MEIQIA_CafRecordWriter.h */,
-				F3B2C8E72495E37B00FDADAF /* MEIQIA_MLAudioMeterObserver.h */,
-				F3B2C8E82495E37B00FDADAF /* MEIQIA_AmrRecordWriter.m */,
-				F3B2C8E92495E37B00FDADAF /* MEIQIA_AMR_Debug.h */,
-				F3B2C8EA2495E37B00FDADAF /* amr_en_de */,
-				F3B2C8F52495E37B00FDADAF /* MEIQIA_CafRecordWriter.m */,
-				F3B2C8F62495E37B00FDADAF /* MEIQIA_MLAudioMeterObserver.m */,
-				F3B2C8F72495E37B00FDADAF /* MEIQIA_MLAudioRecorder.m */,
+				3656ED1B265CD69800E8E8CE /* AMR_Debug.h */,
+				3656ED0E265CD69800E8E8CE /* amr_en_de */,
+				3656ED09265CD69800E8E8CE /* AmrRecordWriter.h */,
+				3656ED0C265CD69800E8E8CE /* AmrRecordWriter.m */,
+				3656ED0B265CD69800E8E8CE /* CafRecordWriter.h */,
+				3656ED0A265CD69800E8E8CE /* CafRecordWriter.m */,
+				3656ED1A265CD69800E8E8CE /* MLAudioMeterObserver.h */,
+				3656ED0D265CD69800E8E8CE /* MLAudioMeterObserver.m */,
+				3656ED1C265CD69800E8E8CE /* MLAudioRecorder.h */,
+				3656ED19265CD69800E8E8CE /* MLAudioRecorder.m */,
 			);
 			path = MLAudioRecorder;
-			sourceTree = "<group>";
-		};
-		F3B2C8EA2495E37B00FDADAF /* amr_en_de */ = {
-			isa = PBXGroup;
-			children = (
-				F3B2C8EB2495E37B00FDADAF /* include */,
-				F3B2C8F22495E37B00FDADAF /* lib */,
-			);
-			path = amr_en_de;
-			sourceTree = "<group>";
-		};
-		F3B2C8EB2495E37B00FDADAF /* include */ = {
-			isa = PBXGroup;
-			children = (
-				F3B2C8EC2495E37B00FDADAF /* opencore-amrwb */,
-				F3B2C8EF2495E37B00FDADAF /* opencore-amrnb */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		F3B2C8EC2495E37B00FDADAF /* opencore-amrwb */ = {
-			isa = PBXGroup;
-			children = (
-				F3B2C8ED2495E37B00FDADAF /* if_rom.h */,
-				F3B2C8EE2495E37B00FDADAF /* dec_if.h */,
-			);
-			path = "opencore-amrwb";
-			sourceTree = "<group>";
-		};
-		F3B2C8EF2495E37B00FDADAF /* opencore-amrnb */ = {
-			isa = PBXGroup;
-			children = (
-				F3B2C8F02495E37B00FDADAF /* interf_dec.h */,
-				F3B2C8F12495E37B00FDADAF /* interf_enc.h */,
-			);
-			path = "opencore-amrnb";
-			sourceTree = "<group>";
-		};
-		F3B2C8F22495E37B00FDADAF /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				F3B2C8F32495E37B00FDADAF /* libopencore-amrwb.a */,
-				F3B2C8F42495E37B00FDADAF /* libopencore-amrnb.a */,
-			);
-			path = lib;
 			sourceTree = "<group>";
 		};
 		F3B2C8F82495E37B00FDADAF /* TTTAttributedLabel */ = {
 			isa = PBXGroup;
 			children = (
-				F3B2C8F92495E37B00FDADAF /* MEIQIA_TTTAttributedLabel.m */,
-				F3B2C8FA2495E37B00FDADAF /* MEIQIA_TTTAttributedLabel.h */,
+				3656ED06265CD65E00E8E8CE /* TTTAttributedLabel.h */,
+				3656ED07265CD65E00E8E8CE /* TTTAttributedLabel.m */,
 			);
 			path = TTTAttributedLabel;
 			sourceTree = "<group>";
@@ -1713,7 +1713,6 @@
 				36773980255CE0090029B054 /* MQVideoPlayerViewController.m in Sources */,
 				367B9FFF25830A7D001F0A99 /* MQMessageFormTimeView.m in Sources */,
 				F3B2CA502495E37C00FDADAF /* MQBaseMessage.m in Sources */,
-				F3B2CA332495E37C00FDADAF /* MEIQIA_MLAudioRecorder.m in Sources */,
 				F3B2CA7F2495E37C00FDADAF /* MQAssetUtil.m in Sources */,
 				F3B2CA8B2495E37C00FDADAF /* MQPreChatCells.m in Sources */,
 				F3B2CA522495E37C00FDADAF /* MQMessageFactoryHelper.m in Sources */,
@@ -1726,14 +1725,17 @@
 				F3B2CA5A2495E37C00FDADAF /* MQTipsCellModel.m in Sources */,
 				F3B2CA562495E37C00FDADAF /* MQBotMenuAnswerCellModel.m in Sources */,
 				F3B2CA592495E37C00FDADAF /* MQImageCellModel.m in Sources */,
+				3656ED08265CD65E00E8E8CE /* TTTAttributedLabel.m in Sources */,
 				F3B2CAA22495E37C00FDADAF /* MQEmbededWebView.m in Sources */,
 				3677396B255CDFB50029B054 /* MQVideoMessageCell.m in Sources */,
+				3656ED1F265CD69800E8E8CE /* MLAudioMeterObserver.m in Sources */,
 				F3B2CA6A2495E37C00FDADAF /* MQTipsCell.m in Sources */,
 				3672E68124C03243001BA536 /* MQPhotoCardMessage.m in Sources */,
 				36773963255CDF970029B054 /* MQVideoCellModel.m in Sources */,
 				F3B2CA882495E37C00FDADAF /* UIButton+MQButton.m in Sources */,
 				F3B2CA3D2495E37C00FDADAF /* MQChatViewStyleBlue.m in Sources */,
 				F3B2CAA02495E37C00FDADAF /* MQWebViewController.m in Sources */,
+				3656ED1D265CD69800E8E8CE /* CafRecordWriter.m in Sources */,
 				36F2E18125B5253100F9A469 /* MEIQIA_InputView.m in Sources */,
 				F3B2CA1F2495E37C00FDADAF /* wav.mm in Sources */,
 				36F2E18225B5253100F9A469 /* MEIQIA_EmojiCell.m in Sources */,
@@ -1756,7 +1758,6 @@
 				F3B2CA3C2495E37C00FDADAF /* MQChatViewStyle.m in Sources */,
 				F3B2CA802495E37C00FDADAF /* MQChatRegexUtil.m in Sources */,
 				36F2E18825B5254E00F9A469 /* MEIQIA_VoiceConverter.mm in Sources */,
-				F3B2CA342495E37C00FDADAF /* MEIQIA_TTTAttributedLabel.m in Sources */,
 				F3B2CA5E2495E37C00FDADAF /* MQEventCellModel.m in Sources */,
 				F3B2CA402495E37C00FDADAF /* MQChatViewManager.m in Sources */,
 				F3B2CA892495E37C00FDADAF /* MQImageUtil.m in Sources */,
@@ -1773,12 +1774,10 @@
 				F3B2CA3F2495E37C00FDADAF /* MQChatViewStyleDark.m in Sources */,
 				F3B2CA512495E37C00FDADAF /* MQVoiceMessage.m in Sources */,
 				F3B2CA202495E37C00FDADAF /* amrFileCodec.mm in Sources */,
-				F3B2CA2E2495E37C00FDADAF /* MEIQIA_AmrRecordWriter.m in Sources */,
 				F3B2CAA12495E37C00FDADAF /* MQBotWebViewController.m in Sources */,
 				F3B2CA852495E37C00FDADAF /* MQChatDeviceUtil.m in Sources */,
 				F3B2CA452495E37C00FDADAF /* MQBotRichTextMessage.m in Sources */,
 				F3B2CA422495E37C00FDADAF /* MQChatViewConfig.m in Sources */,
-				F3B2CA322495E37C00FDADAF /* MEIQIA_MLAudioMeterObserver.m in Sources */,
 				F3B2CA9D2495E37C00FDADAF /* MQRecorderView.m in Sources */,
 				36773962255CDF970029B054 /* MQSplitLineCellModel.m in Sources */,
 				F3B2CA572495E37C00FDADAF /* MQCardCellModel.m in Sources */,
@@ -1794,6 +1793,7 @@
 				3677396C255CDFB50029B054 /* MQSplitLineCell.m in Sources */,
 				F3B2CA5F2495E37C00FDADAF /* MQBotMenuCellModel.m in Sources */,
 				367BA00225830A7D001F0A99 /* MQMessageFormChoiceView.m in Sources */,
+				3656ED22265CD69800E8E8CE /* MLAudioRecorder.m in Sources */,
 				F3B2CAA82495E37C00FDADAF /* UIView+MQLayout.m in Sources */,
 				F3B2CA4A2495E37C00FDADAF /* MQTextMessage.m in Sources */,
 				F3B2CA6E2495E37C00FDADAF /* MQBotMenuCell.m in Sources */,
@@ -1846,6 +1846,7 @@
 				F3B2CA3A2495E37C00FDADAF /* MEIQIA_FBLCDFont.m in Sources */,
 				F3B2CA922495E37C00FDADAF /* MQChatViewService.m in Sources */,
 				F3B2CA0C2495E37C00FDADAF /* MQMessageFormConfig.m in Sources */,
+				3656ED1E265CD69800E8E8CE /* AmrRecordWriter.m in Sources */,
 				36F2E17125B524CA00F9A469 /* NSString+MQName.m in Sources */,
 				F3B2CA792495E37C00FDADAF /* MQShareTransitioningDelegateImpl.m in Sources */,
 				F3B2CAAD2495E37C00FDADAF /* UIViewController+MQHieriachy.m in Sources */,
@@ -1860,7 +1861,6 @@
 				F3B2CA392495E37C00FDADAF /* MEIQIA_FBBitmapFont.m in Sources */,
 				F3B2CA482495E37C00FDADAF /* MQWithDrawMessage.m in Sources */,
 				F3B2CA772495E37C00FDADAF /* MQAnimatorPush.m in Sources */,
-				F3B2CA312495E37C00FDADAF /* MEIQIA_CafRecordWriter.m in Sources */,
 				F3B2CA4B2495E37C00FDADAF /* MQBotMessageFactory.m in Sources */,
 				F3B2CA622495E37C00FDADAF /* MQTextCellModel.m in Sources */,
 				F3B2CA7E2495E37C00FDADAF /* MQWindowUtil.m in Sources */,
@@ -2074,7 +2074,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.7.0;
+				MARKETING_VERSION = 3.7.1;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2118,7 +2118,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.7.0;
+				MARKETING_VERSION = 3.7.1;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";

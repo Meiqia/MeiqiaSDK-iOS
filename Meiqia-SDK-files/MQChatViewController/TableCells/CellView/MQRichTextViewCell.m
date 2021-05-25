@@ -185,7 +185,7 @@ CGFloat internalImageWidth = 80;
         _itemsView.backgroundColor = [MQChatViewConfig sharedConfig].incomingBubbleColor;
         _itemsView.layer.cornerRadius = 4;
         _itemsView.layer.masksToBounds = YES;
-        _itemsView.layer.borderColor = [UIColor colorWithHexString:silver].CGColor;
+        _itemsView.layer.borderColor = [UIColor mq_colorWithHexString:silver].CGColor;
         _itemsView.layer.borderWidth = 0.5;
     }
     return _itemsView;

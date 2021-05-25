@@ -40,6 +40,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, copy) NSString *intro;
 
+@property (nonatomic, copy) NSString *category; // 工单分类询问开关
+
 // 留言输入框的内容类型：1、“content”，输入框的text直接显示为defaultTemplateContent，让用户自己修改； 2、“placeholder”，输入框的placeholder显示为content_placeholder，内容用户自己输入
 @property (nonatomic, copy) NSString *content_fill_type;
 

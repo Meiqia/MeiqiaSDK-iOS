@@ -11,12 +11,12 @@
 
 @interface UIColor(MQHex)
 
-+ (UIColor *)colorWithHexWithLong:(long)hexColor alpha:(CGFloat)a;
++ (UIColor *)mq_colorWithHexWithLong:(long)hexColor alpha:(CGFloat)a;
 
-+ (UIColor *)colorWithHexWithLong:(long)hexColor;
++ (UIColor *)mq_colorWithHexWithLong:(long)hexColor;
 
-+ (UIColor *)colorWithHexString:(NSString *)hexString;
++ (UIColor *)mq_colorWithHexString:(NSString *)hexString;
 
-+ (UIColor *)getDarkerColorFromColor1:(UIColor *)color1 color2:(UIColor *)color2;
++ (UIColor *)mq_getDarkerColorFromColor1:(UIColor *)color1 color2:(UIColor *)color2;
 
 @end

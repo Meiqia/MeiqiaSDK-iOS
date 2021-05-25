@@ -36,8 +36,8 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
         [self initCustomAlertView];
         selectedLevelRow = 0;
         
-        if ([UIColor getDarkerColorFromColor1:[MQChatViewConfig sharedConfig].navBarColor color2:[MQChatViewConfig sharedConfig].navBarTintColor] > 0) {
-            evaluationAlertView.tintColor = [UIColor getDarkerColorFromColor1:[MQChatViewConfig sharedConfig].navBarColor color2:[MQChatViewConfig sharedConfig].navBarTintColor];
+        if ([UIColor mq_getDarkerColorFromColor1:[MQChatViewConfig sharedConfig].navBarColor color2:[MQChatViewConfig sharedConfig].navBarTintColor] > 0) {
+            evaluationAlertView.tintColor = [UIColor mq_getDarkerColorFromColor1:[MQChatViewConfig sharedConfig].navBarColor color2:[MQChatViewConfig sharedConfig].navBarTintColor];
         }
     }
     return self;

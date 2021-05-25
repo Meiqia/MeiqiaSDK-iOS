@@ -10,7 +10,7 @@
 
 @implementation NSString (MQRegular)
 
-- (BOOL)match:(NSString *)pattern
+- (BOOL)mq_match:(NSString *)pattern
 {
     NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:pattern options:0 error:nil];
     NSArray *results = [regex matchesInString:self options:0 range:NSMakeRange(0, self.length)];
@@ -18,19 +18,19 @@
     return results.count > 0;
 }
 
-- (BOOL)isQQ
+- (BOOL)mq_isQQ
 {
-    return [self match:@"^[1-9]\\d{4,10}$"];
+    return [self mq_match:@"^[1-9]\\d{4,10}$"];
 }
 
-- (BOOL)isPhoneNumber
+- (BOOL)mq_isPhoneNumber
 {
-    return [self match:@"^1[35789]\\d{9}$"];
+    return [self mq_match:@"^1[35789]\\d{9}$"];
 }
 
-- (BOOL)isTelNumber
+- (BOOL)mq_isTelNumber
 {
-    return [self match:@"^((0\\d{2,3}-\\d{7,8})|(1[345789]\\d{9}))$"];
+    return [self mq_match:@"^((0\\d{2,3}-\\d{7,8})|(1[345789]\\d{9}))$"];
 }
 
 @end

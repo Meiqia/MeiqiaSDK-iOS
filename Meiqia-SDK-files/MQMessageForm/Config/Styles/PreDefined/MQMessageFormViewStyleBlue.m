@@ -12,9 +12,9 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.navBarColor =  [UIColor colorWithHexString:belizeHole];
-        self.navTitleColor = [UIColor colorWithHexString:gallery];
-        self.navBarTintColor = [UIColor colorWithHexString:clouds];
+        self.navBarColor =  [UIColor mq_colorWithHexString:belizeHole];
+        self.navTitleColor = [UIColor mq_colorWithHexString:gallery];
+        self.navBarTintColor = [UIColor mq_colorWithHexString:clouds];
     }
     return self;
 }

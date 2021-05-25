@@ -120,7 +120,7 @@
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.viewWidth, 40)];
     UILabel *titleLabel = [UILabel new];
     titleLabel.text = self.viewModel.formData.menu.title;
-    titleLabel.textColor = [UIColor colorWithHexString:silver];
+    titleLabel.textColor = [UIColor mq_colorWithHexString:silver];
     titleLabel.font = [UIFont systemFontOfSize:14];
     [titleLabel sizeToFit];
     [headerView addSubview:titleLabel];
@@ -139,7 +139,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:@"cell"];
         cell.textLabel.font = [UIFont systemFontOfSize:14];
-        cell.textLabel.textColor = [UIColor colorWithHexString:ebonyClay];
+        cell.textLabel.textColor = [UIColor mq_colorWithHexString:ebonyClay];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     

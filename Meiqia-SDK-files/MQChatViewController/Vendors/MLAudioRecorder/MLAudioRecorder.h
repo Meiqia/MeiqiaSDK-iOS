@@ -12,7 +12,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "MEIQIA_AMR_Debug.h"
+#import "AMR_Debug.h"
 #import "MQChatAudioTypes.h"
 
 //录音停止事件的block回调，作用参考MLAudioRecorderDelegate的recordStopped和recordError:
@@ -29,7 +29,7 @@ typedef NS_OPTIONS(NSUInteger, MLAudioRecorderErrorCode) {
     MLAudioRecorderErrorCodeAboutOther, //关于其他的错误
 };
 
-@class MEIQIA_MLAudioRecorder;
+@class MLAudioRecorder;
 
 /**
  *  处理写文件操作的，实际是转码的操作在其中进行。算作可扩展自定义的转码器
@@ -46,19 +46,19 @@ typedef NS_OPTIONS(NSUInteger, MLAudioRecorderErrorCode) {
  *  在录音开始时候建立文件和写入文件头信息等操作
  *
  */
-- (BOOL)createFileWithRecorder:(MEIQIA_MLAudioRecorder*)recoder;
+- (BOOL)createFileWithRecorder:(MLAudioRecorder*)recoder;
 
 /**
  *  写入音频输入数据，内部处理转码等其他逻辑
  *  能传递过来的都传递了。以方便多能扩展使用
  */
-- (BOOL)writeIntoFileWithData:(NSData*)data withRecorder:(MEIQIA_MLAudioRecorder*)recoder inAQ:(AudioQueueRef)						inAQ inStartTime:(const AudioTimeStamp *)inStartTime inNumPackets:(UInt32)inNumPackets inPacketDesc:(const AudioStreamPacketDescription*)inPacketDesc;
+- (BOOL)writeIntoFileWithData:(NSData*)data withRecorder:(MLAudioRecorder*)recoder inAQ:(AudioQueueRef)						inAQ inStartTime:(const AudioTimeStamp *)inStartTime inNumPackets:(UInt32)inNumPackets inPacketDesc:(const AudioStreamPacketDescription*)inPacketDesc;
 
 /**
  *  文件写入完成之后的操作，例如文件句柄关闭等,isError表示是否是因为错误才调用的
  *
  */
-- (BOOL)completeWriteWithRecorder:(MEIQIA_MLAudioRecorder*)recoder withIsError:(BOOL)isError;
+- (BOOL)completeWriteWithRecorder:(MLAudioRecorder*)recoder withIsError:(BOOL)isError;
 
 @end
 
@@ -79,7 +79,7 @@ typedef NS_OPTIONS(NSUInteger, MLAudioRecorderErrorCode) {
 
 @end
 
-@interface MEIQIA_MLAudioRecorder : NSObject
+@interface MLAudioRecorder : NSObject
 {
     @public
     //音频输入队列

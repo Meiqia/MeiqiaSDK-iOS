@@ -10,13 +10,6 @@
 
 
 // Classes
-#ifndef AmrRecordWriter
-#define AmrRecordWriter __NS_SYMBOL(AmrRecordWriter)
-#endif
-
-#ifndef CafRecordWriter
-#define CafRecordWriter __NS_SYMBOL(CafRecordWriter)
-#endif
 
 #ifndef CustomIOSAlertView
 #define CustomIOSAlertView __NS_SYMBOL(CustomIOSAlertView)
@@ -62,26 +55,6 @@
 #define LevelMeterState __NS_SYMBOL(LevelMeterState)
 #endif
 
-#ifndef MLAudioMeterObserver
-#define MLAudioMeterObserver __NS_SYMBOL(MLAudioMeterObserver)
-#endif
-
-#ifndef MLAudioRecorder
-#define MLAudioRecorder __NS_SYMBOL(MLAudioRecorder)
-#endif
-
-#ifndef TTTAccessibilityElement
-#define TTTAccessibilityElement __NS_SYMBOL(TTTAccessibilityElement)
-#endif
-
-#ifndef TTTAttributedLabel
-#define TTTAttributedLabel __NS_SYMBOL(TTTAttributedLabel)
-#endif
-
-#ifndef TTTAttributedLabelLink
-#define TTTAttributedLabelLink __NS_SYMBOL(TTTAttributedLabelLink)
-#endif
-
 //functions
 #ifndef inputBufferHandler
 #define inputBufferHandler __NS_SYMBOL(inputBufferHandler)
@@ -102,72 +75,4 @@
 
 #ifndef currentKeyboardSize
 #define currentKeyboardSize __NS_SYMBOL(currentKeyboardSize)
-#endif
-
-#ifndef kTTTStrikeOutAttributeName
-#define kTTTStrikeOutAttributeName __NS_SYMBOL(kTTTStrikeOutAttributeName)
-#endif
-
-#ifndef kTTTBackgroundFillColorAttributeName
-#define kTTTBackgroundFillColorAttributeName __NS_SYMBOL(kTTTBackgroundFillColorAttributeName)
-#endif
-
-#ifndef kTTTBackgroundFillPaddingAttributeName
-#define kTTTBackgroundFillPaddingAttributeName __NS_SYMBOL(kTTTBackgroundFillPaddingAttributeName)
-#endif
-
-#ifndef kTTTBackgroundStrokeColorAttributeName
-#define kTTTBackgroundStrokeColorAttributeName __NS_SYMBOL(kTTTBackgroundStrokeColorAttributeName)
-#endif
-
-#ifndef kTTTBackgroundLineWidthAttributeName
-#define kTTTBackgroundLineWidthAttributeName __NS_SYMBOL(kTTTBackgroundLineWidthAttributeName)
-#endif
-
-#ifndef kTTTBackgroundCornerRadiusAttributeName
-#define kTTTBackgroundCornerRadiusAttributeName __NS_SYMBOL(kTTTBackgroundCornerRadiusAttributeName)
-#endif
-
-#ifndef TTTTextAlignmentLeft
-#define TTTTextAlignmentLeft __NS_SYMBOL(TTTTextAlignmentLeft)
-#endif
-
-#ifndef TTTTextAlignmentCenter
-#define TTTTextAlignmentCenter __NS_SYMBOL(TTTTextAlignmentCenter)
-#endif
-
-#ifndef TTTTextAlignmentRight
-#define TTTTextAlignmentRight __NS_SYMBOL(TTTTextAlignmentRight)
-#endif
-
-#ifndef TTTTextAlignmentJustified
-#define TTTTextAlignmentJustified __NS_SYMBOL(TTTTextAlignmentJustified)
-#endif
-
-#ifndef TTTTextAlignmentNatural
-#define TTTTextAlignmentNatural __NS_SYMBOL(TTTTextAlignmentNatural)
-#endif
-
-#ifndef TTTLineBreakByWordWrapping
-#define TTTLineBreakByWordWrapping __NS_SYMBOL(TTTLineBreakByWordWrapping)
-#endif
-
-#ifndef TTTLineBreakByCharWrapping
-#define TTTLineBreakByCharWrapping __NS_SYMBOL(TTTLineBreakByCharWrapping)
-#endif
-
-#ifndef TTTLineBreakByClipping
-#define TTTLineBreakByClipping __NS_SYMBOL(TTTLineBreakByClipping)
-#endif
-
-#ifndef TTTLineBreakByTruncatingHead
-#define TTTLineBreakByTruncatingHead __NS_SYMBOL(TTTLineBreakByTruncatingHead)
-#endif
-
-#ifndef TTTLineBreakByTruncatingMiddle
-#define TTTLineBreakByTruncatingMiddle __NS_SYMBOL(TTTLineBreakByTruncatingMiddle)
-#endif
-
-#ifndef TTTLineBreakByTruncatingTail
-#define TTTLineBreakByTruncatingTail __NS_SYMBOL(TTTLineBreakByTruncatingTail)
 #endif

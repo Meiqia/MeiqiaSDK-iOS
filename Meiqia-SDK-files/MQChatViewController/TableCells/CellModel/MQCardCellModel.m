@@ -8,7 +8,7 @@
 
 #import "MQCardCellModel.h"
 #import "MQCardMessageCell.h"
-#import "MEIQIA_TTTAttributedLabel.h"
+#import "TTTAttributedLabel.h"
 #import "MQServiceToViewInterface.h"
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"

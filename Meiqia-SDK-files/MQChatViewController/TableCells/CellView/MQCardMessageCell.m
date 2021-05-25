@@ -233,7 +233,7 @@
             }
             if ([info.name isEqualToString:@"tel"]) {
                 NSString *text = textField.text;
-                if (![text isTelNumber] || !text) {
+                if (![text mq_isTelNumber] || !text) {
                     textField.layer.borderColor = UIColor.redColor.CGColor;
                     textField.layer.borderWidth = 1.0;
                     [MQToast showToast:@"手机号格式不对,请重新输入" duration:2.0 window:[[UIApplication sharedApplication].windows lastObject]];
@@ -241,7 +241,7 @@
                 }
             }else if ([info.name isEqualToString:@"qq"]) {
                 NSString *text = textField.text;
-                if (![text isQQ] || !text) {
+                if (![text mq_isQQ] || !text) {
                     textField.layer.borderColor = UIColor.redColor.CGColor;
                     textField.layer.borderWidth = 1.0;
                     [MQToast showToast:@"QQ格式不对,请重新输入" duration:2.0 window:[[UIApplication sharedApplication].windows lastObject]];

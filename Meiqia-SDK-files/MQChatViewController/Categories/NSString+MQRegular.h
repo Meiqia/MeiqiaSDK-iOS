@@ -11,11 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (MQRegular)
 
-- (BOOL)isQQ;
+- (BOOL)mq_isQQ;
 
-- (BOOL)isPhoneNumber;
+- (BOOL)mq_isPhoneNumber;
 
-- (BOOL)isTelNumber;
+- (BOOL)mq_isTelNumber;
 
 @end
 

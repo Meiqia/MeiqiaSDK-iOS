@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "MEIQIA_AMR_Debug.h"
+#import "AMR_Debug.h"
 
-@class MEIQIA_MLAudioMeterObserver;
+@class MLAudioMeterObserver;
 
-typedef void (^MLAudioMeterObserverActionBlock)(NSArray *levelMeterStates,MEIQIA_MLAudioMeterObserver *meterObserver);
-typedef void (^MLAudioMeterObserverErrorBlock)(NSError *error,MEIQIA_MLAudioMeterObserver *meterObserver);
+typedef void (^MLAudioMeterObserverActionBlock)(NSArray *levelMeterStates,MLAudioMeterObserver *meterObserver);
+typedef void (^MLAudioMeterObserverErrorBlock)(NSError *error,MLAudioMeterObserver *meterObserver);
 
 /**
  *  错误标识
@@ -24,14 +24,14 @@ typedef NS_OPTIONS(NSUInteger, MLAudioMeterObserverErrorCode) {
 
 
 
-@interface MEIQIA_LevelMeterState : NSObject
+@interface LevelMeterState : NSObject
 
 @property (nonatomic, assign) Float32 mAveragePower;
 @property (nonatomic, assign) Float32 mPeakPower;
 
 @end
 
-@interface MEIQIA_MLAudioMeterObserver : NSObject
+@interface MLAudioMeterObserver : NSObject
 {
     AudioQueueRef				_audioQueue;
 	AudioQueueLevelMeterState	*_levelMeterStates;
