@@ -155,7 +155,16 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
         self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, self.cellHeight - kMQMessageTipsLabelLineVerticalMargin - kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
         
         //tip的文字额外属性
-        NSString *tapText = tipType == MQTipTypeReply ? @"留言" : @"转人工";
+        NSString *tapText = [NSString string];
+        if (tipType == MQTipTypeReply) {
+            tapText = [self.tipText containsString:@"留言"] ? @"留言" : @"You can give us a message";
+        } else {
+            if ([self.tipText containsString:@"转人工"]) {
+                tapText = @"转人工";
+            } else {
+                tapText = [self.tipText containsString:@"轉人工"] ?  @"轉人工" : @"Tap here to redirect to an agent";
+            }
+        }
         NSRange replyTextRange = [self.tipText rangeOfString:tapText];
         self.tipExtraAttributesRange = replyTextRange;
         self.tipExtraAttributes = @{
