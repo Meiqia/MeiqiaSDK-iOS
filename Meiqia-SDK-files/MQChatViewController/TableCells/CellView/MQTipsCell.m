@@ -12,6 +12,7 @@
 
 @implementation MQTipsCell {
     UILabel *tipsLabel;
+    UIButton *bottomBtn;
     CALayer *topLineLayer;
     CALayer *bottomLineLayer;
     UITapGestureRecognizer *tapReconizer;
@@ -28,6 +29,15 @@
         tipsLabel.backgroundColor = [UIColor clearColor];
         tipsLabel.numberOfLines = 0;
         [self.contentView addSubview:tipsLabel];
+        bottomBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+        bottomBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+        [bottomBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [bottomBtn setBackgroundColor:[UIColor colorWithRed:62/255.0 green:139/255.0 blue:255/255.0 alpha:1.0]];
+        bottomBtn.layer.masksToBounds = YES;
+        bottomBtn.layer.cornerRadius = 5.0;
+        bottomBtn.hidden = YES;
+        bottomBtn.enabled = NO;
+        [self.contentView addSubview:bottomBtn];
         //画上下两条线
         topLineLayer = [self gradientLine];
         [self.contentView.layer addSublayer:topLineLayer];
@@ -50,12 +60,23 @@
     
     //刷新时间label
     NSMutableAttributedString *tipsString = [[NSMutableAttributedString alloc] initWithString:cellModel.tipText];
-    if (cellModel.tipExtraAttributesRange.length + cellModel.tipExtraAttributesRange.location <= tipsString.length) {
-        
-        [tipsString addAttributes:cellModel.tipExtraAttributes range:cellModel.tipExtraAttributesRange];
+    if (cellModel.tipExtraAttributesRanges.count > 0) {
+        for (int i = 0; i < cellModel.tipExtraAttributesRanges.count; i++) {
+            [tipsString addAttributes:cellModel.tipExtraAttributes[i] range:[cellModel.tipExtraAttributesRanges[i] rangeValue]];
+        }
     }
     tipsLabel.attributedText = tipsString;
     tipsLabel.frame = cellModel.tipLabelFrame;
+    
+    if (cellModel.tipType == MQTipTypeWaitingInQueue) {
+        bottomBtn.hidden = false;
+        [bottomBtn setTitle:cellModel.bottomBtnTitle forState:UIControlStateNormal];
+        bottomBtn.frame = cellModel.bottomBtnFrame;
+    } else {
+        bottomBtn.hidden = true;
+        bottomBtn.frame = CGRectZero;
+    }
+    
     
     //刷新上下两条线
     if (cellModel.enableLinesDisplay) {

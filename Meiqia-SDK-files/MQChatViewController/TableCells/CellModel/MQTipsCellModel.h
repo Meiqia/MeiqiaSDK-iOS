@@ -39,12 +39,12 @@ typedef NS_ENUM(NSUInteger, MQTipType) {
 /**
  * @brief 提示文字的额外属性
  */
-@property (nonatomic, copy) NSDictionary<NSString *, id> *tipExtraAttributes;
+@property (nonatomic, readonly, strong) NSArray<NSDictionary<NSString *, id> *> *tipExtraAttributes;
 
 /**
- * @brief 提示文字的额外属性的 range
+ * @brief 提示文字的额外属性的 range 的数组
  */
-@property (nonatomic, assign) NSRange tipExtraAttributesRange;
+@property (nonatomic, readonly, strong) NSArray<NSValue *> *tipExtraAttributesRanges;
 
 /**
  * @brief 提示的时间
@@ -72,6 +72,16 @@ typedef NS_ENUM(NSUInteger, MQTipType) {
 @property (nonatomic, readonly, assign) BOOL enableLinesDisplay;
 
 /**
+ *  底部留言的btn的frame(tipType == MQTipTypeWaitingInQueue 才会有值)
+ */
+@property (nonatomic, readonly, assign) CGRect bottomBtnFrame;
+
+/**
+ *  底部bottom提示文字(tipType == MQTipTypeWaitingInQueue 才会有值)
+ */
+@property (nonatomic, readonly, copy) NSString *bottomBtnTitle;
+
+/**
  *  tip 类型
  */
 @property (nonatomic, readonly, assign) MQTipType tipType;
@@ -88,6 +98,6 @@ typedef NS_ENUM(NSUInteger, MQTipType) {
  */
 - (MQTipsCellModel *)initBotTipCellModelWithCellWidth:(CGFloat)cellWidth tipType:(MQTipType)tipType;
 
-- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth withIntro:(NSString *)intro position:(int)position tipType:(MQTipType)tipType;
+- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth withIntro:(NSString *)intro ticketIntro:(NSString *)ticketIntro position:(int)position tipType:(MQTipType)tipType;
 
 @end

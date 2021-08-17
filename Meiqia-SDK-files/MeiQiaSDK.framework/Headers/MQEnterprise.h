@@ -75,6 +75,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, copy) NSString *queueIntro; //排队文案
 
+@property (nonatomic, copy) NSString *queueTicketIntro; //排队引导留言的文案
+
 @property (nonatomic, readonly, assign) bool videoMsgStatus; //是否可以发送video类型消息
 
 @property (nonatomic, strong) MQPreChatData *preChatData; //讯前表单数据模型

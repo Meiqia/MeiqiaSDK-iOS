@@ -22,6 +22,8 @@ static CGFloat const kMQMessageTipsCellHorizontalSpacing = 24.0;
 static CGFloat const kMQMessageReplyTipsCellVerticalSpacing = 8.0;
 static CGFloat const kMQMessageReplyTipsCellHorizontalSpacing = 8.0;
 static CGFloat const kMQMessageTipsLineHeight = 0.5;
+static CGFloat const kMQMessageTipsBottomBtnHeight = 40.0;
+static CGFloat const kMQMessageTipsBottomBtnHorizontalSpacing = 25.0;
 CGFloat const kMQMessageTipsFontSize = 13.0;
 
 @interface MQTipsCellModel()
@@ -41,6 +43,16 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
 @property (nonatomic, readwrite, copy) NSString *tipText;
 
 /**
+ * @brief 提示文字的额外属性
+ */
+@property (nonatomic, readwrite, strong) NSArray<NSDictionary<NSString *, id> *> *tipExtraAttributes;
+
+/**
+ * @brief 提示文字的额外属性的 range 的数组
+ */
+@property (nonatomic, readwrite, strong) NSArray<NSValue *> *tipExtraAttributesRanges;
+
+/**
  * @brief 提示label的frame
  */
 @property (nonatomic, readwrite, assign) CGRect tipLabelFrame;
@@ -56,9 +68,19 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
 @property (nonatomic, readwrite, assign) BOOL enableLinesDisplay;
 
 /**
- * @brief 下线条的frame
+ * 下线条的frame
  */
 @property (nonatomic, readwrite, assign) CGRect bottomLineFrame;
+
+/**
+ * 底部留言的btn的frame
+ */
+@property (nonatomic, readwrite, assign) CGRect bottomBtnFrame;
+
+/**
+ *  底部bottom提示文字
+ */
+@property (nonatomic, readwrite, copy) NSString *bottomBtnTitle;
 
 /**
  * @brief 提示的时间
@@ -110,11 +132,11 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
                 NSString *subTips = [tips substringFromIndex:firstRange.location+1];
                 NSRange lastRange = [subTips rangeOfString:@"为你服务"];
                 NSRange agentNameRange = NSMakeRange(firstRange.location+1, lastRange.location-1);
-                self.tipExtraAttributesRange = agentNameRange;
-                self.tipExtraAttributes = @{
-                                            NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
-                                            NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor
-                                            };
+                self.tipExtraAttributesRanges = @[[NSValue valueWithRange:agentNameRange]];
+                self.tipExtraAttributes = @[@{
+                                                NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
+                                                NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor
+                                                }];
             }
         }
     }
@@ -166,29 +188,35 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
             }
         }
         NSRange replyTextRange = [self.tipText rangeOfString:tapText];
-        self.tipExtraAttributesRange = replyTextRange;
-        self.tipExtraAttributes = @{
-                                    NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
-                                    NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor
-                                    };
+        self.tipExtraAttributesRanges = @[[NSValue valueWithRange:replyTextRange]];
+        self.tipExtraAttributes = @[@{
+                                        NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
+                                        NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor
+                                        }];
     }
     return self;
 }
 
-- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth withIntro:(NSString *)intro position:(int)position tipType:(MQTipType)tipType {
+- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth withIntro:(NSString *)intro ticketIntro:(NSString *)ticketIntro position:(int)position tipType:(MQTipType)tipType {
     if (self = [super init]) {
         self.tipType = tipType;
         self.date = [NSDate date];
-        self.tipText = [NSString stringWithFormat:@"%@\n%@",intro,[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_text"], position]];
+        NSString *waitNumberTitle = [MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_number"];
+        self.tipText =[NSString stringWithFormat:@"%@\n\n%@\n\n%d\n\n%@",intro,waitNumberTitle,position,ticketIntro];
         self.enableLinesDisplay = false;
+        self.bottomBtnTitle = [MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_leave_message"];
         
         //tip frame
         CGFloat tipsWidth = cellWidth - kMQMessageReplyTipsCellHorizontalSpacing * 2;
+        CGFloat bottomBtnWidth = cellWidth - kMQMessageTipsBottomBtnHorizontalSpacing * 2;
         CGFloat tipsHeight = [MQStringSizeUtil getHeightForText:self.tipText withFont:[UIFont systemFontOfSize:kMQMessageTipsFontSize] andWidth:tipsWidth];
+        tipsHeight += kMQMessageTipsBottomBtnHeight;
         CGRect tipLabelFrame = CGRectMake(kMQMessageReplyTipsCellHorizontalSpacing, kMQMessageReplyTipsCellVerticalSpacing, tipsWidth, tipsHeight);
         self.tipLabelFrame = tipLabelFrame;
         
-        self.cellHeight = kMQMessageReplyTipsCellVerticalSpacing * 2 + tipsHeight;
+        self.bottomBtnFrame = CGRectMake(kMQMessageTipsBottomBtnHorizontalSpacing, CGRectGetMaxY(self.tipLabelFrame), bottomBtnWidth, kMQMessageTipsBottomBtnHeight);
+        
+        self.cellHeight = kMQMessageReplyTipsCellVerticalSpacing * 2 + tipsHeight + kMQMessageTipsBottomBtnHeight;
         
         //上线条的frame
         CGFloat lineWidth = cellWidth;
@@ -198,13 +226,17 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
         self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, self.cellHeight - kMQMessageTipsLabelLineVerticalMargin - kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
         
         //tip的文字额外属性
-        NSString *tapText = @"留言";
-        NSRange replyTextRange = [self.tipText rangeOfString:tapText];
-        self.tipExtraAttributesRange = replyTextRange;
-        self.tipExtraAttributes = @{
-                                    NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
-                                    NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor
-                                    };
+        NSRange waitNumberTitleRange = [self.tipText rangeOfString:waitNumberTitle];
+        NSRange waitNunmerRange = NSMakeRange(waitNumberTitleRange.location + waitNumberTitleRange.length + 2, [NSString stringWithFormat:@"%d",position].length);
+        self.tipExtraAttributesRanges = @[[NSValue valueWithRange:waitNumberTitleRange], [NSValue valueWithRange:waitNunmerRange]];
+        self.tipExtraAttributes = @[@{
+                                        NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:15],
+                                        NSForegroundColorAttributeName : UIColor.blackColor
+                                    },
+                                    @{
+                                        NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:20],
+                                        NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor
+                                    }];
     }
     return self;
 }

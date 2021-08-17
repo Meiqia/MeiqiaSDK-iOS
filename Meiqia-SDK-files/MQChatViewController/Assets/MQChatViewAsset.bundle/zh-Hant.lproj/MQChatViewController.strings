@@ -12,6 +12,8 @@
 
 "wait_agent"          = "正在分配客服...";
 
+"waiting_title"       = "排隊等待中...";
+
 "not_access_camera"   = "請在系統設置中允許該App訪問相機";
 
 "not_access_photos"   = "請在系統設置中允許該App訪問相冊";
@@ -137,7 +139,9 @@
 "woman" = "女";
 "time_placeholder" = "年-月-日";
 
-"wating_in_queue_tip_text" = "請稍等，前面還有%d個訪客，您也可以選擇給我們 留言";
+"wating_in_queue_tip_number" = "當前等待的人數";
+"wating_in_queue_tip_choice" = "如果等不及，可以選擇";
+"wating_in_queue_tip_leave_message" = "給我們留言";
 
 //询前表单
 "pre_chat_list_title" = "客服支持";

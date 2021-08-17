@@ -12,6 +12,8 @@
 
 "wait_agent"          = "正在分配客服...";
 
+"waiting_title"       = "排队等待中...";
+
 "not_access_camera"   = "请在系统设置中允许该App访问相机";
 
 "not_access_photos"   = "请在系统设置中允许该App访问相册";
@@ -141,7 +143,9 @@
 "woman" = "女";
 "time_placeholder" = "年-月-日";
 
-"wating_in_queue_tip_text" = "请稍等，前面还有%d个访客，您也可以选择给我们 留言";
+"wating_in_queue_tip_number" = "当前等待的人数";
+"wating_in_queue_tip_choice" = "如果等不及，可以选择";
+"wating_in_queue_tip_leave_message" = "给我们留言";
 
 //询前表单
 "pre_chat_list_title" = "客服支持";

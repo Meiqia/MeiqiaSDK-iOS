@@ -12,6 +12,8 @@
 
 "wait_agent"          = "Allocating an agent for you...";
 
+"waiting_title"       = "Waiting in line...";
+
 "not_access_camera"   = "Please go to Settings — Privacy — Photos. Then select ON for This App.";
 
 "not_access_photos"   = "Please go to Settings — Privacy — Camera. Then select ON for This App.";
@@ -137,7 +139,9 @@
 "woman" = "Woman";
 "time_placeholder" = "Year-Month-Day";
 
-"wating_in_queue_tip_text" = "please hold on, %d visitors in front, or you can leave a message";
+"wating_in_queue_tip_number" = "Number of people currently waiting";
+"wating_in_queue_tip_choice" = "If you can't wait, you can choose";
+"wating_in_queue_tip_leave_message" = "Leave a message";
 
 //询前表单
 "pre_chat_list_title" = "Client Support";

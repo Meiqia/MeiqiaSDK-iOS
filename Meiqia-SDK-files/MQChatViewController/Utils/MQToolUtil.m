@@ -46,6 +46,12 @@
     if ([deviceString isEqualToString:@"iPhone12,1"]) return @"iPhone11";
     if ([deviceString isEqualToString:@"iPhone12,3"]) return @"iPhone11Pro";
     if ([deviceString isEqualToString:@"iPhone12,5"]) return @"iPhone11ProMax";
+    if ([deviceString isEqualToString:@"iPhone12,8"]) return @"iPhoneSE2";
+    
+    if ([deviceString isEqualToString:@"iPhone13,1"]) return @"iPhone12mini";
+    if ([deviceString isEqualToString:@"iPhone13,2"]) return @"iPhone12";
+    if ([deviceString isEqualToString:@"iPhone13,3"]) return @"iPhone12Pro";
+    if ([deviceString isEqualToString:@"iPhone13,4"]) return @"iPhone12ProMax";
     
     //模拟机
     if ([deviceString isEqualToString:@"x86_64"])        return @"Simulator";
@@ -97,7 +103,7 @@
 }
 + (BOOL)kXlpObtainDeviceVersionIsIphoneX{
     NSString * str = [self kXlpObtainDeviceVersion];
-    if ([str containsString:@"X"] || [str isEqualToString:@"Simulator"] || [str containsString:@"11"]) {
+    if ([str containsString:@"X"] || [str isEqualToString:@"Simulator"] || [str containsString:@"11"] || [str containsString:@"12"]) {
         return YES;
     } else {
         return NO;

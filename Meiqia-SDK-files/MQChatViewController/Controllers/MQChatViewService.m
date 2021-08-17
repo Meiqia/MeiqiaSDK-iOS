@@ -145,7 +145,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 //从后台返回到前台时 
 - (void)backFromBackground {
-    if ([MQServiceToViewInterface waitingInQueuePosition] > 0) {
+    if ([MQServiceToViewInterface waitingInQueuePosition] > 0 || [MQServiceToViewInterface isBlacklisted]) {
         [self setClientOnline];
     }
 }
@@ -1047,7 +1047,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if (enterPrise.configInfo.queueStatus) {
             [self removeWaitingInQueueCellModels];
             [self.delegate reloadChatTableView];
-            MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initWaitingInQueueTipCellModelWithCellWidth:self.chatViewWidth withIntro:enterPrise.configInfo.queueIntro position:position tipType:MQTipTypeWaitingInQueue];
+            MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initWaitingInQueueTipCellModelWithCellWidth:self.chatViewWidth withIntro:enterPrise.configInfo.queueIntro ticketIntro:enterPrise.configInfo.queueTicketIntro position:position tipType:MQTipTypeWaitingInQueue];
             [self.cellModels addObject:cellModel];
             [self.delegate insertCellAtBottomForModelCount: 1];
             [self scrollToBottom];
@@ -1335,7 +1335,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                     agentStatus = MQChatAgentStatusNone;
                     break;
                 case MQStateQueueing:
-                    viewTitle = @"排队等待中...";
+                    viewTitle = [MQBundleUtil localizedStringForKey:@"waiting_title"];;
                     agentStatus = MQChatAgentStatusNone;
                     break;
                 case MQStateAllocatedAgent:
