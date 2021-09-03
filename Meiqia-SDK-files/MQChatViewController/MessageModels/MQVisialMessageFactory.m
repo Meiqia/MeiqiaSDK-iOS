@@ -15,6 +15,7 @@
 #import "MQRichTextMessage.h"
 #import "MQWithDrawMessage.h"
 #import "MQPhotoCardMessage.h"
+#import "MQProductCardMessage.h"
 #import "MQJsonUtil.h"
 #import "MQVideoMessage.h"
 
@@ -128,6 +129,9 @@
         if ([contentDic[@"type"] isEqualToString:@"photo_card"]) {
             MQPhotoCardMessage *photoCard = [[MQPhotoCardMessage alloc] initWithImagePath:contentDic[@"body"][@"pic_url"] andUrlPath:contentDic[@"body"][@"target_url"]];
             baseMessage = photoCard;
+        } else if ([contentDic[@"type"] isEqualToString:@"product_card"]) {
+            MQProductCardMessage *productCard = [[MQProductCardMessage alloc] initWithPictureUrl:contentDic[@"body"][@"pic_url"] title:contentDic[@"body"][@"title"] description:contentDic[@"body"][@"description"] productUrl:contentDic[@"body"][@"product_url"]  andSalesCount:[contentDic[@"body"][@"sales_count"] longValue]];
+            baseMessage = productCard;
         } else if ([contentDic[@"type"] isEqualToString:@"mini_program_card"]) {
 
         }

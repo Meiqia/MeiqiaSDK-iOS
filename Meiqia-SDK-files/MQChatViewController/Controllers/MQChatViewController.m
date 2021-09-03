@@ -73,7 +73,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     NSTimeInterval sendTime;        //发送时间，用于限制发送频率
     UIView *translucentView;        //loading 的半透明层
     UIActivityIndicatorView *activityIndicatorView; //loading
-    
+    UILabel *networkStatusLable;        //网络链接不可用的提示Label
+
     //xlp  是否开启访客无消息过滤的标志
     BOOL openVisitorNoMessageBool; // 默认值 在presentUI里分2种情况初始化 在发送各种消息前检测 若为真 打开 则需手动上线  若为假 则不做操作
     
@@ -284,6 +285,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)addObserver {
 #ifdef INCLUDE_MEIQIA_SDK
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveRefreshOutgoingAvatarNotification:) name:MQChatTableViewShouldRefresh object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveSocketStatusChangeNotification:) name:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveSocketConnectFailedNotification:) name:MQ_COMMUNICATION_FAILED_NOTIFICATION object:nil];
 #endif
 }
 
@@ -915,7 +918,29 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     self.navigationItem.titleView = titleView;
 }
 
+- (void)didReceiveSocketConnectFailedNotification:(NSNotification *)notification {
+    if (![MQManager obtainNetIsReachable]) {
+        [self showNetworkStatusViewWithText:[MQBundleUtil localizedStringForKey:@"network_connect_error"]];
+    } else {
+        [self showNetworkStatusViewWithText:[MQBundleUtil localizedStringForKey:@"network_connect_warning"]];
+    }
+}
 
+- (void)didReceiveSocketStatusChangeNotification:(NSNotification *)notification {
+    if (notification.userInfo) {
+        NSString *status = [notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE];
+        id reason = [notification.userInfo objectForKey:@"reason"];
+        if ([status isEqualToString:SOCKET_STATUS_CONNECTED]) {
+            [self dismissNetworkStatusView];
+        } else if ([status isEqualToString:SOCKET_STATUS_DISCONNECTED]) {
+            if (![MQManager obtainNetIsReachable]) {
+                                [self showNetworkStatusViewWithText:[MQBundleUtil localizedStringForKey:@"network_connect_error"]];
+            } else if (reason && ![reason isEqual:[NSNull null]] && [@"autoconnect fail" isEqualToString:reason]) {
+                                [self showNetworkStatusViewWithText:[MQBundleUtil localizedStringForKey:@"network_connect_warning"]];
+            }
+        }
+    }
+}
 
 - (void)didReceiveRefreshOutgoingAvatarNotification:(NSNotification *)notification {
     if ([notification.object isKindOfClass:[UIImage class]]) {
@@ -1324,33 +1349,52 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 
+#pragma mark - network status view
 
-//xlp 测试可删除
-- (void)closeSocketlalala{
+/**
+ 显示网络链接错误的提示
+ */
+- (void)showNetworkStatusViewWithText:(NSString *)content {
+    if (!networkStatusLable) {
+        networkStatusLable = [[UILabel alloc] initWithFrame:CGRectZero];
+        networkStatusLable.textAlignment = NSTextAlignmentCenter;
+        networkStatusLable.backgroundColor = [UIColor redColor];
+        [self.view addSubview:networkStatusLable];
+        [self.view bringSubviewToFront:networkStatusLable];
+        networkStatusLable.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addConstraints:@[
+        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:[MQChatDeviceUtil getDeviceNavRect:self].size.height + [MQChatDeviceUtil getDeviceStatusBarRect].size.height],
+        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0],
+        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0],
+        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30],
+        ]];
+    }
     
-    //断掉链接
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"xlpCloseSocketNoti" object:nil];
+    UIImage *iconImage = [content isEqualToString:[MQBundleUtil localizedStringForKey:@"network_connect_error"]] ? [MQAssetUtil networkStatusError] : [MQAssetUtil networkStatusWarning];
+    UIColor *statusBackgroundColor = [content isEqualToString:[MQBundleUtil localizedStringForKey:@"network_connect_error"]] ? [UIColor mq_colorWithHexString:@"#FFECEA"] : [UIColor mq_colorWithHexString:@"#FFF5E6"];
     
-    [MQManager closeMeiqiaService];
+    NSMutableAttributedString * mutableAttr = [[NSMutableAttributedString alloc] init];
+    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+    attachment.image = iconImage;
+    attachment.bounds = CGRectMake(0, -2, 15, 15);
+    [mutableAttr appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
+    
+    [mutableAttr appendAttributedString:[
+                                         [NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",content] attributes:@{NSFontAttributeName :[UIFont systemFontOfSize:14.0],
+                                                                                                                        NSForegroundColorAttributeName : [UIColor grayColor],}]];
+    
+    networkStatusLable.attributedText = mutableAttr;
+    networkStatusLable.hidden = NO;
+    networkStatusLable.backgroundColor = statusBackgroundColor;
 }
 
-
-////xlp 在对话规则 打开过滤无消息访客按钮后 刚开始对话 客户未能上线 状态为 初始化
-//- (void)checkOpenVisitorNoMessageBool{
-//
-//    if (openVisitorNoMessageBool) {
-//        [MQServiceToViewInterface prepareForChat]; //初始化
-//        [self.view endEditing:YES];
-//
-//
-//        [self.chatViewService setClientOnline];
-//        //延时2秒 获取所有的历史记录
-//        [self.chatViewService onceLoadHistoryAndRefresh:3];
-//
-//        openVisitorNoMessageBool = NO;
-//
-//    }
-//}
-
+/**
+ 隐藏网络链接错误的提示
+ */
+- (void)dismissNetworkStatusView {
+    if (networkStatusLable) {
+        networkStatusLable.hidden = YES;
+    }
+}
 
 @end

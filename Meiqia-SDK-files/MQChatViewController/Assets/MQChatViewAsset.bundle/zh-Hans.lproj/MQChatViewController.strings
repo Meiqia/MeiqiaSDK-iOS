@@ -147,6 +147,9 @@
 "wating_in_queue_tip_choice" = "如果等不及，可以选择";
 "wating_in_queue_tip_leave_message" = "给我们留言";
 
+"product_message_sales" = "销量";
+"product_message_check_details" = "查看详情";
+
 //询前表单
 "pre_chat_list_title" = "客服支持";
 "pre_chat_form_title" =  "请填写以下内容";
@@ -161,6 +164,9 @@
 "input_content" = "输入消息...";
 // 服务连接中,请稍候
 "service_connectting_wait" = "服务连接中,请稍候...";
+
+"network_connect_error" = "当前网络不可用，请检查网络设置";
+"network_connect_warning" = "当前网络连接中，接收消息可能会有遗漏";
 
 "mq_direct_content" = "接下来由 %@ 为你服务";
 "mq_send" = "发送";

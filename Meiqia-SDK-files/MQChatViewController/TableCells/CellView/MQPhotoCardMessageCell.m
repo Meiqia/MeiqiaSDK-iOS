@@ -75,6 +75,7 @@
         loadingIndicator.hidden = true;
         [loadingIndicator stopAnimating];
     } else {
+        bubbleContentImageView.image = nil;
         loadingIndicator.hidden = false;
         [loadingIndicator startAnimating];
     }

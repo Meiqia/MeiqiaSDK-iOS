@@ -245,4 +245,13 @@
 + (UIImage *)backArrow {
     return [[MQAssetUtil imageFromBundleWithName:@"backArrow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
+
++ (UIImage *)networkStatusError {
+    return [MQAssetUtil imageFromBundleWithName:@"MQNetworkError"];
+}
+
++ (UIImage *)networkStatusWarning {
+    return [MQAssetUtil imageFromBundleWithName:@"MQNetworkWarning"];
+}
+
 @end

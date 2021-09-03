@@ -300,7 +300,7 @@ static CGFloat const kMQCellImageRatio = 0.75;
 }
 
 - (BOOL)isServiceRelatedCell {
-    return NO;
+    return true;
 }
 
 - (NSString *)getCellMessageId {

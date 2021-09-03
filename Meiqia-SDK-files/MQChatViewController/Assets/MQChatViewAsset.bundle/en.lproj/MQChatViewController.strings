@@ -143,6 +143,9 @@
 "wating_in_queue_tip_choice" = "If you can't wait, you can choose";
 "wating_in_queue_tip_leave_message" = "Leave a message";
 
+"product_message_sales" = "Sales";
+"product_message_check_details" = "Check details";
+
 //询前表单
 "pre_chat_list_title" = "Client Support";
 "pre_chat_form_title" =  "Please fill those blanks";
@@ -157,6 +160,9 @@
 "input_content" = "Please input your content...";
 // 服务连接中,请稍候
 "service_connectting_wait" = "Service is connectting,please waitting";
+
+"network_connect_error" = "The network is not available, Please check the network Settings";
+"network_connect_warning" = "Network is connectting，Message may be missing";
 
 "mq_direct_content" = "You will be assisted by %@";
 "mq_send" = "Send";

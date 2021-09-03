@@ -48,7 +48,7 @@
 @property (nonatomic, assign) MQPlayMode playMode;
 
 /**
- 设置显示聊天界面的时候，自动发送给客服的消息, 可以包括图片和文字
+ 设置显示聊天界面的时候，自动发送给客服的消息, 可以包括图片、文字、商品卡片
  */
 @property (nonatomic, strong) NSArray *preSendMessages;
 

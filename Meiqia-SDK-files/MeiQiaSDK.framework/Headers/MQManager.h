@@ -16,7 +16,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.7.3"
+#define MQSDKVersion @"3.7.4"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -380,6 +380,25 @@
  */
 + (MQMessage *)sendVideoMessage:(NSString *)videoPath
                      completion:(void (^)(MQMessage *sendedMessage, NSError *error))completion;
+
+/**
+ * 发送商品卡片消息
+ *
+ * @param pictureUrl 商品图片的url。不能为空，否则不执行发送操作。
+ * @param title 商品标题。不能为空，否则不执行发送操作。
+ * @param descripation 商品描述内容。不能为空，否则不执行发送操作。
+ * @param productUrl 商品链接。不能为空，否则不执行发送操作。
+ * @param salesCount 销售量。不设置就默认为0。
+ *
+ * @return 该条商品卡片消息。此时该消息状态为发送中.
+ * @warning 需要在初始化成功后，且顾客是在线状态时调用才有效
+ */
++ (MQMessage *)sendProductCardMessageWithPictureUrl:(NSString *)pictureUrl
+                                         title:(NSString *)title
+                                         descripation:(NSString *)descripation
+                                         productUrl:(NSString *)productUrl
+                                         salesCount:(long)salesCount
+                               completion:(void (^)(MQMessage *sendedMessage, NSError *error))completion;
 
 /**
  * 将用户正在输入的内容，提供给客服查看。该接口没有调用限制，但每1秒内只会向服务器发送一次数据

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		360BAC7F26E1C96C006D9F84 /* MQProductCardMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 360BAC7E26E1C96C006D9F84 /* MQProductCardMessage.m */; };
+		360BAC8226E1C979006D9F84 /* MQProductCardCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 360BAC8126E1C979006D9F84 /* MQProductCardCellModel.m */; };
+		360BAC8526E1C987006D9F84 /* MQProductCardMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 360BAC8326E1C987006D9F84 /* MQProductCardMessageCell.m */; };
 		3656ED08265CD65E00E8E8CE /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656ED07265CD65E00E8E8CE /* TTTAttributedLabel.m */; };
 		3656ED1D265CD69800E8E8CE /* CafRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656ED0A265CD69800E8E8CE /* CafRecordWriter.m */; };
 		3656ED1E265CD69800E8E8CE /* AmrRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656ED0C265CD69800E8E8CE /* AmrRecordWriter.m */; };
@@ -234,6 +237,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		360BAC7D26E1C96C006D9F84 /* MQProductCardMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQProductCardMessage.h; sourceTree = "<group>"; };
+		360BAC7E26E1C96C006D9F84 /* MQProductCardMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQProductCardMessage.m; sourceTree = "<group>"; };
+		360BAC8026E1C979006D9F84 /* MQProductCardCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQProductCardCellModel.h; sourceTree = "<group>"; };
+		360BAC8126E1C979006D9F84 /* MQProductCardCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQProductCardCellModel.m; sourceTree = "<group>"; };
+		360BAC8326E1C987006D9F84 /* MQProductCardMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQProductCardMessageCell.m; sourceTree = "<group>"; };
+		360BAC8426E1C987006D9F84 /* MQProductCardMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQProductCardMessageCell.h; sourceTree = "<group>"; };
 		3656ED06265CD65E00E8E8CE /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
 		3656ED07265CD65E00E8E8CE /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		3656ED09265CD69800E8E8CE /* AmrRecordWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmrRecordWriter.h; sourceTree = "<group>"; };
@@ -1157,6 +1166,8 @@
 				3672E67F24C03243001BA536 /* MQPhotoCardMessage.m */,
 				36773970255CDFCB0029B054 /* MQVideoMessage.h */,
 				36773971255CDFCB0029B054 /* MQVideoMessage.m */,
+				360BAC7D26E1C96C006D9F84 /* MQProductCardMessage.h */,
+				360BAC7E26E1C96C006D9F84 /* MQProductCardMessage.m */,
 			);
 			path = MessageModels;
 			sourceTree = "<group>";
@@ -1214,6 +1225,8 @@
 				3677395F255CDF960029B054 /* MQSplitLineCellModel.m */,
 				36773960255CDF960029B054 /* MQVideoCellModel.h */,
 				36773961255CDF970029B054 /* MQVideoCellModel.m */,
+				360BAC8026E1C979006D9F84 /* MQProductCardCellModel.h */,
+				360BAC8126E1C979006D9F84 /* MQProductCardCellModel.m */,
 			);
 			path = CellModel;
 			sourceTree = "<group>";
@@ -1265,6 +1278,8 @@
 				3677396A255CDFB50029B054 /* MQSplitLineCell.m */,
 				36773969255CDFB50029B054 /* MQVideoMessageCell.h */,
 				36773967255CDFB50029B054 /* MQVideoMessageCell.m */,
+				360BAC8426E1C987006D9F84 /* MQProductCardMessageCell.h */,
+				360BAC8326E1C987006D9F84 /* MQProductCardMessageCell.m */,
 			);
 			path = CellView;
 			sourceTree = "<group>";
@@ -1796,6 +1811,7 @@
 				3656ED22265CD69800E8E8CE /* MLAudioRecorder.m in Sources */,
 				F3B2CAA82495E37C00FDADAF /* UIView+MQLayout.m in Sources */,
 				F3B2CA4A2495E37C00FDADAF /* MQTextMessage.m in Sources */,
+				360BAC8526E1C987006D9F84 /* MQProductCardMessageCell.m in Sources */,
 				F3B2CA6E2495E37C00FDADAF /* MQBotMenuCell.m in Sources */,
 				F3B2CA382495E37C00FDADAF /* MEIQIA_FBLCDFontView.m in Sources */,
 				F3B2CA732495E37C00FDADAF /* MQVoiceMessageCell.m in Sources */,
@@ -1857,6 +1873,7 @@
 				F3B2CA4C2495E37C00FDADAF /* MQBotMenuMessage.m in Sources */,
 				3672E67E24C03226001BA536 /* MQPhotoCardCellModel.m in Sources */,
 				F3B2CA532495E37C00FDADAF /* MQVoiceCellModel.m in Sources */,
+				360BAC7F26E1C96C006D9F84 /* MQProductCardMessage.m in Sources */,
 				F3B2CA642495E37C00FDADAF /* MQTextMessageCell.m in Sources */,
 				F3B2CA392495E37C00FDADAF /* MEIQIA_FBBitmapFont.m in Sources */,
 				F3B2CA482495E37C00FDADAF /* MQWithDrawMessage.m in Sources */,
@@ -1872,6 +1889,7 @@
 				F3B2CA112495E37C00FDADAF /* MQMessageFormViewStyle.m in Sources */,
 				F3B2CA972495E37C00FDADAF /* MQKeyboardController.m in Sources */,
 				F3B2CA682495E37C00FDADAF /* MQBotAnswerCell.m in Sources */,
+				360BAC8226E1C979006D9F84 /* MQProductCardCellModel.m in Sources */,
 				F3B2CA8C2495E37C00FDADAF /* MQPreChatSubmitViewController.m in Sources */,
 				F3B2CA822495E37C00FDADAF /* MQChatFileUtil.m in Sources */,
 			);
@@ -2074,7 +2092,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.7.3;
+				MARKETING_VERSION = 3.7.4;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2118,7 +2136,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.7.3;
+				MARKETING_VERSION = 3.7.4;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";

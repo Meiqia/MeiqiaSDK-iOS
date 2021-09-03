@@ -130,6 +130,13 @@
     }];
 }
 
++ (void)sendProductCardMessageWithPictureUrl:(NSString *)pictureUrl title:(NSString *)title descripation:(NSString *)descripation productUrl:(NSString *)productUrl salesCount:(long)salesCount messageId:(NSString *)localMessageId delegate:(id<MQServiceToViewInterfaceDelegate>)delegate
+{
+    [MQManager sendProductCardMessageWithPictureUrl:pictureUrl title:title descripation:descripation productUrl:productUrl salesCount:salesCount completion:^(MQMessage *sendedMessage, NSError *error) {
+        [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+    }];
+}
+
 + (void)sendClientInputtingWithContent:(NSString *)content
 {
     [MQManager sendClientInputtingWithContent:content];

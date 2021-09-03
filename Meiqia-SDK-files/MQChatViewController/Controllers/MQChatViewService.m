@@ -16,6 +16,7 @@
 #import "MQBotAnswerMessage.h"
 #import "MQBotMenuMessage.h"
 #import "MQPhotoCardMessage.h"
+#import "MQProductCardMessage.h"
 #import "MQTextCellModel.h"
 #import "MQCardCellModel.h"
 #import "MQImageCellModel.h"
@@ -27,6 +28,7 @@
 #import "MQEvaluationResultCellModel.h"
 #import "MQMessageDateCellModel.h"
 #import "MQPhotoCardCellModel.h"
+#import "MQProductCardCellModel.h"
 #import <UIKit/UIKit.h>
 #import "MQToast.h"
 #import "MEIQIA_VoiceConverter.h"
@@ -219,6 +221,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [cellModel isKindOfClass:[MQEventCellModel class]] ||
             [cellModel isKindOfClass:[MQFileDownloadCellModel class]] ||
             [cellModel isKindOfClass:[MQPhotoCardCellModel class]] ||
+            [cellModel isKindOfClass:[MQProductCardCellModel class]] ||
             [cellModel isKindOfClass:[MQWebViewBubbleCellModel class]] ||
             [cellModel isKindOfClass:[MQBotAnswerCellModel class]] ||
             [cellModel isKindOfClass:[MQBotMenuAnswerCellModel class]] ||
@@ -247,6 +250,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [cellModel isKindOfClass:[MQEventCellModel class]] ||
                 [cellModel isKindOfClass:[MQFileDownloadCellModel class]] ||
                 [cellModel isKindOfClass:[MQPhotoCardCellModel class]] ||
+                [cellModel isKindOfClass:[MQProductCardCellModel class]] ||
                 [cellModel isKindOfClass:[MQWebViewBubbleCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotAnswerCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotMenuAnswerCellModel class]] ||
@@ -357,6 +361,30 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface sendVideoMessageWithFilePath:filePath messageId:message.messageId delegate:self];
+#else
+    //模仿发送成功
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        cellModel.sendStatus = MQChatMessageSendStatusSuccess;
+        [self playSendedMessageSound];
+    });
+#endif
+}
+
+/**
+ * 发送商品卡片消息
+ * @param productCard 商品卡片的model
+ */
+
+- (void)sendProductCardWithModel:(MQProductCardMessage *)productCard
+{
+    MQProductCardMessage *message = [[MQProductCardMessage alloc] initWithPictureUrl:productCard.pictureUrl title:productCard.title description:productCard.desc productUrl:productCard.productUrl andSalesCount:productCard.salesCount];
+    message.conversionId = [MQServiceToViewInterface getCurrentConversationID] ?:@"";
+    MQProductCardCellModel *cellModel = [[MQProductCardCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
+    [self addConversionSplitLineWithCurrentCellModel:cellModel];
+    [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
+    [self addCellModelAndReloadTableViewWithModel:cellModel];
+#ifdef INCLUDE_MEIQIA_SDK
+    [MQServiceToViewInterface sendProductCardMessageWithPictureUrl:message.pictureUrl title:message.title descripation:message.desc productUrl:message.productUrl salesCount:message.salesCount messageId:message.messageId delegate:self];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -828,7 +856,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:withDrawMessage.content cellWidth:self.chatViewWidth enableLinesDisplay:NO];
         } else if ([message isKindOfClass:[MQPhotoCardMessage class]]) {
             cellModel = [[MQPhotoCardCellModel alloc] initCellModelWithMessage:(MQPhotoCardMessage *)message cellWidth:self.chatViewWidth delegate:self];
-       }
+        } else if ([message isKindOfClass:[MQProductCardMessage class]]) {
+            cellModel = [[MQProductCardCellModel alloc] initCellModelWithMessage:(MQProductCardMessage *)message cellWidth:self.chatViewWidth delegate:self];
+        }
     }
     return cellModel;
 }
@@ -1258,6 +1288,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [self sendTextMessageWithContent:messageContent];
             } else if ([messageContent isKindOfClass:UIImage.class]) {
                 [self sendImageMessageWithImage:messageContent];
+            } else if ([messageContent isKindOfClass:MQProductCardMessage.class]) {
+                [self sendProductCardWithModel:messageContent];
             }
         }
         

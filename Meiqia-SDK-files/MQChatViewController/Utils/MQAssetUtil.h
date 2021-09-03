@@ -68,5 +68,6 @@
 + (UIImage *)fileCancel;
 + (UIImage *)fileDonwload;
 + (UIImage *)backArrow;
-
++ (UIImage *)networkStatusError;
++ (UIImage *)networkStatusWarning;
 @end

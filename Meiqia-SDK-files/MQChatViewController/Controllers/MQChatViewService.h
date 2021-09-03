@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MQBaseMessage.h"
+#import "MQProductCardMessage.h"
 #import <UIKit/UIKit.h>
 #import "MQChatViewConfig.h"
 #import "MQCellModelProtocol.h"
@@ -159,6 +160,11 @@
  * @param filePath 视频文件的路径
  */
 - (void)sendVideoMessageWithFilePath:(NSString *)filePath;
+
+/**
+ * 发送商品卡片消息
+ */
+- (void)sendProductCardWithModel:(MQProductCardMessage *)productCard;
 
 /**
  * 发送“用户正在输入”的消息

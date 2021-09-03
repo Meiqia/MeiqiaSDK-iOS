@@ -198,6 +198,25 @@
                 delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 
 /**
+ * 发送视频消息。使用该接口，需要开发者提供MOV格式.
+ *
+ * @param pictureUrl 商品图片的url。不能为空，否则不执行发送操作。
+ * @param title 商品标题。不能为空，否则不执行发送操作。
+ * @param descripation 商品描述内容。不能为空，否则不执行发送操作。
+ * @param productUrl 商品链接。不能为空，否则不执行发送操作。
+ * @param salesCount 销售量。不设置就默认为0。
+ * @param localMessageId 本地消息id
+ * @param delegate 发送消息的代理，会返回完整的消息对象，代理函数：-(void)didSendMessage:expcetion:
+ */
++ (void)sendProductCardMessageWithPictureUrl:(NSString *)pictureUrl
+                                       title:(NSString *)title
+                                       descripation:(NSString *)descripation
+                                       productUrl:(NSString *)productUrl
+                                       salesCount:(long)salesCount
+                                   messageId:(NSString *)localMessageId
+                                    delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
+
+/**
  * 将用户正在输入的内容，提供给客服查看。该接口没有调用限制，但每1秒内只会向服务器发送一次数据
  * @param content 提供给客服看到的内容
  */

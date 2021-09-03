@@ -49,7 +49,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.7.3'
+pod 'Meiqia', '~> 3.7.4'
 ```
 接着安装美洽 pod 即可：
 
@@ -618,6 +618,18 @@ MQAgent *agent = [MQManager getCurrentAgent];
 //消息发送成功后的处理
 }];
 ```
+开发者调用此接口来发送**商品卡片消息**：
+
+```objc
++ (MQMessage *)sendProductCardMessageWithPictureUrl:(NSString *)pictureUrl
+                                         title:(NSString *)title
+                                         descripation:(NSString *)descripation
+                                         productUrl:(NSString *)productUrl
+                                         salesCount:(long)salesCount
+                               completion:(void (^)(MQMessage *sendedMessage, NSError *error)) {
+//消息发送成功后的处理
+}];
+```
 
 **注意**，调用发送消息接口后，回调中会返回一个消息实体，开发者可根据此消息的状态，来判断该条消息是发送成功还是发送失败。
 
@@ -874,6 +886,10 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十一 更新日志
+
+**v3.7.4  2021 年 9 月 3 日**
+* 添加网络状态提示的UI
+* 添加发送商品卡片的功能
 
 **v3.7.3  2021 年 8 月 17 日**
 * 优化排队的UI样式
