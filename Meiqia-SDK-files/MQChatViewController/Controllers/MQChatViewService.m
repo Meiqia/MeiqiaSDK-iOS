@@ -454,6 +454,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (resendData[@"video"]) {
         [self sendVideoMessageWithFilePath:resendData[@"video"]];
     }
+    if (resendData[@"productCard"]) {
+        [self sendProductCardWithModel:resendData[@"productCard"]];
+    }
 }
 
 /**

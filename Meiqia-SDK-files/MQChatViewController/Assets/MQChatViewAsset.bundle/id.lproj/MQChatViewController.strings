@@ -1,0 +1,191 @@
+"new_message"         = "Silakan isi...";
+
+"record_speak"        = "Tekan untuk bicara";
+
+"record_end"          = "Lepas untuk mengakhiri";
+
+"cancel"              = "Batalkan";
+
+"select_gallery"      = "Pilih dari album";
+
+"select_camera"       = "Kamera";
+
+"wait_agent"          = "Sedang menempatkan CS...";
+
+"waiting_title"       = "Sedang mengantri...";
+
+"not_access_camera"   = "Silakan memperbolehkan aplikasi ini membuka kamera";
+
+"not_access_photos"   = "Silakan memperbolehkan aplikasi untuk membuka kamera dari pengaturan";
+
+"display_new_message" = "Di bawah ada pesan baru";
+
+"display_video_expired" = "Video sudah expired";
+
+"display_video_more_than_limit" = "Video melewati batas maksimal 400M";
+
+"network_jam"         = "Jaringan tidak terlalu lancar, silakan cek jaringan";
+
+"simulator_not_support_camera" = "Emulator tidak dapat menggunakan kamera";
+
+"simulator_not_support_microphone" = "Emulator tidak dapat menggunakan mic";
+
+"recode_time_too_short" = "Rekaman terlalu singkat";
+
+"record_cancel_swipe"   = "Geser ke atas untuk batalkan pengiriman";
+
+"record_cancel_realse"  = "Lepaskan jari untuk batalkan pengiriman";
+
+"save_photo_error"      = "Maaf, gagal disimpan";
+
+"save_photo_success"    = "Foto sudah tersimpan di album";
+
+"save_text_success"     = "Sudah dicopy";
+
+"save_photo"            = "Simpan";
+
+"save_text"             = "Copy";
+
+"record_error"          = "Maaf, ada sedikit masalah dengan rekamannya-_-";
+
+"user_confirm"          = "Baik";
+
+"no_more_messages"      = "Tidak ada pesan lagi~";
+
+"welcome_chat"          = "";
+
+"default_assistant"     = "Asisten Meiqia";
+
+"no_agent_title"        = "Pesan";
+
+"no_agent_tips"         = "Maaf, sekarang tidak ada CS yang online\nbisa tinggalkan kontak Anda, kami akan segera menghubungi~";
+
+"retry_send_message"    = "Mau kirim ulang?";
+
+"alert_view_cancel"     = "Batal";
+"alert_view_send"     = "Kirim";
+
+"alert_view_confirm"    = "Konfirmasi";
+
+"cannot_refresh"        = "Tidak bisa refresh~";
+
+"make_call_to"          = "Telepon ke ";
+
+"send_message_to"       = "SMS ke ";
+
+"open_url_by_safari"    = "Buka tautan ini dari Safari";
+
+"make_email_to"         = "Kirim email ke email ini";
+
+"load_history_message_error"    = "Maaf, tidak mendapatkan pesan terdahulu yang tepatl-_-";
+
+"microphone_denied"     = "Silakan memperbolehkan aplikasi untuk menggunakan mic dari pengaturan";
+
+"meiqia_communication_failed" = "Maaf, jaringan penghubung kemungkinan bermasalah, silakan coba ganti jaringannya.";
+
+"meiqia_evaluation_sheet"     = "Nilai";
+
+"meiqia_redirect_sheet"     = "pindah ke bantuan langsung";
+
+"file_download_file_is_expired" = "Dokumen sudah expired";
+"file_download_canceld" = "Sudah batal mengunduh";
+"file_download_failed" = "Gagal mengunduh";
+"file_download_downloading" = "Sedang diunduh...";
+"file_download_complete" = "Unduhan selesai";
+"file_download_ %@ ∙ %@overdue" = "Expired setelah %@ ∙ %@ jam";
+
+"message_tips_send_message_fail_listed_in_black_list" = "Maaf, sistem customer sementara tidak dapat digunakan.";
+
+"message_tips_online_failed_listed_in_black_list" = "Maaf, sistem customer sementara tidak dapat digunakan.";
+
+"reply_tip_text"        = "Maaf, tidak ada customer service yang online sekarang, Anda bisa meninggalkan pesan untuk kami";
+
+"bot_redirect_tip_text"  = "Mohon maaf atas ketidakpuasannya terhadap jawaban robot, Anda bisa coba pindah ke bantuan langsung";
+
+"bot_manual_redirect_tip_text" = "Kalau Anda perlu bantuan langsung, bisa pindah ke bantuan langsung";
+
+"cannot_text_client_is_onlining"  = "Sedang menugaskan customer service untuk Anda, silakan kirim ulang setelah beberapa saat.";
+
+"message_tips_online_failed_listed_in_black_list" = "Maaf, sistem customer sementara tidak dapat digunakan.";
+
+"cannot_text_client_is_onlining"  = "Sedang menugaskan customer service untuk Anda, silakan kirim ulang setelah beberapa saat.";
+
+"send_to_fast"  = "Anda mengirimnya terlalu cepat, istirahatlah sejenak~";
+"leave_a_message" = "pesan";
+"submit" = "Kirim";
+"leave_a_message_placeholder" = "Silakan isi pesan Anda";
+"param_not_allow_null" = "%@ tidak boleh kosong";
+"contact_at_lease_enter_one" = "Silakan isi setidaknya satu kontak untuk dihubungi";
+"submit_failure" = "Gagal kirim";
+"add_picture" = "Tambah foto";
+"tel" = "No. telepon";
+"tel_placeholder" = "Silakan isi no. telepon Anda";
+"email" = "Email";
+"email_placeholder" = "Silakan isi email Anda";
+"qq" = "QQ";
+"qq_placeholder" = "Silakan isi akun qq Anda";
+"wechat" = "WeChat";
+"wechat_placeholder" = "Silakan isi akun WeChat Anda";
+"name" = "Nama";
+"name_placeholder" = "Silakan isi nama";
+"gender" = "Jenis kelamin";
+"age" = "Umur";
+"age_placeholder" = "Silakan isi umur";
+"weibo" = "Weibo";
+"weibo_placeholder" = "Silakan isi akun Weibo";
+"address" = "Alamat";
+"address_placeholder" = "Silakan isi alamat";
+"comment" = "Catatan";
+"comment_placeholder" = "Silakan isi catatan";
+"contact" = "Kontak";
+"contact_placeholder" = "Silakan isi kontak";
+"man" = "Pria";
+"woman" = "Wanita";
+"time_placeholder" = "Tahun-bulan-tanggal";
+
+"wating_in_queue_tip_number" = "Jumlah orang yang sedang menunggu";
+"wating_in_queue_tip_choice" = "Kalau tidak bisa menunggu, bisa memilih";
+"wating_in_queue_tip_leave_message" = "Tinggalkan pesan untuk kami";
+
+"product_message_sales" = "Jumlah penjualan";
+"product_message_check_details" = "Lihat rincian";
+
+//询前表单
+"pre_chat_list_title" = "Bantuan";
+"pre_chat_form_title" =  "Silakan isi di bawah ini";
+"pre_chat_form_mutiple_selection_label" = "(Lebih dari 1 pilihan)";
+"pre_chat_form_black_alert_label" = "Tempat dengan tulisan warna merah harus diisi, silakan diisi secara komplit";
+
+//pull refresh
+"pull_refresh_normal" = "Tarik ke bawah untuk memuat pesan terdahulu";
+"pull_refresh_triggered" = "Lepaskan untuk memuat pesan terdahulu";
+
+//xlp
+// 请输入消息
+"input_content" = "Isi pesan...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "Pelayanan sedang dihubungkan, mohon menunggu...";
+
+"network_connect_error" = "Jaringannya tidak dapat digunakan, silakan periksa pengaturan jaringan";
+"network_connect_warning" = "Jaringan sedang dihubungkan, penerimaan pesan mungkin terganggu";
+
+"mq_direct_content" = "Selanjutnya %@ akan melayani Anda";
+"mq_send" = "Kirim";
+"mq_delete" = "Hapus";
+"mq_record_count_down" = "Rekaman akan berhenti setelah %li detik";
+"mq_record_will_send" = "Rekaman akan terkirim setelah %li detik";
+"mq_audio_status_normal" = "Tekan untuk bicara";
+"mq_display_preview" = "Preview";
+"mq_open_file" = "Buka dokumen";
+
+"mq_solved" = "Sudah terselesaikan";
+"mq_unsolved" = "Belum terselesaikan";
+"mq_commited" = "Sudah terkirim";
+
+"mq_evaluation_title" = "Apa Anda puas dengan pelayanan kali ini?";
+"mq_evaluation_good" = "Bagus";
+"mq_evaluation_middle" = "Biasa";
+"mq_evaluation_bad" = "Buruk";
+"mq_evaluation_content" = "Isi komentar (bebas pilih)";
+
+

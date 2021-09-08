@@ -21,6 +21,8 @@
     UILabel *descLable;
     UILabel *saleCountLable;
     UILabel *linkLable;
+    UIActivityIndicatorView *sendingIndicator;
+    UIImageView *failureImageView;
     MQProductCardCellModel *cellModel;
 }
 
@@ -66,6 +68,17 @@
         linkLable.textAlignment = NSTextAlignmentRight;
         linkLable.text = [MQBundleUtil localizedStringForKey:@"product_message_check_details"];
         [bubbleView addSubview:linkLable];
+        
+        //初始化indicator
+        sendingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        sendingIndicator.hidden = YES;
+        [self.contentView addSubview:sendingIndicator];
+        //初始化出错image
+        failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
+        UITapGestureRecognizer *tapFailureImageGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFailImage:)];
+        failureImageView.userInteractionEnabled = true;
+        [failureImageView addGestureRecognizer:tapFailureImageGesture];
+        [self.contentView addSubview:failureImageView];
     }
     return self;
 }
@@ -103,12 +116,40 @@
     descLable.frame = cellModel.descriptionFrame;
     saleCountLable.frame = cellModel.saleCountFrame;
     linkLable.frame = cellModel.linkFrame;
+    
+    sendingIndicator.hidden = true;
+    [sendingIndicator stopAnimating];
+    if (cellModel.sendStatus == MQChatMessageSendStatusSending && cellModel.cellFromType == MQChatCellOutgoing) {
+        sendingIndicator.hidden = false;
+        sendingIndicator.frame = cellModel.sendingIndicatorFrame;
+        [sendingIndicator startAnimating];
+    }
+    
+    failureImageView.hidden = true;
+    if (cellModel.sendStatus == MQChatMessageSendStatusFailure) {
+        failureImageView.hidden = false;
+        failureImageView.frame = cellModel.sendFailureFrame;
+    }
 }
 
 #pragma 单击气泡
 - (void)bubbleTapped {
     
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:cellModel.productUrl]];
+}
+
+#pragma 点击发送失败消息 重新发送事件
+- (void)tapFailImage:(id)sender {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"retry_send_message"] message:nil delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] otherButtonTitles:[MQBundleUtil localizedStringForKey:@"alert_view_confirm"], nil];
+    [alertView show];
+}
+
+#pragma UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        MQProductCardMessage *message = [[MQProductCardMessage alloc] initWithPictureUrl:cellModel.productPictureUrl title:cellModel.title description:cellModel.desc productUrl:cellModel.productUrl andSalesCount:cellModel.saleCount];
+        [self.chatCellDelegate resendMessageInCell:self resendData:@{@"productCard" : message}];
+    }
 }
 
 @end

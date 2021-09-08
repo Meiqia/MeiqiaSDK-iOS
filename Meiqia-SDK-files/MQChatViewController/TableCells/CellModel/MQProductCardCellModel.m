@@ -87,6 +87,11 @@ static CGFloat const kMQCellImageRatio = 0.75;
 @property (nonatomic, readwrite, copy) NSString *productUrl;
 
 /**
+ * @brief 商品图片的url
+ */
+@property (nonatomic, readwrite, copy) NSString *productPictureUrl;
+
+/**
  * @brief 发送者的头像的图片
  */
 @property (nonatomic, readwrite, copy) UIImage *avatarImage;
@@ -132,6 +137,16 @@ static CGFloat const kMQCellImageRatio = 0.75;
 @property (nonatomic, readwrite, assign) CGRect avatarFrame;
 
 /**
+ * @brief 发送状态指示器的frame
+ */
+@property (nonatomic, readwrite, assign) CGRect sendingIndicatorFrame;
+
+/**
+ * @brief 发送出错图片的frame
+ */
+@property (nonatomic, readwrite, assign) CGRect sendFailureFrame;
+
+/**
  * @brief 消息的来源类型
  */
 @property (nonatomic, readwrite, assign) MQChatCellFromType cellFromType;
@@ -166,6 +181,8 @@ static CGFloat const kMQCellImageRatio = 0.75;
     if (self = [super init]) {
         self.cellWidth = cellWidth;
         self.delegate = delegate;
+        self.sendStatus = message.sendStatus;
+        self.productPictureUrl = message.pictureUrl;
         self.messageId = message.messageId;
         self.conversionId = message.conversionId;
         self.date = message.date;
@@ -344,6 +361,15 @@ static CGFloat const kMQCellImageRatio = 0.75;
                                       imageHeight + kMQCellBubbleToContentSpacing * 3 + kMQCellTextContentSpacing * 2 + kMQCellTitleHeigh + kMQCellDescriptionHeigh + kMQCellSaleCountHeigh);
     }
     
+    //发送消息的indicator的frame
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter)];
+    self.sendingIndicatorFrame = CGRectMake(self.bubbleFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleFrame.origin.y+self.bubbleFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
+    
+    //发送失败的图片frame
+    UIImage *failureImage = [MQChatViewConfig sharedConfig].messageSendFailureImage;
+    CGSize failureSize = CGSizeMake(ceil(failureImage.size.width * 2 / 3), ceil(failureImage.size.height * 2 / 3));
+    self.sendFailureFrame = CGRectMake(self.bubbleFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureSize.width, self.bubbleFrame.origin.y+self.bubbleFrame.size.height/2-failureSize.height/2, failureSize.width, failureSize.height);
+    
     //计算cell的高度
     self.cellHeight = self.bubbleFrame.origin.y + self.bubbleFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing;
 
@@ -381,6 +407,10 @@ static CGFloat const kMQCellImageRatio = 0.75;
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.messageId = messageId;
+}
+
+- (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
+    self.sendStatus = sendStatus;
 }
 
 - (void)updateCellConversionId:(NSString *)conversionId {

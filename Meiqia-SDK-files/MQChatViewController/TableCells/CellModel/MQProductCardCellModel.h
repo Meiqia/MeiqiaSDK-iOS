@@ -55,6 +55,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, copy) NSString *productUrl;
 
 /**
+ * @brief 商品图片的url
+ */
+@property (nonatomic, readonly, copy) NSString *productPictureUrl;
+
+/**
  * @brief 发送者的头像的图片
  */
 @property (nonatomic, readonly, copy) UIImage *avatarImage;
@@ -100,9 +105,24 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, assign) CGRect avatarFrame;
 
 /**
+ * @brief 发送状态指示器的frame
+ */
+@property (nonatomic, readonly, assign) CGRect sendingIndicatorFrame;
+
+/**
+ * @brief 发送出错图片的frame
+ */
+@property (nonatomic, readonly, assign) CGRect sendFailureFrame;
+
+/**
  * @brief 消息的来源类型
  */
 @property (nonatomic, readonly, assign) MQChatCellFromType cellFromType;
+
+/**
+ * @brief 消息的发送状态
+ */
+@property (nonatomic, assign) MQChatMessageSendStatus sendStatus;
 
 /**
  *  根据MQMessage内容来生成cell model

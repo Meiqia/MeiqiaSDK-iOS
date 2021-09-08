@@ -108,8 +108,6 @@
 
 "message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
 
-"leave_a_message" = "留言";
-
 "cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
 
 "send_to_fast"  = "您发送的太快啦，请休息一下吧~";
