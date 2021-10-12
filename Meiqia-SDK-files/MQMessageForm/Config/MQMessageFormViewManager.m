@@ -121,11 +121,36 @@
     }
     
     if (messageFormConfig.messageFormViewStyle.navBarColor) {
-        navigationController.navigationBar.barTintColor = messageFormConfig.messageFormViewStyle.navBarColor;
+        if (@available(iOS 15.0, *)) {
+            UINavigationBarAppearance * appearance = navigationController.navigationBar.standardAppearance;
+            // 背景色
+            appearance.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
+            navigationController.navigationBar.scrollEdgeAppearance = appearance;
+        } else {
+            navigationController.navigationBar.barTintColor = messageFormConfig.messageFormViewStyle.navBarColor;
+        }
     } else if ([MQChatViewConfig sharedConfig].navBarColor) {
-        navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
+        if (@available(iOS 15.0, *)) {
+            UINavigationBarAppearance * appearance = navigationController.navigationBar.standardAppearance;
+            // 背景色
+            appearance.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
+            navigationController.navigationBar.scrollEdgeAppearance = appearance;
+        } else {
+            navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
+        }
     } else if (defaultNavigationController && defaultNavigationController.navigationBar.barTintColor) {
-        navigationController.navigationBar.barTintColor = defaultNavigationController.navigationBar.barTintColor;
+        if (@available(iOS 15.0, *)) {
+            UINavigationBarAppearance * appearance = navigationController.navigationBar.standardAppearance;
+            appearance.backgroundColor = defaultNavigationController.navigationBar.barTintColor;
+            navigationController.navigationBar.scrollEdgeAppearance = appearance;
+        } else {
+            navigationController.navigationBar.barTintColor = defaultNavigationController.navigationBar.barTintColor;
+        }
+    } else {
+        if (@available(iOS 15.0, *)) {
+            UINavigationBarAppearance * appearance = navigationController.navigationBar.standardAppearance;
+            navigationController.navigationBar.scrollEdgeAppearance = appearance;
+        }
     }
     
     //导航栏左键

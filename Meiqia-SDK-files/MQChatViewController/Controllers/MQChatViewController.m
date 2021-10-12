@@ -319,6 +319,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     self.chatTableView.estimatedRowHeight = 0;
     self.chatTableView.estimatedSectionFooterHeight = 0;
     self.chatTableView.estimatedSectionHeaderHeight = 0;
+    if (@available(iOS 15.0, *)) {
+        self.chatTableView.sectionHeaderTopPadding = 0;
+    }
     
     if (@available(iOS 11.0, *)) {
         self.chatTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
@@ -630,7 +633,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         picker.mediaTypes               = self.sendVideoMsgStatus ? @[@"public.movie",@"public.image"] : @[@"public.image"];
         picker.videoQuality             = UIImagePickerControllerQualityTypeHigh;
         picker.delegate                 = (id)self;
-        picker.allowsEditing            = YES;
+        picker.allowsEditing            = [MQChatViewConfig sharedConfig].enablePhotoLibraryEdit;
         if (@available(iOS 11.0, *)) {
             picker.videoExportPreset    = AVAssetExportPresetPassthrough;
         }
@@ -740,7 +743,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     //当选择的类型是图片
     if ([type isEqualToString:@"public.image"]) {
         // 图片
-        UIImage *image          =  [MQImageUtil resizeImage:[MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]]maxSize:CGSizeMake(1000, 1000)];
+        UIImage *image          =  [MQImageUtil resizeImage:[MQImageUtil fixrotation:[info objectForKey:[MQChatViewConfig sharedConfig].enablePhotoLibraryEdit ? UIImagePickerControllerEditedImage : UIImagePickerControllerOriginalImage]]maxSize:CGSizeMake(1000, 1000)];
         [picker dismissViewControllerAnimated:YES completion:^{
     //        [self.chatViewService sendImageMessageWithImage:image];
     //        [self chatTableViewScrollToBottomWithAnimated:true];

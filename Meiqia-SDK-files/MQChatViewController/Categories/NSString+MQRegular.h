@@ -17,6 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)mq_isTelNumber;
 
+/**
+ * 去掉<a><span><html> 标签
+ */
+- (NSString*)mq_textContent;
+
 @end
 
 NS_ASSUME_NONNULL_END

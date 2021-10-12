@@ -7,12 +7,13 @@
 //
 
 #import "MQTextMessage.h"
+#import "NSString+MQRegular.h"
 
 @implementation MQTextMessage
 
 - (instancetype)initWithContent:(NSString *)content {
     if (self = [super init]) {
-        self.content = content;
+        self.content = [content mq_textContent];
     }
     return self;
 }

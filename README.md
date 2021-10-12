@@ -49,7 +49,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.7.5'
+pod 'Meiqia', '~> 3.7.6'
 ```
 接着安装美洽 pod 即可：
 
@@ -264,7 +264,13 @@ NSDictionary* clientCustomizedAttrs = @{
 @"球衣号码"      : @"24号"
 };
 
-[chatViewManager setClientInfo:clientCustomizedAttrs ];
+/**
+ *  设置顾客的自定义信息
+ *
+ *  @param clientInfo 顾客的自定义信息
+    @param override 是否强制更新，如果不设置此值为 YES，设置只有第一次有效。
+ */
+[chatViewManager setClientInfo:clientCustomizedAttrs override:YES];
 或者
 [MQManager setClientInfo:clientCustomizedAttrs completion:^(BOOL success) {
 }];
@@ -886,6 +892,12 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十一 更新日志
+
+**v3.7.6  2021 年 10 月 12 日**
+* 适配iOS 15
+* 过滤文本消息中的<html>标签
+* 添加相册是否可以裁剪的配置
+* 添加转人工触发事件
 
 **v3.7.5  2021 年 9 月 8 日**
 * 新增马来语、印尼语的多语言配置

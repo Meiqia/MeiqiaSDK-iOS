@@ -245,6 +245,13 @@
 - (void)enableVoiceRecordBlurView:(BOOL)enable;
 
 /**
+ *  是否支持相册选择图片可裁剪。默认支持裁剪
+ *
+ *  @param enable YES:支持 NO:不支持
+ */
+- (void)enablePhotoLibraryEdit:(BOOL)enable;
+
+/**
  * 设置发送过来的message的文字颜色；
  * @param textColor 文字颜色
  */

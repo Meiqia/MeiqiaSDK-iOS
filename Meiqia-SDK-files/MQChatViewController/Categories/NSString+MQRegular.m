@@ -33,4 +33,12 @@
     return [self mq_match:@"^((0\\d{2,3}-\\d{7,8})|(1[345789]\\d{9}))$"];
 }
 
+- (NSString *)mq_textContent
+{
+    NSString *resultContent = self;
+    resultContent = [resultContent stringByReplacingOccurrencesOfString:@"<[^>]+>\\s+(?=<)|<[^>]+>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange (0, resultContent.length)];
+    return resultContent;
+}
+
+
 @end
