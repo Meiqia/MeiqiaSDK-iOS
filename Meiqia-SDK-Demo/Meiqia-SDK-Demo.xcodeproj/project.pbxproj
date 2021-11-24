@@ -32,6 +32,7 @@
 		367BA00125830A7D001F0A99 /* MQMessageFormInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 367B9FF925830A7D001F0A99 /* MQMessageFormInputView.m */; };
 		367BA00225830A7D001F0A99 /* MQMessageFormChoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 367B9FFD25830A7D001F0A99 /* MQMessageFormChoiceView.m */; };
 		367BA00325830A7D001F0A99 /* MQMessageFormBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 367B9FFE25830A7D001F0A99 /* MQMessageFormBaseView.m */; };
+		369B96F8274E1BBF00E7D381 /* MQTagListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 369B96F6274E1BBF00E7D381 /* MQTagListView.m */; };
 		36F2E17125B524CA00F9A469 /* NSString+MQName.m in Sources */ = {isa = PBXBuildFile; fileRef = 36F2E16D25B524C900F9A469 /* NSString+MQName.m */; };
 		36F2E17225B524CA00F9A469 /* NSString+MQRegular.m in Sources */ = {isa = PBXBuildFile; fileRef = 36F2E16F25B524C900F9A469 /* NSString+MQRegular.m */; };
 		36F2E17825B524E000F9A469 /* MQRoundProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 36F2E17625B524E000F9A469 /* MQRoundProgressView.m */; };
@@ -290,6 +291,8 @@
 		367B9FFC25830A7D001F0A99 /* MQMessageFormChoiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormChoiceView.h; sourceTree = "<group>"; };
 		367B9FFD25830A7D001F0A99 /* MQMessageFormChoiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormChoiceView.m; sourceTree = "<group>"; };
 		367B9FFE25830A7D001F0A99 /* MQMessageFormBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormBaseView.m; sourceTree = "<group>"; };
+		369B96F6274E1BBF00E7D381 /* MQTagListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTagListView.m; sourceTree = "<group>"; };
+		369B96F7274E1BBF00E7D381 /* MQTagListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTagListView.h; sourceTree = "<group>"; };
 		36F2E16D25B524C900F9A469 /* NSString+MQName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MQName.m"; sourceTree = "<group>"; };
 		36F2E16E25B524C900F9A469 /* NSString+MQRegular.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MQRegular.h"; sourceTree = "<group>"; };
 		36F2E16F25B524C900F9A469 /* NSString+MQRegular.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MQRegular.m"; sourceTree = "<group>"; };
@@ -750,6 +753,15 @@
 				367B9FFD25830A7D001F0A99 /* MQMessageFormChoiceView.m */,
 			);
 			path = MQMessageFormChoiceView;
+			sourceTree = "<group>";
+		};
+		369B96F5274E1BBF00E7D381 /* MQTagListView */ = {
+			isa = PBXGroup;
+			children = (
+				369B96F6274E1BBF00E7D381 /* MQTagListView.m */,
+				369B96F7274E1BBF00E7D381 /* MQTagListView.h */,
+			);
+			path = MQTagListView;
 			sourceTree = "<group>";
 		};
 		36F2E17C25B5253100F9A469 /* EmojiView */ = {
@@ -1383,6 +1395,7 @@
 		F3B2C9C72495E37C00FDADAF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				369B96F5274E1BBF00E7D381 /* MQTagListView */,
 				3677397D255CE0090029B054 /* MQVideoPlayer */,
 				36773976255CDFEA0029B054 /* RoundProgressView */,
 				F3B2C9C82495E37C00FDADAF /* MQPullRefreshView */,
@@ -1878,6 +1891,7 @@
 				F3B2CA392495E37C00FDADAF /* MEIQIA_FBBitmapFont.m in Sources */,
 				F3B2CA482495E37C00FDADAF /* MQWithDrawMessage.m in Sources */,
 				F3B2CA772495E37C00FDADAF /* MQAnimatorPush.m in Sources */,
+				369B96F8274E1BBF00E7D381 /* MQTagListView.m in Sources */,
 				F3B2CA4B2495E37C00FDADAF /* MQBotMessageFactory.m in Sources */,
 				F3B2CA622495E37C00FDADAF /* MQTextCellModel.m in Sources */,
 				F3B2CA7E2495E37C00FDADAF /* MQWindowUtil.m in Sources */,
@@ -2072,7 +2086,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DEVELOPMENT_TEAM = H22N8T6DAX;
@@ -2092,7 +2106,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.7.7;
+				MARKETING_VERSION = 3.7.8;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2117,7 +2131,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = H22N8T6DAX;
@@ -2136,7 +2150,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.7.7;
+				MARKETING_VERSION = 3.7.8;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -12,13 +12,15 @@
 #import "MQCellModelProtocol.h"
 #import "MQImageUtil.h"
 #import "MQWebViewBubbleCellModel.h"
+#import "MQTagListView.h"
+#import "MQBundleUtil.h"
 
 @interface MQWebViewBubbleCell()
 
 @property (nonatomic, strong) UIImageView *itemsView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) MQEmbededWebView *contentWebView;
-
+@property (nonatomic, strong) MQWebViewBubbleCellModel *webViewCellModel;
 @end
 
 @implementation MQWebViewBubbleCell
@@ -37,13 +39,18 @@
 - (void)updateCellWithCellModel:(id<MQCellModelProtocol>)model {
     if ([model isKindOfClass:[MQWebViewBubbleCellModel class]]) {
         MQWebViewBubbleCellModel * tempModel = model;
+        self.webViewCellModel = tempModel;
         __weak typeof(self) wself = self;
         
         __weak typeof(tempModel) weakTempModel = tempModel;
         [tempModel setCellHeight:^CGFloat{
             __strong typeof (wself) sself = wself;
             if (weakTempModel.cachedWetViewHeight) {
-                return weakTempModel.cachedWetViewHeight + kMQCellAvatarToVerticalEdgeSpacing + kMQCellAvatarToVerticalEdgeSpacing;
+                CGFloat tagViewHeight = 0;
+                if (self.webViewCellModel.cacheTagListView) {
+                    tagViewHeight = self.webViewCellModel.cacheTagListView.viewHeight + kMQCellBubbleToIndicatorSpacing;
+                }
+                return weakTempModel.cachedWetViewHeight + kMQCellAvatarToVerticalEdgeSpacing + kMQCellAvatarToVerticalEdgeSpacing + tagViewHeight;
             }
             return sself.viewHeight;
         }];
@@ -63,7 +70,11 @@
         }];
         
         [self.contentWebView setTappedLink:^(NSURL *url) {
-            [[UIApplication sharedApplication] openURL:url];
+            if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]]];
+            } else {
+                [[UIApplication sharedApplication] openURL:url];
+            }
         }];
         
         if (tempModel.cachedWetViewHeight > 0) {
@@ -88,7 +99,48 @@
     
     self.contentWebView.viewHeight = webContentHeight;
     self.itemsView.viewHeight = bubbleHeight;
-    self.contentView.viewHeight = self.itemsView.viewBottomEdge + kMQCellAvatarToVerticalEdgeSpacing;
+    CGFloat tagViewHeight = 0;
+    
+    for (UIView *tempView in self.contentView.subviews) {
+        if ([tempView isKindOfClass:[MQTagListView class]]) {
+            [tempView removeFromSuperview];
+        }
+    }
+    if (self.webViewCellModel.cacheTagListView) {
+        tagViewHeight = self.webViewCellModel.cacheTagListView.viewHeight + kMQCellBubbleToIndicatorSpacing;
+        self.webViewCellModel.cacheTagListView.frame = CGRectMake(CGRectGetMinX(self.itemsView.frame), CGRectGetMaxY(self.itemsView.frame) + kMQCellBubbleToIndicatorSpacing, self.webViewCellModel.cacheTagListView.bounds.size.width, self.webViewCellModel.cacheTagListView.bounds.size.height);
+        [self.contentView addSubview:self.webViewCellModel.cacheTagListView];
+        
+        NSArray *cacheTags = [[NSArray alloc] initWithArray:self.webViewCellModel.cacheTags];
+        __weak __typeof(self) weakSelf = self;
+        self.webViewCellModel.cacheTagListView.mqTagListSelectedIndex = ^(NSInteger index) {
+            __strong __typeof(weakSelf) strongSelf = weakSelf;
+            MQMessageBottomTagModel * model = cacheTags[index];
+            switch (model.tagType) {
+                case MQMessageBottomTagTypeCopy:
+                    [[UIPasteboard generalPasteboard] setString:model.value];
+                    if (strongSelf.chatCellDelegate) {
+                        if ([strongSelf.chatCellDelegate respondsToSelector:@selector(showToastViewInCell:toastText:)]) {
+                            [strongSelf.chatCellDelegate showToastViewInCell:strongSelf toastText:[MQBundleUtil localizedStringForKey:@"save_text_success"]];
+                        }
+                    }
+                    break;
+                case MQMessageBottomTagTypeCall:
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", model.value]]];
+                    break;
+                case MQMessageBottomTagTypeLink:
+                    if ([model.value rangeOfString:@"://"].location == NSNotFound) {
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", model.value]]];
+                    } else {
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:model.value]];
+                    }
+                    break;
+                default:
+                    break;
+            }
+        };
+    }
+    self.contentView.viewHeight = self.itemsView.viewBottomEdge + kMQCellAvatarToVerticalEdgeSpacing + tagViewHeight;
     self.viewHeight = self.contentView.viewHeight;
 }
 

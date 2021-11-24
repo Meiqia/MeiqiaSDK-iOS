@@ -8,9 +8,21 @@
 
 #import <Foundation/Foundation.h>
 #import "MQCellModelProtocol.h"
+#import "MQTagListView.h"
+#import "MQTextMessage.h"
 
 @class MQRichTextMessage;
 @interface MQWebViewBubbleCellModel : NSObject <MQCellModelProtocol>
+
+/**
+ * @brief 标签的tagList
+ */
+@property (nonatomic, readonly, strong) MQTagListView *cacheTagListView;
+
+/**
+ * @brief 标签的数据源
+ */
+@property (nonatomic, readonly, strong) NSArray *cacheTags;
 
 @property (nonatomic, copy) NSString *content;
 

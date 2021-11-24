@@ -101,7 +101,11 @@
         }];
         
         [self.contentWebView setTappedLink:^(NSURL *url) {
-            [[UIApplication sharedApplication] openURL:url];
+            if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]]];
+            } else {
+                [[UIApplication sharedApplication] openURL:url];
+            }
         }];
         
         if (tempModel.cachedWebViewHeight > 0) {

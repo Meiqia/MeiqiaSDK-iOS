@@ -13,6 +13,15 @@
 
 @interface MQWebViewBubbleCellModel()
 
+/**
+ * @brief 标签签的tagList
+ */
+@property (nonatomic, readwrite, strong) MQTagListView *cacheTagListView;
+/**
+ * @brief 标签的数据源
+ */
+@property (nonatomic, readwrite, strong) NSArray *cacheTags;
+
 @property (nonatomic, strong)MQRichTextMessage *message;
 @property (nonatomic, strong)UIImage *avatarImage;
 @property (nonatomic, copy) NSString *avatarPath;
@@ -26,6 +35,15 @@
         self.message = message;
         self.content = message.content;
         self.avatarPath = message.userAvatarPath;
+        if (message.tags) {
+            CGFloat maxWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
+            NSMutableArray *titleArr = [NSMutableArray array];
+            for (MQMessageBottomTagModel * model in message.tags) {
+                [titleArr addObject:model.name];
+            }
+            self.cacheTagListView = [[MQTagListView alloc] initWithTitleArray:titleArr andMaxWidth:maxWidth];
+            self.cacheTags = message.tags;
+        }
     }
     return self;
 }
@@ -94,5 +112,7 @@
 }
 
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
+    CGFloat maxWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
+    [self.cacheTagListView updateLayoutWithMaxWidth:maxWidth];
 }
 @end

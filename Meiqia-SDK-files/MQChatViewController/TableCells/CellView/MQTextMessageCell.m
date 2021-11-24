@@ -12,6 +12,7 @@
 #import "MQBundleUtil.h"
 #import "MQTextCellModel.h"
 #import "TTTAttributedLabel.h"
+#import "MQTagListView.h"
 
 static const NSInteger kMQTextCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;
@@ -74,7 +75,6 @@ static const NSString *kMQTextCellsensitiveWords = @"！消息包含不规范用
         sensitiveTextLabel.font = [UIFont systemFontOfSize:14];
         [sensitiveTextLabel setHidden:YES];
         [self.contentView addSubview:sensitiveTextLabel];
-        
     }
     return self;
 }
@@ -143,7 +143,43 @@ static const NSString *kMQTextCellsensitiveWords = @"！消息包含不规范用
     
     [sensitiveTextLabel setHidden:!cellModel.isSensitive];
     sensitiveTextLabel.frame = cellModel.sensitiveLableFrame;
-        
+    
+    for (UIView *tempView in self.contentView.subviews) {
+        if ([tempView isKindOfClass:[MQTagListView class]]) {
+            [tempView removeFromSuperview];
+        }
+    }
+    if (cellModel.cacheTagListView) {
+        [self.contentView addSubview:cellModel.cacheTagListView];
+        NSArray *cacheTags = [[NSArray alloc] initWithArray:cellModel.cacheTags];
+        __weak __typeof(self) weakSelf = self;
+        cellModel.cacheTagListView.mqTagListSelectedIndex = ^(NSInteger index) {
+            __strong __typeof(weakSelf) strongSelf = weakSelf;
+            MQMessageBottomTagModel * model = cacheTags[index];
+            switch (model.tagType) {
+                case MQMessageBottomTagTypeCopy:
+                    [[UIPasteboard generalPasteboard] setString:model.value];
+                    if (strongSelf.chatCellDelegate) {
+                        if ([strongSelf.chatCellDelegate respondsToSelector:@selector(showToastViewInCell:toastText:)]) {
+                            [strongSelf.chatCellDelegate showToastViewInCell:strongSelf toastText:[MQBundleUtil localizedStringForKey:@"save_text_success"]];
+                        }
+                    }
+                    break;
+                case MQMessageBottomTagTypeCall:
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", model.value]]];
+                    break;
+                case MQMessageBottomTagTypeLink:
+                    if ([model.value rangeOfString:@"://"].location == NSNotFound) {
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", model.value]]];
+                    } else {
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:model.value]];
+                    }
+                    break;
+                default:
+                    break;
+            }
+        };
+    }
 }
 
 #pragma TTTAttributedLabelDelegate 点击事件
@@ -264,7 +300,5 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
         [self.chatCellDelegate resendMessageInCell:self resendData:@{@"text" : textLabel.text}];
     }
 }
-
-
 
 @end

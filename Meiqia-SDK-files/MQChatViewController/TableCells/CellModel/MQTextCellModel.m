@@ -142,6 +142,16 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
  */
 @property (nonatomic, readwrite, assign) CGRect sensitiveLableFrame;
 
+/**
+ * @brief 标签签的tagList
+ */
+@property (nonatomic, readwrite, strong) MQTagListView *cacheTagListView;
+
+/**
+ * @brief 标签的数据源
+ */
+@property (nonatomic, readwrite, strong) NSArray *cacheTags;
+
 
 @property (nonatomic, strong) TTTAttributedLabel *textLabelForHeightCalculation;
 
@@ -165,6 +175,15 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
         self.cellFromType = message.fromType == MQChatMessageIncoming ? MQChatCellIncoming : MQChatCellOutgoing;
         self.messageContent = message.content;
         self.cellWidth = cellWidth;
+        if (message.tags) {
+            CGFloat maxWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
+            NSMutableArray *titleArr = [NSMutableArray array];
+            for (MQMessageBottomTagModel * model in message.tags) {
+                [titleArr addObject:model.name];
+            }
+            self.cacheTagListView = [[MQTagListView alloc] initWithTitleArray:titleArr andMaxWidth:maxWidth];
+            self.cacheTags = message.tags;
+        }
         NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];
         contentParagraphStyle.lineSpacing = kMQTextCellLineSpacing;
         contentParagraphStyle.lineHeightMultiple = 1.0;
@@ -331,8 +350,13 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
     CGSize failureSize = CGSizeMake(ceil(failureImage.size.width * 2 / 3), ceil(failureImage.size.height * 2 / 3));
     self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureSize.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureSize.height/2, failureSize.width, failureSize.height);
     
+    if (self.cacheTagListView) {
+        [self.cacheTagListView updateLayoutWithMaxWidth:maxLabelWidth];
+        self.cacheTagListView.frame = CGRectMake(self.bubbleImageFrame.origin.x,  CGRectGetMaxY(self.bubbleImageFrame) + kMQCellBubbleToIndicatorSpacing, self.cacheTagListView.bounds.size.width, self.cacheTagListView.bounds.size.height);
+    }
+    
     //计算cell的高度
-    self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing + (self.isSensitive ? kMQTextCellSensitiveHeight : 0);
+    self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing + (self.isSensitive ? kMQTextCellSensitiveHeight : 0) + (self.cacheTagListView != nil ? self.cacheTagListView.frame.size.height + kMQCellBubbleToIndicatorSpacing : 0);
 }
 
 #pragma MQCellModelProtocol

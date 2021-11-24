@@ -31,6 +31,7 @@
         case MQMessageContentTypeText: {
             MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:plainMessage.content];
             textMessage.isSensitive = plainMessage.isSensitive;
+            textMessage.tags = [self getMessageBottomTagModel:plainMessage];
             toMessage = textMessage;
             break;
         }
@@ -52,6 +53,7 @@
         }
         case MQMessageContentTypeRichText: {
             MQRichTextMessage *richTextMessage = [[MQRichTextMessage alloc] initWithDictionary:plainMessage.accessoryData];
+            richTextMessage.tags = [self getMessageBottomTagModel:plainMessage];
             toMessage = richTextMessage;
             break;
         }
@@ -139,5 +141,22 @@
     return baseMessage;
 }
 
+- (NSArray *)getMessageBottomTagModel:(MQMessage *)message
+{
+    if (message.accessoryData && [message.accessoryData isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *dataDic = [NSDictionary dictionaryWithDictionary:message.accessoryData];
+        if ([dataDic objectForKey:@"operator_msg"] && ![[dataDic objectForKey:@"operator_msg"] isEqual:[NSNull null]]) {
+            NSArray *tagArr = [dataDic objectForKey:@"operator_msg"];
+            NSMutableArray *resultArr = [NSMutableArray array];
+            for (NSDictionary * dic in tagArr) {
+                [resultArr addObject:[[MQMessageBottomTagModel alloc] initWithDictionary:dic]];
+            }
+            if (resultArr.count > 0) {
+                return resultArr;
+            }
+        }
+    }
+    return nil;
+}
 
 @end
