@@ -91,6 +91,7 @@
 "file_download_failed" = "下载失败";
 "file_download_downloading" = "下载中...";
 "file_download_complete" = "下载完成";
+"file_upload_limit" = "超过上传最大文件限制";
 "file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ 小时后过期";
 
 "message_tips_send_message_fail_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
@@ -102,6 +103,10 @@
 "bot_redirect_tip_text"  = "很抱歉您不满意机器人的回答，您可以尝试 转人工";
 
 "bot_manual_redirect_tip_text" = "您的问题如果需要人工支持，可以 转人工";
+
+"bot_menu_tip_text" = "点击问题或回复对应数字查看答案";
+
+"bot_menu_problem_tip_text" = "常见问题:";
 
 "cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
 

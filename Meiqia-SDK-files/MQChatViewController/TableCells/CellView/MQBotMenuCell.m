@@ -30,6 +30,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
     UIImageView *failureImageView;
     NSMutableArray *menuButtons;
     UILabel *replyTipLabel;
+    UILabel *menuTipLabel;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -72,12 +73,21 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
         failureImageView.userInteractionEnabled = true;
         [failureImageView addGestureRecognizer:tapFailureImageGesture];
         [self.contentView addSubview:failureImageView];
+        // 初始化 reply tip label
+        menuTipLabel = [UILabel new];
+        menuTipLabel.textColor = [UIColor blackColor];
+        menuTipLabel.text = [MQBundleUtil localizedStringForKey:@"bot_menu_problem_tip_text"];
+        menuTipLabel.textAlignment = NSTextAlignmentLeft;
+        menuTipLabel.font = [UIFont systemFontOfSize:kMQBotMenuTipSize];
+        menuTipLabel.hidden = false;
+        [bubbleImageView addSubview:menuTipLabel];
         // 初始化 menu button 数组
         menuButtons = [NSMutableArray new];
         // 初始化 reply tip label
         replyTipLabel = [UILabel new];
         replyTipLabel.textColor = [UIColor colorWithWhite:.6 alpha:1];
-        replyTipLabel.text = kMQBotMenuTipText;
+        replyTipLabel.text = [MQBundleUtil localizedStringForKey:@"bot_menu_tip_text"];
+        replyTipLabel.numberOfLines = 0;
         replyTipLabel.textAlignment = NSTextAlignmentLeft;
         replyTipLabel.font = [UIFont systemFontOfSize:kMQBotMenuReplyTipSize];
         replyTipLabel.hidden = false;
@@ -190,10 +200,17 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
         [bubbleImageView addSubview:menuButton];
     }
     
-    // 刷新 reply tip label
+    // 刷新 reply tip label 和「常见问题」tip label
     if (menuNum > 0) {
         replyTipLabel.hidden = false;
         replyTipLabel.frame = cellModel.replyTipLabelFrame;
+        menuTipLabel.hidden = false;
+        menuTipLabel.frame = cellModel.menuTipLabelFrame;
+    } else {
+        replyTipLabel.hidden = true;
+        replyTipLabel.frame = CGRectZero;
+        menuTipLabel.hidden = true;
+        menuTipLabel.frame = CGRectZero;
     }
 }
 

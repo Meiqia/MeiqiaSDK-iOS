@@ -17,6 +17,7 @@
 #import "MQBotMenuMessage.h"
 #import "MQPhotoCardMessage.h"
 #import "MQProductCardMessage.h"
+#import "MQBotGuideMessage.h"
 #import "MQTextCellModel.h"
 #import "MQCardCellModel.h"
 #import "MQImageCellModel.h"
@@ -25,6 +26,7 @@
 #import "MQBotAnswerCellModel.h"
 #import "MQRichTextViewModel.h"
 #import "MQTipsCellModel.h"
+#import "MQBotGuideCellModel.h"
 #import "MQEvaluationResultCellModel.h"
 #import "MQMessageDateCellModel.h"
 #import "MQPhotoCardCellModel.h"
@@ -228,6 +230,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [cellModel isKindOfClass:[MQBotMenuCellModel class]] ||
             [cellModel isKindOfClass:[MQBotMenuWebViewBubbleAnswerCellModel class]] ||
             [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
+            [cellModel isKindOfClass:[MQBotGuideCellModel class]] ||
             [cellModel isKindOfClass:[MQEvaluationResultCellModel class]])
         {
             return [cellModel getCellDate];
@@ -258,6 +261,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [cellModel isKindOfClass:[MQBotMenuWebViewBubbleAnswerCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
+                [cellModel isKindOfClass:[MQBotGuideCellModel class]] ||
                 [cellModel isKindOfClass:[MQEvaluationResultCellModel class]])
             {
                 return [cellModel getCellDate];
@@ -403,7 +407,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [MQServiceToViewInterface removeMessageInDatabaseWithId:messageId completion:nil];
     [self.cellModels removeObjectAtIndex:index];
     [self.delegate removeCellAtIndex:index];
-    [self addTipCellModelWithTips:tipMsg enableLinesDisplay:enable];
+    if (tipMsg && tipMsg.length > 0) {
+        [self addTipCellModelWithTips:tipMsg enableLinesDisplay:enable];
+    }
 }
 
 /**
@@ -851,6 +857,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             
             cellModel = [[MQBotMenuCellModel alloc] initCellModelWithMessage:(MQBotMenuMessage *)message cellWidth:self.chatViewWidth delegate:self];
             
+        } else if ([message isKindOfClass:[MQBotGuideMessage class]]) {
+            cellModel = [[MQBotGuideCellModel alloc] initCellModelWithMessage:(MQBotGuideMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQCardMessage class]]) {
             cellModel = [[MQCardCellModel alloc] initCellModelWithMessage:(MQCardMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQWithDrawMessage class]]) {
@@ -1201,7 +1209,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self.delegate insertCellAtTopForModelCount: newCellCount];
         [self scrollToBottom];
         [UIView setAnimationsEnabled:YES];
-        [self.delegate reloadChatTableView];
+        // 判断是否有需要移除的营销机器人引导按钮
+        [self checkNeedRemoveBotGuideMessageWithForceReload: YES];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self scrollToBottom]; // some image may lead the table didn't reach bottom
@@ -1263,6 +1272,34 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self sendPreSendMessages];
         });
+    }
+}
+
+/**
+ * 判断是否需要动态的移除营销机器人的消息
+ * @param forceReload 是否需要强制刷新UI
+ */
+- (void)checkNeedRemoveBotGuideMessageWithForceReload:(BOOL)forceReload {
+    // 专门处理营销机器人的引导语需要动态删除的需求
+    id<MQCellModelProtocol> lastCellModel = [self.cellModels lastObject];
+    NSArray *tempCellModels = [self.cellModels copy];
+    BOOL needRemoveMessage = NO;
+    for (id<MQCellModelProtocol> tempModel in tempCellModels) {
+        if ([tempModel isKindOfClass:[MQBotGuideCellModel class]]) {
+            if (tempModel != lastCellModel) {
+                [self.cellModels removeObject:tempModel];
+                needRemoveMessage = true;
+            } else {
+                if (![[tempModel getMessageConversionId] isEqualToString:[MQServiceToViewInterface getCurrentConversationID]]) {
+                    [self.cellModels removeObject:tempModel];
+                    needRemoveMessage = true;
+                }
+            }
+        }
+    }
+    
+    if (needRemoveMessage || forceReload) {
+       [self reloadChatTableView];
     }
 }
 
@@ -1449,7 +1486,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 __strong typeof (wself) sself = wself;
                 if (messages.count > 0) {
                     [sself saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
-                    [sself.delegate reloadChatTableView];
+                    // 判断是否有需要移除的营销机器人引导按钮
+                    [sself checkNeedRemoveBotGuideMessageWithForceReload: YES];
                 }
             }];
         }
@@ -1565,7 +1603,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             NSArray *receivedMessages = [self convertToChatViewMessageWithMQMessages:messagesArray];
             if (receivedMessages) {
                 [self saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex: NO];
-                [self.delegate reloadChatTableView];
+                // 判断是否有需要移除的营销机器人引导按钮
+                [self checkNeedRemoveBotGuideMessageWithForceReload: YES];
                 
 //                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //                    [self scrollToBottom];
@@ -1586,6 +1625,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     } else {
         [self handleVisualMessages:messages];
     }
+    // 判断是否有需要移除的营销机器人引导按钮
+    [self checkNeedRemoveBotGuideMessageWithForceReload: NO];
     
     //通知界面收到了消息
     BOOL isRefreshView = true;
@@ -1657,6 +1698,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                        replacedContent:(NSString *)replacedContent
                        updateMediaPath:(NSString *)mediaPath
                             sendStatus:(MQChatMessageSendStatus)sendStatus
+                                 error:(NSError *)error
 {
     [self playSendedMessageSound];
 
@@ -1722,6 +1764,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 //    if (![currentViewMessageIdSet containsObject:newMessageId]) {
 //        [currentViewMessageIdSet addObject:newMessageId];
 //    }
+    if (error && error.userInfo.count > 0 && [error.userInfo valueForKey:@"NSLocalizedDescription"] && [[error.userInfo valueForKey:@"NSLocalizedDescription"] isEqualToString:@"file upper limit!!"]) {
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_upload_limit"] duration:2 window:[UIApplication sharedApplication].keyWindow];
+    }
 }
 
 #endif
@@ -1786,6 +1831,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             
         }
     }
+}
+
+- (void)collectionOperationIndex:(int)index messageId:(NSString *)messageId {
+    // 现在只采集机器人消息的操作
+    [MQServiceToViewInterface collectionBotOperationWithMessageId:messageId operationIndex:index];
 }
 
 /**

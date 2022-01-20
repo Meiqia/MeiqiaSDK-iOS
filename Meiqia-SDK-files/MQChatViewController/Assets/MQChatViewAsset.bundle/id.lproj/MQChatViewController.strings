@@ -92,6 +92,7 @@
 "file_download_failed" = "Gagal mengunduh";
 "file_download_downloading" = "Sedang diunduh...";
 "file_download_complete" = "Unduhan selesai";
+"file_upload_limit" = "Melebihi batas file unggahan maksimum";
 "file_download_ %@ ∙ %@overdue" = "Expired setelah %@ ∙ %@ jam";
 
 "message_tips_send_message_fail_listed_in_black_list" = "Maaf, sistem customer sementara tidak dapat digunakan.";
@@ -103,6 +104,10 @@
 "bot_redirect_tip_text"  = "Mohon maaf atas ketidakpuasannya terhadap jawaban robot, Anda bisa coba pindah ke bantuan langsung";
 
 "bot_manual_redirect_tip_text" = "Kalau Anda perlu bantuan langsung, bisa pindah ke bantuan langsung";
+
+"bot_menu_tip_text" = "Balas ke nomor yang sesuai atau klik pertanyaan untuk melihat jawabannya";
+
+"bot_menu_problem_tip_text" = "Masalah umum:";
 
 "cannot_text_client_is_onlining"  = "Sedang menugaskan customer service untuk Anda, silakan kirim ulang setelah beberapa saat.";
 

@@ -92,6 +92,7 @@
 "file_download_failed" = "Download fail";
 "file_download_downloading" = "Downloading...";
 "file_download_complete" = "Download complete";
+"file_upload_limit" = "Exceeded the maximum upload file limit";
 "file_download_ %@ ∙ %@overdue" = "%@ ∙ overdue in %@ hours";
 
 "message_tips_send_message_fail_listed_in_black_list" = "Sorry, the CS system is down.";
@@ -103,6 +104,10 @@
 "bot_redirect_tip_text"  = "I am sorry the reply of robot did not solve your problem. Tap here to redirect to an agent.";
 
 "bot_manual_redirect_tip_text" = "If you need help, tap here to redirect to an agent.";
+
+"bot_menu_tip_text" = "Reply to the corresponding number or click on the question to view the answer";
+
+"bot_menu_problem_tip_text" = "Common problem:";
 
 "cannot_text_client_is_onlining"  = "Allocating an agent for you. Please resend later.";
 

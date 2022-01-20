@@ -60,13 +60,15 @@
  * @param replacedContent 需要替换的messag.content的内容(处理敏感词汇，替换原来词汇)
  * @param mediaPath 用于更新发送媒体消息成功以后缓存地址
  * @param sendStatus 发送状态
+ * @param error 报错信息
  */
 - (void)didSendMessageWithNewMessageId:(NSString *)newMessageId
                           oldMessageId:(NSString *)oldMessageId
                         newMessageDate:(NSDate *)newMessageDate
                        replacedContent:(NSString *)replacedContent
                        updateMediaPath:(NSString *)mediaPath
-                            sendStatus:(MQChatMessageSendStatus)sendStatus;
+                            sendStatus:(MQChatMessageSendStatus)sendStatus
+                                 error:(NSError *)error;
 
 /**
  *  顾客已被转接
@@ -445,6 +447,13 @@
 + (void)evaluateBotMessage:(NSString *)messageId
                   isUseful:(BOOL)isUseful
                 completion:(void (^)(BOOL success, NSString *text, NSError *error))completion;
+
+/**
+ 采集营销机器人的操作数据
+ @param messageId 消息 id
+ @param index 点击的第几个操作按钮
+ */
++ (void)collectionBotOperationWithMessageId:(NSString *)messageId operationIndex:(int)index;
 
 //强制转人工
 - (void)forceRedirectHumanAgentWithSuccess:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success

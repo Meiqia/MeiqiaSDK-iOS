@@ -11,6 +11,7 @@
 #import "MQBotMenuAnswerCell.h"
 #import "MQBotMenuCellModel.h" //
 #import "MQServiceToViewInterface.h"
+#import "MQBundleUtil.h"
 
 @interface MQBotMenuAnswerCellModel()
 
@@ -26,7 +27,7 @@
         self.message = message;
         self.content = message.content;
         self.messageId = message.messageId;
-        self.menuFootnote = kMQBotMenuTipText;
+        self.menuFootnote = [MQBundleUtil localizedStringForKey:@"bot_menu_tip_text"];
         self.menuTitle = message.menu.content;
         self.menus = message.menu.menu;
         self.isEvaluated = message.isEvaluated;

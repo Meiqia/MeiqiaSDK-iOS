@@ -17,6 +17,8 @@
 #import "TTTAttributedLabel.h"
 #import "MQChatEmojize.h"
 #import "MQServiceToViewInterface.h"
+#import "MQBundleUtil.h"
+
 #ifndef INCLUDE_MEIQIA_SDK
 #import "UIImageView+WebCache.h"
 #endif
@@ -120,6 +122,11 @@
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
 
 /**
+ * @brief 「常见问题」label frame
+ */
+@property (nonatomic, readwrite, assign) CGRect menuTipLabelFrame;
+
+/**
  * @brief 「点击问题查看答案」label frame
  */
 @property (nonatomic, readwrite, assign) CGRect replyTipLabelFrame;
@@ -202,12 +209,12 @@
         //文字高度
         CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
         //判断文字中是否有emoji
-        if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
-            NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
-            CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
-            NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
-            messageTextHeight += 8 * textLines;
-        }
+//        if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
+//            NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
+//            CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
+//            NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
+//            messageTextHeight += 8 * textLines;
+//        }
         //文字宽度
         CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
         //#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
@@ -227,17 +234,24 @@
             [menuHeightArray addObject:@(menuTextHeight)];
             menuTotalHeight += menuTextHeight + kMQBotMenuVerticalSpacingInMenus;
         }
+        
+        // menu的「常见问题」tip的高度
+        CGFloat menuTipHeight = 0;
+        if (menuTotalHeight > 0) {
+            menuTipHeight = [MQStringSizeUtil getHeightForText:[MQBundleUtil localizedStringForKey:@"bot_menu_problem_tip_text"] withFont:[UIFont systemFontOfSize:kMQBotMenuTipSize] andWidth:maxLabelWidth];
+        }
+        
         CGFloat replyTipHeight = 0;
         if (menuTotalHeight > 0) {
             menuTotalHeight -= kMQBotMenuVerticalSpacingInMenus;
             // 「点击回复」的提示 label 高度
-            replyTipHeight = [MQStringSizeUtil getHeightForText:kMQBotMenuTipText withFont:[UIFont systemFontOfSize:kMQBotMenuReplyTipSize] andWidth:maxLabelWidth];
+            replyTipHeight = [MQStringSizeUtil getHeightForText:[MQBundleUtil localizedStringForKey:@"bot_menu_tip_text"] withFont:[UIFont systemFontOfSize:kMQBotMenuReplyTipSize] andWidth:maxLabelWidth];
         }
         
         //气泡高度
         CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;
         if (menuTotalHeight > 0) {
-            bubbleHeight += menuTotalHeight + replyTipHeight + kMQCellBubbleToTextVerticalSpacing * 2;
+            bubbleHeight += menuTipHeight + menuTotalHeight + replyTipHeight + kMQCellBubbleToTextVerticalSpacing * 2;
         }
         //气泡宽度
         CGFloat bubbleWidth = maxLabelWidth + kMQCellBubbleToTextHorizontalLargerSpacing + kMQCellBubbleToTextHorizontalSmallerSpacing;
@@ -281,8 +295,11 @@
             self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, kMQCellBubbleToTextVerticalSpacing, maxLabelWidth, messageTextHeight);
         }
         
+        // menu tip frame
+        self.menuTipLabelFrame = CGRectMake(self.textLabelFrame.origin.x, CGRectGetMaxY(self.textLabelFrame), self.textLabelFrame.size.width, menuTipHeight);
+        
         // menu array frame
-        CGFloat menuOrigin = self.textLabelFrame.origin.y + self.textLabelFrame.size.height + kMQCellBubbleToTextVerticalSpacing;
+        CGFloat menuOrigin = CGRectGetMaxY(self.menuTipLabelFrame) + kMQCellBubbleToTextVerticalSpacing;
         NSMutableArray *menuFrames = [NSMutableArray new];
         for (NSNumber *menuHeight in menuHeightArray) {
             CGRect mFrame = CGRectMake(self.textLabelFrame.origin.x, menuOrigin, self.textLabelFrame.size.width, [menuHeight floatValue]);
@@ -396,12 +413,12 @@
     //文字高度
     CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
     //判断文字中是否有emoji
-    if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
-        NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
-        CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
-        NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
-        messageTextHeight += 8 * textLines;
-    }
+//    if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
+//        NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
+//        CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
+//        NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
+//        messageTextHeight += 8 * textLines;
+//    }
     //文字宽度
     CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
     //#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
@@ -421,17 +438,24 @@
         [menuHeightArray addObject:@(menuTextHeight)];
         menuTotalHeight += menuTextHeight + kMQBotMenuVerticalSpacingInMenus;
     }
+    
+    // menu的「常见问题」tip的高度
+    CGFloat menuTipHeight = 0;
+    if (menuTotalHeight > 0) {
+        menuTipHeight = [MQStringSizeUtil getHeightForText:[MQBundleUtil localizedStringForKey:@"bot_menu_problem_tip_text"] withFont:[UIFont systemFontOfSize:kMQBotMenuTipSize] andWidth:maxLabelWidth];
+    }
+    
     CGFloat replyTipHeight = 0;
     if (menuTotalHeight > 0) {
         menuTotalHeight -= kMQBotMenuVerticalSpacingInMenus;
         // 「点击回复」的提示 label 高度
-        replyTipHeight = [MQStringSizeUtil getHeightForText:kMQBotMenuTipText withFont:[UIFont systemFontOfSize:kMQBotMenuReplyTipSize] andWidth:maxLabelWidth];
+        replyTipHeight = [MQStringSizeUtil getHeightForText:[MQBundleUtil localizedStringForKey:@"bot_menu_tip_text"] withFont:[UIFont systemFontOfSize:kMQBotMenuReplyTipSize] andWidth:maxLabelWidth];
     }
     
     //气泡高度
     CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;
     if (menuTotalHeight > 0) {
-        bubbleHeight += menuTotalHeight + replyTipHeight + kMQCellBubbleToTextVerticalSpacing * 2;
+        bubbleHeight += menuTipHeight + menuTotalHeight + replyTipHeight + kMQCellBubbleToTextVerticalSpacing * 2;
     }
     //气泡宽度
     CGFloat bubbleWidth = maxLabelWidth + kMQCellBubbleToTextHorizontalLargerSpacing + kMQCellBubbleToTextHorizontalSmallerSpacing;
@@ -475,8 +499,11 @@
     //气泡图片
     self.bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
     
+    // menu tip frame
+    self.menuTipLabelFrame = CGRectMake(self.textLabelFrame.origin.x, CGRectGetMaxY(self.textLabelFrame), self.textLabelFrame.size.width, menuTipHeight);
+    
     // menu array frame
-    CGFloat menuOrigin = self.textLabelFrame.origin.y + self.textLabelFrame.size.height + kMQCellBubbleToTextVerticalSpacing;
+    CGFloat menuOrigin = CGRectGetMaxY(self.menuTipLabelFrame) + kMQCellBubbleToTextVerticalSpacing;
     NSMutableArray *menuFrames = [NSMutableArray new];
     for (NSNumber *menuHeight in menuHeightArray) {
         CGRect mFrame = CGRectMake(self.textLabelFrame.origin.x, menuOrigin, self.textLabelFrame.size.width, [menuHeight floatValue]);

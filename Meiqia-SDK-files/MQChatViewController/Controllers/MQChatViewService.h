@@ -233,6 +233,11 @@
 - (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId;
 
 /**
+ *  采集操作按钮的点击情况
+ */
+- (void)collectionOperationIndex:(int)index messageId:(NSString *)messageId;
+
+/**
  *  强制转接人工客服
  */
 - (void)forceRedirectToHumanAgent;

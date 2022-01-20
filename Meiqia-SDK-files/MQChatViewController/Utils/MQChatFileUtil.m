@@ -92,15 +92,13 @@
     return second;
 }
 
-+(NSString *)getVideoPath {
++(NSString *)getVideoPathWithName:(NSString *)videoName {
 
-    NSInteger random = (arc4random() % 99999) + 45241;
-    NSString *videoName = [NSString stringWithFormat:@"%qu%li",(unsigned long long)([[NSDate date] timeIntervalSince1970] * 1000),(long)random];
     NSString *directoryPath = DIR_RECEIVED_FILE;
     if (![self fileExistsAtPath:directoryPath isDirectory:YES]) {
         [[NSFileManager defaultManager] createDirectoryAtPath:directoryPath withIntermediateDirectories:YES attributes:nil error:nil];
     }
-    NSString * tempPath = [directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mov",videoName]];
+    NSString * tempPath = [directoryPath stringByAppendingPathComponent:videoName];
     return tempPath;
 }
 
@@ -131,7 +129,9 @@
 }
 
 + (NSString *)saveVideoSourceWith:(NSURL *)fileUrl {
-    NSString *resultPath = [MQChatFileUtil getVideoPath];
+    NSInteger random = (arc4random() % 99999) + 45241;
+    NSString *videoName = [NSString stringWithFormat:@"%qu%li",(unsigned long long)([[NSDate date] timeIntervalSince1970] * 1000),(long)random];
+    NSString *resultPath = [self getVideoPathWithName:[NSString stringWithFormat:@"%@.mov",videoName]];
     NSURL *resultUrl = [NSURL fileURLWithPath:resultPath];
     BOOL isSuccess = [[NSFileManager defaultManager] copyItemAtURL:fileUrl toURL:resultUrl error:nil];
     if (isSuccess) {

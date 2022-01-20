@@ -9,10 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "MQCellModelProtocol.h"
 #import "MQTagListView.h"
-#import "MQTextMessage.h"
+#import "MQEmbededWebView.h"
 
 @class MQRichTextMessage;
 @interface MQWebViewBubbleCellModel : NSObject <MQCellModelProtocol>
+
+/**
+ * @brief cell的高度
+ */
+@property (nonatomic, readonly, assign) CGFloat cellHeight;
 
 /**
  * @brief 标签的tagList
@@ -24,14 +29,28 @@
  */
 @property (nonatomic, readonly, strong) NSArray *cacheTags;
 
-@property (nonatomic, copy) NSString *content;
+/**
+ * @brief 消息背景框的frame
+ */
+@property (nonatomic, readonly, assign) CGRect bubbleFrame;
 
-@property (nonatomic, copy) CGFloat(^cellHeight)(void);
-@property (nonatomic, copy) void(^avatarLoaded)(UIImage *);
+/**
+ * @brief 聊天气泡的image
+ */
+@property (nonatomic, readonly, copy) UIImage *bubbleImage;
 
-@property (nonatomic, assign) CGFloat cachedWetViewHeight;
+/**
+ * @brief 发送者的头像的图片
+ */
+@property (nonatomic, readonly, copy) UIImage *avatarImage;
 
-- (void)bind;
+/**
+ * @brief 发送者的头像frame
+ */
+@property (nonatomic, readonly, assign) CGRect avatarFrame;
+
+
+@property (nonatomic, readonly, strong) MQEmbededWebView *contentWebView;
 
 - (id)initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:(CGFloat)cellWidth delegate:(id<MQCellModelDelegate>)delegator;
 

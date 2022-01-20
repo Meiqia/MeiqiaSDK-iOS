@@ -37,14 +37,26 @@ static CGFloat const kMQTagItemHorizontalSpacing = 5.0;
 
 @property(nonatomic, assign) CGFloat cacheMaxWidth;
 @property(nonatomic, strong) NSArray *cacheTitleArr;
-
+@property(nonatomic, strong) UIColor *tagBackgroundColor;
+@property(nonatomic, strong) UIColor *tagTitleColor;
+@property(nonatomic, assign) CGFloat tagFontSize;
+@property(nonatomic, assign) BOOL needBorder;
 @end
 
 @implementation MQTagListView
 
--(instancetype)initWithTitleArray:(NSArray *)titleArr andMaxWidth:(CGFloat)maxWidth {
+-(instancetype)initWithTitleArray:(NSArray *)titleArr
+                      andMaxWidth:(CGFloat)maxWidth
+               tagBackgroundColor:(nonnull UIColor *)backgroundColor
+                    tagTitleColor:(nonnull UIColor *)titleColor
+                      tagFontSize:(CGFloat)size
+                       needBorder:(BOOL)needBorder {
     if (self = [super init]) {
         self.cacheTitleArr = titleArr;
+        self.tagBackgroundColor = backgroundColor;
+        self.tagTitleColor = titleColor;
+        self.tagFontSize = size;
+        self.needBorder = needBorder;
         for (int i = 0; i < titleArr.count; i++) {
             NSString *title = titleArr[i];
             UIButton *btn = [self getTagItemWithTitle:title maxWidth:maxWidth];
@@ -92,12 +104,17 @@ static CGFloat const kMQTagItemHorizontalSpacing = 5.0;
 -(UIButton *)getTagItemWithTitle:(NSString *)title maxWidth:(CGFloat)maxWidth  {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
     [btn setTitle:title forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont systemFontOfSize:12];
+    if (self.tagBackgroundColor) {
+        [btn setBackgroundColor:self.tagBackgroundColor];
+    }
+    [btn setTitleColor:self.tagTitleColor forState:UIControlStateNormal];
+    btn.titleLabel.font = [UIFont systemFontOfSize:self.tagFontSize];
     btn.layer.masksToBounds = YES;
     btn.layer.cornerRadius = 5.0;
-    btn.layer.borderWidth = 0.5;
-    btn.layer.borderColor = [[UIColor grayColor] CGColor];
+    if (self.needBorder) {
+        btn.layer.borderWidth = 0.5;
+        btn.layer.borderColor = [[UIColor grayColor] CGColor];
+    }
     btn.contentEdgeInsets = UIEdgeInsetsMake(kMQTagItemTopEdgeInsets, kMQTagItemLeftEdgeInsets, kMQTagItemBottomEdgeInsets, kMQTagItemRightEdgeInsets);
     [btn sizeToFit];
     btn.bounds = CGRectMake(btn.bounds.origin.x, btn.bounds.origin.y, btn.bounds.size.width > maxWidth ? maxWidth : btn.bounds.size.width, btn.bounds.size.height);

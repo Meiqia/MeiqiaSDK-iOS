@@ -181,7 +181,7 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
             for (MQMessageBottomTagModel * model in message.tags) {
                 [titleArr addObject:model.name];
             }
-            self.cacheTagListView = [[MQTagListView alloc] initWithTitleArray:titleArr andMaxWidth:maxWidth];
+            self.cacheTagListView = [[MQTagListView alloc] initWithTitleArray:titleArr andMaxWidth:maxWidth tagBackgroundColor:[UIColor colorWithWhite:1 alpha:0] tagTitleColor:[UIColor grayColor] tagFontSize:12.0 needBorder:YES];
             self.cacheTags = message.tags;
         }
         NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];

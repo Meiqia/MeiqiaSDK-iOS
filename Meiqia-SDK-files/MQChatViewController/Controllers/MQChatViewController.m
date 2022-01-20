@@ -828,6 +828,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.chatViewService evaluateBotAnswer:isUseful messageId:messageId];
 }
 
+- (void)collectionOperationIndex:(int)index messageId:(NSString *)messageId {
+    [self.chatViewService collectionOperationIndex:index messageId:messageId];
+}
+
 - (void)didTapMenuWithText:(NSString *)menuText {
     //去掉 menu 的序号后，主动发送该 menu 消息
     NSRange orderRange = [menuText rangeOfString:@". "];
@@ -836,6 +840,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     }
     NSString *sendText = [menuText substringFromIndex:orderRange.location+2];
     [self.chatViewService sendTextMessageWithContent:sendText];
+    [self chatTableViewScrollToBottomWithAnimated:YES];
+}
+
+- (void)didTapGuideWithText:(NSString *)guideText {
+    [self.chatViewService sendTextMessageWithContent:guideText];
     [self chatTableViewScrollToBottomWithAnimated:YES];
 }
 

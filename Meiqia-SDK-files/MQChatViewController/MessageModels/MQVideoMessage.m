@@ -31,7 +31,8 @@
                 self.videoUrl = videoPath;
             }
         } else {
-            self.videoPath = videoPath;
+            // 视频没有发送成功，本地缓存的videoPath的名称如："345ewrrdf234.mov"
+            self.videoPath = [MQChatFileUtil getVideoPathWithName:videoPath];
         }
     }
     return self;

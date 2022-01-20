@@ -10,6 +10,9 @@
 		360BAC7F26E1C96C006D9F84 /* MQProductCardMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 360BAC7E26E1C96C006D9F84 /* MQProductCardMessage.m */; };
 		360BAC8226E1C979006D9F84 /* MQProductCardCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 360BAC8126E1C979006D9F84 /* MQProductCardCellModel.m */; };
 		360BAC8526E1C987006D9F84 /* MQProductCardMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 360BAC8326E1C987006D9F84 /* MQProductCardMessageCell.m */; };
+		362C36A72798FB150016D5EE /* MQBotGuideMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 362C36A62798FB150016D5EE /* MQBotGuideMessage.m */; };
+		362C36AA2798FB2E0016D5EE /* MQBotGuideCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 362C36A92798FB2E0016D5EE /* MQBotGuideCellModel.m */; };
+		362C36AD2798FB450016D5EE /* MQBotGuideCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 362C36AC2798FB450016D5EE /* MQBotGuideCell.m */; };
 		3656ED08265CD65E00E8E8CE /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656ED07265CD65E00E8E8CE /* TTTAttributedLabel.m */; };
 		3656ED1D265CD69800E8E8CE /* CafRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656ED0A265CD69800E8E8CE /* CafRecordWriter.m */; };
 		3656ED1E265CD69800E8E8CE /* AmrRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656ED0C265CD69800E8E8CE /* AmrRecordWriter.m */; };
@@ -244,6 +247,12 @@
 		360BAC8126E1C979006D9F84 /* MQProductCardCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQProductCardCellModel.m; sourceTree = "<group>"; };
 		360BAC8326E1C987006D9F84 /* MQProductCardMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQProductCardMessageCell.m; sourceTree = "<group>"; };
 		360BAC8426E1C987006D9F84 /* MQProductCardMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQProductCardMessageCell.h; sourceTree = "<group>"; };
+		362C36A52798FB150016D5EE /* MQBotGuideMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQBotGuideMessage.h; sourceTree = "<group>"; };
+		362C36A62798FB150016D5EE /* MQBotGuideMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQBotGuideMessage.m; sourceTree = "<group>"; };
+		362C36A82798FB2E0016D5EE /* MQBotGuideCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQBotGuideCellModel.h; sourceTree = "<group>"; };
+		362C36A92798FB2E0016D5EE /* MQBotGuideCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQBotGuideCellModel.m; sourceTree = "<group>"; };
+		362C36AB2798FB450016D5EE /* MQBotGuideCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQBotGuideCell.h; sourceTree = "<group>"; };
+		362C36AC2798FB450016D5EE /* MQBotGuideCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQBotGuideCell.m; sourceTree = "<group>"; };
 		3656ED06265CD65E00E8E8CE /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
 		3656ED07265CD65E00E8E8CE /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		3656ED09265CD69800E8E8CE /* AmrRecordWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmrRecordWriter.h; sourceTree = "<group>"; };
@@ -1164,6 +1173,8 @@
 				F3B2C9302495E37B00FDADAF /* MQBotRichTextMessage.h */,
 				F3B2C9312495E37B00FDADAF /* MQBotMessageFactory.m */,
 				F3B2C9322495E37B00FDADAF /* MQBotMenuMessage.m */,
+				362C36A52798FB150016D5EE /* MQBotGuideMessage.h */,
+				362C36A62798FB150016D5EE /* MQBotGuideMessage.m */,
 				F3B2C9332495E37B00FDADAF /* MQCardMessage.h */,
 				F3B2C9342495E37B00FDADAF /* MQImageMessage.m */,
 				F3B2C9352495E37B00FDADAF /* MQEventMessageFactory.m */,
@@ -1201,6 +1212,8 @@
 				F3B2C9412495E37B00FDADAF /* MQWebViewBubbleCellModel.m */,
 				F3B2C9422495E37B00FDADAF /* MQEvaluationResultCellModel.m */,
 				F3B2C9432495E37B00FDADAF /* MQBotMenuAnswerCellModel.m */,
+				362C36A82798FB2E0016D5EE /* MQBotGuideCellModel.h */,
+				362C36A92798FB2E0016D5EE /* MQBotGuideCellModel.m */,
 				F3B2C9442495E37B00FDADAF /* MQEventCellModel.h */,
 				F3B2C9452495E37B00FDADAF /* MQBotWebViewBubbleAnswerCellModel.h */,
 				F3B2C9462495E37B00FDADAF /* MQCardCellModel.m */,
@@ -1258,6 +1271,8 @@
 				F3B2C9742495E37B00FDADAF /* MQBotMenuWebViewBubbleAnswerCell.m */,
 				F3B2C9702495E37B00FDADAF /* MQBotWebViewBubbleAnswerCell.h */,
 				F3B2C97F2495E37B00FDADAF /* MQBotWebViewBubbleAnswerCell.m */,
+				362C36AB2798FB450016D5EE /* MQBotGuideCell.h */,
+				362C36AC2798FB450016D5EE /* MQBotGuideCell.m */,
 				F3B2C9862495E37B00FDADAF /* MQCardMessageCell.h */,
 				F3B2C9722495E37B00FDADAF /* MQCardMessageCell.m */,
 				F3B2C9872495E37B00FDADAF /* MQChatBaseCell.h */,
@@ -1807,6 +1822,7 @@
 				F3B2CA452495E37C00FDADAF /* MQBotRichTextMessage.m in Sources */,
 				F3B2CA422495E37C00FDADAF /* MQChatViewConfig.m in Sources */,
 				F3B2CA9D2495E37C00FDADAF /* MQRecorderView.m in Sources */,
+				362C36A72798FB150016D5EE /* MQBotGuideMessage.m in Sources */,
 				36773962255CDF970029B054 /* MQSplitLineCellModel.m in Sources */,
 				F3B2CA572495E37C00FDADAF /* MQCardCellModel.m in Sources */,
 				367BA00025830A7D001F0A99 /* MQMessageFormTextView.m in Sources */,
@@ -1817,6 +1833,7 @@
 				F3B2CA9B2495E37C00FDADAF /* MQBottomBar.m in Sources */,
 				F3B2CA1A2495E37C00FDADAF /* MEIQIA_HPTextViewInternal.m in Sources */,
 				F3B2CA442495E37C00FDADAF /* MQCardMessage.m in Sources */,
+				362C36AA2798FB2E0016D5EE /* MQBotGuideCellModel.m in Sources */,
 				F3B2CA5B2495E37C00FDADAF /* MQFileDownloadCellModel.m in Sources */,
 				3677396C255CDFB50029B054 /* MQSplitLineCell.m in Sources */,
 				F3B2CA5F2495E37C00FDADAF /* MQBotMenuCellModel.m in Sources */,
@@ -1898,6 +1915,7 @@
 				F3B2CA6B2495E37C00FDADAF /* MQCardMessageCell.m in Sources */,
 				F3B2CA722495E37C00FDADAF /* MQBotWebViewBubbleAnswerCell.m in Sources */,
 				F3B2CA152495E37C00FDADAF /* MQMessageFormCategoryViewController.m in Sources */,
+				362C36AD2798FB450016D5EE /* MQBotGuideCell.m in Sources */,
 				F3B2CA0B2495E37C00FDADAF /* MQServiceToViewInterface.m in Sources */,
 				F3B2CA992495E37C00FDADAF /* MQEvaluationView.m in Sources */,
 				F3B2CA112495E37C00FDADAF /* MQMessageFormViewStyle.m in Sources */,
@@ -2106,7 +2124,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.7.8;
+				MARKETING_VERSION = 3.7.9;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2150,7 +2168,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.7.8;
+				MARKETING_VERSION = 3.7.9;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";

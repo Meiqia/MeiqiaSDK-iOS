@@ -11,9 +11,9 @@
 #import "MQBotMenuMessage.h"
 
 static CGFloat const kMQBotMenuTextSize = 15.0;
+static CGFloat const kMQBotMenuTipSize = 15.0;
 static CGFloat const kMQBotMenuReplyTipSize = 12.0;
 static CGFloat const kMQBotMenuVerticalSpacingInMenus = 12.0;
-static NSString * const kMQBotMenuTipText = @"点击问题或回复对应数字查看答案";
 
 /**
  * MQTextCellModel定义了文字消息的基本类型数据，包括产生cell的内部所有view的显示数据，cell内部元素的frame等
@@ -130,6 +130,11 @@ static NSString * const kMQBotMenuTipText = @"点击问题或回复对应数字�
  * @brief 机器人 menu 名字 数组
  */
 @property (nonatomic, strong) NSArray *menuTitles;
+
+/**
+ * @brief 「常见问题」label frame
+ */
+@property (nonatomic, readonly, assign) CGRect menuTipLabelFrame;
 
 /**
  * @brief 「点击问题查看答案」label frame

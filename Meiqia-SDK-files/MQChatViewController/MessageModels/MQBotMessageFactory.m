@@ -12,6 +12,7 @@
 #import <MeiQiaSDK/MQManager.h>
 #import "MQBotAnswerMessage.h"
 #import "MQBotMenuMessage.h"
+#import "MQBotGuideMessage.h"
 #import <MeiQiaSDK/MQJSONHelper.h>
 
 @implementation MQBotMessageFactory
@@ -28,6 +29,20 @@
             message = [self getMenuBotMessage:plainMessage.accessoryData];
         } else if ([subType isEqualToString:@"message"]) {
             message = [self getTextMessage:plainMessage.accessoryData];
+            
+            if ([plainMessage.accessoryData objectForKey:@"operator_msg"] && ![[plainMessage.accessoryData objectForKey:@"operator_msg"] isEqual:[NSNull null]] && [message isKindOfClass:[MQBotRichTextMessage class]]) {
+                // 营销机器人的底部操做按钮
+                MQBotRichTextMessage *botRichTextMessage = (MQBotRichTextMessage *)message;
+                botRichTextMessage.tags = [self getMessageBottomTagModel:plainMessage];
+                message = botRichTextMessage;
+            }
+        } else if ([subType isEqualToString:@"button"]) {
+            // 营销机器人的引导按钮
+            MQBotGuideMessage *guideMessage = [[MQBotGuideMessage alloc] initWithContentArray:[plainMessage.accessoryData objectForKey:@"tags"]];
+            message = guideMessage;
+        } else {
+            MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:@"当前 App 暂不支持该类型消息。"];
+            message = textMessage;
         }
     }
     
@@ -177,4 +192,23 @@
         return nil;
     }
 }
+
+- (NSArray *)getMessageBottomTagModel:(MQMessage *)message
+{
+    if (message.accessoryData && [message.accessoryData isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *dataDic = [NSDictionary dictionaryWithDictionary:message.accessoryData];
+        if ([dataDic objectForKey:@"operator_msg"] && ![[dataDic objectForKey:@"operator_msg"] isEqual:[NSNull null]]) {
+            NSArray *tagArr = [dataDic objectForKey:@"operator_msg"];
+            NSMutableArray *resultArr = [NSMutableArray array];
+            for (NSDictionary * dic in tagArr) {
+                [resultArr addObject:[[MQMessageBottomTagModel alloc] initWithDictionary:dic]];
+            }
+            if (resultArr.count > 0) {
+                return resultArr;
+            }
+        }
+    }
+    return nil;
+}
+
 @end

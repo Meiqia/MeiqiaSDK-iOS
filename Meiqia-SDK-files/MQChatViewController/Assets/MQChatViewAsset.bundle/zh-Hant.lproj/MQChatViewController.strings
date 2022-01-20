@@ -92,6 +92,7 @@
 "file_download_failed" = "下載失敗";
 "file_download_downloading" = "下載中...";
 "file_download_complete" = "下載完成";
+"file_upload_limit" = "超過最大上傳文件限制";
 "file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ 小時後過期";
 
 "message_tips_send_message_fail_listed_in_black_list" = "對不起，當前客服系統暫時無法使用。";
@@ -103,6 +104,10 @@
 "bot_redirect_tip_text"  = "很抱歉您不滿意機器人的回答，您可以嘗試 轉人工";
 
 "bot_manual_redirect_tip_text" = "您的問題如果需要人工支持，可以 轉人工";
+
+"bot_menu_tip_text" = "點擊問題或回復對應數字查看答案";
+
+"bot_menu_problem_tip_text" = "常見問題:";
 
 "cannot_text_client_is_onlining"  = "正在為您分配客服，請稍後重發。";
 

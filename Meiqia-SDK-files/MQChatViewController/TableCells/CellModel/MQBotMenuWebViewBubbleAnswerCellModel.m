@@ -11,6 +11,8 @@
 #import "MQBotMenuWebViewBubbleAnswerCell.h"
 #import "MQServiceToViewInterface.h"
 #import "MQBotMenuCellModel.h"
+#import "MQBundleUtil.h"
+
 @interface MQBotMenuWebViewBubbleAnswerCellModel()
 
 @property (nonatomic, strong)MQBotRichTextMessage *message;
@@ -28,7 +30,7 @@
         self.isEvaluated = message.isEvaluated;
         self.content = message.content;
         
-        self.menuFootnote = kMQBotMenuTipText;
+        self.menuFootnote = [MQBundleUtil localizedStringForKey:@"bot_menu_tip_text"];
         self.menuTitle = message.menu.content;
         self.menus = message.menu.menu;
     }

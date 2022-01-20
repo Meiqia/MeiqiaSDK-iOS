@@ -14,7 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) void(^mqTagListSelectedIndex)(NSInteger);
 
--(instancetype)initWithTitleArray:(NSArray *)titleArr andMaxWidth:(CGFloat)maxWidth;
+-(instancetype)initWithTitleArray:(NSArray *)titleArr
+                      andMaxWidth:(CGFloat)maxWidth
+               tagBackgroundColor:(UIColor *)backgroundColor
+                    tagTitleColor:(UIColor *)titleColor
+                      tagFontSize:(CGFloat)size
+                       needBorder:(BOOL)needBorder;
+
 
 -(void)updateLayoutWithMaxWidth:(CGFloat)maxWidth;
 

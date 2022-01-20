@@ -51,15 +51,23 @@
  *  获取本地视频的缓存路径
  *
  * @param serverUrl 服务器的url
- * @return 返回改文件的缓存路径
+ * @return 返回该文件的缓存路径
  */
 + (NSString *)getVideoCachePathWithServerUrl:(NSString *)serverUrl;
+
+/**
+ *  通过名称获取本地视频的缓存路径
+ *
+ * @param videoName 文件名称（包含扩展名）
+ * @return 返回该文件的缓存路径
+ */
++ (NSString *)getVideoPathWithName:(NSString *)videoName;
 
 /**
  *  暂时缓存视频路径，此路径的文件为mov格式的，调用美洽sdk发送视频时候才会压缩转换成MP4格式
  *
  * @param fileUrl 视频的原路径
- * @return 返回改文件的缓存路径
+ * @return 返回该文件的缓存路径
  */
 + (NSString *)saveVideoSourceWith:(NSURL *)fileUrl;
 

@@ -93,6 +93,7 @@
 "file_download_failed" = "Muat turun gagal";
 "file_download_downloading" = "Sedang muat turun...";
 "file_download_complete" = "Muat turun selesai";
+"file_upload_limit" = "Melebihi had maksimum muat naik fail";
 "file_download_ %@ ∙ %@overdue" = "Akan tamat tempoh selepas %@ ∙ %@ jam";
 
 "message_tips_send_message_fail_listed_in_black_list" = "Maaf, sistem khidmat pelanggan tidak dapat digunakan buat sementara ini";
@@ -104,6 +105,10 @@
 "bot_redirect_tip_text"  = "Kami amat kesal atas ketidakpuasan anda terhadap jawapan robot, anda boleh cuba beralih kepada bantuan ejen";
 
 "bot_manual_redirect_tip_text" = "Sekiranya anda memerlukan bantuan ejen, anda boleh beralih kepada bantuan ejen";
+
+"bot_menu_tip_text" = "Balas nombor yang sepadan atau klik pada soalan untuk melihat jawapan";
+
+"bot_menu_problem_tip_text" = "Masalah biasa:";
 
 "cannot_text_client_is_onlining"  = "Sedang menugaskan pegawai khidmat pelanggan untuk anda, sila hantar semula kemudian";
 
