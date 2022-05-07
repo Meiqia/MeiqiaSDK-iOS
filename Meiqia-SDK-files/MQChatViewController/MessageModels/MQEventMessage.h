@@ -23,6 +23,7 @@ typedef enum : NSUInteger {
     MQChatEventTypeBackList                  = 10,   // 被添加到黑名单
     MQChatEventTypeBotRedirectHuman          = 11,   //机器人转人工
     MQChatEventTypeWithdrawMsg               = 12,    //消息撤回
+    MQChatEventTypeRedirectFail              = 13,   //转人工失败
 } MQChatEventType;
 
 @interface MQEventMessage : MQBaseMessage

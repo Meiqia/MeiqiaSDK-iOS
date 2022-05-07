@@ -63,6 +63,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, assign) bool showSwitch; //
 
+@property (nonatomic, assign) BOOL enableBotFeedback; // 机器人的回答评价反馈功能是否开启
+
 @property (nonatomic, assign) BOOL isScheduleAfterClientSendMessage; //就字面意思是 访客发送消息后才分配客服,即无消息访客过滤开关
 
 @property (nonatomic, copy) NSString *avatar; //企业客服头像

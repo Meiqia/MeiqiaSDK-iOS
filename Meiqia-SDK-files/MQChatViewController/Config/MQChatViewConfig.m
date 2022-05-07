@@ -48,13 +48,16 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.linkRegexs   = [[NSMutableArray alloc] initWithArray:@[@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"]];
     self.emailRegexs  = [[NSMutableArray alloc] initWithArray:@[@"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}"]];
     
-    self.chatWelcomeText        = [MQBundleUtil localizedStringForKey:@"welcome_chat"];
-    self.agentName              = [MQBundleUtil localizedStringForKey:@"default_assistant"];
+    self.chatWelcomeText        = @"";
+    self.agentName              = @"";
+    self.chatWelcomeText        = @"";
+    self.agentName              = @"";
     self.scheduledAgentId       = nil;
     self.notScheduledAgentId    = nil;
     self.scheduledGroupId       = nil;
     self.customizedId           = @"";
     self.navTitleText           = nil;
+    self.localizedLanguageStr   = nil;
     
     self.incomingDefaultAvatarImage     = [MQAssetUtil incomingDefaultAvatarImage];
     _outgoingDefaultAvatarImage     = [MQAssetUtil outgoingDefaultAvatarImage]; //用户可以指定头像，如果指定了头像，在用户上线之后，将头像指定给上线后的用户

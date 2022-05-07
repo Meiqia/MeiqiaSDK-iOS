@@ -67,6 +67,11 @@ typedef void (^StateChangeBlock)(MQState oldState, MQState newState, NSDictionar
 #define MQ_NOTIFICATION_QUEUEING_END @"MQ_NOTIFICATION_QUEUEING_END"
 
 /**
+ 当用户加入排队队列的时候出现
+ */
+#define MQ_NOTIFICATION_QUEUEING_BEGIN @"MQ_NOTIFICATION_QUEUEING_BEGIN"
+
+/**
  美洽Error的code对应码
  */
 typedef enum : NSInteger {

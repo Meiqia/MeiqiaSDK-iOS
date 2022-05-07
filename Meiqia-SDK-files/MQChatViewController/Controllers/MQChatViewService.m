@@ -99,8 +99,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backFromBackground) name:UIApplicationWillEnterForegroundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanTimer) name:MQ_NOTIFICATION_CHAT_END object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startTimer) name:MQ_NOTIFICATION_QUEUEING_BEGIN object:nil];
         
-        self.positionCheckTimer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(checkAndUpdateWaitingQueueStatus) userInfo:nil repeats:YES];
 //        currentViewMessageIdSet = [NSMutableSet new];
         
         self.delegate = delegate;
@@ -133,6 +133,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             }
         }
     } withKey:@"MQChatViewService"];
+}
+
+- (void)startTimer {
+    if (!self.positionCheckTimer) {
+        self.positionCheckTimer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(checkAndUpdateWaitingQueueStatus) userInfo:nil repeats:YES];
+    } else {
+        if (!self.positionCheckTimer.isValid) {
+            [self.positionCheckTimer fire];
+        }
+    }
 }
 
 - (void)cleanTimer {
@@ -822,7 +832,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 
                 if ([(MQBotRichTextMessage *)message menu] != nil) {
 
-                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"] && [MQServiceToViewInterface enableBotEvaluateFeedback]) {
                         cellModel = [[MQBotMenuWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
                     } else {
                         cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
@@ -830,7 +840,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
                 } else {
 
-                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"] && [MQServiceToViewInterface enableBotEvaluateFeedback]) {
                         cellModel = [[MQBotWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
                     } else {
                         cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
@@ -1621,7 +1631,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)didReceiveNewMessages:(NSArray *)messages {
     if (messages.count == 1 && [[messages firstObject] isKindOfClass:[MQEventMessage class]]) { // Event message
         MQEventMessage *eventMessage = (MQEventMessage *)[messages firstObject];
-        [self handleEventMessage:eventMessage];
+        if (eventMessage.eventType == MQChatEventTypeRedirectFail) {
+            //转人工失败
+            [self addTipCellModelWithType:MQTipTypeReply];
+        } else {
+            [self handleEventMessage:eventMessage];
+        }
     } else {
         [self handleVisualMessages:messages];
     }

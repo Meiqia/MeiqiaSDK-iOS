@@ -562,6 +562,13 @@
     chatViewConfig.clientInfo = clientInfo;
 }
 
+- (void)setLocalizedLanguage:(NSString *)language {
+    if (!language) {
+        return;
+    }
+    chatViewConfig.localizedLanguageStr = language;
+}
+
 #endif
 
 - (MQChatViewController *)chatViewController {

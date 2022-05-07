@@ -65,15 +65,16 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @property (nonatomic, strong) NSMutableArray *emailRegexs;
 @property (nonatomic, assign) MQTransiteAnimationType presentingAnimation;
 
-@property (nonatomic, copy  ) NSString *chatWelcomeText;
-@property (nonatomic, copy  ) NSString *agentName;
-@property (nonatomic, copy  ) NSString *incomingMsgSoundFileName;
-@property (nonatomic, copy  ) NSString *outgoingMsgSoundFileName;
-@property (nonatomic, copy  ) NSString *scheduledAgentId;
-@property (nonatomic, copy  ) NSString *notScheduledAgentId;
-@property (nonatomic, copy  ) NSString *scheduledGroupId;
-@property (nonatomic, copy  ) NSString *customizedId;
-@property (nonatomic, copy  ) NSString *navTitleText;
+@property (nonatomic, copy) NSString *chatWelcomeText;
+@property (nonatomic, copy) NSString *agentName;
+@property (nonatomic, copy) NSString *incomingMsgSoundFileName;
+@property (nonatomic, copy) NSString *outgoingMsgSoundFileName;
+@property (nonatomic, copy) NSString *scheduledAgentId;
+@property (nonatomic, copy) NSString *notScheduledAgentId;
+@property (nonatomic, copy) NSString *scheduledGroupId;
+@property (nonatomic, copy) NSString *customizedId;
+@property (nonatomic, copy) NSString *navTitleText;
+@property (nonatomic, copy) NSString *localizedLanguageStr;
 
 @property (nonatomic, assign) BOOL enableEventDispaly;
 @property (nonatomic, assign) BOOL enableSendVoiceMessage;

@@ -486,6 +486,14 @@
  */
 - (void)setClientInfo:(NSDictionary *)clientInfo;
 
+
+/**
+ *  配置本地化语言，目前支持：中文简体、中文繁体、英文、马来语、印尼语，不支持的语言默认显示为英文
+ *
+ *  @param language 语言配置字符， 如：@"en" ，@"zh-Hans"，@"zh-Hant"，@"ms"， @"id", （不调用此方法，则随系统语言变化）
+ */
+- (void)setLocalizedLanguage:(NSString *)language;
+
 #endif
 
 

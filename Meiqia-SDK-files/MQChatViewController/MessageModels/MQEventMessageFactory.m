@@ -88,6 +88,12 @@
             eventType = MQChatEventTypeWithdrawMsg;
             break;
         }
+        case MQMessageActionRedirectFail:
+        {
+            eventContent = @"转人工失败";
+            eventType = MQChatEventTypeRedirectFail;
+            break;
+        }
         default:
             break;
     }

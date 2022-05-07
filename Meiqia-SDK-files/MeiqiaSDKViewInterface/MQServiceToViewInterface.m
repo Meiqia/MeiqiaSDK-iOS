@@ -455,6 +455,10 @@
     [MQManager cancelDownloadForUrl:urlString];
 }
 
++ (BOOL)enableBotEvaluateFeedback {
+    return [MQManager enableBotEvaluateFeedback];
+}
+
 + (void)evaluateBotMessage:(NSString *)messageId
                   isUseful:(BOOL)isUseful
                 completion:(void (^)(BOOL success, NSString *text, NSError *error))completion

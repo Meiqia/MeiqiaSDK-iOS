@@ -568,7 +568,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         return NO;
     }
     
-    if (openVisitorNoMessageBool || self.chatViewService.clientStatus == MQStateUnallocatedAgent) {
+    if (openVisitorNoMessageBool) {
         [self.view endEditing:YES];
         [self.chatViewService setClientOnline];
         
@@ -584,6 +584,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         
         openVisitorNoMessageBool = NO;
     }else{
+        if (self.chatViewService.clientStatus == MQStateUnallocatedAgent) {
+            [self.view endEditing:YES];
+        }
         if (text) {
             [self.chatViewService sendTextMessageWithContent:text];
         } else if (image) {

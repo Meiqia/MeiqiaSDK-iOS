@@ -16,7 +16,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.7.9"
+#define MQSDKVersion @"3.8.0"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -511,6 +511,11 @@
  */
 + (void)updateMessageWithDrawWithId:(NSString *)messageId withIsWithDraw:(BOOL)isWithDraw;
 
+
+/**
+ 机器人的回答评价反馈功能是否开启
+ */
++ (BOOL)enableBotEvaluateFeedback;
 
 /**
  对机器人的回答做评价

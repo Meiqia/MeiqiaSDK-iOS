@@ -28,7 +28,8 @@ typedef enum : NSUInteger {
     MQMessageActionQueueingAdd                  = 12,  //顾客被添加到等待客服队列
     MQMessageActionQueueingRemoved              = 13,  //顾客从等待队列中移除
     MQMessageActionWithdrawMessage              = 14,  //消息撤回(withdraw_msg)
-    MQMessageActionAgentSendCard                = 15   // 线索卡片
+    MQMessageActionAgentSendCard                = 15,   // 线索卡片
+    MQMessageActionRedirectFail                 = 16   //转接人工失败 (switch_human)
 } MQMessageAction;
 
 typedef enum : NSUInteger {

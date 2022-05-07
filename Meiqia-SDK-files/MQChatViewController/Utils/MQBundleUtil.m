@@ -10,6 +10,7 @@
 #import "MQChatViewController.h"
 #import "MQChatFileUtil.h"
 #import "MQCustomizedUIText.h"
+#import "MQChatViewConfig.h"
 
 @implementation MQBundleUtil
 
@@ -27,6 +28,9 @@
     static NSBundle *bundle = nil;
     if (bundle == nil) {
         NSString *language = [NSLocale preferredLanguages].firstObject;
+        if ([MQChatViewConfig sharedConfig].localizedLanguageStr && [MQChatViewConfig sharedConfig].localizedLanguageStr.length > 0) {
+            language = [MQChatViewConfig sharedConfig].localizedLanguageStr;
+        }
         if ([language hasPrefix:@"en"]) {
             language = @"en";
         } else if ([language hasPrefix:@"zh"]) {

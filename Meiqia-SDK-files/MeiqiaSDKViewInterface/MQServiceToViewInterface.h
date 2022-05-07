@@ -439,6 +439,10 @@
  */
 + (void)cancelDownloadForUrl:(NSString *)urlString;
 
+/**
+ 机器人的回答评价反馈功能是否开启
+ */
++ (BOOL)enableBotEvaluateFeedback;
 
 /**
  对机器人的回答做评价
