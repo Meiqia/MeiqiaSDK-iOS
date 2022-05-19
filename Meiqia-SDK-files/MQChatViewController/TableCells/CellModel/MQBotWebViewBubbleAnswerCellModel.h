@@ -21,6 +21,7 @@
 @property (nonatomic, copy) CGFloat(^cellHeight)(void);
 
 @property (nonatomic, assign) CGFloat cachedWebViewHeight;
+@property (nonatomic, assign) BOOL needShowFeedback;
 
 - (id)initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:(CGFloat)cellWidth delegate:(id<MQCellModelDelegate>)delegator;
 

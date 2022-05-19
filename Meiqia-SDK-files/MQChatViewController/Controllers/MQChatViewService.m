@@ -829,33 +829,24 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         } else if ([message isKindOfClass:[MQRichTextMessage class]]) {
             
             if ([message isKindOfClass:[MQBotRichTextMessage class]]) {
-                
                 if ([(MQBotRichTextMessage *)message menu] != nil) {
-
-                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"] && [MQServiceToViewInterface enableBotEvaluateFeedback]) {
-                        cellModel = [[MQBotMenuWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
-                    } else {
-                        cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+                        MQBotMenuWebViewBubbleAnswerCellModel *cellModel = [[MQBotMenuWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                        cellModel.needShowFeedback = [MQServiceToViewInterface enableBotEvaluateFeedback];
+                        return cellModel;
                     }
-
                 } else {
-
-                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"] && [MQServiceToViewInterface enableBotEvaluateFeedback]) {
-                        cellModel = [[MQBotWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
-                    } else {
-                        cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+                        MQBotWebViewBubbleAnswerCellModel *cellModel = [[MQBotWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
+                        cellModel.needShowFeedback = [MQServiceToViewInterface enableBotEvaluateFeedback];
+                        return cellModel;
                     }
                 }
-                
-            } else {
-                // 原富文本模型用webviewBubble代替
-                cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
-                
-//                cellModel = [[MQRichTextViewModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
-
             }
+            // 原富文本模型用webviewBubble代替
+            cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
             
-        }else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
+        } else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
             
             if ([(MQBotAnswerMessage *)message menu] == nil) {
                 cellModel = [[MQBotAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];

@@ -143,14 +143,18 @@
     //布局关联视图
     [self layoutMenuView];
     
-    //recreate evaluate view
-    UIView *evaluateView = [self evaluateRelatedView];
-    [[self.itemsView viewWithTag:evaluateView.tag] removeFromSuperview];
-    [self.itemsView addSubview:evaluateView];
-    //xlp
-    [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.menuFootnoteLabel.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    CGFloat viewBottomEdge = self.menuFootnoteLabel.viewBottomEdge + SPACE_INTERNAL_VERTICAL;
+    if (self.viewModel.needShowFeedback) {
+        //recreate evaluate view
+        UIView *evaluateView = [self evaluateRelatedView];
+        [[self.itemsView viewWithTag:evaluateView.tag] removeFromSuperview];
+        [self.itemsView addSubview:evaluateView];
+        //xlp
+        [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.menuFootnoteLabel.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+        viewBottomEdge = evaluateView.viewBottomEdge;
+    }
     
-    CGFloat bubbleHeight = MAX(self.avatarImageView.viewHeight, evaluateView.viewBottomEdge);
+    CGFloat bubbleHeight = MAX(self.avatarImageView.viewHeight, viewBottomEdge);
     self.itemsView.viewHeight = bubbleHeight;
     self.contentView.viewHeight = self.itemsView.viewBottomEdge + kMQCellAvatarToVerticalEdgeSpacing;
     self.viewHeight = self.contentView.viewHeight;

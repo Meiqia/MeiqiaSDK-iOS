@@ -107,14 +107,19 @@
 - (void)updateUI:(CGFloat)webContentHeight {
     
     self.contentWebView.viewHeight = webContentHeight;
-    //recreate evaluate view
-    UIView *evaluateView = [self evaluateRelatedView];
-    [[self.itemsView viewWithTag:evaluateView.tag] removeFromSuperview];
-    [self.itemsView addSubview:evaluateView];
     
-    [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+    CGFloat viewBottomEdge = self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL;
+    if (self.viewModel.needShowFeedback) {
+        //recreate evaluate view
+        UIView *evaluateView = [self evaluateRelatedView];
+        [[self.itemsView viewWithTag:evaluateView.tag] removeFromSuperview];
+        [self.itemsView addSubview:evaluateView];
+        
+        [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+        viewBottomEdge = evaluateView.viewBottomEdge;
+    }
     
-    CGFloat bubbleHeight = MAX(self.avatarImageView.viewHeight, evaluateView.viewBottomEdge);
+    CGFloat bubbleHeight = MAX(self.avatarImageView.viewHeight, viewBottomEdge);
     self.itemsView.viewHeight = bubbleHeight;
     self.contentView.viewHeight = self.itemsView.viewBottomEdge + kMQCellAvatarToVerticalEdgeSpacing;
     self.viewHeight = self.contentView.viewHeight;
