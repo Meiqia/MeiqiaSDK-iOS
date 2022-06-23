@@ -306,7 +306,7 @@ NSDictionary* clientCustomizedAttrs = @{
   [[MQNotificationManager sharedManager] openMQGroupNotificationServer];
 ```
 
-群发功能的目标顾客需要有对应的顾客信息，所以需要先配置顾客对应的[自定义信息](## 添加自定义信息)
+群发功能的目标顾客需要有对应的顾客信息，所以需要先配置顾客对应的[自定义信息](#添加自定义信息)
 
 **注意**
 * 该选项需要在SDK初始化成功以后调用。
