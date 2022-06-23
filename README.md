@@ -49,7 +49,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.8.1'
+pod 'Meiqia', '~> 3.8.2'
 ```
 接着安装美洽 pod 即可：
 
@@ -102,6 +102,8 @@ github "meiqia/MeiqiaSDK-iOS"
 #pragma mark  集成第一步: 初始化,  参数:appkey  ,尽可能早的初始化appkey.
     [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
         if (!error) {
+            // 这里可以开启SDK的群发功能, 注意需要在SDK初始化成功以后调用
+            // [[MQNotificationManager sharedManager] openMQGroupNotificationServer];
             NSLog(@"美洽 SDK：初始化成功");
         } else {
             NSLog(@"error:%@",error);
@@ -245,7 +247,7 @@ request.body 为消息数据，数据结构为：
 ![美洽 AppKey 查看界面图片](https://media.meiqiausercontent.com/uploads/3d989262c06c79684c8f6b70f5659f51.png)
 
 
-##  添加自定义信息
+## 添加自定义信息
 
 功能效果展示：
 ![美洽工作台顾客自定义信息图片](https://media.meiqiausercontent.com/uploads/3329ac75a3e54a0dc44e81aca9f8c2b3.png)
@@ -294,6 +296,21 @@ NSDictionary* clientCustomizedAttrs = @{
 |source|顾客来源|
 |comment|备注|
 
+## SDK群发功能
+
+美洽工作台设置群发任务，通过 SDK 渠道给目标顾客群发一条消息，引导顾客进入对话。
+
+开启群发功能
+
+```objc
+  [[MQNotificationManager sharedManager] openMQGroupNotificationServer];
+```
+
+群发功能的目标顾客需要有对应的顾客信息，所以需要先配置顾客对应的[自定义信息](## 添加自定义信息)
+
+**注意**
+* 该选项需要在SDK初始化成功以后调用。
+* 该选项需要配置对应的顾客信息
 
 ## 指定分配客服和客服组
 
@@ -892,6 +909,10 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十一 更新日志
+
+**v3.8.2  2022 年 6 月 23 日**
+* 新增SDK群发功能
+* 优化排队功能
 
 **v3.8.1  2022 年 5 月 19 日**
 * 修复关闭机器人反馈消息开关，不展示相关问题的bug

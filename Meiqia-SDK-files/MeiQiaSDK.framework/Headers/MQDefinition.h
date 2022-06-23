@@ -115,3 +115,14 @@ typedef enum : NSUInteger {
     MQConversationEvaluationModerate    = 1,            //中评
     MQConversationEvaluationPositive    = 2             //好评
 } MQConversationEvaluation;
+
+
+/**
+ 顾客对客服的某次对话的评价
+ */
+typedef enum : NSUInteger {
+    MQSDKSourceChannelSDK    = 0,            //原生sdk
+    MQSDKSourceChannelAPICloud,          //APICloud
+    MQSDKSourceChannelDCloud,  //DCloud
+    MQSDKSourceChannelFlutter   //Flutter
+} MQSDKSourceChannel;

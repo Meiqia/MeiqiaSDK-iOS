@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "MQMessage.h"
+#import "MQGroupNotification.h"
 #import "MQDefinition.h"
 #import "MQAgent.h"
 #import "MQCardInfo.h"
@@ -16,7 +17,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.8.1"
+#define MQSDKVersion @"3.8.2"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -32,6 +33,16 @@
  */
 - (void)didScheduleResult:(MQClientOnlineResult)onLineResult withResultMessages:(NSArray<MQMessage *> *)message;
 
+
+@end
+
+@protocol MQGroupNotificationDelegate <NSObject>
+
+/**
+ *  收到了群发消息
+ *  @param message 消息
+ */
+- (void)didReceiveMQGroupNotification:(NSArray<MQGroupNotification *> *)message;
 
 @end
 
@@ -78,6 +89,19 @@
 + (void)closeMeiqiaService;
 
 /**
+ *  开启美洽群发消息服务
+ * @param delegate 接收群发消息的代理;
+ * @warning 需要在SDK初始化成功以后调用
+ */
++ (void)openMQGroupNotificationServiceWithDelegate:(id<MQGroupNotificationDelegate>)delegate;
+
+/**
+ *  插入美洽群发消息到会话流里面
+ * @param notification 群发消息;
+ */
++ (void)insertMQGroupNotificationToConversion:(MQGroupNotification *)notification;
+
+/**
  * 设置用户的设备唯一标识，在AppDelegate.m的didRegisterForRemoteNotificationsWithDeviceToken系统回调中注册deviceToken。
  * App进入后台后，美洽推送给开发者服务端的消息数据格式中，会有deviceToken的字段。
  *
@@ -104,7 +128,6 @@
  * @param completion 如果初始化成功，将会返回clientId，并且error为nil；如果初始化失败，clientId为空，会返回error
  */
 + (void)initWithAppkey:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error))completion;
-
 
 /**
     获取本地初始化过的 app key
@@ -624,6 +647,13 @@
 
 
 + (NSError *)checkGlobalError;
+
+/**
+ *  配置sdk的渠道来源
+ *
+ * @param channel  来源渠道
+ */
++ (void)configSourceChannel:(MQSDKSourceChannel)channel;
 
 /**
  根据当前的用户 id， 或者自定义用户 id，首先判断需不需要显示询前表单：如果当前对话未结束，则需要显示，这时发起请求，从服务器获取表单数据，返回的结果根据用户指定的 agent token， group token（如果有），将数据过滤之后返回。

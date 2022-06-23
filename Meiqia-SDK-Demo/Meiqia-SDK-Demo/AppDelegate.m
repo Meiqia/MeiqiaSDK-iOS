@@ -38,6 +38,8 @@
     [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
 
         if (!error) {
+            // 这里可以开启SDK的群发功能, 注意需要在SDK初始化成功以后调用
+            //[[MQNotificationManager sharedManager] openMQGroupNotificationServer];
             NSLog(@"美洽 SDK：初始化成功");
         } else {
             NSLog(@"error:%@",error);

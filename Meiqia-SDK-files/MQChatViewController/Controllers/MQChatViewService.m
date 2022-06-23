@@ -100,6 +100,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backFromBackground) name:UIApplicationWillEnterForegroundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanTimer) name:MQ_NOTIFICATION_CHAT_END object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startTimer) name:MQ_NOTIFICATION_QUEUEING_BEGIN object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cleanTimer) name:MQ_NOTIFICATION_QUEUEING_END object:nil];
         
 //        currentViewMessageIdSet = [NSMutableSet new];
         
@@ -1088,13 +1089,27 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:YES complete:^(MQEnterprise *enterPrise, NSError *error) {
         if (enterPrise.configInfo.queueStatus) {
             [self removeWaitingInQueueCellModels];
-            [self.delegate reloadChatTableView];
+            [self reloadChatTableView];
             MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initWaitingInQueueTipCellModelWithCellWidth:self.chatViewWidth withIntro:enterPrise.configInfo.queueIntro ticketIntro:enterPrise.configInfo.queueTicketIntro position:position tipType:MQTipTypeWaitingInQueue];
             [self.cellModels addObject:cellModel];
             [self.delegate insertCellAtBottomForModelCount: 1];
             [self scrollToBottom];
         }
     }];
+}
+
+// 更新排队位置
+- (void)updateWaitingInQueueTipWithPosition:(int)position {
+    for (id<MQCellModelProtocol> model in [self.cellModels reverseObjectEnumerator]) {
+        if ([model isKindOfClass:[MQTipsCellModel class]]) {
+            MQTipsCellModel *cellModel = (MQTipsCellModel *)model;
+            if (cellModel.tipType == MQTipTypeWaitingInQueue && position != [cellModel getCurrentQueuePosition]) {
+                [cellModel updateQueueTipPosition:position];
+                [self reloadChatTableView];
+                return;
+            }
+        }
+    }
 }
 
 /// 清除当前界面的排队中「留言」的 tipCell
@@ -1256,7 +1271,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         MQInfo(@"check wating queue position")
         [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
             if (position > 0) {
-                [self addWaitingInQueueTipWithPosition:(int)position];
+                [self updateWaitingInQueueTipWithPosition:(int)position];
                 MQInfo(@"now you are at %d in waiting queue", (int)position);
             } else {
                 [self removeWaitingInQueueCellModels];
@@ -1660,6 +1675,15 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [self addTipCellModelWithType:MQTipTypeBotManualRedirect];
         }
     }
+    
+    // 处理开启了新对话，移除排队
+    if ([messages count] == 1 && [[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
+        //渲染手动转人工
+        if (((MQEventMessage *)[messages firstObject]).eventType == MQChatEventTypeInitConversation) {
+            [self checkAndUpdateWaitingQueueStatus];
+        }
+    }
+    
     //等待 0.1 秒，等待 tableView 更新后再滑动到底部，优化体验
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (self.delegate && isRefreshView) {
@@ -1772,6 +1796,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 //    }
     if (error && error.userInfo.count > 0 && [error.userInfo valueForKey:@"NSLocalizedDescription"] && [[error.userInfo valueForKey:@"NSLocalizedDescription"] isEqualToString:@"file upper limit!!"]) {
         [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_upload_limit"] duration:2 window:[UIApplication sharedApplication].keyWindow];
+    }
+    
+    // 判断是否有触发排队
+    int position = [MQServiceToViewInterface waitingInQueuePosition];
+    if (position > 0) {
+        [self addWaitingInQueueTipWithPosition:position];
+        MQInfo(@"now you are at %d in waiting queue", position);
     }
 }
 

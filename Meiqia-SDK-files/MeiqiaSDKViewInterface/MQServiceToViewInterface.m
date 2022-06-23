@@ -581,4 +581,12 @@
     return [MQManager checkGlobalError];
 }
 
++ (void)openMQGroupNotificationServiceWithDelegate:(id<MQGroupNotificationDelegate>)delegate {
+    [MQManager openMQGroupNotificationServiceWithDelegate:delegate];
+}
+
++ (void)insertMQGroupNotificationToConversion:(MQGroupNotification *)notification {
+    [MQManager insertMQGroupNotificationToConversion:notification];
+}
+
 @end

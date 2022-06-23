@@ -10,7 +10,7 @@
 #import <sys/utsname.h>
 #import <UIKit/UIKit.h>
 @implementation MQToolUtil
-+ (NSString*)kXlpObtainDeviceVersion
++ (NSString*)kMQObtainDeviceVersion
 {
     struct utsname systemInfo;
     uname(&systemInfo);
@@ -106,8 +106,8 @@
     
     return deviceString;
 }
-+ (BOOL)kXlpObtainDeviceVersionIsIphoneX{
-    NSString * str = [self kXlpObtainDeviceVersion];
++ (BOOL)kMQObtainDeviceVersionIsIphoneX{
+    NSString * str = [self kMQObtainDeviceVersion];
     if ([str containsString:@"X"] || [str isEqualToString:@"Simulator"] || [str containsString:@"11"] || [str containsString:@"12"]  || [str containsString:@"13"]) {
         return YES;
     } else {
@@ -116,24 +116,29 @@
     
 }
 
-+ (NSInteger )kXlpObtainNaviBarHeight{
++ (CGFloat)kMQObtainNaviBarHeight{
     return 44;
 }
-+ (NSInteger )kXlpObtainStatusBarHeight{
++ (CGFloat)kMQObtainStatusBarHeight{
     
-    //X 44 其他 20
-    CGRect rectStatus = [[UIApplication sharedApplication] statusBarFrame];
-    return rectStatus.size.height;
+    if (@available(iOS 13.0, *)) {
+        NSSet *set = [UIApplication sharedApplication].connectedScenes;
+        UIWindowScene *windowScene = [set anyObject];
+        UIStatusBarManager *statusBarManager = windowScene.statusBarManager;
+        return statusBarManager.statusBarFrame.size.height;
+    } else {
+        return [UIApplication sharedApplication].statusBarFrame.size.height;
+    }
 }
-+ (NSInteger )kXlpObtainNaviHeight{
++ (CGFloat)kMQObtainNaviHeight{
     
-    return [self kXlpObtainNaviBarHeight] + [self kXlpObtainStatusBarHeight];
+    return [self kMQObtainNaviBarHeight] + [self kMQObtainStatusBarHeight];
 }
-+ (NSInteger )kXlpScreenWidth{
++ (CGFloat)kMQScreenWidth{
     
     return [UIScreen mainScreen].bounds.size.width;
 }
-+ (NSInteger )kXlpScreenHeight{
++ (CGFloat)kMQScreenHeight{
     
     return [UIScreen mainScreen].bounds.size.height;
 }

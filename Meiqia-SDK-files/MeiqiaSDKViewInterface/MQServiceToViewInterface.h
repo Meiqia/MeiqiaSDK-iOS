@@ -134,29 +134,6 @@
                               errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
 
 /**
- * 从服务端获取更多消息
- *
- * @param msgDate 获取该日期之前的历史消息;
- * @param messagesNum 获取消息的数量
- */
-/*
-+ (void)getServerHistoryMessagesWithLastMsgDate:(NSDate *)msgDate
-                             messagesNumber:(NSInteger)messagesNumber
-                            successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
-                              errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
-*/
-/**
- * 从本地获取更多消息
- *
- * @param msgDate 获取该日期之前的历史消息;
- * @param messagesNum 获取消息的数量
- */
-/*
-+ (void)getDatabaseHistoryMessagesWithLastMsgDate:(NSDate *)msgDate
-                               messagesNumber:(NSInteger)messagesNumber
-                                     delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
-*/
-/**
  * 发送文字消息
  * @param content 消息内容。会做前后去空格处理，处理后的消息长度不能为0，否则不执行发送操作
  * @param localMessageId 本地消息id
@@ -200,7 +177,7 @@
                 delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 
 /**
- * 发送视频消息。使用该接口，需要开发者提供MOV格式.
+ * 发送商品卡片消息
  *
  * @param pictureUrl 商品图片的url。不能为空，否则不执行发送操作。
  * @param title 商品标题。不能为空，否则不执行发送操作。
@@ -559,6 +536,20 @@
  */
 + (NSString *)convertToUnicodeWithEmojiAlias:(NSString *)text;
 
+
+/**
+ *  开启美洽群发消息服务
+ * @param delegate 接收群发消息的代理;
+ * @warning 需要在SDK初始化成功以后调用
+ */
++ (void)openMQGroupNotificationServiceWithDelegate:(id<MQGroupNotificationDelegate>)delegate;
+
+
+/**
+ *  插入美洽群发消息到会话流里面
+ * @param notification 群发消息;
+ */
++ (void)insertMQGroupNotificationToConversion:(MQGroupNotification *)notification;
 
 @end
 

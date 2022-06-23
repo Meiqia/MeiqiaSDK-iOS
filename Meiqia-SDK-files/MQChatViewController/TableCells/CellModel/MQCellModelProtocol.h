@@ -192,6 +192,19 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
 - (void)updateMediaServerPath:(NSString *)serverPath;
 
 /**
+ *  更新排队的等待人数
+ *
+ *  @param position 当前排队的等待位置
+ */
+- (void)updateQueueTipPosition:(int)position;
+
+/**
+ *  获取当前的排对人数
+ *
+ */
+- (int)getCurrentQueuePosition;
+
+/**
  通知 cell model，该 model 中所对应的机器人 message 已经被评价过了
  */
 - (void)didEvaluate;

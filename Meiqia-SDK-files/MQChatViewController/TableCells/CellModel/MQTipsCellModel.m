@@ -90,6 +90,15 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
 // tip 的类型
 @property (nonatomic, readwrite, assign) MQTipType tipType;
 
+// 排队的引导提示文案
+@property (nonatomic, readwrite, copy) NSString *queueIntro;
+
+// 排队的留言引导提示文案
+@property (nonatomic, readwrite, copy) NSString *queueTicketIntro;
+
+// tip 的类型
+@property (nonatomic, readwrite, assign) int queuePosition;
+
 @end
 
 @implementation MQTipsCellModel
@@ -202,6 +211,9 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
         self.tipType = tipType;
         self.date = [NSDate date];
         NSString *waitNumberTitle = [MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_number"];
+        self.queueIntro = intro;
+        self.queuePosition = position;
+        self.queueTicketIntro = ticketIntro;
         self.tipText =[NSString stringWithFormat:@"%@\n\n%@\n\n%d\n\n%@",intro,waitNumberTitle,position,ticketIntro];
         self.enableLinesDisplay = false;
         self.bottomBtnTitle = [MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_leave_message"];
@@ -269,6 +281,29 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
 
 - (NSString *)getMessageConversionId {
     return @"";
+}
+
+- (void)updateQueueTipPosition:(int)position {
+    if (self.tipType == MQTipTypeWaitingInQueue) {
+        NSString *waitNumberTitle = [MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_number"];
+        self.tipText =[NSString stringWithFormat:@"%@\n\n%@\n\n%d\n\n%@",self.queueIntro,waitNumberTitle,position,self.queueTicketIntro];
+        //tip的文字额外属性
+        NSRange waitNumberTitleRange = [self.tipText rangeOfString:waitNumberTitle];
+        NSRange waitNunmerRange = NSMakeRange(waitNumberTitleRange.location + waitNumberTitleRange.length + 2, [NSString stringWithFormat:@"%d",position].length);
+        self.tipExtraAttributesRanges = @[[NSValue valueWithRange:waitNumberTitleRange], [NSValue valueWithRange:waitNunmerRange]];
+        self.tipExtraAttributes = @[@{
+                                        NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:15],
+                                        NSForegroundColorAttributeName : UIColor.blackColor
+                                    },
+                                    @{
+                                        NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:20],
+                                        NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor
+                                    }];
+    }
+}
+
+- (int)getCurrentQueuePosition {
+    return self.queuePosition;
 }
 
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {

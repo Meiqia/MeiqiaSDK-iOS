@@ -14,6 +14,7 @@
 #import "MQMessageFormInputModel.h"
 #import "MQMessageFormViewManager.h"
 #import "NSArray+MQFunctional.h"
+#import "MQNotificationManager.h"
 
 #define MQ_DEMO_ALERTVIEW_TAG 3000
 #define MQ_DEMO_ALERTVIEW_TAG_APPKEY 4000
@@ -79,6 +80,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                              @"留言表单",
                              @"预发送消息上线",
                              @"切换 appKey 上线",
+                             @"获取当前顾客的群发消息",
                              ],
                          @[
                              @"自定义主题 1",
@@ -212,6 +214,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                 break;
             case 17:
                 [self switchAppKey];
+                break;
+            case 18:
+                [self getCurrentClientGroupNotifications];
                 break;
             default:
                 break;
@@ -599,6 +604,15 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertString message:message delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
         [alertView show];
     }];
+}
+
+/**
+ *  获取当前顾客的群发消息数
+ */
+- (void)getCurrentClientGroupNotifications {
+    if (currentClientId) {
+        [[MQNotificationManager sharedManager] openMQGroupNotificationServer];
+    }
 }
 
 #pragma UIAlertViewDelegate

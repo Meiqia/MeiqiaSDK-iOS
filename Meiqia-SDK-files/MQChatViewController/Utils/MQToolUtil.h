@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface MQToolUtil : NSObject
-+ (NSString*)kXlpObtainDeviceVersion;
-+ (BOOL)kXlpObtainDeviceVersionIsIphoneX;
-+ (NSInteger )kXlpObtainNaviBarHeight;
-+ (NSInteger )kXlpObtainStatusBarHeight;
-+ (NSInteger )kXlpObtainNaviHeight;
-+ (NSInteger )kXlpScreenWidth;
-+ (NSInteger )kXlpScreenHeight;
++ (NSString*)kMQObtainDeviceVersion;
++ (BOOL)kMQObtainDeviceVersionIsIphoneX;
++ (CGFloat)kMQObtainNaviBarHeight;
++ (CGFloat)kMQObtainStatusBarHeight;
++ (CGFloat)kMQObtainNaviHeight;
++ (CGFloat)kMQScreenWidth;
++ (CGFloat)kMQScreenHeight;
 @end

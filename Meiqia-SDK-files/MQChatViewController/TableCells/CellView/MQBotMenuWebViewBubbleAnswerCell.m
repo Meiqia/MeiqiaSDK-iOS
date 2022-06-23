@@ -241,7 +241,7 @@
     if (!_itemsView) {
         _itemsView = [UIImageView new];
         NSInteger itemsViewX = kMQCellAvatarToVerticalEdgeSpacing+kMQCellAvatarDiameter+kMQCellAvatarToBubbleSpacing;
-        _itemsView.frame = CGRectMake(itemsViewX,kMQCellAvatarToHorizontalEdgeSpacing,MQToolUtil.kXlpScreenWidth - itemsViewX - kMQCellBubbleMaxWidthToEdgeSpacing , 200);
+        _itemsView.frame = CGRectMake(itemsViewX,kMQCellAvatarToHorizontalEdgeSpacing,MQToolUtil.kMQScreenWidth - itemsViewX - kMQCellBubbleMaxWidthToEdgeSpacing , 200);
         _itemsView.userInteractionEnabled = true;
         UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
         if ([MQChatViewConfig sharedConfig].incomingBubbleColor) {

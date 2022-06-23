@@ -307,7 +307,7 @@ static id keyUITableViewView, keyUITableViewMQRefreshAction, keyUITableViewMQRef
     if (self.status == MQRefreshStatusLoading || self.status == MQRefreshStatusEnd) { return; }
     
     
-    CGFloat mm = MQToolUtil.kXlpObtainNaviHeight ;
+    CGFloat mm = MQToolUtil.kMQObtainNaviHeight ;
     
     if (topOffset == 0|| topOffset == - mm) {
         self.status = MQRefreshStatusNormal;

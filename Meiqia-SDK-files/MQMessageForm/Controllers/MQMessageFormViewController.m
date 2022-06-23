@@ -447,8 +447,8 @@ static NSString * const kMessageFormMessageKey = @"message";
             offsetY = keyboardHeight + firstResponderUIView.frame.size.height - (screenHeight - responderMinY);
         }
         // 处理UIView被导航栏遮挡的情况
-        if (responderMinY < MQToolUtil.kXlpObtainNaviHeight) {
-            offsetY = responderMinY - MQToolUtil.kXlpObtainNaviHeight;
+        if (responderMinY < MQToolUtil.kMQObtainNaviHeight) {
+            offsetY = responderMinY - MQToolUtil.kMQObtainNaviHeight;
         }
         if (offsetY != 0) {
             [UIView animateWithDuration:duration animations:^{
