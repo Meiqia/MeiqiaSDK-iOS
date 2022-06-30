@@ -201,7 +201,8 @@ request.body 为消息数据，数据结构为：
 
 |Key|说明|
 |---|---|
-|messageId|消息 id|
+|id|消息 id|
+|messageId|当前对话的会话 id|
 |content|消息内容|
 |messageTime|发送时间|
 |fromName|发送人姓名|
@@ -416,9 +417,9 @@ MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 ```
 <key>CFBundleLocalizations</key>
 <array>
-	<string>zh_CN</string>
-	<string>zh_TW</string>
-	<string>en</string>
+    <string>zh_CN</string>
+    <string>zh_TW</string>
+    <string>en</string>
 </array>
 ```
 开源聊天界面的更多配置，可参见 [MQChatViewManager.h](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/Config/MQChatViewManager.h) 文件。
@@ -713,8 +714,8 @@ MQAgent *agent = [MQManager getCurrentAgent];
 目前是两种模式：
 
 1. 完全对话模式：
-	* 无机器人时：如果当前客服不在线，直接聊天界面输入就是留言，客服上线后能够直接回复，如果客服在线，则进入正常客服对话模式。
-	* 有机器人时：如果当前客服不在线，直接聊天界面输入的话，还是由机器人回答，顾客点击留言就会跳转到表单。
+    * 无机器人时：如果当前客服不在线，直接聊天界面输入就是留言，客服上线后能够直接回复，如果客服在线，则进入正常客服对话模式。
+    * 有机器人时：如果当前客服不在线，直接聊天界面输入的话，还是由机器人回答，顾客点击留言就会跳转到表单。
 
 2. 单一表单模式：
 不管客服是否在线都会进入表单，顾客提交后，不会有聊天界面。这种主要用于一些 App 只需要用户反馈，不需要直接回复的形式。
@@ -1103,11 +1104,11 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 * 多企业支持切换。
 * 增加工单相关接口。
 * 修复问题:
-	- 偶发的文字截断 
-	- 用户设置上传之后立刻获取无法获取到。
-	- 留言表单返回按钮的图片没有自动获取聊天界面用户设置的自定义图片。
-	- 导航栏右侧按钮，如果是自定义按钮，在分配机器人是没有显示转接人工，并且转接客服之后消失。
-	- 增加 socket 连接无法连接时的消息轮询机制，确保消息不丢失。
+    - 偶发的文字截断 
+    - 用户设置上传之后立刻获取无法获取到。
+    - 留言表单返回按钮的图片没有自动获取聊天界面用户设置的自定义图片。
+    - 导航栏右侧按钮，如果是自定义按钮，在分配机器人是没有显示转接人工，并且转接客服之后消失。
+    - 增加 socket 连接无法连接时的消息轮询机制，确保消息不丢失。
 
 **v3.3.1 2016 年 09 月 18 日** 
 
