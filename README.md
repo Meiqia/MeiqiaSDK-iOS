@@ -32,7 +32,6 @@ edition: m2016
 - 请查看[Meiqia在Github上的网页](https://github.com/Meiqia/MeiqiaSDK-iOS/releases) ，确认最新的版本号。
 - Demo开发者功能 ->点击查看当前SDK版本号
 - 查看SDK中MQManager.h类中 **#define MQSDKVersion **
-- 进入美洽 SDK 开发 QQ 群(295646206),向iOS技术支持人员询问最新版本号**
 - pod search Meiqia(此方法由于本地pod缓存,导致获取不到最新的)
 
 # 一、导入美洽SDK
