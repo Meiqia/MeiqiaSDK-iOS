@@ -102,6 +102,12 @@
  */
 - (void)showPlayVideoControllerWith:(NSString *)videoLocalPath serverPath:(NSString *)videoServer;
 
+/**
+ *  点击了商品卡片
+ *  @param productUrl 商品链接
+ */
+- (void)didTapProductCard:(NSString *)productUrl;
+
 @end
 
 

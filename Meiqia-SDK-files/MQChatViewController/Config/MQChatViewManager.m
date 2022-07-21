@@ -569,6 +569,10 @@
     chatViewConfig.localizedLanguageStr = language;
 }
 
+- (void)didTapProductCard:(void (^)(NSString *))callBack {
+    chatViewConfig.productCardCallBack = callBack;
+}
+
 #endif
 
 - (MQChatViewController *)chatViewController {

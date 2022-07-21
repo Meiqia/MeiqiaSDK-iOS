@@ -15,10 +15,13 @@
 
 @interface MQNotificationManager : NSObject
 
+/**
+ *  点击群发消息的回调处理是否需要自己处理  默认NO,跳转到客服页面发起会话
+ */
+@property (nonatomic, assign) BOOL handleNotification;
+
 + (MQNotificationManager *)sharedManager;
 
 - (void)openMQGroupNotificationServer;
-
-- (void)showNotification;
 
 @end

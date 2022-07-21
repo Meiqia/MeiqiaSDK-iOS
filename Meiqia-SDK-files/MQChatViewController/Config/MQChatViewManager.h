@@ -494,6 +494,15 @@
  */
 - (void)setLocalizedLanguage:(NSString *)language;
 
+/**
+ *  点击商品卡片的回调方法
+ *
+ * @warning 不调用此方法,默认是用浏览器打开商品链接；
+ *          调用此方法以后就需要自己处理点击的响应事件
+ * @param productUrl 商品链接
+ */
+- (void)didTapProductCard:(void (^)(NSString *productUrl))callBack;
+
 #endif
 
 

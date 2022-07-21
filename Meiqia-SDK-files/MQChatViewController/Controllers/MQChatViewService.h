@@ -203,6 +203,13 @@
 - (void)didTapMessageCellAtIndex:(NSInteger)index;
 
 /**
+ *  选择询前表单的问题
+ *
+ *  @param content 选择的问题
+ */
+- (void)selectedFormProblem:(NSString *)content;
+
+/**
  *  刷新所有的本机用户的头像
  */
 - (void)refreshOutgoingAvatarWithImage:(UIImage *)avatarImage;

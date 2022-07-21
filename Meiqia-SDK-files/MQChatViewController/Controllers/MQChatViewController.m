@@ -168,6 +168,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             [MQChatViewConfig sharedConfig].scheduledGroupId = target;
         }
         if ([menu length] > 0) {
+            [weakSelf.chatViewService selectedFormProblem:menu];
             NSMutableArray *m = [[MQChatViewConfig sharedConfig].preSendMessages mutableCopy] ?: [NSMutableArray new];
             [m addObject:menu];
             [MQChatViewConfig sharedConfig].preSendMessages = m;
@@ -291,7 +292,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveRefreshOutgoingAvatarNotification:) name:MQChatTableViewShouldRefresh object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveSocketStatusChangeNotification:) name:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveSocketConnectFailedNotification:) name:MQ_COMMUNICATION_FAILED_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveClickGroupNotification:) name:MQ_CLICK_GROUP_NOTIFICATION object:nil];
+    if (![MQNotificationManager sharedManager].handleNotification) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveClickGroupNotification:) name:MQ_CLICK_GROUP_NOTIFICATION object:nil];
+    }
 #endif
 }
 
@@ -874,6 +877,15 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self presentViewController:playerVC animated:YES completion:nil];
 }
 
+- (void)didTapProductCard:(NSString *)productUrl {
+    
+    if (chatViewConfig.productCardCallBack) {
+        chatViewConfig.productCardCallBack(productUrl);
+    } else {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:productUrl] options:@{} completionHandler:nil];
+    }
+}
+
 #pragma MQEvaluationViewDelegate
 - (void)didSelectLevel:(NSInteger)level comment:(NSString *)comment {
     [self.chatViewService sendEvaluationLevel:level comment:comment];
@@ -909,7 +921,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     UIColor *color = [MQChatViewConfig sharedConfig].navTitleColor ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSForegroundColorAttributeName];
     titleLabel.font = font;
     titleLabel.textColor = color;
-    CGFloat titleHeight = [MQStringSizeUtil getHeightForText:agentName withFont:titleLabel.font andWidth:self.view.frame.size.width];
+    CGFloat titleHeight = [MQStringSizeUtil getHeightForText:@"客服" withFont:titleLabel.font andWidth:self.view.frame.size.width];
     CGFloat titleWidth = [MQStringSizeUtil getWidthForText:agentName withFont:titleLabel.font andHeight:titleHeight];
     UIImageView *statusImageView = [UIImageView new];
     switch (agentStatus) {
@@ -929,10 +941,14 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if ([titleLabel.text isEqualToString:[MQBundleUtil localizedStringForKey:@"no_agent_title"]] || [MQServiceToViewInterface waitingInQueuePosition] > 0) {
         statusImageView.image = nil;
     }
+    CGFloat maxTitleViewWidth = [[UIScreen mainScreen] bounds].size.width - 2 * 50;
+    CGFloat statusImageWidth = statusImageView.image.size.width;
+    CGFloat titleLabelOriginX = statusImageWidth + 8;
+    CGFloat titleLabelWidth =  titleLabelOriginX + titleWidth > maxTitleViewWidth ? maxTitleViewWidth - (statusImageView.image.size.width + 8) : titleWidth;
     
-    statusImageView.frame = CGRectMake(0, titleHeight/2 - statusImageView.image.size.height/2, statusImageView.image.size.width, statusImageView.image.size.height);
-    titleLabel.frame = CGRectMake(statusImageView.frame.size.width + 8, 0, titleWidth, titleHeight);
-    titleView.frame = CGRectMake(0, 0, titleLabel.frame.origin.x + titleLabel.frame.size.width, titleHeight);
+    statusImageView.frame = CGRectMake(0, titleHeight/2 - statusImageView.image.size.height/2, statusImageWidth, statusImageView.image.size.height);
+    titleLabel.frame = CGRectMake(titleLabelOriginX, 0, titleLabelWidth, titleHeight);
+    titleView.frame = CGRectMake(0, 0, titleLabelOriginX + titleLabelWidth, titleHeight);
     [titleView addSubview:statusImageView];
     [titleView addSubview:titleLabel];
     self.navigationItem.titleView = titleView;

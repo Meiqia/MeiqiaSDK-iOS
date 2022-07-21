@@ -88,6 +88,10 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 //    //     发送商品卡片
 //    MQProductCardMessage *productCard = [[MQProductCardMessage alloc] initWithPictureUrl:@"https://file.pisen.com.cn/QJW3C1000WEB/Product/201701/16305409655404.jpg" title:@"商品的title" description:@"这件商品的描述内容，想怎么写就怎么写，哎呦，就是这么嗨！！！！" productUrl:@"https://meiqia.com" andSalesCount:100];
 //    [chatViewManager setPreSendMessages: @[productCard]];
+//    // 自定义商品卡片响应事件
+//    [chatViewManager didTapProductCard:^(NSString *productUrl) {
+//        NSLog(@"点击商品卡片的链接：%@",productUrl);
+//    }];
 //    [chatViewManager pushMQChatViewControllerInViewController:self];
     
 #pragma mark 如果你想绑定自己的用户系统 ,当然推荐你使用 客户自定义信息来绑定用户的相关个人信息

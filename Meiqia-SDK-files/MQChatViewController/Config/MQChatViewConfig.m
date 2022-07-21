@@ -87,6 +87,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.outgoingMsgSoundFileName       = @"MQSendMessageRing.mp3";
     
     self.preSendMessages = nil;
+    self.productCardCallBack = nil;
     
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK

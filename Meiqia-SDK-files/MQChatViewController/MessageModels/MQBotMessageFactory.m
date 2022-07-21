@@ -52,6 +52,13 @@
     message.userAvatarPath = plainMessage.messageAvatar;
     message.fromType = MQChatMessageIncoming;
     message.conversionId = plainMessage.conversationId;
+    // 处理托管机器人的
+    if ([plainMessage.accessoryData objectForKey:@"display_avatar"]) {
+        message.userAvatarPath = [plainMessage.accessoryData objectForKey:@"display_avatar"];
+    }
+    if ([plainMessage.accessoryData objectForKey:@"display_nickname"]) {
+        message.userName = [plainMessage.accessoryData objectForKey:@"display_nickname"];
+    }
     
     return message;
 }

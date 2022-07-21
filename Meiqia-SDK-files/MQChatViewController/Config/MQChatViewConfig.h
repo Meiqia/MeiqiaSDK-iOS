@@ -107,6 +107,8 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 
 @property (nonatomic, strong) NSArray *preSendMessages;
 
+@property (nonatomic, copy) void(^productCardCallBack)(NSString *productUrl);
+
 
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK

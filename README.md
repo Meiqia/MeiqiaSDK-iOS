@@ -48,7 +48,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.8.2'
+pod 'Meiqia', '~> 3.8.3'
 ```
 接着安装美洽 pod 即可：
 
@@ -311,6 +311,17 @@ NSDictionary* clientCustomizedAttrs = @{
 **注意**
 * 该选项需要在SDK初始化成功以后调用。
 * 该选项需要配置对应的顾客信息
+
+自定义点击群发消息的响应事件
+
+```objc
+    // 开启自定义响应事件
+  [MQNotificationManager sharedManager].handleNotification = YES;
+```
+在需要处理响应的地方，监听通知 MQ_CLICK_GROUP_NOTIFICATION
+
+**注意**
+* 开启自定义响应事件以后，需要自己通过监听通知来处理响应事件，否则点击群发消息以后会没有反应。
 
 ## 指定分配客服和客服组
 
@@ -655,6 +666,16 @@ MQAgent *agent = [MQManager getCurrentAgent];
 ```
 
 **注意**，调用发送消息接口后，回调中会返回一个消息实体，开发者可根据此消息的状态，来判断该条消息是发送成功还是发送失败。
+
+### 自定义点击商品卡片的响应
+
+```objc
+    // 自定义商品卡片响应事件
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager didTapProductCard:^(NSString *productUrl) {
+        NSLog(@"商品卡片的响应链接：%@",productUrl);
+    }];
+```
 
 ### 获取未读消息数
 

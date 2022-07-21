@@ -135,7 +135,10 @@
 #pragma 单击气泡
 - (void)bubbleTapped {
     
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:cellModel.productUrl]];
+    if ([self.chatCellDelegate respondsToSelector:@selector(didTapProductCard:)]) {
+        NSString *productUrl = [NSString stringWithFormat:@"%@",cellModel.productUrl];
+        [self.chatCellDelegate didTapProductCard:productUrl];
+    }
 }
 
 #pragma 点击发送失败消息 重新发送事件

@@ -30,5 +30,7 @@
 
 - (instancetype)initWithDictory:(NSDictionary *)dic;
 
+- (NSDictionary *)fromMapping;
+
 @end
 

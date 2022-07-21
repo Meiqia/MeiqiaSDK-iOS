@@ -798,6 +798,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
 }
 
+#pragma 讯前表单选择的问题
+- (void)selectedFormProblem:(NSString *)content {
+    if (content && content.length > 0) {
+        [MQServiceToViewInterface setScheduledProblem:content];
+    }
+}
+
 #pragma 播放声音
 - (void)playReceivedMessageSound {
     if (![MQChatViewConfig sharedConfig].enableMessageSound || [MQChatViewConfig sharedConfig].incomingMsgSoundFileName.length == 0) {
@@ -1880,8 +1887,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  */
 - (void)createLocalTextMessageWithText:(NSString *)text {
     //text message
+    MQAgent *agent = [MQServiceToViewInterface getCurrentAgent];
     MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:text];
     textMessage.fromType = MQChatMessageIncoming;
+    if (agent) {
+        textMessage.userName = agent.nickname;
+        textMessage.userAvatarPath = agent.avatarPath;
+    }
     
     [self didReceiveNewMessages:@[textMessage]];
     

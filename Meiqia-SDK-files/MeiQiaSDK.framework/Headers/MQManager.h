@@ -17,7 +17,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.8.2"
+#define MQSDKVersion @"3.8.3"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -167,6 +167,12 @@
  *
 */
 + (void)deleteScheduledAgent;
+
+/**
+ * 设置询前表单客服分配的问题
+ * @param problem           询前表单选择的问题内容
+*/
++ (void)setScheduledProblem:(NSString *)problem;
 
 /**
  * 开发者自定义当前顾客的信息，用于展示给客服。

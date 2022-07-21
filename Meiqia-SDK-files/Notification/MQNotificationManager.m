@@ -105,15 +105,17 @@ static NSInteger const kMQNotificationDismissTime = 5.0;
 }
 
 - (void)handleTapGestureRecognizer:(UITapGestureRecognizer *)recognizer {
-    [[NSNotificationCenter defaultCenter] postNotificationName:MQ_CLICK_GROUP_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:MQ_CLICK_GROUP_NOTIFICATION object:nil userInfo:[self.currentNotification fromMapping]];
     [self cancelCountdownTimer];
     [self dismissNotification];
-    [MQServiceToViewInterface insertMQGroupNotificationToConversion:self.currentNotification];
-    self.currentNotification = nil;
-    UIViewController *vc = [self findCurrentShowingViewController];
-    if (![vc isKindOfClass:[MQChatViewController class]]) {
-        MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-        [chatViewManager pushMQChatViewControllerInViewController:vc];
+    if (!self.handleNotification) {
+        [MQServiceToViewInterface insertMQGroupNotificationToConversion:self.currentNotification];
+        self.currentNotification = nil;
+        UIViewController *vc = [self findCurrentShowingViewController];
+        if (![vc isKindOfClass:[MQChatViewController class]]) {
+            MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+            [chatViewManager pushMQChatViewControllerInViewController:vc];
+        }
     }
 }
 

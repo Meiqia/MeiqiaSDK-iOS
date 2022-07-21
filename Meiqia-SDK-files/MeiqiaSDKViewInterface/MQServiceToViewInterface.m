@@ -342,6 +342,10 @@
     [MQManager deleteScheduledAgent];
 }
 
++ (void)setScheduledProblem:(NSString *)problem {
+    [MQManager setScheduledProblem:problem];
+}
+
 + (void)setEvaluationLevel:(NSInteger)level
                    comment:(NSString *)comment
 {

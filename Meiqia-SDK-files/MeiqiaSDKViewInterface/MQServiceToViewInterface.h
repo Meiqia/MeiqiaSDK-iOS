@@ -238,6 +238,11 @@
 + (void)deleteScheduledAgent;
 
 /**
+ * 设置询前表单客服分配的问题
+*/
++ (void)setScheduledProblem:(NSString *)problem;
+
+/**
  * 设置顾客离线
  * @param ;
  */
