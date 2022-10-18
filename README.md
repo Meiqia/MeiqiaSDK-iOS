@@ -916,6 +916,11 @@ messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor
 
 请开发者检查 App Target - Build Settings - Search Path - Framework Search Path 或 Library Search Path 当中是否没有美洽的项目。
 
+## Xcode14上的一些变动需知晓
+
+* Bitcode 废除
+* 不再支持构建 armv7、armv7s 以及 i386 架构的 iOS 项目 (iOS真机只支持arm64)
+
 Vendors - 用到的第三方开源库
 ---
 以下是该 Library 用到的第三方开源代码，如果开发者的项目中用到了相同的库，需要删除一份，避免类名冲突：
