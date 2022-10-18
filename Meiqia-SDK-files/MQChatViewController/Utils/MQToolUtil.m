@@ -58,6 +58,13 @@
     if ([deviceString isEqualToString:@"iPhone14,4"]) return @"iPhone13mini";
     if ([deviceString isEqualToString:@"iPhone14,5"]) return @"iPhone13";
     
+    
+    if ([deviceString isEqualToString:@"iPhone14,6"]) return @"iPhoneSE3";
+    if ([deviceString isEqualToString:@"iPhone14,7"]) return @"iPhone 14";
+    if ([deviceString isEqualToString:@"iPhone14,8"]) return @"iPhone 14 Plus";
+    if ([deviceString isEqualToString:@"iPhone15,2"]) return @"iPhone 14 Pro";
+    if ([deviceString isEqualToString:@"iPhone15,3"]) return @"iPhone 14 Pro Max";
+
     //模拟机
     if ([deviceString isEqualToString:@"x86_64"])        return @"Simulator";
 
@@ -108,7 +115,7 @@
 }
 + (BOOL)kMQObtainDeviceVersionIsIphoneX{
     NSString * str = [self kMQObtainDeviceVersion];
-    if ([str containsString:@"X"] || [str isEqualToString:@"Simulator"] || [str containsString:@"11"] || [str containsString:@"12"]  || [str containsString:@"13"]) {
+    if ([str containsString:@"X"] || [str isEqualToString:@"Simulator"] || [str containsString:@"11"] || [str containsString:@"12"]  || [str containsString:@"13"]  || [str containsString:@"14"]) {
         return YES;
     } else {
         return NO;

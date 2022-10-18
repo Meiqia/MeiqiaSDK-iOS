@@ -118,7 +118,7 @@ typedef enum : NSUInteger {
 
 
 /**
- 顾客对客服的某次对话的评价
+ sdk的接入渠道
  */
 typedef enum : NSUInteger {
     MQSDKSourceChannelSDK    = 0,            //原生sdk
