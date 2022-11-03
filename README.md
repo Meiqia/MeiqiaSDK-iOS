@@ -74,7 +74,7 @@ github "meiqia/MeiqiaSDK-iOS"
 
 ## 1.3 手动导入美洽SDK
 ###1.3.1 导入到OC 项目
-打开下载到本地的文件, 找到Meiqia-SDK-files文件夹下的四个文件件 `MeiQiaSDK.framework` 、 `MQChatViewController`  `MeiqiaSDKViewInterface` 和 `MQMessageForm`,将这四个文件夹拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者直接拖入 Xcode 工程目录结构中。
+打开下载到本地的文件, 找到Meiqia-SDK-files文件夹下的四个文件件 `MeiQiaSDK.framework` 、 `MQChatViewController` 、 `MeiqiaSDKViewInterface` 、`Notification`和 `MQMessageForm`,将这五个文件夹拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者直接拖入 Xcode 工程目录结构中。
 
 ###1.3.2  导入到Swift 项目
 
@@ -755,16 +755,6 @@ MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager al
 
 ![工单设置地址](https://media.meiqiausercontent.com/uploads/b938413c14481726f0e4632baaf9bde8.png)
 
-### 设置留言表单主题
-
-如果同时配置了聊天界面和留言表单界面的主题，优先使用留言表单界面的主题。如果两个主题都没有设置，则使用默认的主题。
-
-```objc
-MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
-messageFormViewManager.messageFormViewStyle = [MQMessageFormViewStyle greenStyle];
-messageFormViewManager.messageFormViewStyle.navTitleColor = [UIColor orangeColor];
-[messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
-```
 
 # 九 名词解释
 
