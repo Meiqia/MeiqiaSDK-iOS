@@ -292,8 +292,6 @@ NSDictionary* clientCustomizedAttrs = @{
 |email|邮件|
 |weibo|微博|
 |avatar|头像 URL|
-|tags|标签，数组形式，且必须是企业中已经存在的标签|
-|source|顾客来源|
 |comment|备注|
 
 ## SDK群发功能
