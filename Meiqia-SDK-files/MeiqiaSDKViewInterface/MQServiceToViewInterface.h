@@ -492,6 +492,21 @@
 + (void)getEnterpriseConfigInfoWithCache:(BOOL)isLoadCache complete:(void(^)(MQEnterprise *, NSError *))action;
 
 /**
+获取当前企业配置头像
+ */
++ (NSString *)getEnterpriseConfigAvatar;
+
+/**
+获取当前企业配置名称
+ */
++ (NSString *)getEnterpriseConfigName;
+
+/**
+ * 是否开启留言功能
+ */
++ (BOOL)enableLeaveComment;
+
+/**
  在准备显示聊天界面是调用
  */
 + (void)prepareForChat;
@@ -555,6 +570,11 @@
  * @param notification 群发消息;
  */
 + (void)insertMQGroupNotificationToConversion:(MQGroupNotification *)notification;
+
+/**
+ * 当前是否开启无消息访客过滤
+ */
++ (BOOL)currentOpenVisitorNoMessage;
 
 @end
 

@@ -81,7 +81,13 @@
         
         [self.contentWebView setTappedLink:^(NSURL *url) {
             if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]]];
+                if ([url.absoluteString rangeOfString:@"tel:"].location != NSNotFound) {
+                    // 和后台预定的是 tel:182xxxxxxxxx
+                    NSString *path = [url.absoluteString stringByReplacingOccurrencesOfString:@"tel:" withString:@"tel://"];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path]];
+                } else {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]]];
+                }
             } else {
                 [[UIApplication sharedApplication] openURL:url];
             }

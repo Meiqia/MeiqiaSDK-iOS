@@ -68,7 +68,7 @@
     tipsLabel.attributedText = tipsString;
     tipsLabel.frame = cellModel.tipLabelFrame;
     
-    if (cellModel.tipType == MQTipTypeWaitingInQueue) {
+    if (cellModel.tipType == MQTipTypeWaitingInQueue && cellModel.bottomBtnTitle.length > 0) {
         bottomBtn.hidden = false;
         [bottomBtn setTitle:cellModel.bottomBtnTitle forState:UIControlStateNormal];
         bottomBtn.frame = cellModel.bottomBtnFrame;
@@ -110,7 +110,7 @@
 }
 
 - (void)tapTipCell:(id)sender {
-    if ([tipsLabel.text isEqualToString:[MQBundleUtil localizedStringForKey:@"reply_tip_text"]]) {
+    if ([tipsLabel.text isEqualToString:[NSString stringWithFormat:@"%@%@",[MQBundleUtil localizedStringForKey:@"reply_tip_text"], [MQBundleUtil localizedStringForKey:@"reply_tip_leave"]]]) {
         if ([self.chatCellDelegate respondsToSelector:@selector(didTapReplyBtn)]) {
             [self.chatCellDelegate didTapReplyBtn];
         }

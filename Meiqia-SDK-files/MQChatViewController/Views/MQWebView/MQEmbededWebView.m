@@ -56,14 +56,14 @@
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     NSURLRequest *request = navigationAction.request;
-    if (request.URL.path) {
+    if (request.URL.path || [request.URL.absoluteString rangeOfString:@"tel:"].location != NSNotFound) {
         if (self.tappedLink) {
             self.tappedLink(request.URL);
         }
     }
     if (request.URL.path.length == 0) {
         decisionHandler(WKNavigationActionPolicyAllow);
-    }else {
+    } else {
         decisionHandler(WKNavigationActionPolicyCancel);
     }
 }

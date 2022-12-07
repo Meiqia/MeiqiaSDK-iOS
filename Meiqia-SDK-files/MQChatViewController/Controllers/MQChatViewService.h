@@ -77,6 +77,12 @@
  */
 - (BOOL)isChatRecording;
 
+/**
+ *  分配对话以后，判断是否需要显示留言界面
+ *
+ */
+- (void)needToDisplayLeaveComment:(BOOL)display;
+
 #ifdef INCLUDE_MEIQIA_SDK
 /**
  *  通知viewController已经为顾客分配了一个客服，更新title

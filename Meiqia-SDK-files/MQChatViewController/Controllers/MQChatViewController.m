@@ -62,8 +62,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @property (nonatomic, strong) MQRecordView *recordView;
 @property (nonatomic, strong) MQRecorderView *displayRecordView;//只用来显示
 @property (nonatomic, assign) bool sendVideoMsgStatus;
-//xlp  是否开启访客无消息过滤的标志
-@property (nonatomic, assign) bool openVisitorNoMessageBool; // 默认值 在presentUI里分2种情况初始化 在发送各种消息前检测 若为真 打开 则需手动上线  若为假 则不做操作
+
+@property (nonatomic, assign) BOOL isFirstScheduleClient;
 
 @end
 
@@ -175,54 +175,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         }
         // TODO: [MQServiceToViewInterface prepareForChat]也会初始化企业配置，这里会导致获取企业配置的接口调用两次,APP第一次初始化时会调3次
         [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:YES complete:^(MQEnterprise *enterprise, NSError *e) {
-
             weakSelf.sendVideoMsgStatus = enterprise.configInfo.videoMsgStatus;
-
-            // warning:用之前的绑定的clientId上线,防止出现排队现象
-            // 企业配置字段scheduler_after_client_send_msg：客户（访客）是否开启无响应时消息
-            if (enterprise.configInfo.isScheduleAfterClientSendMessage && ![MQServiceToViewInterface haveConversation]) {
-                // 设置head title
-                [weakSelf updateNavTitleWithAgentName:enterprise.configInfo.public_nickname ?: @"官方客服" agentStatus:MQChatAgentStatusNone];
-
-                // 设置欢迎语 设置企业头像
-                NSString *welcomeStr = enterprise.configInfo.enterpriseIntro;
-                NSString *str = [welcomeStr stringByReplacingOccurrencesOfString:@" " withString:@""];
-                if (enterprise.configInfo.enterpriseIntro && str.length > 0) {
-
-                    NSDictionary *accessory = @{
-                        @"summary":@"",
-                        @"thumbnail":@"",
-                        @"content":enterprise.configInfo.enterpriseIntro ?: @"【系统消息】您好，请问您有什么问题?"
-                    };
-                    MQRichTextMessage *message = [[MQRichTextMessage alloc] initWithDictionary:accessory];
-                    message.fromType = MQChatMessageIncoming;
-                    message.date = [NSDate new];
-                    message.userName = enterprise.configInfo.public_nickname;
-                    message.userAvatarPath = enterprise.configInfo.avatar;
-                    message.sendStatus = MQChatMessageSendStatusSuccess;
-                    message.content = enterprise.configInfo.enterpriseIntro;
-                    MQWebViewBubbleCellModel *cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:message cellWidth:weakSelf.chatViewService.chatViewWidth delegate:(id <MQCellModelDelegate>)weakSelf.chatViewService];
-
-                    [weakSelf.chatViewService addCellModelAndReloadTableViewWithModel:cellModel];
-                }
-
-
-                // 加载历史消息
-                [weakSelf.chatViewService getMessagesWithScheduleAfterClientSendMessage];
-                // 注册通知
-                // TODO: 这个通知什么时候回调（客服离开、隐身、结束对话都不会触发）
-                [MQManager addStateObserverWithBlock:^(MQState oldState, MQState newState, NSDictionary *value, NSError *error) {
-                    if (newState == MQStateUnallocatedAgent) { // 离线
-//                        [MQManager setClientOffline];
-                    }
-                } withKey:@"MQChatViewController"];
-
-                weakSelf.openVisitorNoMessageBool = YES;
-
-            } else { // 如果未开启，直接让用户上线
-                weakSelf.openVisitorNoMessageBool = NO;
-                [weakSelf.chatViewService setClientOnline];
-            }
+            weakSelf.isFirstScheduleClient = YES;
+            [weakSelf.chatViewService setClientOnline];
         }];
     } cancle:^{
         //讯前表单 左返回按钮
@@ -522,6 +477,16 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     return [self.recordView isRecording];
 }
 
+- (void)needToDisplayLeaveComment:(BOOL)display {
+    if (self.isFirstScheduleClient && display) {
+        self.isFirstScheduleClient = NO;
+        [self.navigationController dismissViewControllerAnimated:NO completion:nil];
+        MQMessageFormViewManager *formManager = [[MQMessageFormViewManager alloc] init];
+        [formManager pushMQMessageFormViewControllerInViewController:self.navigationController.presentingViewController];
+    }
+    self.isFirstScheduleClient = NO;
+}
+
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle agentStatus:(MQChatAgentStatus)agentStatus{
     
     [self updateNavTitleWithAgentName:viewTitle agentStatus:agentStatus];
@@ -576,39 +541,22 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         return NO;
     }
     
-    if (self.openVisitorNoMessageBool) {
+    if (self.chatViewService.clientStatus == MQStateUnallocatedAgent) {
         [self.view endEditing:YES];
-        [self.chatViewService setClientOnline];
-        
-        if (text) {
-            [self.chatViewService cacheSendText:text];
-        } else if (image) {
-            [self.chatViewService cacheSendImage:image];
-        } else if (filePath) {
-            [self.chatViewService cacheSendAMRFilePath:filePath];
-        } else if (videoPath) {
-            [self.chatViewService cacheSendVideoFilePath:videoPath];
-        }
-        
-        self.openVisitorNoMessageBool = NO;
-    }else{
-        if (self.chatViewService.clientStatus == MQStateUnallocatedAgent) {
-            [self.view endEditing:YES];
-        }
-        if (text) {
-            [self.chatViewService sendTextMessageWithContent:text];
-        } else if (image) {
-            [self.chatViewService sendImageMessageWithImage:image];
-        } else if (filePath) {
-            [self.chatViewService sendVoiceMessageWithAMRFilePath:filePath];
-        } else if (videoPath) {
-            [self.chatViewService sendVideoMessageWithFilePath:videoPath];
-        }
-        sendTime = [NSDate timeIntervalSinceReferenceDate];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                   [self chatTableViewScrollToBottomWithAnimated:YES];
-               });
     }
+    if (text) {
+        [self.chatViewService sendTextMessageWithContent:text];
+    } else if (image) {
+        [self.chatViewService sendImageMessageWithImage:image];
+    } else if (filePath) {
+        [self.chatViewService sendVoiceMessageWithAMRFilePath:filePath];
+    } else if (videoPath) {
+        [self.chatViewService sendVideoMessageWithFilePath:videoPath];
+    }
+    sendTime = [NSDate timeIntervalSinceReferenceDate];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self chatTableViewScrollToBottomWithAnimated:YES];
+    });
     return YES;
 }
 
@@ -860,7 +808,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)didTapReplyBtn {
-    [self showMQMessageForm];
+    if ([MQServiceToViewInterface enableLeaveComment]) {
+        [self showMQMessageForm];
+    }
 }
 
 - (void)didTapBotRedirectBtn {

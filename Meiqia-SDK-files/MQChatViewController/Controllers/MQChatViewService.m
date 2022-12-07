@@ -1070,7 +1070,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self.cellModels addObject:tipModel];
         [self.delegate reloadChatTableView];
     } else {
-        MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initBotTipCellModelWithCellWidth:self.chatViewWidth tipType:tipType];
+        MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initBotTipCellModelWithCellWidth:self.chatViewWidth tipType:tipType showLeaveCommentBtn:[MQServiceToViewInterface enableLeaveComment]];
         [self.cellModels addObject:cellModel];
         [self.delegate insertCellAtBottomForModelCount: 1];
     }
@@ -1097,7 +1097,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if (enterPrise.configInfo.queueStatus) {
             [self removeWaitingInQueueCellModels];
             [self reloadChatTableView];
-            MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initWaitingInQueueTipCellModelWithCellWidth:self.chatViewWidth withIntro:enterPrise.configInfo.queueIntro ticketIntro:enterPrise.configInfo.queueTicketIntro position:position tipType:MQTipTypeWaitingInQueue];
+            MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initWaitingInQueueTipCellModelWithCellWidth:self.chatViewWidth withIntro:enterPrise.configInfo.queueIntro ticketIntro:enterPrise.configInfo.queueTicketIntro position:position tipType:MQTipTypeWaitingInQueue showLeaveCommentBtn:[MQServiceToViewInterface enableLeaveComment]];
             [self.cellModels addObject:cellModel];
             [self.delegate insertCellAtBottomForModelCount: 1];
             [self scrollToBottom];
@@ -1192,6 +1192,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //将MQMessage转换成UI能用的Message类型
     NSMutableArray *toMessages = [[NSMutableArray alloc] init];
     for (MQMessage *fromMessage in messagesArray) {
+        // 这里加要单独处理欢迎语头像处理问题
+        if (fromMessage.type == MQMessageTypeWelcome && [fromMessage.agentId intValue] == 0 && fromMessage.messageAvatar.length < 1) {
+            fromMessage.messageAvatar = [MQServiceToViewInterface getEnterpriseConfigAvatar];
+            fromMessage.messageUserName = [MQServiceToViewInterface getEnterpriseConfigName];
+         }
         MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType fromType:fromMessage.fromType] createMessage:fromMessage];
         if (toMessage) {
             [toMessages addObject:toMessage];
@@ -1520,6 +1525,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 // 分配客服成功
 - (void)didScheduleResult:(MQClientOnlineResult) onLineResult withResultMessages:(NSArray<MQMessage *> *)message {
     
+    if ([self.delegate respondsToSelector:@selector(needToDisplayLeaveComment:)]) {
+        [self.delegate needToDisplayLeaveComment:onLineResult == MQClientOnlineResultNotScheduledAgent && [MQServiceToViewInterface waitingInQueuePosition] < 1 && ![MQServiceToViewInterface enableLeaveComment]];
+    }
+    
     // 让UI显示历史消息成功了再发送
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (self.cacheTextArr.count > 0) {
@@ -1739,7 +1748,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 {
     [self playSendedMessageSound];
 
-    if ([MQServiceToViewInterface getCurrentAgentName].length == 0 && self.clientStatus != MQStateAllocatingAgent) {
+    // 判断是否开启了无消息访客过滤，开启的话要做留言提示处理
+    if (([MQServiceToViewInterface getCurrentAgentName].length == 0 && self.clientStatus != MQStateAllocatingAgent)
+        || [MQServiceToViewInterface currentOpenVisitorNoMessage]) {
         [self addNoAgentTip];
     }
     NSInteger index = [self getIndexOfCellWithMessageId:oldMessageId];

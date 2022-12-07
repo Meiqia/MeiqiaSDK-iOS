@@ -17,7 +17,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.8.5"
+#define MQSDKVersion @"3.8.6"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -590,6 +590,16 @@
 + (void)getEnterpriseConfigDataWithCache:(BOOL)isLoadCache complete:(void(^)(MQEnterprise *, NSError *))action;
 
 /**
+获取当前企业配置头像
+ */
++ (NSString *)getEnterpriseConfigAvatar;
+
+/**
+获取当前企业配置名称
+ */
++ (NSString *)getEnterpriseConfigName;
+
+/**
  开始显示聊天界面，如果自定义聊天界面，在聊天界面出现的时候调用，通知 SDK 进行初始化
  */
 + (void)didStartChat;
@@ -701,4 +711,15 @@
 + (void)refreshPushInfoWithToken:(NSString *)token
                          Success:(void (^)(BOOL completion))success
                          failure:(void (^)(NSError *error))failure;
+
+/**
+ * 是否开启留言功能
+ */
++ (BOOL)enableLeaveComment;
+
+/**
+ * 当前是否开启无消息访客过滤
+ */
++ (BOOL)currentOpenVisitorNoMessage;
+
 @end

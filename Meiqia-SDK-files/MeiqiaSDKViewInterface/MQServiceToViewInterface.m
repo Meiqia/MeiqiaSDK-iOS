@@ -87,6 +87,11 @@
     //将MQMessage转换成UI能用的Message类型
     NSMutableArray *toMessages = [[NSMutableArray alloc] init];
     for (MQMessage *fromMessage in messagesArray) {
+        // 这里加要单独处理欢迎语头像处理问题
+        if (fromMessage.type == MQMessageTypeWelcome && [fromMessage.agentId intValue] == 0 && fromMessage.messageAvatar.length < 1) {
+            fromMessage.messageAvatar = [MQServiceToViewInterface getEnterpriseConfigAvatar];
+            fromMessage.messageUserName = [MQServiceToViewInterface getEnterpriseConfigName];
+         }
         MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType fromType:fromMessage.fromType] createMessage:fromMessage];
         if (toMessage) {
             [toMessages addObject:toMessage];
@@ -102,7 +107,11 @@
                           delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 {
     [MQManager sendTextMessageWithContent:content completion:^(MQMessage *sendedMessage, NSError *error) {
-        [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        if (error) {
+            [self didSendFailedWithMessage:sendedMessage localMessageId:localMessageId error:error delegate:delegate];
+        } else {
+            [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        }
     }];
 }
 
@@ -111,7 +120,11 @@
                          delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 {
     [MQManager sendImageMessageWithImage:image completion:^(MQMessage *sendedMessage, NSError *error) {
-        [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        if (error) {
+            [self didSendFailedWithMessage:sendedMessage localMessageId:localMessageId error:error delegate:delegate];
+        } else {
+            [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        }
     }];
 }
 
@@ -120,7 +133,11 @@
                 delegate:(id<MQServiceToViewInterfaceDelegate>)delegate
 {
     [MQManager sendAudioMessage:audio completion:^(MQMessage *sendedMessage, NSError *error) {
-        [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        if (error) {
+            [self didSendFailedWithMessage:sendedMessage localMessageId:localMessageId error:error delegate:delegate];
+        } else {
+            [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        }
     }];
 }
 
@@ -137,7 +154,11 @@
 + (void)sendProductCardMessageWithPictureUrl:(NSString *)pictureUrl title:(NSString *)title descripation:(NSString *)descripation productUrl:(NSString *)productUrl salesCount:(long)salesCount messageId:(NSString *)localMessageId delegate:(id<MQServiceToViewInterfaceDelegate>)delegate
 {
     [MQManager sendProductCardMessageWithPictureUrl:pictureUrl title:title descripation:descripation productUrl:productUrl salesCount:salesCount completion:^(MQMessage *sendedMessage, NSError *error) {
-        [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        if (error) {
+            [self didSendFailedWithMessage:sendedMessage localMessageId:localMessageId error:error delegate:delegate];
+        } else {
+            [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        }
     }];
 }
 
@@ -264,6 +285,18 @@
 
 + (void)getEnterpriseConfigInfoWithCache:(BOOL)isLoadCache complete:(void(^)(MQEnterprise *, NSError *))action {
     [MQManager getEnterpriseConfigDataWithCache:isLoadCache complete:action];
+}
+
++ (NSString *)getEnterpriseConfigAvatar {
+    return [MQManager getEnterpriseConfigAvatar];
+}
+
++ (NSString *)getEnterpriseConfigName {
+    return [MQManager getEnterpriseConfigName];
+}
+
++ (BOOL)enableLeaveComment {
+    return [MQManager enableLeaveComment];
 }
 
 #pragma 实例方法
@@ -591,6 +624,10 @@
 
 + (void)insertMQGroupNotificationToConversion:(MQGroupNotification *)notification {
     [MQManager insertMQGroupNotificationToConversion:notification];
+}
+
++ (BOOL)currentOpenVisitorNoMessage {
+    return [MQManager currentOpenVisitorNoMessage];
 }
 
 @end

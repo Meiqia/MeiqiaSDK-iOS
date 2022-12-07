@@ -157,12 +157,13 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
  */
 - (MQTipsCellModel *)initBotTipCellModelWithCellWidth:(CGFloat)cellWidth
                                               tipType:(MQTipType)tipType
+                                  showLeaveCommentBtn:(BOOL)showBtn
 {
     if (self = [super init]) {
         self.tipType = tipType;
         self.date = [NSDate date];
         if (tipType == MQTipTypeReply) {
-            self.tipText = [MQBundleUtil localizedStringForKey:@"reply_tip_text"];
+            self.tipText = [NSString stringWithFormat:@"%@%@",[MQBundleUtil localizedStringForKey:@"reply_tip_text"], showBtn ? [MQBundleUtil localizedStringForKey:@"reply_tip_leave"] : @""];
         } else if (tipType == MQTipTypeBotRedirect) {
             self.tipText = [MQBundleUtil localizedStringForKey:@"bot_redirect_tip_text"];
         } else if (tipType == MQTipTypeBotManualRedirect) {
@@ -188,7 +189,7 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
         //tip的文字额外属性
         NSString *tapText = [NSString string];
         if (tipType == MQTipTypeReply) {
-            tapText = [self.tipText containsString:@"留言"] ? @"留言" : @"You can give us a message";
+            tapText = showBtn ? ([self.tipText containsString:@"留言"] ? @"留言" : @"You can give us a message") : @"";
         } else {
             if ([self.tipText containsString:@"转人工"]) {
                 tapText = @"转人工";
@@ -206,17 +207,17 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
     return self;
 }
 
-- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth withIntro:(NSString *)intro ticketIntro:(NSString *)ticketIntro position:(int)position tipType:(MQTipType)tipType {
+- (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth withIntro:(NSString *)intro ticketIntro:(NSString *)ticketIntro position:(int)position tipType:(MQTipType)tipType showLeaveCommentBtn:(BOOL)showBtn {
     if (self = [super init]) {
         self.tipType = tipType;
         self.date = [NSDate date];
         NSString *waitNumberTitle = [MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_number"];
         self.queueIntro = intro;
         self.queuePosition = position;
-        self.queueTicketIntro = ticketIntro;
-        self.tipText =[NSString stringWithFormat:@"%@\n\n%@\n\n%d\n\n%@",intro,waitNumberTitle,position,ticketIntro];
+        self.queueTicketIntro = showBtn ? ticketIntro : @"";
+        self.tipText =[NSString stringWithFormat:@"%@\n\n%@\n\n%d\n\n%@",intro,waitNumberTitle,position,self.queueTicketIntro];
         self.enableLinesDisplay = false;
-        self.bottomBtnTitle = [MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_leave_message"];
+        self.bottomBtnTitle = showBtn ? [MQBundleUtil localizedStringForKey:@"wating_in_queue_tip_leave_message"] : @"";
         
         //tip frame
         CGFloat tipsWidth = cellWidth - kMQMessageReplyTipsCellHorizontalSpacing * 2;

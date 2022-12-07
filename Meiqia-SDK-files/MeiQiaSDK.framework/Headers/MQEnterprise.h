@@ -17,7 +17,7 @@ typedef enum : NSUInteger {
     MQTicketConfigContactFieldTypeMultipleChoice     = 4, //多选
 } MQTicketConfigContactFieldType;
 
-/**留言工单字段模型*/
+/**留言留言字段模型*/
 @interface MQTicketConfigContactField : MQModel
 
 @property (nonatomic, copy) NSString *name;
@@ -32,7 +32,7 @@ typedef enum : NSUInteger {
 
 @end
 
-/**企业工作台 工单配置信息*/
+/**企业工作台 留言配置信息*/
 
 @interface MQTicketConfigInfo : MQModel
 
@@ -40,7 +40,7 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, copy) NSString *intro;
 
-@property (nonatomic, copy) NSString *category; // 工单分类询问开关
+@property (nonatomic, copy) NSString *category; // 留言分类询问开关
 
 // 留言输入框的内容类型：1、“content”，输入框的text直接显示为defaultTemplateContent，让用户自己修改； 2、“placeholder”，输入框的placeholder显示为content_placeholder，内容用户自己输入
 @property (nonatomic, copy) NSString *content_fill_type;
@@ -50,6 +50,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) NSString *content_title; // 留言输入框的title，
 
 @property (nonatomic, copy) NSString *content_placeholder; // 留言输入框的placeholder，
+
+@property (nonatomic, assign) BOOL enable; // 留言功能是否开启
 
 @property (nonatomic, strong) NSArray<MQTicketConfigContactField *> *custom_fields;
 
@@ -83,7 +85,7 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong) MQPreChatData *preChatData; //讯前表单数据模型
 
-@property (nonatomic, strong) MQTicketConfigInfo *ticketConfigInfo; //工单留言数据模型
+@property (nonatomic, strong) MQTicketConfigInfo *ticketConfigInfo; //留言数据配置
 
 @end
 

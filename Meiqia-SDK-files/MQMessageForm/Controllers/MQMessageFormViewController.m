@@ -19,6 +19,7 @@
 #import "MQMessageFormChoiceView.h"
 #import "MQMessageFormTimeView.h"
 #import <MeiqiaSDK/MQEnterprise.h>
+#import "MQServiceToViewInterface.h"
 
 static CGFloat const kMQMessageFormSpacing   = 16.0;
 static NSString * const kMessageFormMessageKey = @"message";
@@ -29,13 +30,17 @@ static NSString * const kMessageFormMessageKey = @"message";
 
 @property (nonatomic, strong) MQTicketConfigInfo *ticketConfigInfo;
 
+@property (nonatomic, strong) UILabel *tipLabel;
+
+@property (nonatomic, assign) BOOL contactAllRequired;
+
 @end
 
 @implementation MQMessageFormViewController {
     MQMessageFormConfig *messageFormConfig;
     
     UIScrollView *scrollView;
-    UILabel *tipLabel;
+    
     UIView *formContainer;
     
     CGSize viewSize;
@@ -47,8 +52,6 @@ static NSString * const kMessageFormMessageKey = @"message";
     
     UIView *translucentView;
     UIActivityIndicatorView *activityIndicatorView;
-    
-    BOOL contactAllRequired;
 }
 
 - (instancetype)initWithConfig:(MQMessageFormConfig *)config {
@@ -87,7 +90,9 @@ static NSString * const kMessageFormMessageKey = @"message";
 - (void)setNavBar {
     self.navigationItem.title = [MQBundleUtil localizedStringForKey:@"leave_a_message"];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"submit"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapSubmitBtn:)];
+    if ([MQServiceToViewInterface enableLeaveComment]) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"submit"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapSubmitBtn:)];
+    }
 }
 
 - (void)initScrollView {
@@ -97,29 +102,32 @@ static NSString * const kMessageFormMessageKey = @"message";
 
 - (void)handleLeaveMessageConfig {
     if (messageFormConfig.leaveMessageIntro && messageFormConfig.leaveMessageIntro.length > 0) {
-        tipLabel.text = messageFormConfig.leaveMessageIntro;
-        tipLabel.hidden = NO;
+        self.tipLabel.text = messageFormConfig.leaveMessageIntro;
+        self.tipLabel.hidden = NO;
     }
+    __weak typeof(self) weakSelf = self;
     [MQMessageFormViewService getMessageFormConfigComplete:^(MQEnterpriseConfig *config, NSError *error) {
-        if (self->tipLabel.text.length < 1) {
+        if (weakSelf.tipLabel.text.length < 1) {
             if (config.ticketConfigInfo.intro.length > 0) {
-                self->tipLabel.text = config.ticketConfigInfo.intro;
-                self->tipLabel.hidden = NO;
+                weakSelf.tipLabel.text = config.ticketConfigInfo.intro;
+                weakSelf.tipLabel.hidden = NO;
             } else {
-                self->tipLabel.hidden = YES;
+                weakSelf.tipLabel.hidden = YES;
             }
         }
-        self.ticketConfigInfo = config.ticketConfigInfo;
-        self->contactAllRequired = ![config.ticketConfigInfo.contactRule isEqualToString:@"single"];
-        [self configFormCategoryViewController];
-        [self initFormContainer];
-        [self refreshFrame];
+        if ([MQServiceToViewInterface enableLeaveComment]) {
+            weakSelf.ticketConfigInfo = config.ticketConfigInfo;
+            weakSelf.contactAllRequired = ![config.ticketConfigInfo.contactRule isEqualToString:@"single"];
+            [weakSelf configFormCategoryViewController];
+            [weakSelf initFormContainer];
+        }
+        [weakSelf refreshFrame];
     }];
     
 }
 
 - (void)configFormCategoryViewController {
-    if ([self.ticketConfigInfo.category isEqualToString:@"open"]) {
+    if ([self.ticketConfigInfo.category isEqualToString:@"open"] && [MQServiceToViewInterface enableLeaveComment]) {
         MQMessageFormCategoryViewController *categoryViewController = [MQMessageFormCategoryViewController new];
         [categoryViewController setCategorySelected:^(NSString *categoryId) {
             self.accessoryData[@"category_id"] = categoryId;
@@ -155,11 +163,11 @@ static NSString * const kMessageFormMessageKey = @"message";
 - (void)refreshFrame {
     viewSize = [UIScreen mainScreen].bounds.size;
     
-    tipLabel.frame = CGRectMake(kMQMessageFormSpacing, kMQMessageFormSpacing, viewSize.width - kMQMessageFormSpacing * 2, 0);
-    [tipLabel sizeToFit];
+    _tipLabel.frame = CGRectMake(kMQMessageFormSpacing, kMQMessageFormSpacing, viewSize.width - kMQMessageFormSpacing * 2, 0);
+    [_tipLabel sizeToFit];
     
     UIView *lastMessageFormInputView = formContainer.subviews[formContainer.subviews.count - 1];
-    CGFloat formContainerY = tipLabel.hidden ? kMQMessageFormSpacing : CGRectGetMaxY(tipLabel.frame) + kMQMessageFormSpacing;
+    CGFloat formContainerY = self.tipLabel.hidden ? kMQMessageFormSpacing : CGRectGetMaxY(_tipLabel.frame) + kMQMessageFormSpacing;
     formContainer.frame = CGRectMake(0, formContainerY, viewSize.width, CGRectGetMaxY(lastMessageFormInputView.frame));
     [self refreshFormContainerFrame];
     
@@ -173,12 +181,12 @@ static NSString * const kMessageFormMessageKey = @"message";
 }
 
 - (void)initTipLabel {
-    tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(kMQMessageFormSpacing, kMQMessageFormSpacing, viewSize.width - kMQMessageFormSpacing * 2, 0)];
-    tipLabel.textColor = [UIColor colorWithRed:118 / 255.0 green:125 / 255.0 blue:133 / 255.0 alpha:1];
-    tipLabel.font = [UIFont systemFontOfSize:12.0];
-    tipLabel.numberOfLines = 0;
-    tipLabel.hidden = YES;
-    [scrollView addSubview:tipLabel];
+    self.tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(kMQMessageFormSpacing, kMQMessageFormSpacing, viewSize.width - kMQMessageFormSpacing * 2, 0)];
+    self.tipLabel.textColor = [UIColor colorWithRed:118 / 255.0 green:125 / 255.0 blue:133 / 255.0 alpha:1];
+    self.tipLabel.font = [UIFont systemFontOfSize:12.0];
+    self.tipLabel.numberOfLines = 0;
+    self.tipLabel.hidden = YES;
+    [scrollView addSubview:self.tipLabel];
 }
 
 - (void)initFormContainer {
@@ -313,7 +321,7 @@ static NSString * const kMessageFormMessageKey = @"message";
         }
         lastMessageFormView = currentMessageFormView;
     }
-    CGFloat formContainerY = tipLabel.hidden ? kMQMessageFormSpacing : CGRectGetMaxY(tipLabel.frame) + kMQMessageFormSpacing;
+    CGFloat formContainerY = self.tipLabel.hidden ? kMQMessageFormSpacing : CGRectGetMaxY(self.tipLabel.frame) + kMQMessageFormSpacing;
     formContainer.frame = CGRectMake(0, formContainerY, viewSize.width, CGRectGetMaxY(lastMessageFormView.frame));
 }
 
@@ -354,7 +362,7 @@ static NSString * const kMessageFormMessageKey = @"message";
         }
     }
 
-    if (!contactAllRequired && valueCharCount == 0) {
+    if (!self.contactAllRequired && valueCharCount == 0) {
         [MQToast showToast:[MQBundleUtil localizedStringForKey:@"contact_at_lease_enter_one"] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
         return;
     }
