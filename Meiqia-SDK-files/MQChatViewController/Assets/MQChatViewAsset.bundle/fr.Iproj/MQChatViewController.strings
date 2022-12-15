@@ -12,9 +12,9 @@
 
 "wait_agent"          = "Nous affectons un conseiller pour toi …";
 
-"not_access_camera"   = "Aller dans Paramètres - Confidentialité - Puis activer Caméra pour l'appli Uhomes";
+"not_access_camera"   = "Aller dans Paramètres - Confidentialité - Puis activer Caméra pour l'appli uhomes";
 
-"not_access_photos"   = "Aller dans Paramètres - Confidentialité - Puis activer Caméra pour l'appli Uhomes";
+"not_access_photos"   = "Aller dans Paramètres - Confidentialité - Puis activer Caméra pour l'appli uhomes";
 
 "display_new_message" = "Nouveaux messages";
 
@@ -72,7 +72,7 @@
 
 "load_history_message_error"    = "Désolé, impossible de charger l'historique des messages";
 
-"microphone_denied"     = "Aller dans Paramètres et autoriser accès du microphone pour l'appli Uhomes ";
+"microphone_denied"     = "Aller dans Paramètres et autoriser accès du microphone pour l'appli uhomes ";
 
 "meiqia_communication_failed" = "Impossible d'accéder au serveur de communication, changez votre réseau et réessayez.";
 

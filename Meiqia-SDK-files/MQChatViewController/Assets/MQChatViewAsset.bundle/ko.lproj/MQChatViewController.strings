@@ -12,9 +12,9 @@
 
 "wait_agent"          = "컨설턴트를 연결하고 있습니다";
 
-"not_access_camera"   = "[설정 - 개인 정보 보호 - 카메라]에서 Uhomes 앱을 ON으로 설정하세요";
+"not_access_camera"   = "[설정 - 개인 정보 보호 - 카메라]에서 uhomes 앱을 ON으로 설정하세요";
 
-"not_access_photos"   = "[설정 - 개인 정보 보호 - 사진]에서 Uhomes 앱을 ON으로 설정하세요";
+"not_access_photos"   = "[설정 - 개인 정보 보호 - 사진]에서 uhomes 앱을 ON으로 설정하세요";
 
 "display_new_message" = "신규 메시지";
 
@@ -81,7 +81,7 @@
 
 "load_history_message_error"    = "메시지 내역을 불러올 수 없습니다";
 
-"microphone_denied"     = "설정에서 Uhomes 앱의 마이크 접근을 허용해주세요";
+"microphone_denied"     = "설정에서 uhomes 앱의 마이크 접근을 허용해주세요";
 
 "meiqia_communication_failed" = "커뮤니케이션 서버에 접근할 수 없습니다. 네트워크 변경 후 다시 시도하세요";
 

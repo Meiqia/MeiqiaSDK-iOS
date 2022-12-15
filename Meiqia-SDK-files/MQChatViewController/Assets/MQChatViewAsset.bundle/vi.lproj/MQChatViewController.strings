@@ -12,7 +12,7 @@
 
 "wait_agent"          = "Bố trí một đại lý cho bạn";
 
-"not_access_camera"   = "Xin hãy lựa chọn Cài đặt - Riêng tư - Chụp ảnh. Sau đó chọn ON cho ứng dụng Uhomes";
+"not_access_camera"   = "Xin hãy lựa chọn Cài đặt - Riêng tư - Chụp ảnh. Sau đó chọn ON cho ứng dụng uhomes";
 
 "not_access_photos"   = "Xin hãy lựa chọn Cài đặt - Riêng tư - Chụp ảnh. Sau đó chọn ON cho ứng dụng này";
 
@@ -77,7 +77,7 @@
 
 "load_history_message_error"    = "Xin lỗi, không thể tải lịch sử tin nhắn";
 
-"microphone_denied"     = "Xin đi đến phần Cài đặt và cho phép mở loa trên ứng dụng Uhomes";
+"microphone_denied"     = "Xin đi đến phần Cài đặt và cho phép mở loa trên ứng dụng uhomes";
 
 "meiqia_communication_failed" = "Không thể tiếp cận máy chủ giao tiếp, xin hãy thay đổi mạng và thử lại";
 

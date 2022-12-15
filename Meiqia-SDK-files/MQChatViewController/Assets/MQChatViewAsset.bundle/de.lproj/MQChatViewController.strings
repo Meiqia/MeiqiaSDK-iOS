@@ -5,8 +5,8 @@
 "select_gallery" = "Aus Album auswählen";
 "select_camera" = "Kamera";
 "wait_agent" = "Dir wird ein Agent zugeteilt...";
-"not_access_camera" = "Bitte gehe zu Einstellungen - Privatsphäre - Kamera. Tippe AN für die Uhomes App.";
-"not_access_photos" = "Bitte gehe zu Einstellungen - Privatsphäre - Fotos. Tippe AN für die Uhomes App.";
+"not_access_camera" = "Bitte gehe zu Einstellungen - Privatsphäre - Kamera. Tippe AN für die uhomes App.";
+"not_access_photos" = "Bitte gehe zu Einstellungen - Privatsphäre - Fotos. Tippe AN für die uhomes App.";
 "display_new_message" = "Neue Nachrichten";
 "network_jam" = "Bitte die Internetverbindung überprüfen und erneut versuchen";
 "simulator_not_support_camera" = "Kamerazugriff fehlgeschlagen";
@@ -34,7 +34,7 @@
 "open_url_by_safari" = "Diesen Link auf Safari öffnen";
 "make_email_to" = "E-Mail senden";
 "load_history_message_error" = "Tut uns Leid, Nachrichtenverlauf konnte nicht geladen werden";
-"microphone_denied" = "Bitte gehe zu Einstellungen und öffne die Mikrofonzulassung für die Uhomes App";
+"microphone_denied" = "Bitte gehe zu Einstellungen und öffne die Mikrofonzulassung für die uhomes App";
 "meiqia_communication_failed" = "Der Zugriff auf den Kommunikationsserver ist nicht möglich. Bitte ändere Dein Netzwerk und versuche es erneut";
 "meiqia_evaluation_sheet" = "Kritik";
 "meiqia_redirect_sheet" = "Umleiten";

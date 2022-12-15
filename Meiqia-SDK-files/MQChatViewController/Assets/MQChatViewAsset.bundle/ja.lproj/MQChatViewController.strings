@@ -12,9 +12,9 @@
 
 "wait_agent"          = "担当コンサルタントを割り当てています......";
 
-"not_access_camera"   = "カメラのプライバシー設定をオンにして、Uhomesアプリがカメラにアクセスできるようにしてください。";
+"not_access_camera"   = "カメラのプライバシー設定をオンにして、uhomesアプリがカメラにアクセスできるようにしてください。";
 
-"not_access_photos"   = "写真のプライバシー設定をオンにして、Uhomesアプリがカメラにアクセスできるようにしてください。";
+"not_access_photos"   = "写真のプライバシー設定をオンにして、uhomesアプリがカメラにアクセスできるようにしてください。";
 
 "display_new_message" = "新しいメッセージ";
 
@@ -79,7 +79,7 @@
 
 "load_history_message_error"    = "メッセージの履歴の読み込みに失敗しました-_-";
 
-"microphone_denied"     = "システム設定でUhomesアプリがマイクにアクセスできるようにしてください";
+"microphone_denied"     = "システム設定でuhomesアプリがマイクにアクセスできるようにしてください";
 
 "meiqia_communication_failed" = "通信サーバにアクセスすることができません。ネットワークを変更して再試行してください。";
 

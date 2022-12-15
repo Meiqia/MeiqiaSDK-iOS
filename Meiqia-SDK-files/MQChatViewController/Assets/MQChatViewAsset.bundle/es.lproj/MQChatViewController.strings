@@ -12,9 +12,9 @@
 
 "wait_agent"          = "Te estamos asignando un asesor...";
 
-"not_access_camera"   = "Ve a Configuración - Privacidad - Cámara. Activa la función Cámara para la aplicación Uhomes";
+"not_access_camera"   = "Ve a Configuración - Privacidad - Cámara. Activa la función Cámara para la aplicación uhomes";
 
-"not_access_photos"   = "Ve a Configuración - Privacidad - Fotos. Activa la función Fotos para la aplicación Uhomes";
+"not_access_photos"   = "Ve a Configuración - Privacidad - Fotos. Activa la función Fotos para la aplicación uhomes";
 
 "display_new_message" = "Nuevos mensajes";
 
@@ -83,7 +83,7 @@
 
 "load_history_message_error"    = "Error al cargar el historial de mensajes. Lo sentimos";
 
-"microphone_denied"     = "Ve a Configuración y permite el acceso al micrófono para la aplicación Uhomes";
+"microphone_denied"     = "Ve a Configuración y permite el acceso al micrófono para la aplicación uhomes";
 
 "meiqia_communication_failed" = "Error al acceder al servidor de comunicación. Por favor, cambia de red e inténtalo de nuevo";
 
