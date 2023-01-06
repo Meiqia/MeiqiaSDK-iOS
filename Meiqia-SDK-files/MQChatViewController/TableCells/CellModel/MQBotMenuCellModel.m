@@ -168,7 +168,7 @@
         }
         self.cellTextAttributes = [[NSDictionary alloc] initWithDictionary:contentAttributes];
         if (message.richContent && message.richContent.length > 0) {
-            NSString *str = [NSString stringWithFormat:@"<head><style>img{width:%f !important;height:auto}</style></head>%@",maxLabelWidth,message.richContent];
+            NSString *str = [NSString stringWithFormat:@"<head><style>img{width:%f !important;height:auto}p{font-size:%fpx}</style></head>%@",maxLabelWidth,kMQCellTextFontSize,message.richContent];
                 NSAttributedString *attributeString=[[NSAttributedString alloc] initWithData:[str dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
             self.cellText = attributeString;
         } else {
@@ -238,7 +238,7 @@
         // menu的「常见问题」tip的高度
         CGFloat menuTipHeight = 0;
         if (menuTotalHeight > 0) {
-            menuTipHeight = [MQStringSizeUtil getHeightForText:[MQBundleUtil localizedStringForKey:@"bot_menu_problem_tip_text"] withFont:[UIFont systemFontOfSize:kMQBotMenuTipSize] andWidth:maxLabelWidth];
+            menuTipHeight = [MQStringSizeUtil getHeightForText:[NSString stringWithFormat:@"%@:", [MQBundleUtil localizedStringForKey:@"bot_menu_problem_tip_text"]] withFont:[UIFont systemFontOfSize:kMQBotMenuTipSize] andWidth:maxLabelWidth];
         }
         
         CGFloat replyTipHeight = 0;
@@ -249,7 +249,7 @@
         }
         
         //气泡高度
-        CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;
+        CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing;
         if (menuTotalHeight > 0) {
             bubbleHeight += menuTipHeight + menuTotalHeight + replyTipHeight + kMQCellBubbleToTextVerticalSpacing * 2;
         }
@@ -278,7 +278,7 @@
             //气泡的frame
             self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
             //文字的frame
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, kMQCellBubbleToTextVerticalSpacing, maxLabelWidth, messageTextHeight);
+            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, 0, maxLabelWidth, messageTextHeight);
         } else {
             //收到的消息
             self.cellFromType = MQChatCellIncoming;
@@ -292,7 +292,7 @@
             //气泡的frame
             self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
             //文字的frame
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, kMQCellBubbleToTextVerticalSpacing, maxLabelWidth, messageTextHeight);
+            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, 0, maxLabelWidth, messageTextHeight);
         }
         
         // menu tip frame
@@ -442,7 +442,7 @@
     // menu的「常见问题」tip的高度
     CGFloat menuTipHeight = 0;
     if (menuTotalHeight > 0) {
-        menuTipHeight = [MQStringSizeUtil getHeightForText:[MQBundleUtil localizedStringForKey:@"bot_menu_problem_tip_text"] withFont:[UIFont systemFontOfSize:kMQBotMenuTipSize] andWidth:maxLabelWidth];
+        menuTipHeight = [MQStringSizeUtil getHeightForText:[NSString stringWithFormat:@"%@:", [MQBundleUtil localizedStringForKey:@"bot_menu_problem_tip_text"]] withFont:[UIFont systemFontOfSize:kMQBotMenuTipSize] andWidth:maxLabelWidth];
     }
     
     CGFloat replyTipHeight = 0;

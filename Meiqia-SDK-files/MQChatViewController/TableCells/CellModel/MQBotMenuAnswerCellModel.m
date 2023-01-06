@@ -31,6 +31,7 @@
         self.menuTitle = message.menu.content;
         self.menus = message.menu.menu;
         self.isEvaluated = message.isEvaluated;
+        self.solved = message.solved;
         
         __weak typeof(self)wself = self;
         [MQServiceToViewInterface downloadMediaWithUrlString:message.userAvatarPath progress:nil completion:^(NSData *mediaData, NSError *error) {
@@ -103,8 +104,9 @@
     
 }
 
-- (void)didEvaluate {
+- (void)didEvaluate:(BOOL)solved {
     self.isEvaluated = YES;
+    self.solved = solved;
 }
 
 @end

@@ -98,7 +98,9 @@
 
 "message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
 
-"reply_tip_text"        = "抱歉，当前没有客服在线，您可以给我们 留言";
+"reply_tip_text"        = "抱歉，当前没有客服在线";
+
+"reply_tip_leave"        = "，您可以给我们 留言";
 
 "bot_redirect_tip_text"  = "很抱歉您不满意机器人的回答，您可以尝试 转人工";
 
@@ -106,12 +108,9 @@
 
 "bot_menu_tip_text" = "点击问题或回复对应数字查看答案";
 
-"bot_menu_problem_tip_text" = "常见问题:";
+"bot_menu_problem_tip_text" = "常见问题";
 
 "cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
-
-"message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
-
 
 "cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
 
@@ -154,6 +153,8 @@
 
 "product_message_sales" = "销量";
 "product_message_check_details" = "查看详情";
+"next_page" = "下一页";
+"last_page" = "上一页";
 
 //询前表单
 "pre_chat_list_title" = "客服支持";

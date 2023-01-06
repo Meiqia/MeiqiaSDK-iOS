@@ -82,8 +82,9 @@
 
 #pragma mark - 
 
-- (void)didEvaluate {
+- (void)didEvaluate:(BOOL)solved {
     self.isEvaluated = true;
+    self.solved = solved;
     if ([self.message isKindOfClass:[MQBotRichTextMessage class]]) {
         [(MQBotRichTextMessage *)self.message setIsEvaluated:self.isEvaluated];
     }

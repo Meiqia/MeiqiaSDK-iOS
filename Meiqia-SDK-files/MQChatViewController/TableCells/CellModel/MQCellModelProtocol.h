@@ -205,9 +205,10 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
 - (int)getCurrentQueuePosition;
 
 /**
- 通知 cell model，该 model 中所对应的机器人 message 已经被评价过了
+ *  通知 cell model，该 model 中所对应的机器人 message 已经被评价过了
+ * @param solved 评价问题是否解决
  */
-- (void)didEvaluate;
+- (void)didEvaluate:(BOOL)solved;
 
 
 @end
@@ -222,5 +223,7 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
  * @param messageId 该cell中的消息id
  */
 - (void)didUpdateCellDataWithMessageId:(NSString *)messageId;
+
+- (void)didTapHighMenuWithText:(NSString *)menuText;
 
 @end

@@ -99,7 +99,9 @@
 
 "message_tips_online_failed_listed_in_black_list" = "Maaf, sistem customer sementara tidak dapat digunakan.";
 
-"reply_tip_text"        = "Maaf, tidak ada customer service yang online sekarang, Anda bisa meninggalkan pesan untuk kami";
+"reply_tip_text"        = "Maaf, tidak ada customer service yang online sekarang";
+
+"reply_tip_leave"        = ", Anda bisa meninggalkan pesan untuk kami";
 
 "bot_redirect_tip_text"  = "Mohon maaf atas ketidakpuasannya terhadap jawaban robot, Anda bisa coba pindah ke bantuan langsung";
 
@@ -107,11 +109,10 @@
 
 "bot_menu_tip_text" = "Balas ke nomor yang sesuai atau klik pertanyaan untuk melihat jawabannya";
 
-"bot_menu_problem_tip_text" = "Masalah umum:";
+"bot_menu_problem_tip_text" = "Masalah umum";
 
 "cannot_text_client_is_onlining"  = "Sedang menugaskan customer service untuk Anda, silakan kirim ulang setelah beberapa saat.";
 
-"message_tips_online_failed_listed_in_black_list" = "Maaf, sistem customer sementara tidak dapat digunakan.";
 
 "cannot_text_client_is_onlining"  = "Sedang menugaskan customer service untuk Anda, silakan kirim ulang setelah beberapa saat.";
 
@@ -154,6 +155,8 @@
 
 "product_message_sales" = "Jumlah penjualan";
 "product_message_check_details" = "Lihat rincian";
+"next_page" = "Berikutnya";
+"last_page" = "Sebelumnya";
 
 //询前表单
 "pre_chat_list_title" = "Bantuan";

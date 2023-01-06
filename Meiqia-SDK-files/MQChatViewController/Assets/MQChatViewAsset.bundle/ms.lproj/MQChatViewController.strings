@@ -100,7 +100,9 @@
 
 "message_tips_online_failed_listed_in_black_list" = "Maaf, sistem khidmat pelanggan tidak dapat digunakan buat sementara ini";
 
-"reply_tip_text"        = "Maaf, tiada pegawai khidmat pelanggan dalam talian. Anda boleh tinggalkan mesej kepada kami";
+"reply_tip_text"        = "Maaf, tiada pegawai khidmat pelanggan dalam talian.";
+
+"reply_tip_leave"        = " Anda boleh tinggalkan mesej kepada kami";
 
 "bot_redirect_tip_text"  = "Kami amat kesal atas ketidakpuasan anda terhadap jawapan robot, anda boleh cuba beralih kepada bantuan ejen";
 
@@ -108,11 +110,9 @@
 
 "bot_menu_tip_text" = "Balas nombor yang sepadan atau klik pada soalan untuk melihat jawapan";
 
-"bot_menu_problem_tip_text" = "Masalah biasa:";
+"bot_menu_problem_tip_text" = "Masalah biasa";
 
 "cannot_text_client_is_onlining"  = "Sedang menugaskan pegawai khidmat pelanggan untuk anda, sila hantar semula kemudian";
-
-"message_tips_online_failed_listed_in_black_list" = "Maaf, sistem khidmat pelanggan tidak dapat digunakan buat sementara ini";
 
 "leave_a_message" = "mesej";
 
@@ -157,6 +157,8 @@
 
 "product_message_sales" = "Jualan";
 "product_message_check_details" = "Lihat butiran";
+"next_page" = "Seterusnya";
+"last_page" = "Sebelumnya";
 
 //询前表单
 "pre_chat_list_title" = "Sokongan khidmat pelanggan";

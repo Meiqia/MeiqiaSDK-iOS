@@ -52,6 +52,8 @@
 #import "MQSplitLineCellModel.h"
 #import "MQVideoMessage.h"
 #import "MQVideoCellModel.h"
+#import "MQBotHighMenuCellModel.h"
+#import "MQBotHighMenuMessage.h"
 
 #import "MQBotMenuWebViewBubbleAnswerCellModel.h"
 
@@ -239,6 +241,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [cellModel isKindOfClass:[MQBotAnswerCellModel class]] ||
             [cellModel isKindOfClass:[MQBotMenuAnswerCellModel class]] ||
             [cellModel isKindOfClass:[MQBotMenuCellModel class]] ||
+            [cellModel isKindOfClass:[MQBotHighMenuCellModel class]] ||
             [cellModel isKindOfClass:[MQBotMenuWebViewBubbleAnswerCellModel class]] ||
             [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
             [cellModel isKindOfClass:[MQBotGuideCellModel class]] ||
@@ -269,6 +272,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [cellModel isKindOfClass:[MQBotAnswerCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotMenuAnswerCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotMenuCellModel class]] ||
+                [cellModel isKindOfClass:[MQBotHighMenuCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotMenuWebViewBubbleAnswerCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
@@ -719,6 +723,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #endif
 
 #pragma MQCellModelDelegate
+
+- (void)didTapHighMenuWithText:(NSString *)menuText {
+    if (menuText && menuText.length > 0) {
+        [self sendTextMessageWithContent: menuText];
+    }
+}
+
 - (void)didUpdateCellDataWithMessageId:(NSString *)messageId {
     //获取又更新的cell的index
     NSInteger index = [self getIndexOfCellWithMessageId:messageId];
@@ -866,6 +877,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             
             cellModel = [[MQBotMenuCellModel alloc] initCellModelWithMessage:(MQBotMenuMessage *)message cellWidth:self.chatViewWidth delegate:self];
             
+        } else if ([message isKindOfClass:[MQBotHighMenuMessage class]]) {
+            cellModel = [[MQBotHighMenuCellModel alloc] initCellModelWithMessage:(MQBotHighMenuMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQBotGuideMessage class]]) {
             cellModel = [[MQBotGuideCellModel alloc] initCellModelWithMessage:(MQBotGuideMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQCardMessage class]]) {
@@ -1880,8 +1893,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     // 改变 botAnswerCellModel 的值
     for (id<MQCellModelProtocol> cellModel in self.cellModels) {
         if ([[cellModel getCellMessageId] isEqualToString:messageId]) {
-            if ([cellModel respondsToSelector:@selector(didEvaluate)]) {
-                [cellModel didEvaluate];
+            if ([cellModel respondsToSelector:@selector(didEvaluate:)]) {
+                [cellModel didEvaluate:isUseful];
             }
             
         }

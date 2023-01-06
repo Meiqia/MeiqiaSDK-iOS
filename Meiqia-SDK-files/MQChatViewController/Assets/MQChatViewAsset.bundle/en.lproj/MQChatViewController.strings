@@ -99,7 +99,9 @@
 
 "message_tips_online_failed_listed_in_black_list" = "Sorry, the CS system is down.";
 
-"reply_tip_text"        = "Sorry, no agents available. You can give us a message";
+"reply_tip_text"        = "Sorry, no agents available.";
+
+"reply_tip_leave"        = " You can give us a message";
 
 "bot_redirect_tip_text"  = "I am sorry the reply of robot did not solve your problem. Tap here to redirect to an agent.";
 
@@ -107,7 +109,7 @@
 
 "bot_menu_tip_text" = "Reply to the corresponding number or click on the question to view the answer";
 
-"bot_menu_problem_tip_text" = "Common problem:";
+"bot_menu_problem_tip_text" = "Common problem";
 
 "cannot_text_client_is_onlining"  = "Allocating an agent for you. Please resend later.";
 
@@ -150,6 +152,8 @@
 
 "product_message_sales" = "Sales";
 "product_message_check_details" = "Check details";
+"next_page" = "Next";
+"last_page" = "Previous";
 
 //询前表单
 "pre_chat_list_title" = "Client Support";

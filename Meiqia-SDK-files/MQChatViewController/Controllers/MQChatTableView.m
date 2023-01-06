@@ -11,10 +11,11 @@
 #import "MQStringSizeUtil.h"
 #import "MQBundleUtil.h"
 #import "MQToolUtil.h"
+#import "TTTAttributedLabel.h"
 
 //static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 
-@interface MQChatTableView()
+@interface MQChatTableView()<UIGestureRecognizerDelegate>
 
 @end
 
@@ -38,6 +39,7 @@
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
         UITapGestureRecognizer *tapViewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapChatTableView:)];
         tapViewGesture.cancelsTouchesInView = false;
+        tapViewGesture.delegate = self;
         self.userInteractionEnabled = true;
         [self addGestureRecognizer:tapViewGesture];
         
@@ -83,6 +85,21 @@
     }
     return NO;
 
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([touch.view isKindOfClass:[TTTAttributedLabel class]]){
+           TTTAttributedLabel *label = (TTTAttributedLabel *)touch.view;
+           if ([label containslinkAtPoint:[touch locationInView:label]]){
+               return NO;
+           }else{
+               return YES;
+           }
+       }else{
+           return YES;
+       }
 }
 
 @end

@@ -24,7 +24,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
 
 @implementation MQBotMenuCell  {
     UIImageView *avatarImageView;
-    UILabel *textLabel;
+    TTTAttributedLabel *textLabel;
     UIImageView *bubbleImageView;
     UIActivityIndicatorView *sendingIndicator;
     UIImageView *failureImageView;
@@ -56,7 +56,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
 //#pragma clang diagnostic pop
 //        }
         
-        textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+        textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
 
         textLabel.numberOfLines = 0;
         textLabel.textAlignment = NSTextAlignmentLeft;
@@ -130,7 +130,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
     //刷新聊天文字
     textLabel.frame = cellModel.textLabelFrame;
     if ([textLabel isKindOfClass:[TTTAttributedLabel class]]) {
-        textLabel.attributedText = cellModel.cellText;
+        textLabel.text = cellModel.cellText;
     } else {
         textLabel.attributedText = cellModel.cellText;
     }

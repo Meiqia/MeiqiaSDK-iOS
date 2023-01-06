@@ -27,6 +27,7 @@
         self.messageId = message.messageId;
         self.content = message.content;
         self.isEvaluated = message.isEvaluated;
+        self.solved = message.solved;
         self.content = message.content;
     }
     return self;
@@ -52,8 +53,9 @@
 
 #pragma mark -
 
-- (void)didEvaluate {
+- (void)didEvaluate:(BOOL)solved {
     self.isEvaluated = YES;
+    self.solved = solved;
 }
 
 - (CGFloat)getCellHeight {

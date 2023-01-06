@@ -156,6 +156,11 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
 @property (nonatomic, readwrite, assign) BOOL isEvaluated;
 
 /**
+ * @brief 问题是否已解决的标记
+ */
+@property (nonatomic, readwrite, assign) BOOL solved;
+
+/**
  * @brief 消息的 sub type
  */
 @property (nonatomic, readwrite, copy) NSString *messageSubType;
@@ -179,9 +184,11 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
                                      delegate:(id<MQCellModelDelegate>)delegator
 {
     if (self = [super init]) {
-        self.normalSubTypes = @[@"redirect", @"manual_redirect"];
+        // normal 适用于展示正常的bot，底部没有操作样式的(这个是本地定义的)
+        self.normalSubTypes = @[@"redirect", @"manual_redirect", @"normal"];
         self.messageSubType = message.subType;
         self.isEvaluated = message.isEvaluated;
+        self.solved = message.solved;
         self.messageId = message.messageId;
         self.sendStatus = message.sendStatus;
         self.conversionId = message.conversionId;
@@ -526,8 +533,9 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
     }
 }
 
-- (void)didEvaluate {
+- (void)didEvaluate:(BOOL)solved {
     self.isEvaluated = true;
+    self.solved = solved;
 }
 
 

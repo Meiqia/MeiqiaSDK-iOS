@@ -26,11 +26,10 @@
         self.message = message;
         self.avatarPath = message.userAvatarPath;
         self.messageId = message.messageId;
-        self.content = message.content;
         self.isEvaluated = message.isEvaluated;
+        self.solved = message.solved;
         self.content = message.content;
         
-        self.menuFootnote = [MQBundleUtil localizedStringForKey:@"bot_menu_tip_text"];
         self.menuTitle = message.menu.content;
         self.menus = message.menu.menu;
     }
@@ -57,8 +56,9 @@
 
 #pragma mark -
 
-- (void)didEvaluate {
+- (void)didEvaluate:(BOOL)solved {
     self.isEvaluated = YES;
+    self.solved = solved;
 }
 
 - (CGFloat)getCellHeight {
