@@ -48,7 +48,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.8.9'
+pod 'Meiqia', '~> 3.9.0'
 ```
 接着安装美洽 pod 即可：
 
@@ -74,7 +74,7 @@ github "meiqia/MeiqiaSDK-iOS"
 
 ## 1.3 手动导入美洽SDK
 ###1.3.1 导入到OC 项目
-打开下载到本地的文件, 找到Meiqia-SDK-files文件夹下的四个文件件 `MeiQiaSDK.framework` 、 `MQChatViewController` 、 `MeiqiaSDKViewInterface` 、`Notification`和 `MQMessageForm`,将这五个文件夹拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者直接拖入 Xcode 工程目录结构中。
+打开下载到本地的文件, 找到Meiqia-SDK-files文件夹下的 `MeiQiaSDK.framework` 、 `MQChatViewController` 、 `MeiqiaSDKViewInterface` 、`Notification`和 `MQMessageForm`,将这五个文件夹拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者直接拖入 Xcode 工程目录结构中。
 
 ###1.3.2  导入到Swift 项目
 
@@ -923,6 +923,10 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十一 更新日志
+
+**v3.9.0  2023 年 2 月 9 日**
+* 优化留言界面留言标题展示样式
+* 处理 v3.8.6 - v3.8.9 在 Xcode 14版本以下的Xcode运行demo报 'undefined symbols for architecture arm64' 的问题
 
 **v3.8.9  2023 年 1 月 9 日**
 * 修复开启无消息访客过滤，发送消息失败并且不能进入排队的问题

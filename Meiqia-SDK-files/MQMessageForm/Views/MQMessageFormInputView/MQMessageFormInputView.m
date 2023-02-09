@@ -40,6 +40,7 @@ static CGFloat const kMQMessageFormSpacing   = 16.0;
 - (void)initTipLabelWithModel:(MQMessageFormInputModel *)model andScreenWidth:(CGFloat)screenWidth {
     tipLabel = [[UILabel alloc] init];
     tipLabel.text = model.tip;
+    tipLabel.numberOfLines = 0;
     [self refreshTipLabelFrameWithScreenWidth:screenWidth];
     tipLabel.font = [UIFont systemFontOfSize:14];
     tipLabel.textColor = [MQMessageFormConfig sharedConfig].messageFormViewStyle.tipTextColor;
