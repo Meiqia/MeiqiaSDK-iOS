@@ -907,7 +907,7 @@ MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager al
 ## Xcode14上的一些变动需知晓
 
 * Bitcode 废除
-* 不再支持构建 armv7、armv7s 以及 i386 架构的 iOS 项目 (iOS真机只支持arm64)
+* 不再支持构建 armv7、armv7s 以及 i386 架构的 iOS 项目 (iOS真机只支持arm64, 要支持啊armv7、armv7s 以及 i386，请使用 v3.8.4 及以下版本)
 
 Vendors - 用到的第三方开源库
 ---
