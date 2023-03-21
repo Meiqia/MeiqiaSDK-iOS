@@ -12,11 +12,17 @@
 @implementation MQMessageFormViewService
 
 + (void)getMessageFormConfigComplete:(void (^)(MQEnterpriseConfig *config, NSError *))action {
-    [MQServiceToViewInterface getMessageFormConfigComplete:action];
+    [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:NO complete:^(MQEnterprise *enterprise, NSError *error) {
+        if (enterprise && enterprise.configInfo) {
+            action(enterprise.configInfo, nil);
+        } else {
+            action(nil, error);
+        }
+    }];
 }
 
-+ (void)submitMessageFormWithMessage:(NSString *)message images:(NSArray *)images clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
-    [MQServiceToViewInterface submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
++ (void)submitMessageFormWithMessage:(NSString *)message clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
+    [MQServiceToViewInterface submitMessageFormWithMessage:message clientInfo:clientInfo completion:completion];
 }
 
 @end

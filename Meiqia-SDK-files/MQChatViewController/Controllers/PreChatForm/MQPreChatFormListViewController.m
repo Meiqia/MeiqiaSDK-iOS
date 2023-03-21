@@ -30,6 +30,7 @@
     preChatViewController.completeBlock = block;
     preChatViewController.cancelBlock = cancelBlock;
     
+    __weak typeof(controller) weakController = controller;
     [preChatViewController.viewModel requestPreChatServeyDataIfNeed:^(MQPreChatData *data, NSError *error) {
         if (data && (data.form.formItems.count + data.menu.menuItems.count) > 0) {
             UINavigationController *nav;
@@ -65,11 +66,11 @@
                 nav = [[UINavigationController alloc] initWithRootViewController:preChatViewController];
             }
             
-            nav.navigationBar.barTintColor = controller.navigationController.navigationBar.barTintColor;
-            nav.navigationBar.tintColor = controller.navigationController.navigationBar.tintColor;
+            nav.navigationBar.barTintColor = weakController.navigationController.navigationBar.barTintColor;
+            nav.navigationBar.tintColor = weakController.navigationController.navigationBar.tintColor;
             if (nav) {
                 nav.modalPresentationStyle = UIModalPresentationFullScreen;
-                [controller presentViewController:nav animated:YES completion:nil];
+                [weakController presentViewController:nav animated:YES completion:nil];
             } else {
                 if (block) {
                     block(nil);
@@ -120,7 +121,7 @@
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.viewWidth, 40)];
     UILabel *titleLabel = [UILabel new];
     titleLabel.text = self.viewModel.formData.menu.title;
-    titleLabel.textColor = [UIColor colorWithHexString:silver];
+    titleLabel.textColor = [UIColor mq_colorWithHexString:silver];
     titleLabel.font = [UIFont systemFontOfSize:14];
     [titleLabel sizeToFit];
     [headerView addSubview:titleLabel];
@@ -139,7 +140,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:@"cell"];
         cell.textLabel.font = [UIFont systemFontOfSize:14];
-        cell.textLabel.textColor = [UIColor colorWithHexString:ebonyClay];
+        cell.textLabel.textColor = [UIColor mq_colorWithHexString:ebonyClay];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     

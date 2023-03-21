@@ -82,8 +82,9 @@
 
 #pragma mark - 
 
-- (void)didEvaluate {
+- (void)didEvaluate:(BOOL)solved {
     self.isEvaluated = true;
+    self.solved = solved;
     if ([self.message isKindOfClass:[MQBotRichTextMessage class]]) {
         [(MQBotRichTextMessage *)self.message setIsEvaluated:self.isEvaluated];
     }
@@ -121,12 +122,20 @@
     return self.message.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.message.conversionId;
+}
+
 - (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
     self.message.sendStatus = sendStatus;
 }
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.message.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.message.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {

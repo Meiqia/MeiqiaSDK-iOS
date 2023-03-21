@@ -13,7 +13,7 @@
 #import "MQStringSizeUtil.h"
 #import "MQImageUtil.h"
 #import "MQAssetUtil.h"
-#import "VoiceConverter.h"
+#import "MEIQIA_VoiceConverter.h"
 #import "MQServiceToViewInterface.h"
 #ifndef INCLUDE_MEIQIA_SDK
 #import "UIImageView+WebCache.h"
@@ -134,6 +134,10 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
  */
 @property (nonatomic, readwrite, assign) BOOL isLoadVoiceSuccess;
 
+/**
+ * @brief cell中消息的会话id
+ */
+@property (nonatomic, readwrite, strong) NSString *conversionId;
 
 @end
 
@@ -157,6 +161,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
         voiceTimeInterval = 0;
         self.delegate = delegator;
         self.messageId = message.messageId;
+        self.conversionId = message.conversionId;
         self.sendStatus = message.sendStatus;
         self.date = message.date;
         self.avatarPath = @"";
@@ -220,7 +225,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                                 NSLog(@"failed to create file");
                             }
                             NSString *wavPath = [NSString stringWithFormat:@"%@wav", tempPath];
-                            [VoiceConverter amrToWav:tempPath wavSavePath:wavPath];
+                            [MEIQIA_VoiceConverter amrToWav:tempPath wavSavePath:wavPath];
                             mediaData = [NSData dataWithContentsOfFile:wavPath];
                             BOOL removeSuccess = [[NSFileManager defaultManager] removeItemAtPath:tempPath error:nil];
                             if (!removeSuccess) {
@@ -402,12 +407,20 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
     return self.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.conversionId;
+}
+
 - (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
     self.sendStatus = sendStatus;
 }
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {

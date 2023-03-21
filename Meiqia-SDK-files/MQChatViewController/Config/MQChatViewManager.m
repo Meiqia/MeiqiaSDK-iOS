@@ -111,11 +111,38 @@
     }
     
     if ([MQChatViewConfig sharedConfig].chatViewStyle.navBarBackgroundImage) {
-        [navigationController.navigationBar setBackgroundImage:[MQChatViewConfig sharedConfig].chatViewStyle.navBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
+        if (@available(iOS 15.0, *)) {
+            // 常规页面
+            UINavigationBarAppearance * appearance = navigationController.navigationBar.standardAppearance;
+            // 背景图片
+            appearance.backgroundImage = [MQChatViewConfig sharedConfig].chatViewStyle.navBarBackgroundImage;
+            // 带scroll滑动的页面
+            navigationController.navigationBar.scrollEdgeAppearance = appearance;
+        } else {
+            [navigationController.navigationBar setBackgroundImage:[MQChatViewConfig sharedConfig].chatViewStyle.navBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
+        }
     } else if ([MQChatViewConfig sharedConfig].navBarColor) {
-        navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
+        if (@available(iOS 15.0, *)) {
+            UINavigationBarAppearance * appearance = navigationController.navigationBar.standardAppearance;
+            // 背景色
+            appearance.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
+            navigationController.navigationBar.scrollEdgeAppearance = appearance;
+        } else {
+            navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
+        }
     } else if (defaultNavigationController && defaultNavigationController.navigationBar.barTintColor) {
-        navigationController.navigationBar.barTintColor = defaultNavigationController.navigationBar.barTintColor;
+        if (@available(iOS 15.0, *)) {
+            UINavigationBarAppearance * appearance = navigationController.navigationBar.standardAppearance;
+            appearance.backgroundColor = defaultNavigationController.navigationBar.barTintColor;
+            navigationController.navigationBar.scrollEdgeAppearance = appearance;
+        } else {
+            navigationController.navigationBar.barTintColor = defaultNavigationController.navigationBar.barTintColor;
+        }
+    } else {
+        if (@available(iOS 15.0, *)) {
+            UINavigationBarAppearance * appearance = navigationController.navigationBar.standardAppearance;
+            navigationController.navigationBar.scrollEdgeAppearance = appearance;
+        }
     }
     
     if (isPresentModalView) {
@@ -447,6 +474,10 @@
     chatViewConfig.enableVoiceRecordBlurView = enable;
 }
 
+- (void)enablePhotoLibraryEdit:(BOOL)enable {
+    chatViewConfig.enablePhotoLibraryEdit = enable;
+}
+
 - (void)setIncomingMessageSoundFileName:(NSString *)soundFileName {
     if (!soundFileName) {
         return;
@@ -531,6 +562,17 @@
         return;
     }
     chatViewConfig.clientInfo = clientInfo;
+}
+
+- (void)setLocalizedLanguage:(NSString *)language {
+    if (!language) {
+        return;
+    }
+    chatViewConfig.localizedLanguageStr = language;
+}
+
+- (void)didTapProductCard:(void (^)(NSString *))callBack {
+    chatViewConfig.productCardCallBack = callBack;
 }
 
 #endif

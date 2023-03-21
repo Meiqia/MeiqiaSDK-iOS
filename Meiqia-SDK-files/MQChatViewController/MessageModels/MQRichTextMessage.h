@@ -13,6 +13,7 @@
 @property (nonatomic, copy)NSString *thumbnail;
 @property (nonatomic, copy)NSString *summary;
 @property (nonatomic, copy)NSString *content;
+@property (nonatomic, strong) NSArray *tags;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 

@@ -12,11 +12,17 @@
 
 "wait_agent"          = "正在分配客服...";
 
+"waiting_title"       = "排隊等待中...";
+
 "not_access_camera"   = "請在系統設置中允許該App訪問相機";
 
 "not_access_photos"   = "請在系統設置中允許該App訪問相冊";
 
 "display_new_message" = "下方有新消息";
+
+"display_video_expired" = "視頻已過期";
+
+"display_video_more_than_limit" = "視頻超過最大限制400M";
 
 "network_jam"         = "網絡不太通常，請檢查網絡";
 
@@ -93,17 +99,24 @@
 "file_download_failed" = "下載失敗";
 "file_download_downloading" = "下載中...";
 "file_download_complete" = "下載完成";
+"file_upload_limit" = "超過最大上傳文件限制";
 "file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ 小時後過期";
 
 "message_tips_send_message_fail_listed_in_black_list" = "對不起，當前客服系統暫時無法使用。";
 
 "message_tips_online_failed_listed_in_black_list" = "對不起，當前客服系統暫時無法使用。";
 
-"reply_tip_text"        = "抱歉，當前沒有客服在線，您可以給我們 留言";
+"reply_tip_text"        = "抱歉，當前沒有客服在線";
+
+"reply_tip_leave"        = "，您可以給我們 留言";
 
 "bot_redirect_tip_text"  = "很抱歉您不滿意機器人的回答，您可以嘗試 轉人工";
 
 "bot_manual_redirect_tip_text" = "您的問題如果需要人工支持，可以 轉人工";
+
+"bot_menu_tip_text" = "點擊問題或回復對應數字查看答案";
+
+"bot_menu_problem_tip_text" = "常見問題";
 
 "cannot_text_client_is_onlining"  = "正在為您分配客服，請稍後重發。";
 
@@ -125,8 +138,29 @@
 "wechat_placeholder" = "請輸入您的微信號";
 "name" = "姓名";
 "name_placeholder" = "請輸入姓名";
+"gender" = "性别";
+"age" = "年齡";
+"age_placeholder" = "請輸入您的年齡";
+"weibo" = "微博";
+"weibo_placeholder" = "請輸入您的微博號";
+"address" = "地址";
+"address_placeholder" = "請輸入您的地址";
+"comment" = "備註";
+"comment_placeholder" = "請輸入您的備註";
+"contact" = "聯系人";
+"contact_placeholder" = "請輸入您的聯系人";
+"man" = "男";
+"woman" = "女";
+"time_placeholder" = "年-月-日";
 
-"wating_in_queue_tip_text" = "請稍等，前面還有%d個訪客，您也可以選擇給我們 留言";
+"wating_in_queue_tip_number" = "當前等待的人數";
+"wating_in_queue_tip_choice" = "如果等不及，可以選擇";
+"wating_in_queue_tip_leave_message" = "給我們留言";
+
+"product_message_sales" = "銷量";
+"product_message_check_details" = "查看詳情";
+"next_page" = "下一頁";
+"last_page" = "上一頁";
 
 //询前表单
 "pre_chat_list_title" = "客服支持";
@@ -143,9 +177,9 @@
 "input_content" = "請輸入消息...";
 // 服务连接中,请稍候
 "service_connectting_wait" = "服務連接中,請稍後...";
+"network_connect_error" = "當前網絡不可用，請檢查網絡設定";
+"network_connect_warning" = "當前網絡連接中，接收消息可能會有遺漏";
 
-"mq_direct_content" = "接下來由%@為你服務";
-"mq_send" = "發送";
 "mq_delete" = "删除";
 "mq_record_count_down" = "錄音將在%li秒後結束";
 "mq_record_will_send" = "錄音將在%li秒後發送";

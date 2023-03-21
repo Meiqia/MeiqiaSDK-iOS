@@ -12,26 +12,23 @@
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
 #import "MQBundleUtil.h"
+#import "MQAssetUtil.h"
 
+#define FONT_SIZE_EVALUATE_BUTTON 16
+#define SPACE_INTERNAL_VERTICAL 10
 
-#define TAG_MENUS 10
-#define TAG_EVALUATE 11
-#define HEIHGT_VIEW_EVALUATE 40
-#define FONT_SIZE_CONTENT 16
-#define FONT_SIZE_MENU_TITLE 13
-#define FONT_SIZE_MENU 15
-#define FONT_SIZE_MENU_FOOTNOTE 12
-#define FONT_SIZE_EVALUATE_BUTTON 14
-#define SPACE_INTERNAL_VERTICAL 15
+#define BUTTON_HEIGHT 32
+#define BUTTON_WIDTH 76
+
+static CGFloat const kMQButtonToBubbleVerticalEdgeSpacing = 5.0;
 
 @interface MQBotWebViewBubbleAnswerCell()
 
 @property (nonatomic, strong) UIImageView *itemsView; //底部气泡
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) MQEmbededWebView *contentWebView;
-@property (nonatomic, strong) UIView *evaluateView; //包含已解决 未解决2个按钮
-@property (nonatomic, strong) UIView *evaluatedView; //包含 已反馈 按钮
-@property (nonatomic, assign) BOOL manuallySetToEvaluated;
+@property (nonatomic, strong) UIButton *solvedButton;
+@property (nonatomic, strong) UIButton *unsolvedButton;
 @property (nonatomic, strong) MQBotWebViewBubbleAnswerCellModel *viewModel;
 
 @end
@@ -52,7 +49,6 @@
 - (void)updateCellWithCellModel:(id<MQCellModelProtocol>)model {
     if ([model isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]]) {
         MQBotWebViewBubbleAnswerCellModel * tempModel = model;
-        self.manuallySetToEvaluated = NO;
         self.viewModel = model;
         
         __weak typeof(self) wself = self;
@@ -60,7 +56,7 @@
         [tempModel setCellHeight:^CGFloat{
             __strong typeof (wself) sself = wself;
             if (weakTempModel.cachedWebViewHeight > 0) {
-                return weakTempModel.cachedWebViewHeight + kMQCellAvatarToVerticalEdgeSpacing + kMQCellAvatarToVerticalEdgeSpacing + HEIHGT_VIEW_EVALUATE + SPACE_INTERNAL_VERTICAL;
+                return weakTempModel.cachedWebViewHeight + 2 * kMQCellAvatarToVerticalEdgeSpacing  + (sself.viewModel.needShowFeedback ? SPACE_INTERNAL_VERTICAL + BUTTON_HEIGHT : 0);
             }
             return sself.viewHeight;
         }];
@@ -80,7 +76,17 @@
         }];
         
         [self.contentWebView setTappedLink:^(NSURL *url) {
-            [[UIApplication sharedApplication] openURL:url];
+            if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {
+                if ([url.absoluteString rangeOfString:@"tel:"].location != NSNotFound) {
+                    // 和后台预定的是 tel:182xxxxxxxxx
+                    NSString *path = [url.absoluteString stringByReplacingOccurrencesOfString:@"tel:" withString:@"tel://"];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path]];
+                } else {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]]];
+                }
+            } else {
+                [[UIApplication sharedApplication] openURL:url];
+            }
         }];
         
         if (tempModel.cachedWebViewHeight > 0) {
@@ -88,6 +94,15 @@
         }
         
         [tempModel bind];
+        
+        if (tempModel.needShowFeedback) {
+            self.solvedButton.enabled = !tempModel.isEvaluated;
+            self.unsolvedButton.enabled = !tempModel.isEvaluated;
+            self.solvedButton.hidden = tempModel.isEvaluated ? !tempModel.solved : NO;
+            self.unsolvedButton.hidden = tempModel.isEvaluated ? tempModel.solved : NO;
+            [self updateUnsolvedButtonLayout:tempModel.isEvaluated andSolved:tempModel.solved];
+        }
+        
     }
 }
 
@@ -96,88 +111,58 @@
     [self.avatarImageView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarToHorizontalEdgeSpacing)];
     [self.itemsView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.avatarImageView.viewRightEdge + kMQCellAvatarToBubbleSpacing, self.avatarImageView.viewY)];
     self.itemsView.viewWidth = self.contentView.viewWidth - kMQCellBubbleMaxWidthToEdgeSpacing - self.avatarImageView.viewRightEdge;
-    self.contentWebView.viewWidth = self.itemsView.viewWidth - 8;
-    self.contentWebView.viewX = 8;
+    self.contentWebView.viewWidth = self.itemsView.viewWidth - 2 * kMQCellBubbleToTextHorizontalSmallerSpacing;
+    self.contentWebView.viewX = kMQCellBubbleToTextHorizontalSmallerSpacing;
 }
 
 - (void)updateUI:(CGFloat)webContentHeight {
     
     self.contentWebView.viewHeight = webContentHeight;
-    //recreate evaluate view
-    UIView *evaluateView = [self evaluateRelatedView];
-    [[self.itemsView viewWithTag:evaluateView.tag] removeFromSuperview];
-    [self.itemsView addSubview:evaluateView];
-    
-    [evaluateView align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(8, self.contentWebView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
-    
-    CGFloat bubbleHeight = MAX(self.avatarImageView.viewHeight, evaluateView.viewBottomEdge);
+    CGFloat viewBottomEdge = self.contentWebView.viewBottomEdge;
+    CGFloat bubbleHeight = MAX(self.avatarImageView.viewHeight, viewBottomEdge);
     self.itemsView.viewHeight = bubbleHeight;
-    self.contentView.viewHeight = self.itemsView.viewBottomEdge + kMQCellAvatarToVerticalEdgeSpacing;
+    
+    if (self.viewModel.needShowFeedback) {
+        //recreate evaluate view
+        if (![self.contentView.subviews containsObject:self.solvedButton]) {
+            [self.contentView addSubview:self.solvedButton];
+            [self.contentView addSubview:self.unsolvedButton];
+        }
+        [self.solvedButton align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.itemsView.viewX + kMQButtonToBubbleVerticalEdgeSpacing, self.itemsView.viewBottomEdge + SPACE_INTERNAL_VERTICAL)];
+        [self.unsolvedButton align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.solvedButton.viewRightEdge + 8, self.solvedButton.viewY)];
+    } else {
+        [self.solvedButton removeFromSuperview];
+        [self.unsolvedButton removeFromSuperview];
+    }
+    self.contentView.viewHeight = (!self.viewModel.needShowFeedback ? self.itemsView.viewBottomEdge : self.solvedButton.viewBottomEdge) + kMQCellAvatarToVerticalEdgeSpacing;
     self.viewHeight = self.contentView.viewHeight;
+}
+
+- (void)updateUnsolvedButtonLayout:(BOOL)isEvaluated andSolved:(BOOL)solved {
+    if (!isEvaluated) {
+        [self.unsolvedButton align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.solvedButton.viewRightEdge + 8, self.solvedButton.viewY)];
+    } else {
+        if (!solved) {
+            [self.unsolvedButton align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.solvedButton.viewX, self.solvedButton.viewY)];
+        }
+    }
 }
 
 #pragma mark - actions
 
-- (void)didTapPositive {
+- (void)didTapPositive:(UIButton *)btn {
     
-    [self updateEvaluateViewAnimatedComplete:^{
-        if ([self.chatCellDelegate respondsToSelector:@selector(evaluateBotAnswer:messageId:)]) {
-            [self.chatCellDelegate evaluateBotAnswer:true messageId:self.viewModel.messageId];
-        }
-    }];
-}
-
-- (void)didTapNegative {
-    [self updateEvaluateViewAnimatedComplete:^{
-        if ([self.chatCellDelegate respondsToSelector:@selector(evaluateBotAnswer:messageId:)]) {
-            [self.chatCellDelegate evaluateBotAnswer:false messageId:self.viewModel.messageId];
-        }
-    }];
-}
-
-- (void)updateEvaluateViewAnimatedComplete:(void(^)(void))action {
-    self.manuallySetToEvaluated = YES;
-    
-    UIView *oldView = [self.itemsView viewWithTag:TAG_EVALUATE];
-    
-    UIView *newView = [self evaluateRelatedView];
-    newView.alpha = 0.0;
-    newView.frame = oldView.frame;
-    [self.itemsView addSubview:newView];
-    
-    [UIView animateKeyframesWithDuration:0.3 delay:0.0 options:0 animations:^{
-        [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.5 animations:^{
-            oldView.alpha = 0.0;
-        }];
-        
-        [UIView addKeyframeWithRelativeStartTime:0.5 relativeDuration:0.5 animations:^{
-            newView.alpha = 1.0;
-        }];
-    } completion:^(BOOL finished) {
-        [oldView removeFromSuperview];
-        if (action) {
-            action();
-        }
-    }];
-}
-
-- (UIView *)evaluateRelatedView {
-    UIView *view;
-    if (self.viewModel.isEvaluated || self.manuallySetToEvaluated) {
-        if (self.evaluateView.superview) {
-            [self.evaluateView removeFromSuperview];
-        }
-        view = self.evaluatedView;
-    } else {
-        if (self.evaluatedView.superview) {
-            [self.evaluatedView removeFromSuperview];
-        }
-        view = self.evaluateView;
+    BOOL solved = btn == self.solvedButton;
+    self.solvedButton.enabled = NO;
+    self.unsolvedButton.enabled = NO;
+    self.solvedButton.hidden = !solved;
+    self.unsolvedButton.hidden = solved;
+    [self updateUnsolvedButtonLayout:YES andSolved:solved];
+    if ([self.chatCellDelegate respondsToSelector:@selector(evaluateBotAnswer:messageId:)]) {
+        [self.chatCellDelegate evaluateBotAnswer:solved messageId:self.viewModel.messageId];
     }
-    
-    view.tag = TAG_EVALUATE;
-    return view;
 }
+
 
 #pragma - lazy
 
@@ -207,7 +192,7 @@
 - (UIImageView *)avatarImageView {
     if (!_avatarImageView) {
         _avatarImageView = [[UIImageView alloc] init];
-        _avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _avatarImageView.contentMode = UIViewContentModeScaleToFill;
         _avatarImageView.viewSize = CGSizeMake(kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         _avatarImageView.image = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
         if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
@@ -218,80 +203,44 @@
     return _avatarImageView;
 }
 
-- (UIView *)evaluateView {
-    //    if (!_evaluateView) {
-    _evaluateView = [UIView new];
-    _evaluateView.viewWidth = self.itemsView.viewWidth - 8;
-    _evaluateView.viewHeight = HEIHGT_VIEW_EVALUATE;
-    _evaluateView.autoresizingMask =
-    UIViewAutoresizingFlexibleWidth;
-    
-    UIView *lineH = [UIView new];
-    lineH.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
-    lineH.viewHeight = 0.5;
-    lineH.viewWidth = _evaluateView.viewWidth;
-    lineH.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
-    UIButton *usefulButton = [UIButton new];
-    usefulButton.viewWidth = _evaluateView.viewWidth / 2 - 0.5;
-    usefulButton.viewHeight = _evaluateView.viewHeight - 0.5;
-    usefulButton.viewY = 0.5;
-    [usefulButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
-    usefulButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
-    [usefulButton setTitle:[MQBundleUtil localizedStringForKey:@"mq_solved"] forState:(UIControlStateNormal)];
-    [usefulButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
-    [usefulButton addTarget:self action:@selector(didTapPositive) forControlEvents:(UIControlEventTouchUpInside)];
-    
-    UIView *lineV = [UIView new];
-    lineV.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
-    lineV.viewHeight = HEIHGT_VIEW_EVALUATE;
-    lineV.viewWidth = 0.5;
-    [lineV align:(ViewAlignmentTopLeft) relativeToPoint:usefulButton.rightTopCorner];
-    lineV.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    
-    UIButton *uselessButton = [UIButton new];
-    [uselessButton setTitleColor:[MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor forState:(UIControlStateNormal)];
-    [uselessButton setTitle:[MQBundleUtil localizedStringForKey:@"mq_unsolved"] forState:(UIControlStateNormal)];
-    [uselessButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
-    [uselessButton addTarget:self action:@selector(didTapNegative) forControlEvents:(UIControlEventTouchUpInside)];
-    uselessButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin;
-    uselessButton.viewWidth = _evaluateView.viewWidth / 2;
-    uselessButton.viewHeight = _evaluateView.viewHeight - 0.5;
-    uselessButton.viewY = 0.5;
-    [uselessButton align:(ViewAlignmentTopLeft) relativeToPoint:CGPointMake(usefulButton.viewRightEdge + 0.5, usefulButton.viewY)];
-    
-    [_evaluateView addSubview:lineH];
-    [_evaluateView addSubview:lineV];
-    [_evaluateView addSubview:usefulButton];
-    [_evaluateView addSubview:uselessButton];
-    //    }
-    return _evaluateView;
+- (UIButton *)solvedButton {
+    if (!_solvedButton) {
+        _solvedButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _solvedButton.bounds = CGRectMake(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
+        _solvedButton.clipsToBounds = YES;
+        _solvedButton.layer.cornerRadius = 3.0;
+        _solvedButton.layer.borderWidth = 1.0;
+        _solvedButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 3);
+        _solvedButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        _solvedButton.layer.borderColor = [UIColor colorWithRed:244/255 green:242/255 blue:241/255 alpha:0.2].CGColor;
+        [_solvedButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
+        [_solvedButton setTitle:[MQBundleUtil localizedStringForKey:@"mq_solved"] forState:UIControlStateNormal];
+        [_solvedButton setTitleColor:[UIColor colorWithRed:29/255 green:39/255 blue:84/255 alpha:1.0] forState:UIControlStateNormal];
+        [_solvedButton setTitleColor:[UIColor colorWithRed:29/255 green:39/255 blue:84/255 alpha:0.5] forState:UIControlStateHighlighted];
+        [_solvedButton setImage:[MQAssetUtil imageFromBundleWithName:@"thumb-up-line"] forState:UIControlStateNormal];
+        [_solvedButton setImage:[MQAssetUtil imageFromBundleWithName:@"thumb-up-fill"] forState:UIControlStateDisabled];
+        [_solvedButton addTarget:self action:@selector(didTapPositive:) forControlEvents:(UIControlEventTouchUpInside)];
+    }
+    return _solvedButton;
 }
 
-- (UIView *)evaluatedView {
-    //    if (!_evaluatedView) {
-    _evaluatedView = [UIView new];
-    _evaluatedView.viewWidth = self.itemsView.viewWidth - 8;
-    _evaluatedView.viewHeight = HEIHGT_VIEW_EVALUATE;
-    _evaluatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
-    UIView *lineH = [UIView new];
-    lineH.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
-    lineH.viewHeight = 0.5;
-    lineH.viewWidth = _evaluatedView.viewWidth;
-    lineH.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [_evaluatedView addSubview:lineH];
-    
-    UIButton *button = [UIButton new];
-    button.viewWidth = _evaluatedView.viewWidth;
-    button.viewHeight = _evaluatedView.viewHeight - 0.5;
-    button.viewY = 0.5;
-    [button setTitleColor:[UIColor lightGrayColor] forState:(UIControlStateNormal)];
-    [button.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
-    [button setTitle:[MQBundleUtil localizedStringForKey:@"mq_commited"] forState:(UIControlStateNormal)];
-    [button setAutoresizingMask:(UIViewAutoresizingFlexibleWidth)];
-    [_evaluatedView addSubview:button];
-    //    }
-    return _evaluatedView;
+- (UIButton *)unsolvedButton {
+    if (!_unsolvedButton) {
+        _unsolvedButton= [UIButton buttonWithType:UIButtonTypeCustom];
+        _unsolvedButton.bounds = CGRectMake(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
+        _unsolvedButton.clipsToBounds = YES;
+        _unsolvedButton.layer.cornerRadius = 3.0;
+        _unsolvedButton.layer.borderWidth = 1.0;
+        _unsolvedButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 3);
+        _unsolvedButton.layer.borderColor = [UIColor colorWithRed:244/255 green:242/255 blue:241/255 alpha:0.2].CGColor;
+        [_unsolvedButton.titleLabel setFont:[UIFont systemFontOfSize:FONT_SIZE_EVALUATE_BUTTON]];
+        [_unsolvedButton setTitle:[MQBundleUtil localizedStringForKey:@"mq_unsolved"] forState:UIControlStateNormal];
+        [_unsolvedButton setTitleColor:[UIColor colorWithRed:29/255 green:39/255 blue:84/255 alpha:1.0] forState:UIControlStateNormal];
+        [_unsolvedButton setTitleColor:[UIColor colorWithRed:29/255 green:39/255 blue:84/255 alpha:0.5] forState:UIControlStateHighlighted];
+        [_unsolvedButton setImage:[MQAssetUtil imageFromBundleWithName:@"thumb-down-line"] forState:UIControlStateNormal];
+        [_unsolvedButton setImage:[MQAssetUtil imageFromBundleWithName:@"thumb-down-fill"] forState:UIControlStateDisabled];
+        [_unsolvedButton addTarget:self action:@selector(didTapPositive:) forControlEvents:(UIControlEventTouchUpInside)];
+    }
+    return _unsolvedButton;
 }
 @end

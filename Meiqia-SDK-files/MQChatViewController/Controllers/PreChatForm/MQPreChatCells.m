@@ -15,7 +15,7 @@
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self setSelectionStyle:(UITableViewCellSelectionStyleNone)];
         self.textLabel.font = [UIFont systemFontOfSize:14];
-        self.textLabel.textColor = [UIColor colorWithHexString:ebonyClay];
+        self.textLabel.textColor = [UIColor mq_colorWithHexString:ebonyClay];
 
     }
     return self;
@@ -38,7 +38,7 @@
         self.textField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.textField.delegate = self;
         self.textField.font = [UIFont systemFontOfSize:14];
-        self.textField.textColor = [UIColor colorWithHexString:ebonyClay];
+        self.textField.textColor = [UIColor mq_colorWithHexString:ebonyClay];
         self.textField.placeholder = @"输入";
         self.textField.viewWidth = self.contentView.viewWidth - 20;
         self.textField.viewHeight = self.viewHeight;
@@ -147,7 +147,7 @@
         self.textField.placeholder = @"输入";
         [self.textField setKeyboardType:(UIKeyboardTypeASCIICapable)];
         self.textField.font = [UIFont systemFontOfSize:14];
-        self.textField.textColor = [UIColor colorWithHexString:ebonyClay];
+        self.textField.textColor = [UIColor mq_colorWithHexString:ebonyClay];
         self.textField.viewWidth = self.contentView.viewWidth - 20;
         self.textField.viewHeight = self.viewHeight;
         self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -215,7 +215,7 @@
     [self addSubview:self.isOptionalLabel];
     
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.tintColor = [UIColor colorWithHexString:silver];
+    self.tintColor = [UIColor mq_colorWithHexString:silver];
 }
 
 - (void)setStatus:(BOOL)isReady {
@@ -225,7 +225,7 @@
 }
 
 - (void)setShouldMark:(BOOL)shouldMark {
-    self.tintColor = shouldMark ? [UIColor redColor] : [UIColor colorWithHexString:silver];
+    self.tintColor = shouldMark ? [UIColor redColor] : [UIColor mq_colorWithHexString:silver];
 }
 
 - (void)updateUI {

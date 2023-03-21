@@ -3,12 +3,12 @@
 //  MQEcoboostSDK-test
 //
 //  Created by qipeng_yuhao on 2020/5/25.
-//  Copyright © 2020 ijinmao. All rights reserved.
+//  Copyright © 2020 MeiQia. All rights reserved.
 //
 
 #import "MQCardCellModel.h"
 #import "MQCardMessageCell.h"
-#import "MEIQIA_TTTAttributedLabel.h"
+#import "TTTAttributedLabel.h"
 #import "MQServiceToViewInterface.h"
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
@@ -74,6 +74,11 @@
 @property (nonatomic, readwrite, assign) CGFloat cellWidth;
 
 /**
+ * @brief cell中消息的会话id
+ */
+@property (nonatomic, readwrite, strong) NSString *conversionId;
+
+/**
  * @brief cell的高度
  */
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
@@ -92,7 +97,7 @@
     if (self = [super init]) {
         self.textLabelForHeightCalculation = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
         self.textLabelForHeightCalculation.numberOfLines = 0;
-
+        self.conversionId = message.conversionId;
         self.messageId = message.messageId;
         self.date = message.date;
         self.cardData = message.cardData;
@@ -231,6 +236,10 @@
 
 - (NSString *)getCellMessageId {
     return self.messageId;
+}
+
+- (NSString *)getMessageConversionId {
+    return self.conversionId;
 }
 
 - (NSDate *)getCellDate {

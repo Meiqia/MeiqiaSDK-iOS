@@ -46,12 +46,18 @@ static CGFloat const kMQEventCellTextFontSize = 14.0;
  */
 @property (nonatomic, readwrite, assign) CGRect eventLabelFrame;
 
+/**
+ * @brief cell中消息的会话id
+ */
+@property (nonatomic, readwrite, strong) NSString *conversionId;
+
 @end
 
 @implementation MQEventCellModel
 
 - (MQEventCellModel *)initCellModelWithMessage:(MQEventMessage *)message cellWidth:(CGFloat)cellWidth {
     if (self = [super init]) {
+        self.conversionId = message.conversionId;
         self.messageId = message.messageId;
         self.date = message.date;
         self.eventContent = message.content;
@@ -77,8 +83,16 @@ static CGFloat const kMQEventCellTextFontSize = 14.0;
     return self.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.conversionId;
+}
+
 - (void)updateCellMessageId:(NSString *)messageId {
     self.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {

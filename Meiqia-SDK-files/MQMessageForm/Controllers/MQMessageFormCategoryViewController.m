@@ -55,7 +55,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:@"cell"];
         cell.textLabel.font = [UIFont systemFontOfSize:14];
-        cell.textLabel.textColor = [UIColor colorWithHexString:ebonyClay];
+        cell.textLabel.textColor = [UIColor mq_colorWithHexString:ebonyClay];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     

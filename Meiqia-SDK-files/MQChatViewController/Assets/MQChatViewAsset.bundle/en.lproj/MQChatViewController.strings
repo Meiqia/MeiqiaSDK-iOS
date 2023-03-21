@@ -10,11 +10,17 @@
 
 "wait_agent"          = "Allocating an agent for you...";
 
+"waiting_title"       = "Waiting in line...";
+
 "not_access_camera"   = "Please go to Settings — Privacy — Photos. Then select ON for This App.";
 
 "not_access_photos"   = "Please go to Settings — Privacy — Camera. Then select ON for This App.";
 
 "display_new_message" = "Received a new message";
+
+"display_video_expired" = "Video has expired";
+
+"display_video_more_than_limit" = "Video more than the maximum 400M";
 
 "network_jam"         = "Please check your internet connection and try again.";
 
@@ -85,17 +91,24 @@
 "file_download_failed" = "Download fail";
 "file_download_downloading" = "Downloading...";
 "file_download_complete" = "Download complete";
+"file_upload_limit" = "Exceeded the maximum upload file limit";
 "file_download_ %@ ∙ %@overdue" = "%@ ∙ overdue in %@ hours";
 
 "message_tips_send_message_fail_listed_in_black_list" = "Sorry, the CS system is down.";
 
 "message_tips_online_failed_listed_in_black_list" = "Sorry, the CS system is down.";
 
-"reply_tip_text"        = "Sorry, no agents available. You can give us a message";
+"reply_tip_text"        = "Sorry, no agents available.";
+
+"reply_tip_leave"        = " You can give us a message";
 
 "bot_redirect_tip_text"  = "I am sorry the reply of robot did not solve your problem. Tap here to redirect to an agent.";
 
 "bot_manual_redirect_tip_text" = "If you need help, tap here to redirect to an agent.";
+
+"bot_menu_tip_text" = "Reply to the corresponding number or click on the question to view the answer";
+
+"bot_menu_problem_tip_text" = "Common problem";
 
 "cannot_text_client_is_onlining"  = "Allocating an agent for you. Please resend later.";
 
@@ -117,8 +130,29 @@
 "wechat_placeholder" = "Please enter your WeChat account";
 "name" = "Name";
 "name_placeholder" = "Please enter your name";
+"gender" = "Gender";
+"age" = "Age";
+"age_placeholder" = "Please enter your age";
+"weibo" = "WeiBo";
+"weibo_placeholder" = "Please enter your WeiBo account";
+"address" = "Address";
+"address_placeholder" = "Please enter your address";
+"comment" = "Comment";
+"comment_placeholder" = "Please enter your comment";
+"contact" = "contact";
+"contact_placeholder" = "Please enter your contact";
+"man" = "Man";
+"woman" = "Woman";
+"time_placeholder" = "Year-Month-Day";
 
-"wating_in_queue_tip_text" = "please hold on, %d visitors in front, or you can leave a message";
+"wating_in_queue_tip_number" = "Number of people currently waiting";
+"wating_in_queue_tip_choice" = "If you can't wait, you can choose";
+"wating_in_queue_tip_leave_message" = "Leave a message";
+
+"product_message_sales" = "Sales";
+"product_message_check_details" = "Check details";
+"next_page" = "Next";
+"last_page" = "Previous";
 
 //询前表单
 "pre_chat_list_title" = "Client Support";
@@ -134,7 +168,6 @@
 "input_content" = "Please input your content...";
 // 服务连接中,请稍候
 "service_connectting_wait" = "Service is connectting,please waitting";
-
 "mq_evaluation_good" = "Good";
 "mq_evaluation_middle" = "Fair";
 "mq_evaluation_bad" = "Bad";
@@ -142,6 +175,8 @@
 "mq_evaluation_content" = "How would you rate this chat?";
 "mq_evaluation_title" = "How would you rate this chat?";
 "mq_evaluation_content" = "Please leave a comment (Optional)";
+"network_connect_error" = "The network is not available, Please check the network Settings";
+"network_connect_warning" = "Network is connectting，Message may be missing";
 
 "mq_direct_content" = "You will be assisted by %@";
 "mq_send" = "Send";

@@ -135,6 +135,11 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
  */
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth;
 
+/**
+  获取当前message所对应的conversionid
+ */
+- (NSString *)getMessageConversionId;
+
 @optional
 /**
  *  更新cell的sendType
@@ -149,6 +154,13 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
  *  @param messageId 消息id
  */
 - (void)updateCellMessageId:(NSString *)messageId;
+
+/**
+ *  更新cell的conversionId
+ *
+ *  @param conversionId 会话id
+ */
+- (void)updateCellConversionId:(NSString *)conversionId;
 
 /**
  *  更新cell的messageDate
@@ -173,9 +185,30 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
 - (void)updateSensitiveState:(BOOL)state cellText:(NSString *)cellText;
 
 /**
- 通知 cell model，该 model 中所对应的机器人 message 已经被评价过了
+ *  更多媒体本地缓存路径
+ *
+ *  @param serverPath 媒体的服务器地址
  */
-- (void)didEvaluate;
+- (void)updateMediaServerPath:(NSString *)serverPath;
+
+/**
+ *  更新排队的等待人数
+ *
+ *  @param position 当前排队的等待位置
+ */
+- (void)updateQueueTipPosition:(int)position;
+
+/**
+ *  获取当前的排对人数
+ *
+ */
+- (int)getCurrentQueuePosition;
+
+/**
+ *  通知 cell model，该 model 中所对应的机器人 message 已经被评价过了
+ * @param solved 评价问题是否解决
+ */
+- (void)didEvaluate:(BOOL)solved;
 
 
 @end
@@ -190,5 +223,7 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
  * @param messageId 该cell中的消息id
  */
 - (void)didUpdateCellDataWithMessageId:(NSString *)messageId;
+
+- (void)didTapHighMenuWithText:(NSString *)menuText;
 
 @end

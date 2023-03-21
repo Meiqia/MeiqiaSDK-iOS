@@ -11,6 +11,8 @@
 #import "MQBotMenuWebViewBubbleAnswerCell.h"
 #import "MQServiceToViewInterface.h"
 #import "MQBotMenuCellModel.h"
+#import "MQBundleUtil.h"
+
 @interface MQBotMenuWebViewBubbleAnswerCellModel()
 
 @property (nonatomic, strong)MQBotRichTextMessage *message;
@@ -24,11 +26,10 @@
         self.message = message;
         self.avatarPath = message.userAvatarPath;
         self.messageId = message.messageId;
-        self.content = message.content;
         self.isEvaluated = message.isEvaluated;
+        self.solved = message.solved;
         self.content = message.content;
         
-        self.menuFootnote = kMQBotMenuTipText;
         self.menuTitle = message.menu.content;
         self.menus = message.menu.menu;
     }
@@ -55,8 +56,9 @@
 
 #pragma mark -
 
-- (void)didEvaluate {
+- (void)didEvaluate:(BOOL)solved {
     self.isEvaluated = YES;
+    self.solved = solved;
 }
 
 - (CGFloat)getCellHeight {
@@ -82,12 +84,20 @@
     return self.message.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.message.conversionId;
+}
+
 - (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
     self.message.sendStatus = sendStatus;
 }
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.message.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.message.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {

@@ -14,9 +14,11 @@
 #import <UIKit/UIKit.h>
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
-#import "MEIQIA_TTTAttributedLabel.h"
+#import "TTTAttributedLabel.h"
 #import "MQChatEmojize.h"
 #import "MQServiceToViewInterface.h"
+#import "MQBundleUtil.h"
+
 #ifndef INCLUDE_MEIQIA_SDK
 #import "UIImageView+WebCache.h"
 #endif
@@ -120,9 +122,19 @@
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
 
 /**
+ * @brief 「常见问题」label frame
+ */
+@property (nonatomic, readwrite, assign) CGRect menuTipLabelFrame;
+
+/**
  * @brief 「点击问题查看答案」label frame
  */
 @property (nonatomic, readwrite, assign) CGRect replyTipLabelFrame;
+
+/**
+ * @brief cell中消息的会话id
+ */
+@property (nonatomic, readwrite, strong) NSString *conversionId;
 
 @end
 
@@ -134,7 +146,10 @@
 {
     if (self = [super init]) {
         self.messageId = message.messageId;
+        self.conversionId = message.conversionId;
         self.sendStatus = message.sendStatus;
+        //文字最大宽度
+        CGFloat maxLabelWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
         NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];
         contentParagraphStyle.lineSpacing = kMQTextCellLineSpacing;
         contentParagraphStyle.lineHeightMultiple = 1.0;
@@ -143,20 +158,22 @@
         NSMutableDictionary *contentAttributes
         = [[NSMutableDictionary alloc]
            initWithDictionary:@{
-                                NSParagraphStyleAttributeName : contentParagraphStyle,
-                                NSFontAttributeName : [UIFont systemFontOfSize:kMQCellTextFontSize]
-                                }];
+               NSParagraphStyleAttributeName : contentParagraphStyle,
+               NSFontAttributeName : [UIFont systemFontOfSize:kMQCellTextFontSize]
+           }];
         if (message.fromType == MQChatMessageOutgoing) {
             [contentAttributes setObject:(__bridge id)[MQChatViewConfig sharedConfig].outgoingMsgTextColor.CGColor forKey:(__bridge id)kCTForegroundColorAttributeName];
         } else {
             [contentAttributes setObject:(__bridge id)[MQChatViewConfig sharedConfig].incomingMsgTextColor.CGColor forKey:(__bridge id)kCTForegroundColorAttributeName];
         }
-        
-//        self.cellTextAttributes = [[NSDictionary alloc] initWithDictionary:contentAttributes];
-//        self.cellText = [[NSAttributedString alloc] initWithString:message.content attributes:self.cellTextAttributes];
-        
-        NSMutableAttributedString * nameText = [[NSMutableAttributedString alloc] initWithData:[message.richContent?:message.content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes: nil error:nil];
-        self.cellText = nameText;
+        self.cellTextAttributes = [[NSDictionary alloc] initWithDictionary:contentAttributes];
+        if (message.richContent && message.richContent.length > 0) {
+            NSString *str = [NSString stringWithFormat:@"<head><style>img{width:%f !important;height:auto}p{font-size:%fpx}</style></head>%@",maxLabelWidth,kMQCellTextFontSize,message.richContent];
+                NSAttributedString *attributeString=[[NSAttributedString alloc] initWithData:[str dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+            self.cellText = attributeString;
+        } else {
+            self.cellText = [[NSAttributedString alloc] initWithString:message.content attributes:self.cellTextAttributes];
+        }
 
         self.date = message.date;
         self.cellHeight = 44.0;
@@ -189,17 +206,15 @@
             }];
         }
         
-        //文字最大宽度
-        CGFloat maxLabelWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
         //文字高度
         CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
         //判断文字中是否有emoji
-        if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
-            NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
-            CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
-            NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
-            messageTextHeight += 8 * textLines;
-        }
+//        if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
+//            NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
+//            CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
+//            NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
+//            messageTextHeight += 8 * textLines;
+//        }
         //文字宽度
         CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
         //#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
@@ -219,17 +234,24 @@
             [menuHeightArray addObject:@(menuTextHeight)];
             menuTotalHeight += menuTextHeight + kMQBotMenuVerticalSpacingInMenus;
         }
+        
+        // menu的「常见问题」tip的高度
+        CGFloat menuTipHeight = 0;
+        if (menuTotalHeight > 0) {
+            menuTipHeight = [MQStringSizeUtil getHeightForText:[NSString stringWithFormat:@"%@:", [MQBundleUtil localizedStringForKey:@"bot_menu_problem_tip_text"]] withFont:[UIFont systemFontOfSize:kMQBotMenuTipSize] andWidth:maxLabelWidth];
+        }
+        
         CGFloat replyTipHeight = 0;
         if (menuTotalHeight > 0) {
             menuTotalHeight -= kMQBotMenuVerticalSpacingInMenus;
             // 「点击回复」的提示 label 高度
-            replyTipHeight = [MQStringSizeUtil getHeightForText:kMQBotMenuTipText withFont:[UIFont systemFontOfSize:kMQBotMenuReplyTipSize] andWidth:maxLabelWidth];
+            replyTipHeight = [MQStringSizeUtil getHeightForText:[MQBundleUtil localizedStringForKey:@"bot_menu_tip_text"] withFont:[UIFont systemFontOfSize:kMQBotMenuReplyTipSize] andWidth:maxLabelWidth];
         }
         
         //气泡高度
-        CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;
+        CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing;
         if (menuTotalHeight > 0) {
-            bubbleHeight += menuTotalHeight + replyTipHeight + kMQCellBubbleToTextVerticalSpacing * 2;
+            bubbleHeight += menuTipHeight + menuTotalHeight + replyTipHeight + kMQCellBubbleToTextVerticalSpacing * 2;
         }
         //气泡宽度
         CGFloat bubbleWidth = maxLabelWidth + kMQCellBubbleToTextHorizontalLargerSpacing + kMQCellBubbleToTextHorizontalSmallerSpacing;
@@ -256,7 +278,7 @@
             //气泡的frame
             self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
             //文字的frame
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, kMQCellBubbleToTextVerticalSpacing, maxLabelWidth, messageTextHeight);
+            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, 0, maxLabelWidth, messageTextHeight);
         } else {
             //收到的消息
             self.cellFromType = MQChatCellIncoming;
@@ -270,11 +292,14 @@
             //气泡的frame
             self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
             //文字的frame
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, kMQCellBubbleToTextVerticalSpacing, maxLabelWidth, messageTextHeight);
+            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, 0, maxLabelWidth, messageTextHeight);
         }
         
+        // menu tip frame
+        self.menuTipLabelFrame = CGRectMake(self.textLabelFrame.origin.x, CGRectGetMaxY(self.textLabelFrame), self.textLabelFrame.size.width, menuTipHeight);
+        
         // menu array frame
-        CGFloat menuOrigin = self.textLabelFrame.origin.y + self.textLabelFrame.size.height + kMQCellBubbleToTextVerticalSpacing;
+        CGFloat menuOrigin = CGRectGetMaxY(self.menuTipLabelFrame) + kMQCellBubbleToTextVerticalSpacing;
         NSMutableArray *menuFrames = [NSMutableArray new];
         for (NSNumber *menuHeight in menuHeightArray) {
             CGRect mFrame = CGRectMake(self.textLabelFrame.origin.x, menuOrigin, self.textLabelFrame.size.width, [menuHeight floatValue]);
@@ -361,12 +386,20 @@
     return self.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.conversionId;
+}
+
 - (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
     self.sendStatus = sendStatus;
 }
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {
@@ -380,12 +413,12 @@
     //文字高度
     CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
     //判断文字中是否有emoji
-    if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
-        NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
-        CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
-        NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
-        messageTextHeight += 8 * textLines;
-    }
+//    if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
+//        NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
+//        CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
+//        NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
+//        messageTextHeight += 8 * textLines;
+//    }
     //文字宽度
     CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
     //#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
@@ -405,17 +438,24 @@
         [menuHeightArray addObject:@(menuTextHeight)];
         menuTotalHeight += menuTextHeight + kMQBotMenuVerticalSpacingInMenus;
     }
+    
+    // menu的「常见问题」tip的高度
+    CGFloat menuTipHeight = 0;
+    if (menuTotalHeight > 0) {
+        menuTipHeight = [MQStringSizeUtil getHeightForText:[NSString stringWithFormat:@"%@:", [MQBundleUtil localizedStringForKey:@"bot_menu_problem_tip_text"]] withFont:[UIFont systemFontOfSize:kMQBotMenuTipSize] andWidth:maxLabelWidth];
+    }
+    
     CGFloat replyTipHeight = 0;
     if (menuTotalHeight > 0) {
         menuTotalHeight -= kMQBotMenuVerticalSpacingInMenus;
         // 「点击回复」的提示 label 高度
-        replyTipHeight = [MQStringSizeUtil getHeightForText:kMQBotMenuTipText withFont:[UIFont systemFontOfSize:kMQBotMenuReplyTipSize] andWidth:maxLabelWidth];
+        replyTipHeight = [MQStringSizeUtil getHeightForText:[MQBundleUtil localizedStringForKey:@"bot_menu_tip_text"] withFont:[UIFont systemFontOfSize:kMQBotMenuReplyTipSize] andWidth:maxLabelWidth];
     }
     
     //气泡高度
     CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;
     if (menuTotalHeight > 0) {
-        bubbleHeight += menuTotalHeight + replyTipHeight + kMQCellBubbleToTextVerticalSpacing * 2;
+        bubbleHeight += menuTipHeight + menuTotalHeight + replyTipHeight + kMQCellBubbleToTextVerticalSpacing * 2;
     }
     //气泡宽度
     CGFloat bubbleWidth = maxLabelWidth + kMQCellBubbleToTextHorizontalLargerSpacing + kMQCellBubbleToTextHorizontalSmallerSpacing;
@@ -459,8 +499,11 @@
     //气泡图片
     self.bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
     
+    // menu tip frame
+    self.menuTipLabelFrame = CGRectMake(self.textLabelFrame.origin.x, CGRectGetMaxY(self.textLabelFrame), self.textLabelFrame.size.width, menuTipHeight);
+    
     // menu array frame
-    CGFloat menuOrigin = self.textLabelFrame.origin.y + self.textLabelFrame.size.height + kMQCellBubbleToTextVerticalSpacing;
+    CGFloat menuOrigin = CGRectGetMaxY(self.menuTipLabelFrame) + kMQCellBubbleToTextVerticalSpacing;
     NSMutableArray *menuFrames = [NSMutableArray new];
     for (NSNumber *menuHeight in menuHeightArray) {
         CGRect mFrame = CGRectMake(self.textLabelFrame.origin.x, menuOrigin, self.textLabelFrame.size.width, [menuHeight floatValue]);

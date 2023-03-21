@@ -65,15 +65,16 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @property (nonatomic, strong) NSMutableArray *emailRegexs;
 @property (nonatomic, assign) MQTransiteAnimationType presentingAnimation;
 
-@property (nonatomic, copy  ) NSString *chatWelcomeText;
-@property (nonatomic, copy  ) NSString *agentName;
-@property (nonatomic, copy  ) NSString *incomingMsgSoundFileName;
-@property (nonatomic, copy  ) NSString *outgoingMsgSoundFileName;
-@property (nonatomic, copy  ) NSString *scheduledAgentId;
-@property (nonatomic, copy  ) NSString *notScheduledAgentId;
-@property (nonatomic, copy  ) NSString *scheduledGroupId;
-@property (nonatomic, copy  ) NSString *customizedId;
-@property (nonatomic, copy  ) NSString *navTitleText;
+@property (nonatomic, copy) NSString *chatWelcomeText;
+@property (nonatomic, copy) NSString *agentName;
+@property (nonatomic, copy) NSString *incomingMsgSoundFileName;
+@property (nonatomic, copy) NSString *outgoingMsgSoundFileName;
+@property (nonatomic, copy) NSString *scheduledAgentId;
+@property (nonatomic, copy) NSString *notScheduledAgentId;
+@property (nonatomic, copy) NSString *scheduledGroupId;
+@property (nonatomic, copy) NSString *customizedId;
+@property (nonatomic, copy) NSString *navTitleText;
+@property (nonatomic, copy) NSString *localizedLanguageStr;
 
 @property (nonatomic, assign) BOOL enableEventDispaly;
 @property (nonatomic, assign) BOOL enableSendVoiceMessage;
@@ -90,6 +91,7 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @property (nonatomic, assign) BOOL enableEvaluationButton;
 @property (nonatomic, assign) BOOL enableVoiceRecordBlurView;
 @property (nonatomic, assign) BOOL updateClientInfoUseOverride;
+@property (nonatomic, assign) BOOL enablePhotoLibraryEdit;
 
 @property (nonatomic, strong) UIImage *incomingDefaultAvatarImage;
 @property (nonatomic, strong) UIImage *outgoingDefaultAvatarImage;
@@ -104,6 +106,8 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @property (nonatomic, assign) MQPlayMode playMode;
 
 @property (nonatomic, strong) NSArray *preSendMessages;
+
+@property (nonatomic, copy) void(^productCardCallBack)(NSString *productUrl);
 
 
 #pragma 以下配置是美洽SDK用户所用到的配置

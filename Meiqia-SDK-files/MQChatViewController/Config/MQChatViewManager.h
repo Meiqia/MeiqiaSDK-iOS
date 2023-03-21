@@ -48,7 +48,7 @@
 @property (nonatomic, assign) MQPlayMode playMode;
 
 /**
- 设置显示聊天界面的时候，自动发送给客服的消息, 可以包括图片和文字
+ 设置显示聊天界面的时候，自动发送给客服的消息, 可以包括图片、文字、商品卡片
  */
 @property (nonatomic, strong) NSArray *preSendMessages;
 
@@ -243,6 +243,13 @@
  *  @param enable YES:显示 NO:不显示
  */
 - (void)enableVoiceRecordBlurView:(BOOL)enable;
+
+/**
+ *  是否支持相册选择图片可裁剪。默认支持裁剪
+ *
+ *  @param enable YES:支持 NO:不支持
+ */
+- (void)enablePhotoLibraryEdit:(BOOL)enable;
 
 /**
  * 设置发送过来的message的文字颜色；
@@ -478,6 +485,23 @@
  *  @param clientInfo 顾客的自定义信息，这个信息只有第一次调用的时候起作用。
  */
 - (void)setClientInfo:(NSDictionary *)clientInfo;
+
+
+/**
+ *  配置本地化语言，目前支持：中文简体、中文繁体、英文、马来语、印尼语，不支持的语言默认显示为英文
+ *
+ *  @param language 语言配置字符， 如：@"en" ，@"zh-Hans"，@"zh-Hant"，@"ms"， @"id", （不调用此方法，则随系统语言变化）
+ */
+- (void)setLocalizedLanguage:(NSString *)language;
+
+/**
+ *  点击商品卡片的回调方法
+ *
+ * @warning 不调用此方法,默认是用浏览器打开商品链接；
+ *          调用此方法以后就需要自己处理点击的响应事件
+ * @param productUrl 商品链接
+ */
+- (void)didTapProductCard:(void (^)(NSString *productUrl))callBack;
 
 #endif
 

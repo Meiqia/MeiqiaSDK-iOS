@@ -11,6 +11,7 @@
 #import "MQStringSizeUtil.h"
 #import "MQImageUtil.h"
 #import "MQAssetUtil.h"
+#import "MQBundleUtil.h"
 
 static CGFloat const kMQEvaluationCellLabelVerticalMargin = 6.0;
 static CGFloat const kMQEvaluationCellLabelHorizontalMargin = 8.0;
@@ -90,19 +91,19 @@ CGFloat const kMQEvaluationCellFontSize = 14.0;
         switch (evaluationType) {
             case MQEvaluationTypeNegative:
                 self.evaluationLabelColor = [UIColor colorWithRed:255.0/255.0 green:92.0/255.0 blue:94.0/255.0 alpha:1];
-                self.levelText = @"差评";
+                self.levelText = [MQBundleUtil localizedStringForKey:@"mq_evaluation_bad"];
                 break;
             case MQEvaluationTypeModerate:
                 self.evaluationLabelColor = [UIColor colorWithRed:255.0/255.0 green:182.0/255.0 blue:82.0/255.0 alpha:1];
-                self.levelText = @"中评";
+                self.levelText = [MQBundleUtil localizedStringForKey:@"mq_evaluation_middle"];
                 break;
             case MQEvaluationTypePositive:
                 self.evaluationLabelColor = [UIColor colorWithRed:0.0/255.0 green:206.0/255.0 blue:125.0/255.0 alpha:1];
-                self.levelText = @"好评";
+                self.levelText = [MQBundleUtil localizedStringForKey:@"mq_evaluation_good"];
                 break;
             default:
                 self.evaluationLabelColor = [UIColor colorWithRed:0.0/255.0 green:206.0/255.0 blue:125.0/255.0 alpha:1];
-                self.levelText = @"好评";
+                self.levelText = [MQBundleUtil localizedStringForKey:@"mq_evaluation_good"];
                 break;
         }
         
@@ -153,6 +154,10 @@ CGFloat const kMQEvaluationCellFontSize = 14.0;
 }
 
 - (NSString *)getCellMessageId {
+    return @"";
+}
+
+- (NSString *)getMessageConversionId {
     return @"";
 }
 

@@ -17,6 +17,10 @@
 @property (nonatomic, copy) NSString *menuFootnote;
 @property (nonatomic, copy) NSString *content;
 @property (nonatomic, assign) BOOL isEvaluated;
+/**
+ * @brief 问题是否已解决的标记
+ */
+@property (nonatomic, assign) BOOL solved;
 @property (nonatomic, copy) NSString *messageId;
 @property (nonatomic, strong) UIImage *avatarImage;
 

@@ -10,7 +10,7 @@
 
 @implementation UIViewController(MQHieriachy)
 
-+ (UIViewController *)topMostViewController
++ (UIViewController *)mq_topMostViewController
 {
     UIViewController *topController = [self topWindow].rootViewController;
     while (topController.presentedViewController) {

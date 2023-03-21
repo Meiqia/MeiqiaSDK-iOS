@@ -12,7 +12,9 @@
 #import <MeiQiaSDK/MQManager.h>
 #import "MQBotAnswerMessage.h"
 #import "MQBotMenuMessage.h"
+#import "MQBotGuideMessage.h"
 #import <MeiQiaSDK/MQJSONHelper.h>
+#import "MQBotHighMenuMessage.h"
 
 @implementation MQBotMessageFactory
 
@@ -28,6 +30,20 @@
             message = [self getMenuBotMessage:plainMessage.accessoryData];
         } else if ([subType isEqualToString:@"message"]) {
             message = [self getTextMessage:plainMessage.accessoryData];
+            
+            if ([plainMessage.accessoryData objectForKey:@"operator_msg"] && ![[plainMessage.accessoryData objectForKey:@"operator_msg"] isEqual:[NSNull null]] && [message isKindOfClass:[MQBotRichTextMessage class]]) {
+                // 营销机器人的底部操做按钮
+                MQBotRichTextMessage *botRichTextMessage = (MQBotRichTextMessage *)message;
+                botRichTextMessage.tags = [self getMessageBottomTagModel:plainMessage];
+                message = botRichTextMessage;
+            }
+        } else if ([subType isEqualToString:@"button"]) {
+            // 营销机器人的引导按钮
+            MQBotGuideMessage *guideMessage = [[MQBotGuideMessage alloc] initWithContentArray:[plainMessage.accessoryData objectForKey:@"tags"]];
+            message = guideMessage;
+        } else {
+            MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:@"当前 App 暂不支持该类型消息。"];
+            message = textMessage;
         }
     }
     
@@ -36,6 +52,14 @@
     message.userName = plainMessage.messageUserName;
     message.userAvatarPath = plainMessage.messageAvatar;
     message.fromType = MQChatMessageIncoming;
+    message.conversionId = plainMessage.conversationId;
+    // 处理托管机器人的
+    if ([plainMessage.accessoryData objectForKey:@"display_avatar"]) {
+        message.userAvatarPath = [plainMessage.accessoryData objectForKey:@"display_avatar"];
+    }
+    if ([plainMessage.accessoryData objectForKey:@"display_nickname"]) {
+        message.userName = [plainMessage.accessoryData objectForKey:@"display_nickname"];
+    }
     
     return message;
 }
@@ -85,7 +109,13 @@
         }
     }
     BOOL isEvaluated = [data objectForKey:@"is_evaluated"] ? [[data objectForKey:@"is_evaluated"] boolValue] : false;
+    BOOL isSolved = [data objectForKey:@"is_useful"] ? [[data objectForKey:@"is_useful"] boolValue] : YES;
+
+    if ([subType isEqualToString:@"reply"] && ![MQManager enableLeaveComment]) {
+        subType = @"normal";
+    }
     MQBotAnswerMessage *botMessage = [[MQBotAnswerMessage alloc] initWithContent:content subType:subType isEvaluated:isEvaluated];
+    botMessage.solved = isSolved;
     if (embedMenuMessage) {
         botMessage.menu = embedMenuMessage;
     }
@@ -96,6 +126,10 @@
     NSString *content = @"";
     NSString *richContent = @"";
     NSMutableArray *menu = [NSMutableArray new];
+    
+    NSMutableArray *highMenu = [[NSMutableArray alloc] init];
+    NSInteger highMenuPageSize = 0;
+    
     NSArray *contentRobot = [data objectForKey:@"content_robot"] ?: [NSArray new];
     for (NSInteger i=0; i < [contentRobot count]; i++) {
         NSDictionary *subContent = [contentRobot objectAtIndex:i];
@@ -106,18 +140,52 @@
         if (i == 0 && [[subContent objectForKey:@"type"] isEqualToString:@"text"]) {
             content = [subContent objectForKey:@"text"];
         } else if ([[subContent objectForKey:@"type"] isEqualToString:@"menu"]) {
-            NSArray *items = [subContent objectForKey:@"items"];
-            for (NSDictionary *item in items) {
-                NSString *menuTitle = [item objectForKey:@"text"];
-                menuTitle = [MQManager convertToUnicodeWithEmojiAlias:menuTitle];
-                [menu addObject:menuTitle];
+            if ([subContent objectForKey:@"c_type"]) {
+                if ([subContent objectForKey:@"page_size"]) {
+                    highMenuPageSize = [[subContent objectForKey:@"page_size"] integerValue];
+                }
+                if ([subContent objectForKey:@"data"] && ![[subContent objectForKey:@"data"] isEqual:[NSNull null]]) {
+                    NSArray *dataArr = [subContent objectForKey:@"data"];
+                    if ([subContent objectForKey:@"c_type"]) {
+                        NSString *c_type = [subContent objectForKey:@"c_type"];
+                        if ([c_type isEqualToString:@"base"]) {
+                            MQPageDataModel *model = [[MQPageDataModel alloc] init];
+                            model.titleStr = @"";
+                            model.contentArr = [[NSArray alloc] initWithArray:dataArr];
+                            [highMenu addObject:model];
+                        } else if ([c_type isEqualToString:@"advanced"]) {
+                            for (NSDictionary *dic in dataArr) {
+                                NSArray *contentArr = [dic objectForKey:@"items"];
+                                MQPageDataModel *model = [[MQPageDataModel alloc] init];
+                                model.titleStr = [dic objectForKey:@"category"];
+                                model.contentArr = [[NSArray alloc] initWithArray:contentArr];
+                                [highMenu addObject:model];
+                            }
+                        }
+                    }
+                }
+            } else {
+                NSArray *items = [subContent objectForKey:@"items"];
+                for (NSDictionary *item in items) {
+                    NSString *menuTitle = [item objectForKey:@"text"];
+                    menuTitle = [MQManager convertToUnicodeWithEmojiAlias:menuTitle];
+                    [menu addObject:menuTitle];
+                }
             }
         }
     }
+    
     content = [MQManager convertToUnicodeWithEmojiAlias:content];
-    MQBotMenuMessage *botMessage = [[MQBotMenuMessage alloc] initWithContent:content menu:menu];
-    botMessage.richContent = richContent;
-    return botMessage;
+    if (highMenu.count > 0) {
+        // 新版高级相关问题
+        MQBotHighMenuMessage *botMessage = [[MQBotHighMenuMessage alloc] initWithMenuData:highMenu contentText:content pageSize:highMenuPageSize];
+        botMessage.richContent = richContent;
+        return botMessage;
+    } else {
+        MQBotMenuMessage *botMessage = [[MQBotMenuMessage alloc] initWithContent:content menu:menu];
+        botMessage.richContent = richContent;
+        return botMessage;
+    }
 }
 
 - (MQBotMenuMessage *)getEmbedMenuBotMessage:(NSDictionary *)data {
@@ -169,11 +237,32 @@
         botRichTextMessage.subType = data[@"sub_type"];
         
         BOOL isEvaluated = [data objectForKey:@"is_evaluated"] ? [[data objectForKey:@"is_evaluated"] boolValue] : false;
+        BOOL isSolved = [data objectForKey:@"is_useful"] ? [[data objectForKey:@"is_useful"] boolValue] : YES;
 
         botRichTextMessage.isEvaluated = isEvaluated;
+        botRichTextMessage.solved = isSolved;
         return botRichTextMessage;
     } else {
         return nil;
     }
 }
+
+- (NSArray *)getMessageBottomTagModel:(MQMessage *)message
+{
+    if (message.accessoryData && [message.accessoryData isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *dataDic = [NSDictionary dictionaryWithDictionary:message.accessoryData];
+        if ([dataDic objectForKey:@"operator_msg"] && ![[dataDic objectForKey:@"operator_msg"] isEqual:[NSNull null]]) {
+            NSArray *tagArr = [dataDic objectForKey:@"operator_msg"];
+            NSMutableArray *resultArr = [NSMutableArray array];
+            for (NSDictionary * dic in tagArr) {
+                [resultArr addObject:[[MQMessageBottomTagModel alloc] initWithDictionary:dic]];
+            }
+            if (resultArr.count > 0) {
+                return resultArr;
+            }
+        }
+    }
+    return nil;
+}
+
 @end

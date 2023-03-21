@@ -10,7 +10,7 @@
 #import <sys/utsname.h>
 #import <UIKit/UIKit.h>
 @implementation MQToolUtil
-+ (NSString*)kXlpObtainDeviceVersion
++ (NSString*)kMQObtainDeviceVersion
 {
     struct utsname systemInfo;
     uname(&systemInfo);
@@ -46,7 +46,25 @@
     if ([deviceString isEqualToString:@"iPhone12,1"]) return @"iPhone11";
     if ([deviceString isEqualToString:@"iPhone12,3"]) return @"iPhone11Pro";
     if ([deviceString isEqualToString:@"iPhone12,5"]) return @"iPhone11ProMax";
+    if ([deviceString isEqualToString:@"iPhone12,8"]) return @"iPhoneSE2";
     
+    if ([deviceString isEqualToString:@"iPhone13,1"]) return @"iPhone12mini";
+    if ([deviceString isEqualToString:@"iPhone13,2"]) return @"iPhone12";
+    if ([deviceString isEqualToString:@"iPhone13,3"]) return @"iPhone12Pro";
+    if ([deviceString isEqualToString:@"iPhone13,4"]) return @"iPhone12ProMax";
+    
+    if ([deviceString isEqualToString:@"iPhone14,2"]) return @"iPhone13Pro";
+    if ([deviceString isEqualToString:@"iPhone14,3"]) return @"iPhone13ProMax";
+    if ([deviceString isEqualToString:@"iPhone14,4"]) return @"iPhone13mini";
+    if ([deviceString isEqualToString:@"iPhone14,5"]) return @"iPhone13";
+    
+    
+    if ([deviceString isEqualToString:@"iPhone14,6"]) return @"iPhoneSE3";
+    if ([deviceString isEqualToString:@"iPhone14,7"]) return @"iPhone 14";
+    if ([deviceString isEqualToString:@"iPhone14,8"]) return @"iPhone 14 Plus";
+    if ([deviceString isEqualToString:@"iPhone15,2"]) return @"iPhone 14 Pro";
+    if ([deviceString isEqualToString:@"iPhone15,3"]) return @"iPhone 14 Pro Max";
+
     //模拟机
     if ([deviceString isEqualToString:@"x86_64"])        return @"Simulator";
 
@@ -95,9 +113,9 @@
     
     return deviceString;
 }
-+ (BOOL)kXlpObtainDeviceVersionIsIphoneX{
-    NSString * str = [self kXlpObtainDeviceVersion];
-    if ([str containsString:@"X"] || [str isEqualToString:@"Simulator"] || [str containsString:@"11"]) {
++ (BOOL)kMQObtainDeviceVersionIsIphoneX{
+    NSString * str = [self kMQObtainDeviceVersion];
+    if ([str containsString:@"X"] || [str isEqualToString:@"Simulator"] || [str containsString:@"11"] || [str containsString:@"12"]  || [str containsString:@"13"]  || [str containsString:@"14"]) {
         return YES;
     } else {
         return NO;
@@ -105,24 +123,29 @@
     
 }
 
-+ (NSInteger )kXlpObtainNaviBarHeight{
++ (CGFloat)kMQObtainNaviBarHeight{
     return 44;
 }
-+ (NSInteger )kXlpObtainStatusBarHeight{
++ (CGFloat)kMQObtainStatusBarHeight{
     
-    //X 44 其他 20
-    CGRect rectStatus = [[UIApplication sharedApplication] statusBarFrame];
-    return rectStatus.size.height;
+    if (@available(iOS 13.0, *)) {
+        NSSet *set = [UIApplication sharedApplication].connectedScenes;
+        UIWindowScene *windowScene = [set anyObject];
+        UIStatusBarManager *statusBarManager = windowScene.statusBarManager;
+        return statusBarManager.statusBarFrame.size.height;
+    } else {
+        return [UIApplication sharedApplication].statusBarFrame.size.height;
+    }
 }
-+ (NSInteger )kXlpObtainNaviHeight{
++ (CGFloat)kMQObtainNaviHeight{
     
-    return [self kXlpObtainNaviBarHeight] + [self kXlpObtainStatusBarHeight];
+    return [self kMQObtainNaviBarHeight] + [self kMQObtainStatusBarHeight];
 }
-+ (NSInteger )kXlpScreenWidth{
++ (CGFloat)kMQScreenWidth{
     
     return [UIScreen mainScreen].bounds.size.width;
 }
-+ (NSInteger )kXlpScreenHeight{
++ (CGFloat)kMQScreenHeight{
     
     return [UIScreen mainScreen].bounds.size.height;
 }

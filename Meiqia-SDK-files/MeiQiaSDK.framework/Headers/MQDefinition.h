@@ -67,6 +67,11 @@ typedef void (^StateChangeBlock)(MQState oldState, MQState newState, NSDictionar
 #define MQ_NOTIFICATION_QUEUEING_END @"MQ_NOTIFICATION_QUEUEING_END"
 
 /**
+ 当用户加入排队队列的时候出现
+ */
+#define MQ_NOTIFICATION_QUEUEING_BEGIN @"MQ_NOTIFICATION_QUEUEING_BEGIN"
+
+/**
  美洽Error的code对应码
  */
 typedef enum : NSInteger {
@@ -110,3 +115,14 @@ typedef enum : NSUInteger {
     MQConversationEvaluationModerate    = 1,            //中评
     MQConversationEvaluationPositive    = 2             //好评
 } MQConversationEvaluation;
+
+
+/**
+ sdk的接入渠道
+ */
+typedef enum : NSUInteger {
+    MQSDKSourceChannelSDK    = 0,            //原生sdk
+    MQSDKSourceChannelAPICloud,          //APICloud
+    MQSDKSourceChannelDCloud,  //DCloud
+    MQSDKSourceChannelFlutter   //Flutter
+} MQSDKSourceChannel;

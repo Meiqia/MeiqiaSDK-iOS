@@ -257,7 +257,7 @@ NSString *const MQRecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey"
     
     
     CGFloat emojiPagesScrollViewY = 0;
-    if (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX) {
+    if (MQToolUtil.kMQObtainDeviceVersionIsIphoneX) {
         emojiPagesScrollViewY = -34;
     }
     

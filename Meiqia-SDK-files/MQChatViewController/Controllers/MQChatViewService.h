@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MQBaseMessage.h"
+#import "MQProductCardMessage.h"
 #import <UIKit/UIKit.h>
 #import "MQChatViewConfig.h"
 #import "MQCellModelProtocol.h"
@@ -76,6 +77,12 @@
  */
 - (BOOL)isChatRecording;
 
+/**
+ *  分配对话以后，判断是否需要显示留言界面
+ *
+ */
+- (void)needToDisplayLeaveComment:(BOOL)display;
+
 #ifdef INCLUDE_MEIQIA_SDK
 /**
  *  通知viewController已经为顾客分配了一个客服，更新title
@@ -132,6 +139,12 @@
 - (void)startGettingHistoryMessages;
 - (void)startGettingDateBaseHistoryMessages;
 - (void)startGettingHistoryMessagesFromLastMessage;
+
+/**
+ * 在开启无消息访客过滤的条件下获取历史聊天信息
+ */
+- (void)getMessagesWithScheduleAfterClientSendMessage;
+
 /**
  * 发送文字消息
  */
@@ -147,6 +160,17 @@
  * @param filePath AMR格式的语音文件
  */
 - (void)sendVoiceMessageWithAMRFilePath:(NSString *)filePath;
+
+/**
+ * 发送视频消息
+ * @param filePath 视频文件的路径
+ */
+- (void)sendVideoMessageWithFilePath:(NSString *)filePath;
+
+/**
+ * 发送商品卡片消息
+ */
+- (void)sendProductCardWithModel:(MQProductCardMessage *)productCard;
 
 /**
  * 发送“用户正在输入”的消息
@@ -185,6 +209,13 @@
 - (void)didTapMessageCellAtIndex:(NSInteger)index;
 
 /**
+ *  选择询前表单的问题
+ *
+ *  @param content 选择的问题
+ */
+- (void)selectedFormProblem:(NSString *)content;
+
+/**
  *  刷新所有的本机用户的头像
  */
 - (void)refreshOutgoingAvatarWithImage:(UIImage *)avatarImage;
@@ -213,6 +244,11 @@
  *  评价机器人消息
  */
 - (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId;
+
+/**
+ *  采集操作按钮的点击情况
+ */
+- (void)collectionOperationIndex:(int)index messageId:(NSString *)messageId;
 
 /**
  *  强制转接人工客服
@@ -253,6 +289,11 @@
  顾客没上线前缓存需要发送的语音
  */
 - (void)cacheSendAMRFilePath:(NSString *)filePath;
+
+/**
+ 顾客没上线前缓存需要发送的视频
+ */
+- (void)cacheSendVideoFilePath:(NSString *)filePath;
 
 #ifndef INCLUDE_MEIQIA_SDK
 

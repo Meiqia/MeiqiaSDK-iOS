@@ -62,10 +62,36 @@
     }];
 }
 
++ (void)getServerHistoryMessagesAndTicketsWithMsgDate:(NSDate *)msgDate
+                             messagesNumber:(NSInteger)messagesNumber
+                            successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
+                              errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate
+{
+    [MQManager getServerHistoryMessagesAndTicketsWithUTCMsgDate:msgDate messagesNumber:messagesNumber success:^(NSArray<MQMessage *> *messagesArray) {
+        NSArray *toMessages = [MQServiceToViewInterface convertToChatViewMessageWithMQMessages:messagesArray];
+        if (successDelegate) {
+            if ([successDelegate respondsToSelector:@selector(didReceiveHistoryMessages:)]) {
+                [successDelegate didReceiveHistoryMessages:toMessages];
+            }
+        }
+    } failure:^(NSError *error) {
+        if (errorDelegate) {
+            if ([errorDelegate respondsToSelector:@selector(getLoadHistoryMessageError)]) {
+                [errorDelegate getLoadHistoryMessageError];
+            }
+        }
+    }];
+}
+
 + (NSArray *)convertToChatViewMessageWithMQMessages:(NSArray *)messagesArray {
     //将MQMessage转换成UI能用的Message类型
     NSMutableArray *toMessages = [[NSMutableArray alloc] init];
     for (MQMessage *fromMessage in messagesArray) {
+        // 这里加要单独处理欢迎语头像处理问题
+        if (fromMessage.type == MQMessageTypeWelcome && [fromMessage.agentId intValue] == 0 && fromMessage.messageAvatar.length < 1) {
+            fromMessage.messageAvatar = [MQServiceToViewInterface getEnterpriseConfigAvatar];
+            fromMessage.messageUserName = [MQServiceToViewInterface getEnterpriseConfigName];
+         }
         MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType fromType:fromMessage.fromType] createMessage:fromMessage];
         if (toMessage) {
             [toMessages addObject:toMessage];
@@ -81,7 +107,11 @@
                           delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 {
     [MQManager sendTextMessageWithContent:content completion:^(MQMessage *sendedMessage, NSError *error) {
-        [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        if (error) {
+            [self didSendFailedWithMessage:sendedMessage localMessageId:localMessageId error:error delegate:delegate];
+        } else {
+            [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        }
     }];
 }
 
@@ -90,16 +120,45 @@
                          delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 {
     [MQManager sendImageMessageWithImage:image completion:^(MQMessage *sendedMessage, NSError *error) {
-        [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        if (error) {
+            [self didSendFailedWithMessage:sendedMessage localMessageId:localMessageId error:error delegate:delegate];
+        } else {
+            [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        }
     }];
 }
 
 + (void)sendAudioMessage:(NSData *)audio
                messageId:(NSString *)localMessageId
-                delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
+                delegate:(id<MQServiceToViewInterfaceDelegate>)delegate
 {
     [MQManager sendAudioMessage:audio completion:^(MQMessage *sendedMessage, NSError *error) {
-        [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        if (error) {
+            [self didSendFailedWithMessage:sendedMessage localMessageId:localMessageId error:error delegate:delegate];
+        } else {
+            [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        }
+    }];
+}
+
++ (void)sendVideoMessageWithFilePath:(NSString *)filePath messageId:(NSString *)localMessageId delegate:(id<MQServiceToViewInterfaceDelegate>)delegate {
+    [MQManager sendVideoMessage:filePath completion:^(MQMessage *sendedMessage, NSError *error) {
+        if (error) {
+            [self didSendFailedWithMessage:sendedMessage localMessageId:localMessageId error:error delegate:delegate];
+        } else {
+            [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        }
+    }];
+}
+
++ (void)sendProductCardMessageWithPictureUrl:(NSString *)pictureUrl title:(NSString *)title descripation:(NSString *)descripation productUrl:(NSString *)productUrl salesCount:(long)salesCount messageId:(NSString *)localMessageId delegate:(id<MQServiceToViewInterfaceDelegate>)delegate
+{
+    [MQManager sendProductCardMessageWithPictureUrl:pictureUrl title:title descripation:descripation productUrl:productUrl salesCount:salesCount completion:^(MQMessage *sendedMessage, NSError *error) {
+        if (error) {
+            [self didSendFailedWithMessage:sendedMessage localMessageId:localMessageId error:error delegate:delegate];
+        } else {
+            [self didSendMessage:sendedMessage localMessageId:localMessageId delegate:delegate];
+        }
     }];
 }
 
@@ -113,14 +172,14 @@
               delegate:(id<MQServiceToViewInterfaceDelegate>)delegate
 {
     if (delegate) {
-        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:sendStatus:)]) {
+        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:updateMediaPath:sendStatus:error:)]) {
             MQChatMessageSendStatus sendStatus = MQChatMessageSendStatusSuccess;
             if (sendedMessage.sendStatus == MQMessageSendStatusFailed) {
                 sendStatus = MQChatMessageSendStatusFailure;
             } else if (sendedMessage.sendStatus == MQMessageSendStatusSending) {
                 sendStatus = MQChatMessageSendStatusSending;
             }
-            [delegate didSendMessageWithNewMessageId:sendedMessage.messageId oldMessageId:localMessageId newMessageDate:sendedMessage.createdOn replacedContent:sendedMessage.isSensitive ? sendedMessage.content : nil  sendStatus:sendStatus];
+            [delegate didSendMessageWithNewMessageId:sendedMessage.messageId oldMessageId:localMessageId newMessageDate:sendedMessage.createdOn replacedContent:sendedMessage.isSensitive ? sendedMessage.content : nil updateMediaPath:sendedMessage.content sendStatus:sendStatus error:nil];
         }
     }
 }
@@ -132,8 +191,8 @@
 {
     NSLog(@"美洽SDK: 发送text消息失败\nerror = %@", error);
     if (delegate) {
-        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:sendStatus:)]) {
-            [delegate didSendMessageWithNewMessageId:localMessageId oldMessageId:localMessageId newMessageDate:nil replacedContent:nil sendStatus:MQChatMessageSendStatusFailure];
+        if ([delegate respondsToSelector:@selector(didSendMessageWithNewMessageId:oldMessageId:newMessageDate:replacedContent:updateMediaPath:sendStatus: error:)]) {
+            [delegate didSendMessageWithNewMessageId:localMessageId oldMessageId:localMessageId newMessageDate:nil replacedContent:nil updateMediaPath:nil sendStatus:MQChatMessageSendStatusFailure error:error];
         }
     }
 }
@@ -183,6 +242,10 @@
     return [MQManager haveConversation];
 }
 
++(NSString *)getCurrentConversationID {
+    return [MQManager getCurrentConversationID];
+}
+
 + (void)downloadMediaWithUrlString:(NSString *)urlString
                           progress:(void (^)(float progress))progressBlock
                         completion:(void (^)(NSData *mediaData, NSError *error))completion
@@ -222,6 +285,18 @@
 
 + (void)getEnterpriseConfigInfoWithCache:(BOOL)isLoadCache complete:(void(^)(MQEnterprise *, NSError *))action {
     [MQManager getEnterpriseConfigDataWithCache:isLoadCache complete:action];
+}
+
++ (NSString *)getEnterpriseConfigAvatar {
+    return [MQManager getEnterpriseConfigAvatar];
+}
+
++ (NSString *)getEnterpriseConfigName {
+    return [MQManager getEnterpriseConfigName];
+}
+
++ (BOOL)enableLeaveComment {
+    return [MQManager enableLeaveComment];
 }
 
 #pragma 实例方法
@@ -298,6 +373,10 @@
     [MQChatViewConfig sharedConfig].scheduledAgentId = nil;
     [MQChatViewConfig sharedConfig].scheduledGroupId = nil;
     [MQManager deleteScheduledAgent];
+}
+
++ (void)setScheduledProblem:(NSString *)problem {
+    [MQManager setScheduledProblem:problem];
 }
 
 + (void)setEvaluationLevel:(NSInteger)level
@@ -413,11 +492,21 @@
     [MQManager cancelDownloadForUrl:urlString];
 }
 
++ (BOOL)enableBotEvaluateFeedback {
+    return [MQManager enableBotEvaluateFeedback];
+}
+
 + (void)evaluateBotMessage:(NSString *)messageId
                   isUseful:(BOOL)isUseful
                 completion:(void (^)(BOOL success, NSString *text, NSError *error))completion
 {
     [MQManager evaluateBotMessage:messageId isUseful:isUseful completion:completion];
+}
+
++ (void)collectionBotOperationWithMessageId:(NSString *)messageId
+                             operationIndex:(int)index
+{
+    [MQManager collectionBotOperationWithMessageId:messageId operationIndex:index];
 }
 
 #pragma mark - MQManagerDelegate
@@ -488,8 +577,7 @@
     [MQManager getTicketCategoryComplete:action];
 }
 
-+ (void)submitMessageFormWithMessage:(NSString *)message images:(NSArray *)images clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
-//    [MQManager submitMessageFormWithMessage:message images:images clientInfo:clientInfo completion:completion];
++ (void)submitMessageFormWithMessage:(NSString *)message clientInfo:(NSDictionary<NSString *,NSString *> *)clientInfo completion:(void (^)(BOOL, NSError *))completion {
     [MQManager submitTicketForm:message userInfo:clientInfo completion:^(MQTicket *ticket, NSError *e) {
         if (e) {
             completion(NO, e);
@@ -528,6 +616,18 @@
 
 + (NSError *)checkGlobalError {
     return [MQManager checkGlobalError];
+}
+
++ (void)openMQGroupNotificationServiceWithDelegate:(id<MQGroupNotificationDelegate>)delegate {
+    [MQManager openMQGroupNotificationServiceWithDelegate:delegate];
+}
+
++ (void)insertMQGroupNotificationToConversion:(MQGroupNotification *)notification {
+    [MQManager insertMQGroupNotificationToConversion:notification];
+}
+
++ (BOOL)currentOpenVisitorNoMessage {
+    return [MQManager currentOpenVisitorNoMessage];
 }
 
 @end

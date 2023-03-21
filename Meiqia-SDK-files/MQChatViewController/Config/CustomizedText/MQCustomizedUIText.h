@@ -72,8 +72,6 @@ typedef NS_ENUM(NSUInteger, MQUITextKey) {
     MQUITextKeyPreChatFormMultipleSelectionLabel,
     MQUITextKeyPreChatFormBlankAlertLabel,
     
-    MQUITextKeyQueuePosition,
-    
     //pull refresh
     MQUITextKeyPullRefreshNormal,
     MQUITextKeyPullRfreshTriggered,

@@ -12,11 +12,17 @@
 
 "wait_agent"          = "正在分配客服...";
 
+"waiting_title"       = "排队等待中...";
+
 "not_access_camera"   = "请在系统设置中允许该App访问相机";
 
 "not_access_photos"   = "请在系统设置中允许该App访问相册";
 
 "display_new_message" = "下方有新消息";
+
+"display_video_expired" = "视频已过期";
+
+"display_video_more_than_limit" = "视频超过最大限制400M";
 
 "network_jam"         = "网络不太通畅，请检查网络";
 
@@ -92,22 +98,26 @@
 "file_download_failed" = "下载失败";
 "file_download_downloading" = "下载中...";
 "file_download_complete" = "下载完成";
+"file_upload_limit" = "超过上传最大文件限制";
 "file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ 小时后过期";
 
 "message_tips_send_message_fail_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
 
 "message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
 
-"reply_tip_text"        = "抱歉，当前没有客服在线，您可以给我们 留言";
+"reply_tip_text"        = "抱歉，当前没有客服在线";
+
+"reply_tip_leave"        = "，您可以给我们 留言";
 
 "bot_redirect_tip_text"  = "很抱歉您不满意机器人的回答，您可以尝试 转人工";
 
 "bot_manual_redirect_tip_text" = "您的问题如果需要人工支持，可以 转人工";
 
+"bot_menu_tip_text" = "点击问题或回复对应数字查看答案";
+
+"bot_menu_problem_tip_text" = "常见问题";
+
 "cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
-
-"message_tips_online_failed_listed_in_black_list" = "对不起，当前客服系统暂时无法使用。";
-
 
 "cannot_text_client_is_onlining"  = "正在为您分配客服，请稍后重发。";
 
@@ -129,8 +139,29 @@
 "wechat_placeholder" = "请输入你的微信号";
 "name" = "姓名";
 "name_placeholder" = "请输入姓名";
+"gender" = "性别";
+"age" = "年龄";
+"age_placeholder" = "请输入年龄";
+"weibo" = "微博";
+"weibo_placeholder" = "请输入微博号";
+"address" = "地址";
+"address_placeholder" = "请输入地址";
+"comment" = "备注";
+"comment_placeholder" = "请输入备注";
+"contact" = "联系人";
+"contact_placeholder" = "请输入联系人";
+"man" = "男";
+"woman" = "女";
+"time_placeholder" = "年-月-日";
 
-"wating_in_queue_tip_text" = "请稍等，前面还有%d个访客，您也可以选择给我们 留言";
+"wating_in_queue_tip_number" = "当前等待的人数";
+"wating_in_queue_tip_choice" = "如果等不及，可以选择";
+"wating_in_queue_tip_leave_message" = "给我们留言";
+
+"product_message_sales" = "销量";
+"product_message_check_details" = "查看详情";
+"next_page" = "下一页";
+"last_page" = "上一页";
 
 //询前表单
 "pre_chat_list_title" = "客服支持";
@@ -146,6 +177,9 @@
 "input_content" = "输入消息...";
 // 服务连接中,请稍候
 "service_connectting_wait" = "服务连接中,请稍候...";
+
+"network_connect_error" = "当前网络不可用，请检查网络设置";
+"network_connect_warning" = "当前网络连接中，接收消息可能会有遗漏";
 
 "mq_direct_content" = "接下来由 %@ 为你服务";
 "mq_send" = "发送";

@@ -12,123 +12,119 @@
 #import "MQCellModelProtocol.h"
 #import "MQImageUtil.h"
 #import "MQWebViewBubbleCellModel.h"
+#import "MQTagListView.h"
+#import "MQBundleUtil.h"
+#import "MQTextMessage.h"
 
 @interface MQWebViewBubbleCell()
 
-@property (nonatomic, strong) UIImageView *itemsView;
+@property (nonatomic, strong) UIImageView *bubbleImageView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
-@property (nonatomic, strong) MQEmbededWebView *contentWebView;
-
 @end
 
 @implementation MQWebViewBubbleCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        //初始化头像
+        self.avatarImageView = [[UIImageView alloc] init];
+        self.avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:self.avatarImageView];
-        [self.contentView addSubview:self.itemsView];
-        [self.itemsView addSubview:self.contentWebView];
-        [self layoutUI];
-        [self updateUI:0];
+        //初始化气泡
+        self.bubbleImageView = [[UIImageView alloc] init];
+        self.bubbleImageView.userInteractionEnabled = true;
+        [self.contentView addSubview:self.bubbleImageView];
     }
     return self;
 }
 
 - (void)updateCellWithCellModel:(id<MQCellModelProtocol>)model {
-    if ([model isKindOfClass:[MQWebViewBubbleCellModel class]]) {
-        MQWebViewBubbleCellModel * tempModel = model;
-        __weak typeof(self) wself = self;
-        
-        __weak typeof(tempModel) weakTempModel = tempModel;
-        [tempModel setCellHeight:^CGFloat{
-            __strong typeof (wself) sself = wself;
-            if (weakTempModel.cachedWetViewHeight) {
-                return weakTempModel.cachedWetViewHeight + kMQCellAvatarToVerticalEdgeSpacing + kMQCellAvatarToVerticalEdgeSpacing;
+    if (![model isKindOfClass:[MQWebViewBubbleCellModel class]]) {
+        NSAssert(NO, @"传给MQWebViewBubbleCell的Model类型不正确");
+        return ;
+    }
+    MQWebViewBubbleCellModel * cellModel = model;
+    
+    //刷新头像
+    if (cellModel.avatarImage) {
+        self.avatarImageView.image = cellModel.avatarImage;
+    }
+    self.avatarImageView.frame = cellModel.avatarFrame;
+    if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
+        self.avatarImageView.layer.masksToBounds = YES;
+        self.avatarImageView.layer.cornerRadius = cellModel.avatarFrame.size.width/2;
+    }
+    
+    //刷新气泡
+    self.bubbleImageView.image = cellModel.bubbleImage;
+    self.bubbleImageView.frame = cellModel.bubbleFrame;
+    
+    CGFloat tagViewHeight = 0;
+    
+    for (UIView *tempView in self.contentView.subviews) {
+        if ([tempView isKindOfClass:[MQTagListView class]]) {
+            [tempView removeFromSuperview];
+        }
+    }
+    [self.bubbleImageView.subviews.firstObject removeFromSuperview];
+    [self.bubbleImageView addSubview:cellModel.contentWebView];
+    
+    [cellModel.contentWebView setTappedLink:^(NSURL *url) {
+        if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {
+            if ([url.absoluteString rangeOfString:@"tel:"].location != NSNotFound) {
+                // 和后台预定的是 tel:182xxxxxxxxx
+                NSString *path = [url.absoluteString stringByReplacingOccurrencesOfString:@"tel:" withString:@"tel://"];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path]];
+            } else {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]]];
             }
-            return sself.viewHeight;
-        }];
-        
-        [tempModel setAvatarLoaded:^(UIImage *avatar) {
-            __strong typeof (wself) sself = wself;
-            sself.avatarImageView.image = avatar;
-        }];
-        
-        [self.contentWebView loadHTML:tempModel.content WithCompletion:^(CGFloat height) {
-            __strong typeof (wself) sself = wself;
-            if (tempModel.cachedWetViewHeight != height) {
-                [sself updateUI:height];
-                tempModel.cachedWetViewHeight = height;
-                [sself.chatCellDelegate reloadCellAsContentUpdated:sself messageId:[tempModel getCellMessageId]];
-            }
-        }];
-        
-        [self.contentWebView setTappedLink:^(NSURL *url) {
+        } else {
             [[UIApplication sharedApplication] openURL:url];
-        }];
-        
-        if (tempModel.cachedWetViewHeight > 0) {
-            [self updateUI:tempModel.cachedWetViewHeight];
         }
-        
-        [tempModel bind];
-    }
-}
-
-- (void)layoutUI {
-    [self.avatarImageView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing)];
-    [self.itemsView align:ViewAlignmentTopLeft relativeToPoint:CGPointMake(self.avatarImageView.viewRightEdge + kMQCellAvatarToBubbleSpacing, self.avatarImageView.viewY)];
-    self.itemsView.viewWidth = self.contentView.viewWidth - kMQCellBubbleMaxWidthToEdgeSpacing - self.avatarImageView.viewRightEdge;
+    }];
     
-    self.contentWebView.viewWidth = self.itemsView.viewWidth - 8;
-    self.contentWebView.viewX = 8;
-}
+    if (cellModel.cacheTagListView) {
+        tagViewHeight = cellModel.cacheTagListView.viewHeight + kMQCellBubbleToIndicatorSpacing;
+        cellModel.cacheTagListView.frame = CGRectMake(CGRectGetMinX(self.bubbleImageView.frame), CGRectGetMaxY(self.bubbleImageView.frame) + kMQCellBubbleToIndicatorSpacing, cellModel.cacheTagListView.bounds.size.width, cellModel.cacheTagListView.bounds.size.height);
+        [self.contentView addSubview:cellModel.cacheTagListView];
+        
+        NSArray *cacheTags = [[NSArray alloc] initWithArray:cellModel.cacheTags];
+        __weak typeof(self) weakSelf = self;
+        __weak typeof(cellModel) weakTempModel = cellModel;
 
-- (void)updateUI:(CGFloat)webContentHeight {
-    CGFloat bubbleHeight = MAX(self.avatarImageView.viewHeight, webContentHeight);
+        cellModel.cacheTagListView.mqTagListSelectedIndex = ^(NSInteger index) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            MQMessageBottomTagModel * model = cacheTags[index];
+            switch (model.tagType) {
+                case MQMessageBottomTagTypeCopy:
+                    [[UIPasteboard generalPasteboard] setString:model.value];
+                    if (strongSelf.chatCellDelegate) {
+                        if ([strongSelf.chatCellDelegate respondsToSelector:@selector(showToastViewInCell:toastText:)]) {
+                            [strongSelf.chatCellDelegate showToastViewInCell:strongSelf toastText:[MQBundleUtil localizedStringForKey:@"save_text_success"]];
+                        }
+                    }
+                    break;
+                case MQMessageBottomTagTypeCall:
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", model.value]]];
+                    break;
+                case MQMessageBottomTagTypeLink:
+                    if ([model.value rangeOfString:@"://"].location == NSNotFound) {
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", model.value]]];
+                    } else {
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:model.value]];
+                    }
+                    break;
+                default:
+                    break;
+            }
+            
+            if ([strongSelf.chatCellDelegate respondsToSelector:@selector(collectionOperationIndex:messageId:)]) {
+                [strongSelf.chatCellDelegate collectionOperationIndex:(int)index messageId:[weakTempModel getCellMessageId]];
+            }
+            
+        };
+    }
     
-    self.contentWebView.viewHeight = webContentHeight;
-    self.itemsView.viewHeight = bubbleHeight;
-    self.contentView.viewHeight = self.itemsView.viewBottomEdge + kMQCellAvatarToVerticalEdgeSpacing;
-    self.viewHeight = self.contentView.viewHeight;
-}
-
-#pragma lazy
-
-- (MQEmbededWebView *)contentWebView {
-    if (!_contentWebView) {
-        _contentWebView = [MQEmbededWebView new];
-        _contentWebView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    }
-    return _contentWebView;
-}
-
-- (UIImageView *)itemsView {
-    if (!_itemsView) {
-        _itemsView = [UIImageView new];
-        _itemsView.userInteractionEnabled = true;
-        UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
-        if ([MQChatViewConfig sharedConfig].incomingBubbleColor) {
-            bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].incomingBubbleColor];
-        }
-        bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
-        _itemsView.image = bubbleImage;
-        _itemsView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    }
-    return _itemsView;
-}
-
-- (UIImageView *)avatarImageView {
-    if (!_avatarImageView) {
-        _avatarImageView = [[UIImageView alloc] init];
-        _avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
-        _avatarImageView.viewSize = CGSizeMake(kMQCellAvatarDiameter, kMQCellAvatarDiameter);
-        _avatarImageView.image = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
-        if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
-            _avatarImageView.layer.masksToBounds = YES;
-            _avatarImageView.layer.cornerRadius = _avatarImageView.viewSize.width/2;
-        }
-    }
-    return _avatarImageView;
 }
 
 @end

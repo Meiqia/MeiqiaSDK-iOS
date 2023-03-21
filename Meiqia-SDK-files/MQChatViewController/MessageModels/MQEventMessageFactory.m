@@ -88,6 +88,12 @@
             eventType = MQChatEventTypeWithdrawMsg;
             break;
         }
+        case MQMessageActionRedirectFail:
+        {
+            eventContent = @"转人工失败";
+            eventType = MQChatEventTypeRedirectFail;
+            break;
+        }
         default:
             break;
     }
@@ -100,6 +106,7 @@
     toMessage.content = eventContent;
     toMessage.userName = plainMessage.agent.nickname;
     toMessage.cardData = plainMessage.cardData;
+    toMessage.conversionId = plainMessage.conversationId;
     
     if (plainMessage.action == MQMessageActionListedInBlackList) {
         toMessage.eventType = MQChatEventTypeBackList;

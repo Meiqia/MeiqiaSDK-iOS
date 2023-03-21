@@ -38,11 +38,14 @@
 #import "MQToolUtil.h"
 #import "MQChatViewManager.h"
 #import <MeiQiaSDK/MQManager.h>
-#import "XLPInputView.h"
+#import "MEIQIA_InputView.h"
 #import "MQCellModelProtocol.h"
+#import "MQVideoPlayerViewController.h"
+#import "MQNotificationManager.h"
+
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQBottomBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate,XLPInputViewDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQBottomBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate,MEIQIA_InputViewDelegate>
 
 @property(nonatomic, strong)MQChatViewService *chatViewService;
 
@@ -58,21 +61,22 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @property (nonatomic, strong) MQKeyboardController *keyboardView;
 @property (nonatomic, strong) MQRecordView *recordView;
 @property (nonatomic, strong) MQRecorderView *displayRecordView;//只用来显示
+@property (nonatomic, assign) bool sendVideoMsgStatus;
+
+@property (nonatomic, assign) BOOL isFirstScheduleClient;
 
 @end
 
 @implementation MQChatViewController {
     MQChatViewConfig *chatViewConfig;
     MQChatViewTableDataSource *tableDataSource;
-    BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
+    BOOL isMQSocketFailed;  //socket通信没有连接上
     UIStatusBarStyle previousStatusBarStyle;//当前statusBar样式
     BOOL previousStatusBarHidden;   //调出聊天视图界面前是否隐藏 statusBar
     NSTimeInterval sendTime;        //发送时间，用于限制发送频率
     UIView *translucentView;        //loading 的半透明层
     UIActivityIndicatorView *activityIndicatorView; //loading
-    
-    //xlp  是否开启访客无消息过滤的标志
-    BOOL openVisitorNoMessageBool; // 默认值 在presentUI里分2种情况初始化 在发送各种消息前检测 若为真 打开 则需手动上线  若为假 则不做操作
+    UILabel *networkStatusLable;        //网络链接不可用的提示Label
     
     BOOL shouldSendInputtingMessageToServer;
     BOOL needToBotttom;
@@ -85,7 +89,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.chatViewService setCurrentInputtingText:[(MQTabInputContentView *)self.bottomBar.contentView textField].text];
     [self closeMeiqiaChatView];
     [MQCustomizedUIText reset];
-
+    [MQServiceToViewInterface completeChat];
+    [MQServiceToViewInterface insertMQGroupNotificationToConversion:nil];
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -122,7 +127,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
 #ifdef INCLUDE_MEIQIA_SDK
     //[self updateNavBarTitle:[MQBundleUtil localizedStringForKey:@"wait_agent"]];
-    isMQCommunicationFailed = NO;
+    isMQSocketFailed = NO;
     [self addObserver];
 #endif
     
@@ -136,13 +141,16 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     
     shouldSendInputtingMessageToServer = YES;
     
-
+    if (![MQManager obtainNetIsReachable]) {
+        [self showNetworkStatusViewWithText:[MQBundleUtil localizedStringForKey:@"network_connect_error"]];
+    }
 }
 
 - (void)presentUI {
     
+    __weak typeof(self) weakSelf = self;
     [MQPreChatFormListViewController usePreChatFormIfNeededOnViewController:self compeletion:^(NSDictionary *userInfo){
-        
+
         // 询前表单界面返回的数据，如果未进入表单，则为空,如果进入表单则userInfo为表单提交信息
         /**
            {
@@ -160,64 +168,21 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             [MQChatViewConfig sharedConfig].scheduledGroupId = target;
         }
         if ([menu length] > 0) {
+            [weakSelf.chatViewService selectedFormProblem:menu];
             NSMutableArray *m = [[MQChatViewConfig sharedConfig].preSendMessages mutableCopy] ?: [NSMutableArray new];
             [m addObject:menu];
             [MQChatViewConfig sharedConfig].preSendMessages = m;
         }
         // TODO: [MQServiceToViewInterface prepareForChat]也会初始化企业配置，这里会导致获取企业配置的接口调用两次,APP第一次初始化时会调3次
         [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:YES complete:^(MQEnterprise *enterprise, NSError *e) {
-            
-            // warning:用之前的绑定的clientId上线,防止出现排队现象
-            // 企业配置字段scheduler_after_client_send_msg：客户（访客）是否开启无响应时消息
-            if (enterprise.configInfo.isScheduleAfterClientSendMessage && ![MQServiceToViewInterface haveConversation]) {
-                // 设置head title
-                [self updateNavTitleWithAgentName:enterprise.configInfo.public_nickname ?: @"官方客服" agentStatus:MQChatAgentStatusNone];
-              
-                // 设置欢迎语 设置企业头像
-                NSString *welcomeStr = enterprise.configInfo.enterpriseIntro;
-                NSString *str = [welcomeStr stringByReplacingOccurrencesOfString:@" " withString:@""];
-                if (enterprise.configInfo.enterpriseIntro && str.length > 0) {
-                    
-                    NSDictionary *accessory = @{
-                        @"summary":@"",
-                        @"thumbnail":@"",
-                        @"content":enterprise.configInfo.enterpriseIntro ?: @"【系统消息】您好，请问您有什么问题?"
-                    };
-                    MQRichTextMessage *message = [[MQRichTextMessage alloc] initWithDictionary:accessory];
-                    message.fromType = MQChatMessageIncoming;
-                    message.date = [NSDate new];
-                    message.userName = enterprise.configInfo.public_nickname;
-                    message.userAvatarPath = enterprise.configInfo.avatar;
-                    message.sendStatus = MQChatMessageSendStatusSuccess;
-                    message.content = enterprise.configInfo.enterpriseIntro;
-                    MQWebViewBubbleCellModel *cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewService.chatViewWidth delegate:(id <MQCellModelDelegate>)self.chatViewService];
-                    
-                    [self.chatViewService addCellModelAndReloadTableViewWithModel:cellModel];
-                }
-                
-                
-                // 加载历史消息
-                [self.chatViewService startGettingHistoryMessages];
-                
-                // 注册通知
-                // TODO: 这个通知什么时候回调（客服离开、隐身、结束对话都不会触发）
-                [MQManager addStateObserverWithBlock:^(MQState oldState, MQState newState, NSDictionary *value, NSError *error) {
-                    if (newState == MQStateUnallocatedAgent) { // 离线
-//                        [MQManager setClientOffline];
-                    }
-                } withKey:@"MQChatViewController"];
-                
-                self->openVisitorNoMessageBool = YES;
-                
-            } else { // 如果未开启，直接让用户上线
-                self->openVisitorNoMessageBool = NO;
-                [self.chatViewService setClientOnline];
-            }
+            weakSelf.sendVideoMsgStatus = enterprise.configInfo.videoMsgStatus;
+            weakSelf.isFirstScheduleClient = YES;
+            [weakSelf.chatViewService setClientOnline];
         }];
     } cancle:^{
         //讯前表单 左返回按钮
-        [self dismissViewControllerAnimated:NO completion:^{
-            [self dismissChatViewController];
+        [weakSelf dismissViewControllerAnimated:NO completion:^{
+            [weakSelf dismissChatViewController];
         }];
     }];
     
@@ -231,10 +196,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
     
     [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
-    
-    [MQServiceToViewInterface completeChat];
-    
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -284,6 +245,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)addObserver {
 #ifdef INCLUDE_MEIQIA_SDK
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveRefreshOutgoingAvatarNotification:) name:MQChatTableViewShouldRefresh object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveSocketStatusChangeNotification:) name:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveSocketConnectFailedNotification:) name:MQ_COMMUNICATION_FAILED_NOTIFICATION object:nil];
+    if (![MQNotificationManager sharedManager].handleNotification) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveClickGroupNotification:) name:MQ_CLICK_GROUP_NOTIFICATION object:nil];
+    }
 #endif
 }
 
@@ -316,6 +282,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     self.chatTableView.estimatedRowHeight = 0;
     self.chatTableView.estimatedSectionFooterHeight = 0;
     self.chatTableView.estimatedSectionHeaderHeight = 0;
+    if (@available(iOS 15.0, *)) {
+        self.chatTableView.sectionHeaderTopPadding = 0;
+    }
     
     if (@available(iOS 11.0, *)) {
         self.chatTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
@@ -357,7 +326,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
    
 
     
-    self.constraintInputBarBottom = [NSLayoutConstraint constraintWithItem:self.view attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.bottomBar attribute:(NSLayoutAttributeBottom) multiplier:1 constant: (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX > 0 ? 34 : 0)];
+    self.constraintInputBarBottom = [NSLayoutConstraint constraintWithItem:self.view attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.bottomBar attribute:(NSLayoutAttributeBottom) multiplier:1 constant: (MQToolUtil.kMQObtainDeviceVersionIsIphoneX > 0 ? 34 : 0)];
     
     [constrains addObject:self.constraintInputBarBottom];
     [self.view addConstraints:constrains];
@@ -508,6 +477,16 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     return [self.recordView isRecording];
 }
 
+- (void)needToDisplayLeaveComment:(BOOL)display {
+    if (self.isFirstScheduleClient && display) {
+        self.isFirstScheduleClient = NO;
+        [self.navigationController dismissViewControllerAnimated:NO completion:nil];
+        MQMessageFormViewManager *formManager = [[MQMessageFormViewManager alloc] init];
+        [formManager pushMQMessageFormViewControllerInViewController:self.navigationController.presentingViewController];
+    }
+    self.isFirstScheduleClient = NO;
+}
+
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle agentStatus:(MQChatAgentStatus)agentStatus{
     
     [self updateNavTitleWithAgentName:viewTitle agentStatus:agentStatus];
@@ -544,8 +523,6 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
         }
     }
-    // 接收新消息滚动到底部
-    [self chatTableViewScrollToBottomWithAnimated: YES];
 }
 
 - (void)showToastViewWithContent:(NSString *)content {
@@ -555,7 +532,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #pragma mark - MQInputBarDelegate
 
 
-- (BOOL)sendMessagePrepareWithText:(NSString *)text image:(UIImage *)image andAMRFilePath:(NSString *)filePath {
+- (BOOL)sendMessagePrepareWithText:(NSString *)text image:(UIImage *)image andAMRFilePath:(NSString *)filePath andVideoFilePath:(NSString *)videoPath {
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
     if (self.chatViewService.clientStatus == MQStateAllocatingAgent || [NSDate timeIntervalSinceReferenceDate] - sendTime < 1) {
         NSString *alertText = self.chatViewService.clientStatus == MQStateAllocatingAgent ? @"cannot_text_client_is_onlining" : @"send_to_fast";
@@ -564,39 +541,29 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         return NO;
     }
     
-    if (openVisitorNoMessageBool) {
+    if (self.chatViewService.clientStatus == MQStateUnallocatedAgent) {
         [self.view endEditing:YES];
-        [self.chatViewService setClientOnline];
-        
-        if (text) {
-            [self.chatViewService cacheSendText:text];
-        } else if (image) {
-            [self.chatViewService cacheSendImage:image];
-        } else if (filePath) {
-            [self.chatViewService cacheSendAMRFilePath:filePath];
-        }
-        
-        openVisitorNoMessageBool = NO;
-    }else{
-        if (text) {
-            [self.chatViewService sendTextMessageWithContent:text];
-        } else if (image) {
-            [self.chatViewService sendImageMessageWithImage:image];
-        } else if (filePath) {
-            [self.chatViewService sendVoiceMessageWithAMRFilePath:filePath];
-        }
-        sendTime = [NSDate timeIntervalSinceReferenceDate];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                   [self chatTableViewScrollToBottomWithAnimated:YES];
-               });
     }
+    if (text) {
+        [self.chatViewService sendTextMessageWithContent:text];
+    } else if (image) {
+        [self.chatViewService sendImageMessageWithImage:image];
+    } else if (filePath) {
+        [self.chatViewService sendVoiceMessageWithAMRFilePath:filePath];
+    } else if (videoPath) {
+        [self.chatViewService sendVideoMessageWithFilePath:videoPath];
+    }
+    sendTime = [NSDate timeIntervalSinceReferenceDate];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self chatTableViewScrollToBottomWithAnimated:YES];
+    });
     return YES;
 }
 
 // 发送文本消息
 -(BOOL)sendTextMessage:(NSString*)text {
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
-    return [self sendMessagePrepareWithText:text image:nil andAMRFilePath:nil];
+    return [self sendMessagePrepareWithText:text image:nil andAMRFilePath:nil andVideoFilePath:nil];
 }
 
 -(void)sendImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
@@ -618,11 +585,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     sendTime = [NSDate timeIntervalSinceReferenceDate];
     self.navigationController.delegate = self;
     //兼容ipad打不开相册问题，使用队列延迟
+//    videoExportPreset
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.sourceType               = (int)sourceType;
+        picker.mediaTypes               = self.sendVideoMsgStatus ? @[@"public.movie",@"public.image"] : @[@"public.image"];
+        picker.videoQuality             = UIImagePickerControllerQualityTypeHigh;
         picker.delegate                 = (id)self;
-        picker.modalPresentationStyle = UIModalPresentationFullScreen;
+        picker.allowsEditing            = [MQChatViewConfig sharedConfig].enablePhotoLibraryEdit;
+        if (@available(iOS 11.0, *)) {
+            picker.videoExportPreset    = AVAssetExportPresetPassthrough;
+        }
+        picker.modalPresentationStyle   = UIModalPresentationFullScreen;
         [self presentViewController:picker animated:YES completion:nil];
     }];
 }
@@ -715,7 +689,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath {
 //    [self.chatViewService sendVoiceMessageWithAMRFilePath:filePath];
 //    [self chatTableViewScrollToBottomWithAnimated:true];
-    [self sendMessagePrepareWithText:nil image:nil andAMRFilePath:filePath];
+    [self sendMessagePrepareWithText:nil image:nil andAMRFilePath:filePath andVideoFilePath:nil];
 }
 
 - (void)didUpdateVolumeInRecordView:(UIView *)recordView volume:(CGFloat)volume {
@@ -726,15 +700,32 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 -(void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     NSString *type          = [info objectForKey:UIImagePickerControllerMediaType];
     //当选择的类型是图片
-    if (![type isEqualToString:@"public.image"]) {
+    if ([type isEqualToString:@"public.image"]) {
+        // 图片
+        UIImage *image          =  [MQImageUtil resizeImage:[MQImageUtil fixrotation:[info objectForKey:[MQChatViewConfig sharedConfig].enablePhotoLibraryEdit ? UIImagePickerControllerEditedImage : UIImagePickerControllerOriginalImage]]maxSize:CGSizeMake(1000, 1000)];
+        [picker dismissViewControllerAnimated:YES completion:^{
+    //        [self.chatViewService sendImageMessageWithImage:image];
+    //        [self chatTableViewScrollToBottomWithAnimated:true];
+            [self sendMessagePrepareWithText:nil image:image andAMRFilePath:nil andVideoFilePath:nil];
+        }];
         return;
+    } else if ([type isEqualToString:@"public.movie"]) {
+        // 视频
+        NSURL *videoUrl = [info objectForKey:UIImagePickerControllerMediaURL];
+        if (videoUrl) {
+            float videoSize = [MQChatFileUtil getfileSizeAtPath:[videoUrl path]];
+            if (videoSize > 400 * 1024 * 1024) {
+                [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_video_more_than_limit"] duration:2 window:[UIApplication sharedApplication].keyWindow];
+                [MQChatFileUtil deleteFileAtPath:[videoUrl path]];
+                return;
+            }
+            NSString *resultPath = [MQChatFileUtil saveVideoSourceWith:videoUrl];
+            if (resultPath) {
+                [self sendMessagePrepareWithText:nil image:nil andAMRFilePath:nil andVideoFilePath:resultPath];
+            }
+        }
     }
-    UIImage *image          =  [MQImageUtil resizeImage:[MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]]maxSize:CGSizeMake(1000, 1000)];
-    [picker dismissViewControllerAnimated:YES completion:^{
-//        [self.chatViewService sendImageMessageWithImage:image];
-//        [self chatTableViewScrollToBottomWithAnimated:true];
-        [self sendMessagePrepareWithText:nil image:image andAMRFilePath:nil];
-    }];
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
@@ -796,6 +787,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self.chatViewService evaluateBotAnswer:isUseful messageId:messageId];
 }
 
+- (void)collectionOperationIndex:(int)index messageId:(NSString *)messageId {
+    [self.chatViewService collectionOperationIndex:index messageId:messageId];
+}
+
 - (void)didTapMenuWithText:(NSString *)menuText {
     //去掉 menu 的序号后，主动发送该 menu 消息
     NSRange orderRange = [menuText rangeOfString:@". "];
@@ -807,8 +802,15 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [self chatTableViewScrollToBottomWithAnimated:YES];
 }
 
+- (void)didTapGuideWithText:(NSString *)guideText {
+    [self.chatViewService sendTextMessageWithContent:guideText];
+    [self chatTableViewScrollToBottomWithAnimated:YES];
+}
+
 - (void)didTapReplyBtn {
-    [self showMQMessageForm];
+    if ([MQServiceToViewInterface enableLeaveComment]) {
+        [self showMQMessageForm];
+    }
 }
 
 - (void)didTapBotRedirectBtn {
@@ -818,6 +820,20 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)didTapMessageInCell:(UITableViewCell *)cell {
     NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
     [self.chatViewService didTapMessageCellAtIndex:indexPath.row];
+}
+
+- (void)showPlayVideoControllerWith:(NSString *)videoLocalPath serverPath:(NSString *)videoServer {
+    MQVideoPlayerViewController *playerVC = [[MQVideoPlayerViewController alloc] initPlayerWithLocalPath:videoLocalPath serverPath:videoServer];
+    [self presentViewController:playerVC animated:YES completion:nil];
+}
+
+- (void)didTapProductCard:(NSString *)productUrl {
+    
+    if (chatViewConfig.productCardCallBack) {
+        chatViewConfig.productCardCallBack(productUrl);
+    } else {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:productUrl] options:@{} completionHandler:nil];
+    }
 }
 
 #pragma MQEvaluationViewDelegate
@@ -855,7 +871,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     UIColor *color = [MQChatViewConfig sharedConfig].navTitleColor ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSForegroundColorAttributeName];
     titleLabel.font = font;
     titleLabel.textColor = color;
-    CGFloat titleHeight = [MQStringSizeUtil getHeightForText:agentName withFont:titleLabel.font andWidth:self.view.frame.size.width];
+    CGFloat titleHeight = [MQStringSizeUtil getHeightForText:@"客服" withFont:titleLabel.font andWidth:self.view.frame.size.width];
     CGFloat titleWidth = [MQStringSizeUtil getWidthForText:agentName withFont:titleLabel.font andHeight:titleHeight];
     UIImageView *statusImageView = [UIImageView new];
     switch (agentStatus) {
@@ -875,16 +891,49 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if ([titleLabel.text isEqualToString:[MQBundleUtil localizedStringForKey:@"no_agent_title"]] || [MQServiceToViewInterface waitingInQueuePosition] > 0) {
         statusImageView.image = nil;
     }
+    CGFloat maxTitleViewWidth = [[UIScreen mainScreen] bounds].size.width - 2 * 50;
+    CGFloat statusImageWidth = statusImageView.image.size.width;
+    CGFloat titleLabelOriginX = statusImageWidth + 8;
+    CGFloat titleLabelWidth =  titleLabelOriginX + titleWidth > maxTitleViewWidth ? maxTitleViewWidth - (statusImageView.image.size.width + 8) : titleWidth;
     
-    statusImageView.frame = CGRectMake(0, titleHeight/2 - statusImageView.image.size.height/2, statusImageView.image.size.width, statusImageView.image.size.height);
-    titleLabel.frame = CGRectMake(statusImageView.frame.size.width + 8, 0, titleWidth, titleHeight);
-    titleView.frame = CGRectMake(0, 0, titleLabel.frame.origin.x + titleLabel.frame.size.width, titleHeight);
+    statusImageView.frame = CGRectMake(0, titleHeight/2 - statusImageView.image.size.height/2, statusImageWidth, statusImageView.image.size.height);
+    titleLabel.frame = CGRectMake(titleLabelOriginX, 0, titleLabelWidth, titleHeight);
+    titleView.frame = CGRectMake(0, 0, titleLabelOriginX + titleLabelWidth, titleHeight);
     [titleView addSubview:statusImageView];
     [titleView addSubview:titleLabel];
     self.navigationItem.titleView = titleView;
 }
 
+- (void)didReceiveSocketConnectFailedNotification:(NSNotification *)notification {
+    isMQSocketFailed = YES;
+    if (![MQManager obtainNetIsReachable]) {
+        [self showNetworkStatusViewWithText:[MQBundleUtil localizedStringForKey:@"network_connect_error"]];
+    } else {
+        [self showNetworkStatusViewWithText:[MQBundleUtil localizedStringForKey:@"network_connect_warning"]];
+    }
+}
 
+- (void)didReceiveClickGroupNotification:(NSNotification *)notification {
+    [self.chatViewService setClientOnline];
+}
+
+- (void)didReceiveSocketStatusChangeNotification:(NSNotification *)notification {
+    if (notification.userInfo) {
+        NSString *status = [notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE];
+        id reason = [notification.userInfo objectForKey:@"reason"];
+        if ([status isEqualToString:SOCKET_STATUS_CONNECTED]) {
+            isMQSocketFailed = NO;
+            [self dismissNetworkStatusView];
+        } else if ([status isEqualToString:SOCKET_STATUS_DISCONNECTED]) {
+            isMQSocketFailed = YES;
+            if (![MQManager obtainNetIsReachable]) {
+                                [self showNetworkStatusViewWithText:[MQBundleUtil localizedStringForKey:@"network_connect_error"]];
+            } else if (reason && ![reason isEqual:[NSNull null]] && [@"autoconnect fail" isEqualToString:reason]) {
+                                [self showNetworkStatusViewWithText:[MQBundleUtil localizedStringForKey:@"network_connect_warning"]];
+            }
+        }
+    }
+}
 
 - (void)didReceiveRefreshOutgoingAvatarNotification:(NSNotification *)notification {
     if ([notification.object isKindOfClass:[UIImage class]]) {
@@ -971,7 +1020,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (BOOL)handleSendMessageAbility {
     
     //xlp 检测网络 排除断网状态还能发送信息
-    if (![MQManager obtainNetIsReachable]) {
+    if (![MQManager obtainNetIsReachable] || isMQSocketFailed) {
+        [[(MQTabInputContentView *)self.bottomBar.contentView textField] resignFirstResponder];
         [MQToast showToast:[MQBundleUtil localizedStringForKey:@"meiqia_communication_failed"] duration:2.0 window:self.view];
         return NO;
     }
@@ -1027,10 +1077,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             [self.bottomBar resignFirstResponder];
         }else{
             
-            CGFloat emojiViewHeight = MQToolUtil.kXlpObtainDeviceVersionIsIphoneX ? (emojikeyboardHeight + 34) : emojikeyboardHeight;
+            CGFloat emojiViewHeight = MQToolUtil.kMQObtainDeviceVersionIsIphoneX ? (emojikeyboardHeight + 34) : emojikeyboardHeight;
             
-            XLPInputView * mmView = [[XLPInputView alloc]initWithFrame:CGRectMake(0,0, self.view.frame.size.width, emojiViewHeight)];
-            mmView.xlpInputViewDelegate = self;
+            MEIQIA_InputView * mmView = [[MEIQIA_InputView alloc]initWithFrame:CGRectMake(0,0, self.view.frame.size.width, emojiViewHeight)];
+            mmView.inputViewDelegate = self;
             self.bottomBar.inputView = mmView;
             
             [self.bottomBar becomeFirstResponder];
@@ -1054,7 +1104,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (BOOL)inputContentViewShouldBeginEditing:(MQInputContentView *)inputContentView {
     
     //xlp 检测网络 排除断网状态还能发送信息
-    if (![MQManager obtainNetIsReachable]) {
+    if (![MQManager obtainNetIsReachable] || isMQSocketFailed) {
         [MQToast showToast:[MQBundleUtil localizedStringForKey:@"meiqia_communication_failed"] duration:2.0 window:self.view];
         return NO;
     }
@@ -1086,7 +1136,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)changeInputBarBottomLayoutGuideConstant:(CGFloat)height {
     //xlp 收回键盘 时 减去 34 todo
-    if (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX ) {
+    if (MQToolUtil.kMQObtainDeviceVersionIsIphoneX ) {
         if (height == 0) {
             height = 34;
             
@@ -1105,15 +1155,15 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 #pragma mark - keyboard controller delegate
 - (void)keyboardController:(MQKeyboardController *)keyboardController keyboardChangeFrame:(CGRect)keyboardFrame isImpressionOfGesture:(BOOL)isImpressionOfGesture {
     
-    CGFloat viewHeight = self.navigationController.navigationBar.translucent ? CGRectGetMaxY(self.view.frame) : CGRectGetMaxY(self.view.frame) - MQToolUtil.kXlpObtainNaviHeight;
+    CGFloat viewHeight = self.navigationController.navigationBar.translucent ? CGRectGetMaxY(self.view.frame) : CGRectGetMaxY(self.view.frame) - MQToolUtil.kMQObtainNaviHeight;
     
     CGFloat heightFromBottom = MAX(0.0, viewHeight - CGRectGetMinY(keyboardFrame));
     
     if (!isImpressionOfGesture) {
         
-        if (MQToolUtil.kXlpObtainDeviceVersionIsIphoneX ) {
+        if (MQToolUtil.kMQObtainDeviceVersionIsIphoneX ) {
             
-            CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant + 34;
+            CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant + (heightFromBottom == 0 ? 34 : 0);
             if (diff < self.chatTableView.contentInset.top + self.chatTableView.contentSize.height) {
                 self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
             }
@@ -1145,18 +1195,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 #pragma mark - emoji delegate and datasource
 
-- (void)XLPInputViewObtainEmojiStr:(NSString *)emojiStr{
+- (void)MQInputViewObtainEmojiStr:(NSString *)emojiStr{
     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.bottomBar.contentView textField];
     textField.text = [textField.text stringByAppendingString:emojiStr];
 }
-- (void)XLPInputViewDeleteEmoji{
+- (void)MQInputViewDeleteEmoji{
     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.bottomBar.contentView textField];
     if (textField.text.length > 0) {
         NSRange lastRange = [textField.text rangeOfComposedCharacterSequenceAtIndex:([textField.text length] - 1)];
         textField.text = [textField.text stringByReplacingCharactersInRange:lastRange withString:@""];
     }
 }
-- (void)XLPInputViewSendEmoji{
+- (void)MQInputViewSendEmoji{
     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.bottomBar.contentView textField];
     if (textField.text.length > 0) {
         
@@ -1293,33 +1343,52 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 
+#pragma mark - network status view
 
-//xlp 测试可删除
-- (void)closeSocketlalala{
+/**
+ 显示网络链接错误的提示
+ */
+- (void)showNetworkStatusViewWithText:(NSString *)content {
+    if (!networkStatusLable) {
+        networkStatusLable = [[UILabel alloc] initWithFrame:CGRectZero];
+        networkStatusLable.textAlignment = NSTextAlignmentCenter;
+        networkStatusLable.backgroundColor = [UIColor redColor];
+        [self.view addSubview:networkStatusLable];
+        [self.view bringSubviewToFront:networkStatusLable];
+        networkStatusLable.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addConstraints:@[
+        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:[MQChatDeviceUtil getDeviceNavRect:self].size.height + [MQChatDeviceUtil getDeviceStatusBarRect].size.height],
+        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0],
+        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0],
+        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30],
+        ]];
+    }
     
-    //断掉链接
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"xlpCloseSocketNoti" object:nil];
+    UIImage *iconImage = [content isEqualToString:[MQBundleUtil localizedStringForKey:@"network_connect_error"]] ? [MQAssetUtil networkStatusError] : [MQAssetUtil networkStatusWarning];
+    UIColor *statusBackgroundColor = [content isEqualToString:[MQBundleUtil localizedStringForKey:@"network_connect_error"]] ? [UIColor mq_colorWithHexString:@"#FFECEA"] : [UIColor mq_colorWithHexString:@"#FFF5E6"];
     
-    [MQManager closeMeiqiaService];
+    NSMutableAttributedString * mutableAttr = [[NSMutableAttributedString alloc] init];
+    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+    attachment.image = iconImage;
+    attachment.bounds = CGRectMake(0, -2, 15, 15);
+    [mutableAttr appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
+    
+    [mutableAttr appendAttributedString:[
+                                         [NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",content] attributes:@{NSFontAttributeName :[UIFont systemFontOfSize:14.0],
+                                                                                                                        NSForegroundColorAttributeName : [UIColor grayColor],}]];
+    
+    networkStatusLable.attributedText = mutableAttr;
+    networkStatusLable.hidden = NO;
+    networkStatusLable.backgroundColor = statusBackgroundColor;
 }
 
-
-////xlp 在对话规则 打开过滤无消息访客按钮后 刚开始对话 客户未能上线 状态为 初始化
-//- (void)checkOpenVisitorNoMessageBool{
-//
-//    if (openVisitorNoMessageBool) {
-//        [MQServiceToViewInterface prepareForChat]; //初始化
-//        [self.view endEditing:YES];
-//
-//
-//        [self.chatViewService setClientOnline];
-//        //延时2秒 获取所有的历史记录
-//        [self.chatViewService onceLoadHistoryAndRefresh:3];
-//
-//        openVisitorNoMessageBool = NO;
-//
-//    }
-//}
-
+/**
+ 隐藏网络链接错误的提示
+ */
+- (void)dismissNetworkStatusView {
+    if (networkStatusLable) {
+        networkStatusLable.hidden = YES;
+    }
+}
 
 @end

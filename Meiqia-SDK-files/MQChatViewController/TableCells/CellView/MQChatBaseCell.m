@@ -78,8 +78,10 @@
 
 -(void)copyTextSender:(id)sender {
     UIPasteboard *pasteboard=[UIPasteboard generalPasteboard];
-    pasteboard.string = copiedText;
-    [self.chatCellDelegate showToastViewInCell:self toastText:[MQBundleUtil localizedStringForKey:@"save_text_success"]];
+    if (copiedText && copiedText.length > 0) {
+        pasteboard.string = copiedText;
+        [self.chatCellDelegate showToastViewInCell:self toastText:[MQBundleUtil localizedStringForKey:@"save_text_success"]];
+    }
 }
 
 -(void)copyImageSender:(id)sender {

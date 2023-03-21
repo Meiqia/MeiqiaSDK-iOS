@@ -18,6 +18,10 @@
 @property (nonatomic, copy) NSString *menuFootnote;
 
 @property (nonatomic, assign) BOOL isEvaluated;
+/**
+ * @brief 问题是否已解决的标记
+ */
+@property (nonatomic, assign) BOOL solved;
 @property (nonatomic, copy) NSString *avatarPath;
 @property (nonatomic, copy) NSString *messageId;
 
@@ -27,10 +31,9 @@
 @property (nonatomic, copy) CGFloat(^cellHeight)(void);
 
 @property (nonatomic, assign) CGFloat cachedWebViewHeight;
+@property (nonatomic, assign) BOOL needShowFeedback;
 
 - (id)initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:(CGFloat)cellWidth delegate:(id<MQCellModelDelegate>)delegator;
-
-- (void)didEvaluate;
 
 - (void)bind;
 @end

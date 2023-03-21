@@ -149,6 +149,10 @@
     return [MQAssetUtil imageFromBundleWithName:@"MQBubble_outgoing_voice_error"];
 }
 
++ (UIImage *)videoPlayImage {
+    return [MQAssetUtil imageFromBundleWithName:@"message_video_play-icon"];
+}
+
 + (UIImage *)recordBackImage
 {
     return [MQAssetUtil imageFromBundleWithName:@"MQRecord_back"];
@@ -241,4 +245,13 @@
 + (UIImage *)backArrow {
     return [[MQAssetUtil imageFromBundleWithName:@"backArrow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
+
++ (UIImage *)networkStatusError {
+    return [MQAssetUtil imageFromBundleWithName:@"MQNetworkError"];
+}
+
++ (UIImage *)networkStatusWarning {
+    return [MQAssetUtil imageFromBundleWithName:@"MQNetworkWarning"];
+}
+
 @end

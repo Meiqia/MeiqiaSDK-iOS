@@ -152,6 +152,11 @@
 @property (nonatomic, readonly, assign) BOOL isEvaluated;
 
 /**
+ * @brief 问题是否已解决的标记
+ */
+@property (nonatomic, readonly, assign) BOOL solved;
+
+/**
  * @brief 消息的发送状态
  */
 @property (nonatomic, assign) MQChatMessageSendStatus sendStatus;
@@ -172,10 +177,5 @@
 - (MQBotAnswerCellModel *)initCellModelWithMessage:(MQBotAnswerMessage *)message
                                          cellWidth:(CGFloat)cellWidth
                                           delegate:(id<MQCellModelDelegate>)delegator;
-
-/**
- *  已做评价
- */
-- (void)didEvaluate;
 
 @end

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MQCellModelProtocol.h"
 #import "MQTextMessage.h"
+#import "MQTagListView.h"
 
 /**
  * MQTextCellModel定义了文字消息的基本类型数据，包括产生cell的内部所有view的显示数据，cell内部元素的frame等
@@ -130,6 +131,16 @@
  * @brief 消息的发送状态
  */
 @property (nonatomic, assign) MQChatMessageSendStatus sendStatus;
+
+/**
+ * @brief 标签的tagList
+ */
+@property (nonatomic, readonly, strong) MQTagListView *cacheTagListView;
+
+/**
+ * @brief 标签的数据源
+ */
+@property (nonatomic, readonly, strong) NSArray *cacheTags;
 
 /**
  *  根据MQMessage内容来生成cell model

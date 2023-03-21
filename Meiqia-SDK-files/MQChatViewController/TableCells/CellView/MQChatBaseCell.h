@@ -51,14 +51,24 @@
 - (void)didTapMessageInCell:(UITableViewCell *)cell;
 
 /**
- *  点击了语音消息的委托方法
+ *  点击了机器人问题是否解决的委托方法
  */
 - (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId;
+
+/**
+ *  点击了操作按钮的回调
+ */
+- (void)collectionOperationIndex:(int)index messageId:(NSString *)messageId;
 
 /**
  *  点击了菜单
  */
 - (void)didTapMenuWithText:(NSString *)menuText;
+
+/**
+ *  点击了引导按钮
+ */
+- (void)didTapGuideWithText:(NSString *)guideText;
 
 /**
  *  点击了留言
@@ -85,6 +95,18 @@
  */
 - (void)replaceTipCell:(UITableViewCell *)cell;
 
+/**
+ * 显示播放视频的controller
+ * @param videoLocalPath 视频本地缓存路径，
+ * @param videoServer 视频服务器路径，
+ */
+- (void)showPlayVideoControllerWith:(NSString *)videoLocalPath serverPath:(NSString *)videoServer;
+
+/**
+ *  点击了商品卡片
+ *  @param productUrl 商品链接
+ */
+- (void)didTapProductCard:(NSString *)productUrl;
 
 @end
 

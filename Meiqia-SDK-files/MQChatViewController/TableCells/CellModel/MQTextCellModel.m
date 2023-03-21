@@ -14,7 +14,7 @@
 #import <UIKit/UIKit.h>
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
-#import "MEIQIA_TTTAttributedLabel.h"
+#import "TTTAttributedLabel.h"
 #import "MQChatEmojize.h"
 #import "MQServiceToViewInterface.h"
 #ifndef INCLUDE_MEIQIA_SDK
@@ -133,9 +133,24 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
 @property (nonatomic, readwrite, assign) BOOL isSensitive;
 
 /**
+ * @brief cell中消息的会话id
+ */
+@property (nonatomic, readwrite, strong) NSString *conversionId;
+
+/**
  * @brief 敏感词汇提示语frame
  */
 @property (nonatomic, readwrite, assign) CGRect sensitiveLableFrame;
+
+/**
+ * @brief 标签签的tagList
+ */
+@property (nonatomic, readwrite, strong) MQTagListView *cacheTagListView;
+
+/**
+ * @brief 标签的数据源
+ */
+@property (nonatomic, readwrite, strong) NSArray *cacheTags;
 
 
 @property (nonatomic, strong) TTTAttributedLabel *textLabelForHeightCalculation;
@@ -154,11 +169,21 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
         self.textLabelForHeightCalculation = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
         self.textLabelForHeightCalculation.numberOfLines = 0;
         self.messageId = message.messageId;
+        self.conversionId = message.conversionId;
         self.sendStatus = message.sendStatus;
         self.isSensitive = message.isSensitive;
         self.cellFromType = message.fromType == MQChatMessageIncoming ? MQChatCellIncoming : MQChatCellOutgoing;
         self.messageContent = message.content;
         self.cellWidth = cellWidth;
+        if (message.tags) {
+            CGFloat maxWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
+            NSMutableArray *titleArr = [NSMutableArray array];
+            for (MQMessageBottomTagModel * model in message.tags) {
+                [titleArr addObject:model.name];
+            }
+            self.cacheTagListView = [[MQTagListView alloc] initWithTitleArray:titleArr andMaxWidth:maxWidth tagBackgroundColor:[UIColor colorWithWhite:1 alpha:0] tagTitleColor:[UIColor grayColor] tagFontSize:12.0 needBorder:YES];
+            self.cacheTags = message.tags;
+        }
         NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];
         contentParagraphStyle.lineSpacing = kMQTextCellLineSpacing;
         contentParagraphStyle.lineHeightMultiple = 1.0;
@@ -252,12 +277,12 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
     CGFloat messageTextHeight = [self.textLabelForHeightCalculation sizeThatFits:CGSizeMake(maxLabelWidth, MAXFLOAT)].height;
     
     //判断文字中是否有emoji
-    if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
-        NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
-        CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
-        NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
-        messageTextHeight += 8 * textLines;
-    }
+//    if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
+//        NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
+//        CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
+//        NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
+//        messageTextHeight += 8 * textLines;
+//    }
     //文字宽度
     CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
     //#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
@@ -325,8 +350,13 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
     CGSize failureSize = CGSizeMake(ceil(failureImage.size.width * 2 / 3), ceil(failureImage.size.height * 2 / 3));
     self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureSize.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureSize.height/2, failureSize.width, failureSize.height);
     
+    if (self.cacheTagListView) {
+        [self.cacheTagListView updateLayoutWithMaxWidth:maxLabelWidth];
+        self.cacheTagListView.frame = CGRectMake(self.bubbleImageFrame.origin.x,  CGRectGetMaxY(self.bubbleImageFrame) + kMQCellBubbleToIndicatorSpacing, self.cacheTagListView.bounds.size.width, self.cacheTagListView.bounds.size.height);
+    }
+    
     //计算cell的高度
-    self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing + (self.isSensitive ? kMQTextCellSensitiveHeight : 0);
+    self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing + (self.isSensitive ? kMQTextCellSensitiveHeight : 0) + (self.cacheTagListView != nil ? self.cacheTagListView.frame.size.height + kMQCellBubbleToIndicatorSpacing : 0);
 }
 
 #pragma MQCellModelProtocol
@@ -354,12 +384,20 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
     return self.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.conversionId;
+}
+
 - (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
     self.sendStatus = sendStatus;
 }
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {

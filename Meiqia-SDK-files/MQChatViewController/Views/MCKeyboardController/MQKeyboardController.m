@@ -296,9 +296,9 @@ static void * kMQKeyboardControllerKeyValueObservingContext = &kMQKeyboardContro
 
 - (void)removeKeyboardFrameObserver
 {
-//    if (!_isObserving) {
-//        return;
-//    }
+    if (!_isObserving) {
+        return;
+    }
     
     @try {
         [_keyboardView removeObserver:self

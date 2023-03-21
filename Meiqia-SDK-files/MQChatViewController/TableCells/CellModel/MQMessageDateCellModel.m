@@ -86,6 +86,10 @@
     return @"";
 }
 
+- (NSString *)getMessageConversionId {
+    return @"";
+}
+
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
     self.cellWidth = cellWidth;
     self.dateLabelFrame = CGRectMake(cellWidth/2-self.dateLabelFrame.size.width/2, kMQChatMessageDateCellHeight/2-self.dateLabelFrame.size.height/2+kMQChatMessageDateLabelVerticalOffset, self.dateLabelFrame.size.width, self.dateLabelFrame.size.height);

@@ -58,13 +58,17 @@
  * @param oldMessageId 发送之前messageid
  * @param newMessageDate 更新的发送时间
  * @param replacedContent 需要替换的messag.content的内容(处理敏感词汇，替换原来词汇)
+ * @param mediaPath 用于更新发送媒体消息成功以后缓存地址
  * @param sendStatus 发送状态
+ * @param error 报错信息
  */
 - (void)didSendMessageWithNewMessageId:(NSString *)newMessageId
                           oldMessageId:(NSString *)oldMessageId
                         newMessageDate:(NSDate *)newMessageDate
                        replacedContent:(NSString *)replacedContent
-                            sendStatus:(MQChatMessageSendStatus)sendStatus;
+                       updateMediaPath:(NSString *)mediaPath
+                            sendStatus:(MQChatMessageSendStatus)sendStatus
+                                 error:(NSError *)error;
 
 /**
  *  顾客已被转接
@@ -119,28 +123,16 @@
                                      delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 
 /**
- * 从服务端获取更多消息
+ * 从服务端获取留言消息和一般的消息
  *
  * @param msgDate 获取该日期之前的历史消息;
  * @param messagesNum 获取消息的数量
  */
-/*
-+ (void)getServerHistoryMessagesWithLastMsgDate:(NSDate *)msgDate
++ (void)getServerHistoryMessagesAndTicketsWithMsgDate:(NSDate *)msgDate
                              messagesNumber:(NSInteger)messagesNumber
                             successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
                               errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
-*/
-/**
- * 从本地获取更多消息
- *
- * @param msgDate 获取该日期之前的历史消息;
- * @param messagesNum 获取消息的数量
- */
-/*
-+ (void)getDatabaseHistoryMessagesWithLastMsgDate:(NSDate *)msgDate
-                               messagesNumber:(NSInteger)messagesNumber
-                                     delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
-*/
+
 /**
  * 发送文字消息
  * @param content 消息内容。会做前后去空格处理，处理后的消息长度不能为0，否则不执行发送操作
@@ -172,6 +164,36 @@
 + (void)sendAudioMessage:(NSData *)audio
                messageId:(NSString *)localMessageId
                 delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
+
+/**
+ * 发送视频消息。使用该接口，需要开发者提供MOV格式.
+ *
+ * @param filePath 需要发送视频的缓存路径。
+ * @param localMessageId 本地消息id
+ * @param delegate 发送消息的代理，会返回完整的消息对象，代理函数：-(void)didSendMessage:expcetion:
+ */
++ (void)sendVideoMessageWithFilePath:(NSString *)filePath
+               messageId:(NSString *)localMessageId
+                delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
+
+/**
+ * 发送商品卡片消息
+ *
+ * @param pictureUrl 商品图片的url。不能为空，否则不执行发送操作。
+ * @param title 商品标题。不能为空，否则不执行发送操作。
+ * @param descripation 商品描述内容。不能为空，否则不执行发送操作。
+ * @param productUrl 商品链接。不能为空，否则不执行发送操作。
+ * @param salesCount 销售量。不设置就默认为0。
+ * @param localMessageId 本地消息id
+ * @param delegate 发送消息的代理，会返回完整的消息对象，代理函数：-(void)didSendMessage:expcetion:
+ */
++ (void)sendProductCardMessageWithPictureUrl:(NSString *)pictureUrl
+                                       title:(NSString *)title
+                                       descripation:(NSString *)descripation
+                                       productUrl:(NSString *)productUrl
+                                       salesCount:(long)salesCount
+                                   messageId:(NSString *)localMessageId
+                                    delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 
 /**
  * 将用户正在输入的内容，提供给客服查看。该接口没有调用限制，但每1秒内只会向服务器发送一次数据
@@ -214,6 +236,11 @@
  *
 */
 + (void)deleteScheduledAgent;
+
+/**
+ * 设置询前表单客服分配的问题
+*/
++ (void)setScheduledProblem:(NSString *)problem;
 
 /**
  * 设置顾客离线
@@ -259,6 +286,11 @@
  *
  */
 + (BOOL)haveConversation;
+
+/**
+ *  获取当前分配对话的会话id，，没有分配则为nil
+ */
++ (NSString *)getCurrentConversationID;
 
 /**
  *  下载多媒体消息的多媒体内容
@@ -389,6 +421,10 @@
  */
 + (void)cancelDownloadForUrl:(NSString *)urlString;
 
+/**
+ 机器人的回答评价反馈功能是否开启
+ */
++ (BOOL)enableBotEvaluateFeedback;
 
 /**
  对机器人的回答做评价
@@ -397,6 +433,13 @@
 + (void)evaluateBotMessage:(NSString *)messageId
                   isUseful:(BOOL)isUseful
                 completion:(void (^)(BOOL success, NSString *text, NSError *error))completion;
+
+/**
+ 采集营销机器人的操作数据
+ @param messageId 消息 id
+ @param index 点击的第几个操作按钮
+ */
++ (void)collectionBotOperationWithMessageId:(NSString *)messageId operationIndex:(int)index;
 
 //强制转人工
 - (void)forceRedirectHumanAgentWithSuccess:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
@@ -435,12 +478,10 @@
  *  提交留言表单
  *
  *  @param message 留言消息
- *  @param images 图片数组
  *  @param clientInfo 顾客的信息
  *  @param completion  提交留言表单的回调
  */
 + (void)submitMessageFormWithMessage:(NSString *)message
-                              images:(NSArray *)images
                           clientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
                           completion:(void (^)(BOOL success, NSError *error))completion;
 
@@ -449,6 +490,21 @@
  获取当前企业的配置信息
  */
 + (void)getEnterpriseConfigInfoWithCache:(BOOL)isLoadCache complete:(void(^)(MQEnterprise *, NSError *))action;
+
+/**
+获取当前企业配置头像
+ */
++ (NSString *)getEnterpriseConfigAvatar;
+
+/**
+获取当前企业配置名称
+ */
++ (NSString *)getEnterpriseConfigName;
+
+/**
+ * 是否开启留言功能
+ */
++ (BOOL)enableLeaveComment;
 
 /**
  在准备显示聊天界面是调用
@@ -500,6 +556,25 @@
  */
 + (NSString *)convertToUnicodeWithEmojiAlias:(NSString *)text;
 
+
+/**
+ *  开启美洽群发消息服务
+ * @param delegate 接收群发消息的代理;
+ * @warning 需要在SDK初始化成功以后调用
+ */
++ (void)openMQGroupNotificationServiceWithDelegate:(id<MQGroupNotificationDelegate>)delegate;
+
+
+/**
+ *  插入美洽群发消息到会话流里面
+ * @param notification 群发消息;
+ */
++ (void)insertMQGroupNotificationToConversion:(MQGroupNotification *)notification;
+
+/**
+ * 当前是否开启无消息访客过滤
+ */
++ (BOOL)currentOpenVisitorNoMessage;
 
 @end
 

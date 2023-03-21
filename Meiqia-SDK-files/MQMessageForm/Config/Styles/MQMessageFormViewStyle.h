@@ -49,11 +49,11 @@ typedef NS_ENUM(NSUInteger, MQMessageFormViewStyleType) {
 @property (nonatomic, strong) UIColor *introTextColor;
 
 /**
- *  输入框上方提示文案的颜色
+ *  上方提示文案的颜色
  *
  * @param inputTipTextColor
  */
-@property (nonatomic, strong) UIColor *inputTipTextColor;
+@property (nonatomic, strong) UIColor *tipTextColor;
 
 /**
  *  输入框placeholder文字颜色
@@ -63,13 +63,6 @@ typedef NS_ENUM(NSUInteger, MQMessageFormViewStyleType) {
 @property (nonatomic, strong) UIColor *inputPlaceholderTextColor;
 
 /**
- *  输入框文字颜色
- *
- * @param inputTextColor
- */
-@property (nonatomic, strong) UIColor *inputTextColor;
-
-/**
  *  输入框上下边框颜色
  *
  * @param inputTopBottomBorderColor
@@ -77,25 +70,26 @@ typedef NS_ENUM(NSUInteger, MQMessageFormViewStyleType) {
 @property (nonatomic, strong) UIColor *inputTopBottomBorderColor;
 
 /**
- *  添加图片的文字颜色
+ *  内容文字颜色
  *
- * @param addPictureTextColor
+ * @param inputTextColor
  */
-@property (nonatomic, strong) UIColor *addPictureTextColor;
+@property (nonatomic, strong) UIColor *contentTextColor;
 
 /**
- *  删除图片的图标
+ *  选项未选中的图标
  *
- * @param deleteImage
+ * @param unselectedImage
  */
-@property (nonatomic, strong) UIImage *deleteImage;
+@property (nonatomic, strong) UIImage *unselectedImage;
 
 /**
- *  添加图片的图标
+ *  选项选中的图标
  *
- * @param addImage
+ * @param unselectedImage
  */
-@property (nonatomic, strong) UIImage *addImage;
+@property (nonatomic, strong) UIImage *selectedImage;
+
 
 + (instancetype)defaultStyle;
 

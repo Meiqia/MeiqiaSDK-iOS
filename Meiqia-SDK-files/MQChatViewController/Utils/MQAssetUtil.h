@@ -50,6 +50,8 @@
 + (UIImage *)voiceAnimationGreen3;
 + (UIImage *)voiceAnimationGreenError;
 
++ (UIImage *)videoPlayImage;
+
 + (UIImage *)recordBackImage;
 
 + (UIImage *)recordVolume:(NSInteger)volume;
@@ -66,5 +68,6 @@
 + (UIImage *)fileCancel;
 + (UIImage *)fileDonwload;
 + (UIImage *)backArrow;
-
++ (UIImage *)networkStatusError;
++ (UIImage *)networkStatusWarning;
 @end

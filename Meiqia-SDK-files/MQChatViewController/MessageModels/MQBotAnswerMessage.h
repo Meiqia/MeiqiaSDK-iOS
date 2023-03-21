@@ -21,6 +21,9 @@
 /** 机器人消息是否评价 */
 @property (nonatomic, assign) BOOL isEvaluated;
 
+/** 机器人消息评价，已解决或者未解决 */
+@property (nonatomic, assign) BOOL solved;
+
 @property (nonatomic, strong) MQBotMenuMessage *menu;
 
 

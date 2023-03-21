@@ -15,7 +15,9 @@
 #import "MQRichTextMessage.h"
 #import "MQWithDrawMessage.h"
 #import "MQPhotoCardMessage.h"
+#import "MQProductCardMessage.h"
 #import "MQJsonUtil.h"
+#import "MQVideoMessage.h"
 
 @implementation MQVisialMessageFactory
 
@@ -29,6 +31,7 @@
         case MQMessageContentTypeText: {
             MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:plainMessage.content];
             textMessage.isSensitive = plainMessage.isSensitive;
+            textMessage.tags = [self getMessageBottomTagModel:plainMessage];
             toMessage = textMessage;
             break;
         }
@@ -50,6 +53,7 @@
         }
         case MQMessageContentTypeRichText: {
             MQRichTextMessage *richTextMessage = [[MQRichTextMessage alloc] initWithDictionary:plainMessage.accessoryData];
+            richTextMessage.tags = [self getMessageBottomTagModel:plainMessage];
             toMessage = richTextMessage;
             break;
         }
@@ -61,6 +65,12 @@
         }
         case MQMessageContentTypeHybrid: {
             toMessage = [self messageFromContentTypeHybrid:plainMessage toMQBaseMessage:toMessage];
+            break;
+        }
+        case MQMessageContentTypeVideo: {
+            MQVideoMessage *videoMessage = [[MQVideoMessage alloc] initWithVideoServerPath:plainMessage.content];
+            [videoMessage handleAccessoryData:plainMessage.accessoryData];
+            toMessage = videoMessage;
             break;
         }
         default:
@@ -77,6 +87,7 @@
     toMessage.date = plainMessage.createdOn;
     toMessage.userName = plainMessage.messageUserName;
     toMessage.userAvatarPath = plainMessage.messageAvatar;
+    toMessage.conversionId = plainMessage.conversationId;
     switch (plainMessage.sendStatus) {
         case MQMessageSendStatusSuccess:
             toMessage.sendStatus = MQChatMessageSendStatusSuccess;
@@ -120,6 +131,9 @@
         if ([contentDic[@"type"] isEqualToString:@"photo_card"]) {
             MQPhotoCardMessage *photoCard = [[MQPhotoCardMessage alloc] initWithImagePath:contentDic[@"body"][@"pic_url"] andUrlPath:contentDic[@"body"][@"target_url"]];
             baseMessage = photoCard;
+        } else if ([contentDic[@"type"] isEqualToString:@"product_card"]) {
+            MQProductCardMessage *productCard = [[MQProductCardMessage alloc] initWithPictureUrl:contentDic[@"body"][@"pic_url"] title:contentDic[@"body"][@"title"] description:contentDic[@"body"][@"description"] productUrl:contentDic[@"body"][@"product_url"]  andSalesCount:[contentDic[@"body"][@"sales_count"] longValue]];
+            baseMessage = productCard;
         } else if ([contentDic[@"type"] isEqualToString:@"mini_program_card"]) {
 
         }
@@ -127,5 +141,22 @@
     return baseMessage;
 }
 
+- (NSArray *)getMessageBottomTagModel:(MQMessage *)message
+{
+    if (message.accessoryData && [message.accessoryData isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *dataDic = [NSDictionary dictionaryWithDictionary:message.accessoryData];
+        if ([dataDic objectForKey:@"operator_msg"] && ![[dataDic objectForKey:@"operator_msg"] isEqual:[NSNull null]]) {
+            NSArray *tagArr = [dataDic objectForKey:@"operator_msg"];
+            NSMutableArray *resultArr = [NSMutableArray array];
+            for (NSDictionary * dic in tagArr) {
+                [resultArr addObject:[[MQMessageBottomTagModel alloc] initWithDictionary:dic]];
+            }
+            if (resultArr.count > 0) {
+                return resultArr;
+            }
+        }
+    }
+    return nil;
+}
 
 @end

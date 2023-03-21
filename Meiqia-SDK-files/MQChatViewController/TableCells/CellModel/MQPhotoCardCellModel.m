@@ -3,7 +3,7 @@
 //  MQEcoboostSDK-test
 //
 //  Created by shunxingzhang on 2020/7/9.
-//  Copyright © 2020 ijinmao. All rights reserved.
+//  Copyright © 2020 MeiQia. All rights reserved.
 //
 
 #import "MQPhotoCardCellModel.h"
@@ -94,6 +94,11 @@ static CGFloat const kMQCellImageRatio = 0.75;
  */
 @property (nonatomic, readwrite, assign) MQChatCellFromType cellFromType;
 
+/**
+ * @brief cell中消息的会话id
+ */
+@property (nonatomic, readwrite, strong) NSString *conversionId;
+
 @end
 
 @implementation MQPhotoCardCellModel
@@ -109,6 +114,7 @@ static CGFloat const kMQCellImageRatio = 0.75;
         self.cellWidth = cellWidth;
         self.delegate = delegate;
         self.messageId = message.messageId;
+        self.conversionId = message.conversionId;
         self.date = message.date;
         self.targetUrl = message.targetUrl;
         self.avatarPath = @"";
@@ -294,15 +300,23 @@ static CGFloat const kMQCellImageRatio = 0.75;
 }
 
 - (BOOL)isServiceRelatedCell {
-    return NO;
+    return true;
 }
 
 - (NSString *)getCellMessageId {
     return self.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.conversionId;
+}
+
 - (void)updateCellMessageId:(NSString *)messageId {
     self.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {

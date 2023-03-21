@@ -3,7 +3,7 @@
 //  MQEcoboostSDK-test
 //
 //  Created by qipeng_yuhao on 2020/5/12.
-//  Copyright © 2020 ijinmao. All rights reserved.
+//  Copyright © 2020 MeiQia. All rights reserved.
 //
 
 #import "MQBotMenuRichMessageCell.h"
@@ -13,9 +13,9 @@
 #import "MQImageUtil.h"
 #import "MQBotMenuMessage.h"
 #import "MQBotMenuRichCellModel.h"
+#import "MQBundleUtil.h"
 
 static CGFloat const kMQBotMenuReplyTipSize = 12.0; // 查看提醒的文字大小
-static NSString * const kMQBotMenuTipText = @"点击问题或回复对应数字查看答案"; // 提示文字内容
 
 static CGFloat const kMQBotMenuTextSize = 15.0;// 答案列表文字
 
@@ -82,7 +82,17 @@ static CGFloat const kMQBotMenuVerticalSpacingInMenus = 12.0;
         }];
         
         [self.contentWebView setTappedLink:^(NSURL *url) {
-            [[UIApplication sharedApplication] openURL:url];
+            if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {
+                if ([url.absoluteString rangeOfString:@"tel:"].location != NSNotFound) {
+                    // 和后台预定的是 tel:182xxxxxxxxx
+                    NSString *path = [url.absoluteString stringByReplacingOccurrencesOfString:@"tel:" withString:@"tel://"];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path]];
+                } else {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]]];
+                }
+            } else {
+                [[UIApplication sharedApplication] openURL:url];
+            }
         }];
         
         if (self.viewModel.cachedWetViewHeight > 0) {
@@ -194,7 +204,7 @@ static CGFloat const kMQBotMenuVerticalSpacingInMenus = 12.0;
     if (!_replyTipLabel) {
         _replyTipLabel = [UILabel new];
         _replyTipLabel.textColor = [UIColor colorWithWhite:.6 alpha:1];
-        _replyTipLabel.text = kMQBotMenuTipText;
+        _replyTipLabel.text = [MQBundleUtil localizedStringForKey:@"bot_menu_tip_text"];
         _replyTipLabel.textAlignment = NSTextAlignmentLeft;
         _replyTipLabel.font = [UIFont systemFontOfSize:kMQBotMenuReplyTipSize];
         _replyTipLabel.hidden = false;

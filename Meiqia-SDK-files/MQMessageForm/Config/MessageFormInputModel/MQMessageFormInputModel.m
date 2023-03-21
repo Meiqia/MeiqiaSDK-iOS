@@ -15,9 +15,11 @@
         self.tip = @"";
         self.placeholder = @"";
         self.key = @"";
+        self.text = @"";
         self.isRequired = NO;
-        self.isSingleLine = NO;
-        self.keyboardType = UIKeyboardTypeDefault;
+        self.isSingleLine = YES;
+        self.inputModelType = InputModelTypeText;
+        self.metainfo = @[];
     }
     return self;
 }

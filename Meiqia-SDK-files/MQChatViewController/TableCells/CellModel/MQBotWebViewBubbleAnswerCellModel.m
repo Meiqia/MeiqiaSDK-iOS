@@ -27,6 +27,7 @@
         self.messageId = message.messageId;
         self.content = message.content;
         self.isEvaluated = message.isEvaluated;
+        self.solved = message.solved;
         self.content = message.content;
     }
     return self;
@@ -52,8 +53,9 @@
 
 #pragma mark -
 
-- (void)didEvaluate {
+- (void)didEvaluate:(BOOL)solved {
     self.isEvaluated = YES;
+    self.solved = solved;
 }
 
 - (CGFloat)getCellHeight {
@@ -79,12 +81,20 @@
     return self.message.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.message.conversionId;
+}
+
 - (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
     self.message.sendStatus = sendStatus;
 }
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.message.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.message.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {

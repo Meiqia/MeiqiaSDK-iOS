@@ -8,15 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "MQMessageFormInputModel.h"
+#import "MQMessageFormBaseView.h"
 
-@interface MQMessageFormInputView : UIView
+@interface MQMessageFormInputView : MQMessageFormBaseView
 
 - (instancetype)initWithScreenWidth:(CGFloat)screenW andModel:(MQMessageFormInputModel *)model;
-
-- (void)refreshFrameWithScreenWidth:(CGFloat)screenWidth andY:(CGFloat)y;
-
-- (NSString *)getText;
-
-- (UITextView *)findFirstResponderUITextView;
 
 @end

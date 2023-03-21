@@ -28,7 +28,8 @@ typedef enum : NSUInteger {
     MQMessageActionQueueingAdd                  = 12,  //顾客被添加到等待客服队列
     MQMessageActionQueueingRemoved              = 13,  //顾客从等待队列中移除
     MQMessageActionWithdrawMessage              = 14,  //消息撤回(withdraw_msg)
-    MQMessageActionAgentSendCard                = 15   // 线索卡片
+    MQMessageActionAgentSendCard                = 15,   // 线索卡片
+    MQMessageActionRedirectFail                 = 16   //转接人工失败 (switch_human)
 } MQMessageAction;
 
 typedef enum : NSUInteger {
@@ -40,6 +41,7 @@ typedef enum : NSUInteger {
     MQMessageContentTypeRichText             = 5, //图文消息
     MQMessageContentTypeCard                 = 6, //卡片消息
     MQMessageContentTypeHybrid               = 7, //混合消息
+    MQMessageContentTypeVideo                = 8, //视频
 } MQMessageContentType;
 
 typedef enum : NSUInteger {
@@ -112,6 +114,9 @@ typedef enum : NSUInteger {
 
 /** 标记消息是否是敏感消息 */
 @property (nonatomic, assign) bool                 isSensitive;
+
+/** 标记客服发送消息的状态 1 服务器已接收; 2 sdk已接收; 3 sdk已读 */
+@property (nonatomic, strong) NSNumber             *readStatus;
 
 /*
  该消息对应的 enterprise id, 不一定有值，也不存数据库，仅用来判断该消息属于哪个企业，用来切换数据库, 如果这个地方没有值，查看 agent 对象里面的 enterpriseId 字段

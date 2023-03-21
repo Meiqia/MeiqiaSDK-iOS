@@ -84,7 +84,14 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 
 #pragma mark 预发送消息
 //    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-//    [chatViewManager setPreSendMessages: @[@"我想咨询的订单号：【1705045496811】"]];
+//    //    [chatViewManager setPreSendMessages: @[@"我想咨询的订单号：【1705045496811】"]];
+//    //     发送商品卡片
+//    MQProductCardMessage *productCard = [[MQProductCardMessage alloc] initWithPictureUrl:@"https://file.pisen.com.cn/QJW3C1000WEB/Product/201701/16305409655404.jpg" title:@"商品的title" description:@"这件商品的描述内容，想怎么写就怎么写，哎呦，就是这么嗨！！！！" productUrl:@"https://meiqia.com" andSalesCount:100];
+//    [chatViewManager setPreSendMessages: @[productCard]];
+//    // 自定义商品卡片响应事件
+//    [chatViewManager didTapProductCard:^(NSString *productUrl) {
+//        NSLog(@"点击商品卡片的链接：%@",productUrl);
+//    }];
 //    [chatViewManager pushMQChatViewControllerInViewController:self];
     
 #pragma mark 如果你想绑定自己的用户系统 ,当然推荐你使用 客户自定义信息来绑定用户的相关个人信息
@@ -104,27 +111,10 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 
 - (void)feedback
 {
-    MQMessageFormInputModel *emailMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    emailMessageFormInputModel.key = @"email";
-    emailMessageFormInputModel.isSingleLine = YES;
-    emailMessageFormInputModel.isRequired = NO;
-    emailMessageFormInputModel.keyboardType = UIKeyboardTypeEmailAddress;
-    
-    MQMessageFormInputModel *phoneMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    phoneMessageFormInputModel.key = @"tel";
-    phoneMessageFormInputModel.isSingleLine = YES;
-    phoneMessageFormInputModel.isRequired = NO;
-    phoneMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
-    
-    NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
-    [customMessageFormInputModelArray addObject:emailMessageFormInputModel];
-    [customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
-    
     MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
     
     MQMessageFormViewStyle *style = [messageFormViewManager messageFormViewStyle];
     style.navBarColor = [UIColor whiteColor];
-    [messageFormViewManager setCustomMessageFormInputModelArray:nil];
     [messageFormViewManager presentMQMessageFormViewControllerInViewController:self];
 }
 #pragma 开发者的高级功能 其中有调用美洽SDK的API接口

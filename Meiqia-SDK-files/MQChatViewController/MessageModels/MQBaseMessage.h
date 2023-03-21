@@ -33,6 +33,9 @@ typedef NS_ENUM(NSUInteger, MQChatMessageSendStatus) {
 
 @interface MQBaseMessage : NSObject
 
+/** 消息的会话id */
+@property (nonatomic, copy) NSString *conversionId;
+
 /** 消息id */
 @property (nonatomic, copy) NSString *messageId;
 

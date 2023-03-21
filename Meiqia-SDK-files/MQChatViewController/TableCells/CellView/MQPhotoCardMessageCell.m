@@ -3,7 +3,7 @@
 //  MQEcoboostSDK-test
 //
 //  Created by shunxingzhang on 2020/7/9.
-//  Copyright © 2020 ijinmao. All rights reserved.
+//  Copyright © 2020 MeiQia. All rights reserved.
 //
 
 #import "MQPhotoCardMessageCell.h"
@@ -75,6 +75,7 @@
         loadingIndicator.hidden = true;
         [loadingIndicator stopAnimating];
     } else {
+        bubbleContentImageView.image = nil;
         loadingIndicator.hidden = false;
         [loadingIndicator startAnimating];
     }

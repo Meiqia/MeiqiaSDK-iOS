@@ -10,7 +10,7 @@
 #import "MQChatViewConfig.h"
 #import "MQChatFileUtil.h"
 #import "MQBundleUtil.h"
-#import "MEIQIA_TTTAttributedLabel.h"
+#import "TTTAttributedLabel.h"
 #import "MQStringSizeUtil.h"
 #import "MQChatViewStyle.h"
 #import "MQBotAnswerCellModel.h"
@@ -20,7 +20,7 @@ static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;
 static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
 static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
 
-@interface MQBotAnswerCell() <MEIQIA_TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+@interface MQBotAnswerCell() <TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 @end
 

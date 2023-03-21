@@ -199,12 +199,17 @@ static id keyUITableViewView, keyUITableViewMQRefreshAction, keyUITableViewMQRef
 }
 
 - (void)stopAnimationCompletion:(void(^)(void))action {
+    if (self.refreshView.status != MQRefreshStatusLoading) {
+        if (action) {
+            action();
+        }
+        return;
+    }
     UIEdgeInsets currentInsects = self.contentInset;
     currentInsects.top -= self.refreshView.bounds.size.height;
     
     [UIView animateWithDuration:0.25 animations:^{
         [self setContentInset: currentInsects];
-        self.contentOffset = CGPointMake(0, -self.contentInset.top);
     } completion:^(BOOL finished) {
         [self.refreshView setIsLoading:NO];
         if (action) {
@@ -215,11 +220,6 @@ static id keyUITableViewView, keyUITableViewMQRefreshAction, keyUITableViewMQRef
 
 - (void)setLoadEnded {
     [self.refreshView setLoadEnd];
-    UIEdgeInsets currentInsects = self.contentInset;
-    currentInsects.top += self.refreshView.bounds.size.height;
-    [UIView animateWithDuration:0.25 animations:^{
-        [self setContentInset: currentInsects];
-    }];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -307,7 +307,7 @@ static id keyUITableViewView, keyUITableViewMQRefreshAction, keyUITableViewMQRef
     if (self.status == MQRefreshStatusLoading || self.status == MQRefreshStatusEnd) { return; }
     
     
-    CGFloat mm = MQToolUtil.kXlpObtainNaviHeight ;
+    CGFloat mm = MQToolUtil.kMQObtainNaviHeight ;
     
     if (topOffset == 0|| topOffset == - mm) {
         self.status = MQRefreshStatusNormal;

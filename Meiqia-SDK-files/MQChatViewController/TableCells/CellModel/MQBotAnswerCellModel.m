@@ -14,7 +14,7 @@
 #import <UIKit/UIKit.h>
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
-#import "MEIQIA_TTTAttributedLabel.h"
+#import "TTTAttributedLabel.h"
 #import "MQChatEmojize.h"
 #import "MQServiceToViewInterface.h"
 
@@ -156,6 +156,11 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
 @property (nonatomic, readwrite, assign) BOOL isEvaluated;
 
 /**
+ * @brief 问题是否已解决的标记
+ */
+@property (nonatomic, readwrite, assign) BOOL solved;
+
+/**
  * @brief 消息的 sub type
  */
 @property (nonatomic, readwrite, copy) NSString *messageSubType;
@@ -164,6 +169,11 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
  * @brief 普通类型的集合
  */
 @property (nonatomic, readwrite, copy) NSArray *normalSubTypes;
+
+/**
+ * @brief cell中消息的会话id
+ */
+@property (nonatomic, readwrite, strong) NSString *conversionId;
 
 @end
 
@@ -174,11 +184,14 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
                                      delegate:(id<MQCellModelDelegate>)delegator
 {
     if (self = [super init]) {
-        self.normalSubTypes = @[@"redirect", @"manual_redirect"];
+        // normal 适用于展示正常的bot，底部没有操作样式的(这个是本地定义的)
+        self.normalSubTypes = @[@"redirect", @"manual_redirect", @"normal"];
         self.messageSubType = message.subType;
         self.isEvaluated = message.isEvaluated;
+        self.solved = message.solved;
         self.messageId = message.messageId;
         self.sendStatus = message.sendStatus;
+        self.conversionId = message.conversionId;
         NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];
         contentParagraphStyle.lineSpacing = kMQTextCellLineSpacing;
         contentParagraphStyle.lineHeightMultiple = 1.0;
@@ -245,12 +258,12 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
         //文字高度
         CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
         //判断文字中是否有emoji
-        if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
-            NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
-            CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
-            NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
-            messageTextHeight += 8 * textLines;
-        }
+//        if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
+//            NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
+//            CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
+//            NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
+//            messageTextHeight += 8 * textLines;
+//        }
         //文字宽度
         CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
         //#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
@@ -402,12 +415,20 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
     return self.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.conversionId;
+}
+
 - (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
     self.sendStatus = sendStatus;
 }
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {
@@ -512,8 +533,9 @@ static CGFloat const kMQBotAnswerEvaluateBubbleMinWidth = 144.0;
     }
 }
 
-- (void)didEvaluate {
+- (void)didEvaluate:(BOOL)solved {
     self.isEvaluated = true;
+    self.solved = solved;
 }
 
 

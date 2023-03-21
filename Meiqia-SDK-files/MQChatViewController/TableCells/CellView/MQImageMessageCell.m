@@ -110,6 +110,7 @@
     sendingIndicator.hidden = true;
     [sendingIndicator stopAnimating];
     if (cellModel.sendStatus == MQChatMessageSendStatusSending && cellModel.cellFromType == MQChatCellOutgoing) {
+        sendingIndicator.hidden = false;
         sendingIndicator.frame = cellModel.sendingIndicatorFrame;
         [sendingIndicator startAnimating];
     }

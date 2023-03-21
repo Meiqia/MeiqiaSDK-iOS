@@ -34,6 +34,11 @@
 
 @property (nonatomic, assign) BOOL isEvaluated;
 
+/**
+ * @brief 问题是否已解决的标记
+ */
+@property (nonatomic, assign) BOOL solved;
+
 - (void)openFrom:(UIViewController *)cv;
 
 - (void)load;

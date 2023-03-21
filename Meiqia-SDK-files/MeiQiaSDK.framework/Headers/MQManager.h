@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "MQMessage.h"
+#import "MQGroupNotification.h"
 #import "MQDefinition.h"
 #import "MQAgent.h"
 #import "MQCardInfo.h"
@@ -16,7 +17,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.6.4"
+#define MQSDKVersion @"3.9.0"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -32,6 +33,16 @@
  */
 - (void)didScheduleResult:(MQClientOnlineResult)onLineResult withResultMessages:(NSArray<MQMessage *> *)message;
 
+
+@end
+
+@protocol MQGroupNotificationDelegate <NSObject>
+
+/**
+ *  收到了群发消息
+ *  @param message 消息
+ */
+- (void)didReceiveMQGroupNotification:(NSArray<MQGroupNotification *> *)message;
 
 @end
 
@@ -59,6 +70,11 @@
 + (BOOL)haveConversation;
 
 /**
+ *  获取当前分配对话的会话id，，没有分配则为nil
+ */
++ (NSString *)getCurrentConversationID;
+
+/**
  *  开启美洽服务
  *
  *  @warning App进入前台时，需要开启美洽服务。开发者需要在AppDelegate.m中的applicationWillEnterForeground方法中，调用此接口，用于开启美洽服务
@@ -71,6 +87,19 @@
  *  @warning App退到后台时，需要关闭美洽服务。开发者需要在AppDelegate.m中的applicationDidEnterBackground方法中，调用此接口，用于关闭美洽服务
  */
 + (void)closeMeiqiaService;
+
+/**
+ *  开启美洽群发消息服务
+ * @param delegate 接收群发消息的代理;
+ * @warning 需要在SDK初始化成功以后调用
+ */
++ (void)openMQGroupNotificationServiceWithDelegate:(id<MQGroupNotificationDelegate>)delegate;
+
+/**
+ *  插入美洽群发消息到会话流里面
+ * @param notification 群发消息;
+ */
++ (void)insertMQGroupNotificationToConversion:(MQGroupNotification *)notification;
 
 /**
  * 设置用户的设备唯一标识，在AppDelegate.m的didRegisterForRemoteNotificationsWithDeviceToken系统回调中注册deviceToken。
@@ -99,7 +128,6 @@
  * @param completion 如果初始化成功，将会返回clientId，并且error为nil；如果初始化失败，clientId为空，会返回error
  */
 + (void)initWithAppkey:(NSString*)appKey completion:(void (^)(NSString *clientId, NSError *error))completion;
-
 
 /**
     获取本地初始化过的 app key
@@ -139,6 +167,12 @@
  *
 */
 + (void)deleteScheduledAgent;
+
+/**
+ * 设置询前表单客服分配的问题
+ * @param problem           询前表单选择的问题内容
+*/
++ (void)setScheduledProblem:(NSString *)problem;
 
 /**
  * 开发者自定义当前顾客的信息，用于展示给客服。
@@ -277,6 +311,20 @@
                                        failure:(void (^)(NSError* error))failure;
 
 /**
+ * 从服务端获取某日期之前的历史消息(包含留言信息)
+ *
+ * @param msgDate        获取该日期之前的历史消息，注：该日期是UTC格式的;
+ * @param messagesNumber 获取消息的数量
+ * @param success        回调中，messagesArray:消息数组
+ * @param failure        获取失败，返回错误信息
+ * @warning 需要在初始化成功后调用才有效
+ */
++ (void)getServerHistoryMessagesAndTicketsWithUTCMsgDate:(NSDate *)msgDate
+                                messagesNumber:(NSInteger)messagesNumber
+                                       success:(void (^)(NSArray<MQMessage *> *messagesArray))success
+                                       failure:(void (^)(NSError* error))failure;
+
+/**
  * 从本地数据库获取历史消息
  *
  * @param msgDate        获取该日期之前的历史消息;
@@ -349,6 +397,37 @@
  */
 + (MQMessage *)sendAudioMessage:(NSData *)audio
                      completion:(void (^)(MQMessage *sendedMessage, NSError *error))completion;
+
+/**
+ * 发送视频消息。
+ *
+ * @param videoPath 需要发送的视频本地路径
+ * @param sendedMessage 返回发送后的消息。如果发送成功，message的content为视频的网络地址。消息是否发送成功，需根据message的sendStatus判断。
+ * @return 该条视频消息。此时该消息状态为发送中，message的content属性是本地视频路径.
+ * @warning 使用该接口，会对提供的视频进行压缩，并且转换为MP4格式发送.
+ * @warning 需要在初始化成功后，且顾客是在线状态时调用才有效
+ */
++ (MQMessage *)sendVideoMessage:(NSString *)videoPath
+                     completion:(void (^)(MQMessage *sendedMessage, NSError *error))completion;
+
+/**
+ * 发送商品卡片消息
+ *
+ * @param pictureUrl 商品图片的url。不能为空，否则不执行发送操作。
+ * @param title 商品标题。不能为空，否则不执行发送操作。
+ * @param descripation 商品描述内容。不能为空，否则不执行发送操作。
+ * @param productUrl 商品链接。不能为空，否则不执行发送操作。
+ * @param salesCount 销售量。不设置就默认为0。
+ *
+ * @return 该条商品卡片消息。此时该消息状态为发送中.
+ * @warning 需要在初始化成功后，且顾客是在线状态时调用才有效
+ */
++ (MQMessage *)sendProductCardMessageWithPictureUrl:(NSString *)pictureUrl
+                                         title:(NSString *)title
+                                         descripation:(NSString *)descripation
+                                         productUrl:(NSString *)productUrl
+                                         salesCount:(long)salesCount
+                               completion:(void (^)(MQMessage *sendedMessage, NSError *error))completion;
 
 /**
  * 将用户正在输入的内容，提供给客服查看。该接口没有调用限制，但每1秒内只会向服务器发送一次数据
@@ -463,12 +542,24 @@
 
 
 /**
+ 机器人的回答评价反馈功能是否开启
+ */
++ (BOOL)enableBotEvaluateFeedback;
+
+/**
  对机器人的回答做评价
  @param messageId 消息 id
  */
 + (void)evaluateBotMessage:(NSString *)messageId
                   isUseful:(BOOL)isUseful
                 completion:(void (^)(BOOL success, NSString *text, NSError *error))completion;
+
+/**
+ 采集营销机器人的操作数据
+ @param messageId 消息 id
+ @param index 点击的第几个操作按钮
+ */
++ (void)collectionBotOperationWithMessageId:(NSString *)messageId operationIndex:(int)index;
 
 /**
  强制转人工
@@ -497,6 +588,16 @@
  */
 
 + (void)getEnterpriseConfigDataWithCache:(BOOL)isLoadCache complete:(void(^)(MQEnterprise *, NSError *))action;
+
+/**
+获取当前企业配置头像
+ */
++ (NSString *)getEnterpriseConfigAvatar;
+
+/**
+获取当前企业配置名称
+ */
++ (NSString *)getEnterpriseConfigName;
 
 /**
  开始显示聊天界面，如果自定义聊天界面，在聊天界面出现的时候调用，通知 SDK 进行初始化
@@ -564,6 +665,13 @@
 + (NSError *)checkGlobalError;
 
 /**
+ *  配置sdk的渠道来源
+ *
+ * @param channel  来源渠道
+ */
++ (void)configSourceChannel:(MQSDKSourceChannel)channel;
+
+/**
  根据当前的用户 id， 或者自定义用户 id，首先判断需不需要显示询前表单：如果当前对话未结束，则需要显示，这时发起请求，从服务器获取表单数据，返回的结果根据用户指定的 agent token， group token（如果有），将数据过滤之后返回。
  */
 + (void)requestPreChatServeyDataIfNeedWithClientId:(NSString *)clientIdIn customizedId:(NSString *)customizedIdIn completion:(void(^)(MQPreChatData *data, NSError *error))block;
@@ -603,4 +711,15 @@
 + (void)refreshPushInfoWithToken:(NSString *)token
                          Success:(void (^)(BOOL completion))success
                          failure:(void (^)(NSError *error))failure;
+
+/**
+ * 是否开启留言功能
+ */
++ (BOOL)enableLeaveComment;
+
+/**
+ * 当前是否开启无消息访客过滤
+ */
++ (BOOL)currentOpenVisitorNoMessage;
+
 @end

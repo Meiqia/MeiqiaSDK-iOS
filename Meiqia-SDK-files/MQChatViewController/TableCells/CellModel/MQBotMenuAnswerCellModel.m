@@ -11,6 +11,7 @@
 #import "MQBotMenuAnswerCell.h"
 #import "MQBotMenuCellModel.h" //
 #import "MQServiceToViewInterface.h"
+#import "MQBundleUtil.h"
 
 @interface MQBotMenuAnswerCellModel()
 
@@ -26,10 +27,11 @@
         self.message = message;
         self.content = message.content;
         self.messageId = message.messageId;
-        self.menuFootnote = kMQBotMenuTipText;
+        self.menuFootnote = [MQBundleUtil localizedStringForKey:@"bot_menu_tip_text"];
         self.menuTitle = message.menu.content;
         self.menus = message.menu.menu;
         self.isEvaluated = message.isEvaluated;
+        self.solved = message.solved;
         
         __weak typeof(self)wself = self;
         [MQServiceToViewInterface downloadMediaWithUrlString:message.userAvatarPath progress:nil completion:^(NSData *mediaData, NSError *error) {
@@ -78,12 +80,20 @@
     return self.message.messageId;
 }
 
+- (NSString *)getMessageConversionId {
+    return self.message.conversionId;
+}
+
 - (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
     self.message.sendStatus = sendStatus;
 }
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.message.messageId = messageId;
+}
+
+- (void)updateCellConversionId:(NSString *)conversionId {
+    self.message.conversionId = conversionId;
 }
 
 - (void)updateCellMessageDate:(NSDate *)messageDate {
@@ -94,8 +104,9 @@
     
 }
 
-- (void)didEvaluate {
+- (void)didEvaluate:(BOOL)solved {
     self.isEvaluated = YES;
+    self.solved = solved;
 }
 
 @end
