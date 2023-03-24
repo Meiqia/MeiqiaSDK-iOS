@@ -18,6 +18,8 @@
 #import "MQProductCardMessage.h"
 #import "MQJsonUtil.h"
 #import "MQVideoMessage.h"
+#import "MQServiceToViewInterface.h"
+
 
 @implementation MQVisialMessageFactory
 
@@ -82,6 +84,9 @@
         withDrawMessage.isMessageWithDraw = plainMessage.isMessageWithDraw;
         withDrawMessage.content = @"消息已被客服撤回";
         toMessage = withDrawMessage;
+        if (![MQServiceToViewInterface getEnterpriseConfigWithdrawToastStatus]) {
+            return nil;
+        }
     }
     toMessage.messageId = plainMessage.messageId;
     toMessage.date = plainMessage.createdOn;

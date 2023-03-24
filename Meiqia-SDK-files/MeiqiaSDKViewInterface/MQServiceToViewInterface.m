@@ -470,6 +470,10 @@
     [MQManager markAllMessagesAsRead];
 }
 
++ (BOOL)getEnterpriseConfigWithdrawToastStatus {
+    return [MQManager getEnterpriseConfigWithdrawToastStatus];
+}
+
 + (void)prepareForChat {
     [MQManager didStartChat];
 }

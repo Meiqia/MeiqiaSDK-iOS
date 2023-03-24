@@ -17,7 +17,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.9.0"
+#define MQSDKVersion @"3.9.1"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -540,6 +540,13 @@
  */
 + (void)updateMessageWithDrawWithId:(NSString *)messageId withIsWithDraw:(BOOL)isWithDraw;
 
+
+/**
+ 是否显示撤回消息提示语
+ 
+ * @return NO: 不显示提示语， YES：显示提示语
+ */
++ (BOOL)getEnterpriseConfigWithdrawToastStatus;
 
 /**
  机器人的回答评价反馈功能是否开启

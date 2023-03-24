@@ -72,13 +72,13 @@
     }];
 }
 
-- (void)setImages:(NSArray *)images {
-    NSMutableArray *tempImageArray = [NSMutableArray new];
-    for (UIImage * image in images) {
-        [tempImageArray addObject:[MQImageUtil resizeImageToMaxScreenSize:image]];
-    }
-    _images = tempImageArray;
-}
+//- (void)setImages:(NSArray *)images {
+//    NSMutableArray *tempImageArray = [NSMutableArray new];
+//    for (UIImage * image in images) {
+//        [tempImageArray addObject:[MQImageUtil resizeImageToMaxScreenSize:image]];
+//    }
+//    _images = tempImageArray;
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

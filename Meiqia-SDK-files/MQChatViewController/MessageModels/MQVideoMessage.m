@@ -40,7 +40,7 @@
 
 - (void)handleAccessoryData:(NSDictionary *)accessoryData {
     
-    if (accessoryData && [accessoryData isEqual:[NSNull null]]) {
+    if (accessoryData && ![accessoryData isEqual:[NSNull null]]) {
         if ([accessoryData objectForKey:@"thumb_url"] && ![[accessoryData objectForKey:@"thumb_url"] isEqual:[NSNull null]]) {
             self.thumbnailUrl = [accessoryData objectForKey:@"thumb_url"];
         }

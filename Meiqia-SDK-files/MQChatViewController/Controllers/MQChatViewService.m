@@ -1587,9 +1587,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [self.cellModels removeObjectAtIndex:idx];
                 [self.delegate removeCellAtIndex:idx];
                 
-                MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:@"客服撤回了一条消息" cellWidth:self.chatViewWidth enableLinesDisplay:NO];
-                [self.cellModels insertObject:cellModel atIndex:idx];
-                [self.delegate insertCellAtCurrentIndex:idx modelCount:1];
+                if ([MQServiceToViewInterface getEnterpriseConfigWithdrawToastStatus]) {
+                    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:@"客服撤回了一条消息" cellWidth:self.chatViewWidth enableLinesDisplay:NO];
+                    [self.cellModels insertObject:cellModel atIndex:idx];
+                    [self.delegate insertCellAtCurrentIndex:idx modelCount:1];
+                }
             }
 
         }];

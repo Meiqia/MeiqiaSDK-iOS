@@ -408,6 +408,13 @@
 + (void)markAllMessagesAsRead;
 
 /**
+ 是否显示撤回消息提示语
+ 
+ * @return NO: 不显示提示语， YES：显示提示语
+ */
++ (BOOL)getEnterpriseConfigWithdrawToastStatus;
+
+/**
  * 汇报文件被下载
  */
 + (void)clientDownloadFileWithMessageId:(NSString *)messageId

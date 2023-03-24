@@ -87,6 +87,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong) MQTicketConfigInfo *ticketConfigInfo; //留言数据配置
 
+@property (nonatomic, assign) BOOL withdraw_msg_show; // 是否显示撤回消息的提示语
+
 @end
 
 

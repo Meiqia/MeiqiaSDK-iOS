@@ -14,6 +14,7 @@
 		364DDA572967F1DE0002D9C8 /* MQPageDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 364DDA522967F1DE0002D9C8 /* MQPageDataModel.m */; };
 		364DDA582967F1DE0002D9C8 /* MQPageScrollMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 364DDA542967F1DE0002D9C8 /* MQPageScrollMenuView.m */; };
 		364DDA592967F1DE0002D9C8 /* MQPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 364DDA552967F1DE0002D9C8 /* MQPageView.m */; };
+		368EEF9829CD45EC00F66157 /* MQPreChatTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 368EEF9629CD45EC00F66157 /* MQPreChatTopView.m */; };
 		36A950A62864590E0052645C /* MeiQiaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36A94F0A2864590D0052645C /* MeiQiaSDK.framework */; };
 		36A950A72864590E0052645C /* MQNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F0E2864590D0052645C /* MQNotificationView.m */; };
 		36A950A82864590E0052645C /* MQNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F0F2864590D0052645C /* MQNotificationManager.m */; };
@@ -264,6 +265,8 @@
 		364DDA532967F1DE0002D9C8 /* MQPageScrollItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPageScrollItemView.h; sourceTree = "<group>"; };
 		364DDA542967F1DE0002D9C8 /* MQPageScrollMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPageScrollMenuView.m; sourceTree = "<group>"; };
 		364DDA552967F1DE0002D9C8 /* MQPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPageView.m; sourceTree = "<group>"; };
+		368EEF9629CD45EC00F66157 /* MQPreChatTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQPreChatTopView.m; sourceTree = "<group>"; };
+		368EEF9729CD45EC00F66157 /* MQPreChatTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQPreChatTopView.h; sourceTree = "<group>"; };
 		36A94F0A2864590D0052645C /* MeiQiaSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MeiQiaSDK.framework; sourceTree = "<group>"; };
 		36A94F0C2864590D0052645C /* MQNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQNotificationManager.h; sourceTree = "<group>"; };
 		36A94F0D2864590D0052645C /* MQNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQNotificationView.h; sourceTree = "<group>"; };
@@ -1342,6 +1345,8 @@
 		36A9504A2864590D0052645C /* PreChatForm */ = {
 			isa = PBXGroup;
 			children = (
+				368EEF9729CD45EC00F66157 /* MQPreChatTopView.h */,
+				368EEF9629CD45EC00F66157 /* MQPreChatTopView.m */,
 				36A9504F2864590D0052645C /* MQPreChatCells.h */,
 				36A9504B2864590D0052645C /* MQPreChatCells.m */,
 				36A9504C2864590D0052645C /* MQPreChatFormListViewController.h */,
@@ -1990,6 +1995,7 @@
 				36A950B22864590E0052645C /* MQMessageFormViewController.m in Sources */,
 				36A9510C2864590E0052645C /* MQTipsCell.m in Sources */,
 				89B554A01FE75E8100EAC49D /* ViewController.m in Sources */,
+				368EEF9829CD45EC00F66157 /* MQPreChatTopView.m in Sources */,
 				36A951402864590E0052645C /* MQImageViewerViewController.m in Sources */,
 				36A950BA2864590E0052645C /* MEIQIA_HPGrowingTextView.m in Sources */,
 				36A951522864590E0052645C /* NSString+MQRegular.m in Sources */,
@@ -2165,6 +2171,7 @@
 		CCE9D1341C1812F6004E862E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
@@ -2194,7 +2201,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.9.0;
+				MARKETING_VERSION = 3.9.1;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2238,7 +2245,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.9.0;
+				MARKETING_VERSION = 3.9.1;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";

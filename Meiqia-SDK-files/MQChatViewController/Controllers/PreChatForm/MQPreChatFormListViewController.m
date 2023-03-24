@@ -13,12 +13,15 @@
 #import "UIView+MQLayout.h"
 #import "MQPreChatSubmitViewController.h"
 #import "MQAssetUtil.h"
+#import "MQPreChatTopView.h"
 
 @interface MQPreChatFormListViewController ()
 
 @property (nonatomic, strong) MQPreChatFormViewModel *viewModel;
 @property (nonatomic, copy) void(^completeBlock)(NSDictionary *userInfo);
 @property (nonatomic, copy) void(^cancelBlock)(void);
+
+@property (nonatomic, strong) UIView *cacheHeaderView;
 
 @end
 
@@ -113,21 +116,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (CGFloat)getHeaderMaxWidth {
+    return self.tableView.viewWidth - 2 * kMQPreChatHeaderHorizontalSpacing;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40;
+    return self.cacheHeaderView.viewHeight;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.viewWidth, 40)];
-    UILabel *titleLabel = [UILabel new];
-    titleLabel.text = self.viewModel.formData.menu.title;
-    titleLabel.textColor = [UIColor mq_colorWithHexString:silver];
-    titleLabel.font = [UIFont systemFontOfSize:14];
-    [titleLabel sizeToFit];
-    [headerView addSubview:titleLabel];
-    [titleLabel align:(ViewAlignmentMiddleLeft) relativeToPoint:CGPointMake(10, CGRectGetMidY(headerView.bounds))];
     
-    return headerView;
+    return self.cacheHeaderView;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -185,4 +184,33 @@
         }
     }
 }
+
+-(UIView *)cacheHeaderView {
+    if (!_cacheHeaderView) {
+        MQPreChatTopView *topView;
+        CGFloat topViewHeight = 0;
+
+        if (self.viewModel.formData.content.length > 0) {
+            topView = [[MQPreChatTopView alloc] initWithHTMLText:self.viewModel.formData.content maxWidth:[self getHeaderMaxWidth]];
+            topViewHeight = [topView getTopViewHeight];
+            topView.frame = CGRectMake(kMQPreChatHeaderHorizontalSpacing, 0, [self getHeaderMaxWidth], topViewHeight);
+        }
+        
+        CGSize textSize = CGSizeMake([self getHeaderMaxWidth], MAXFLOAT);
+        CGRect textRect = [self.viewModel.formData.menu.title boundingRectWithSize:textSize
+                                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                                  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0]}
+                                                     context:nil];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kMQPreChatHeaderHorizontalSpacing, topViewHeight + kMQPreChatHeaderBottom, [self getHeaderMaxWidth], textRect.size.height)];
+        titleLabel.text = self.viewModel.formData.menu.title;
+        titleLabel.textColor = [UIColor mq_colorWithHexString:ebonyClay];
+        titleLabel.font = [UIFont systemFontOfSize:14];
+        
+        _cacheHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.viewWidth, CGRectGetMaxY(titleLabel.frame) + kMQPreChatHeaderBottom)];
+        [_cacheHeaderView addSubview:topView];
+        [_cacheHeaderView addSubview:titleLabel];
+    }
+    return _cacheHeaderView;
+}
+
 @end

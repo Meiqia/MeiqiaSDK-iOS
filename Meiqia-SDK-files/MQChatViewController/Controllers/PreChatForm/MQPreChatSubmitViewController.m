@@ -13,6 +13,7 @@
 #import "MQPreChatCells.h"
 #import "MQToast.h"
 #import "MQAssetUtil.h"
+#import "MQPreChatTopView.h"
 
 #pragma mark -
 #pragma mark -
@@ -22,6 +23,7 @@
 @interface MQPreChatSubmitViewController ()
 
 @property (nonatomic, strong) MQPreChatFormViewModel *viewModel;
+@property (nonatomic, strong) MQPreChatTopView *topView;
 
 @end
 
@@ -80,10 +82,24 @@
     header.viewOrigin = CGPointZero;
     header.formItem = self.viewModel.formData.form.formItems[section];
     
+    if (self.viewModel.formData.content.length > 0 && section == 0) {
+        UIView *view = [[UIView alloc] init];
+        [view addSubview:self.topView];
+        
+        header.frame = CGRectMake(0, [self.topView getTopViewHeight], header.viewWidth, header.viewHeight);
+        [view addSubview:header];
+        
+        return view;
+    }
+    
     return header;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    
+    if (self.viewModel.formData.content.length > 0 && section == 0) {
+        return HEIGHT_SECTION_HEADER + [self.topView getTopViewHeight];
+    }
     return HEIGHT_SECTION_HEADER;
 }
 
@@ -292,6 +308,15 @@ static UIBarButtonItem *rightBarButtonItemCache = nil;
     } else {
         return nil;
     }
+}
+
+- (MQPreChatTopView *)topView {
+    if (!_topView) {
+        CGFloat horizontalSpacing = 10.0;
+        _topView = [[MQPreChatTopView alloc] initWithHTMLText:self.viewModel.formData.content maxWidth:self.tableView.viewWidth - 2 * horizontalSpacing];
+        _topView.frame = CGRectMake(horizontalSpacing, 0, self.tableView.viewWidth - 2 * horizontalSpacing, [_topView getTopViewHeight]);
+    }
+    return _topView;
 }
 
 

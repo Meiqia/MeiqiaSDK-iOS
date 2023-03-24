@@ -48,7 +48,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.9.0'
+pod 'Meiqia', '~> 3.9.1'
 ```
 接着安装美洽 pod 即可：
 
@@ -907,7 +907,7 @@ MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager al
 ## Xcode14上的一些变动需知晓
 
 * Bitcode 废除
-* 不再支持构建 armv7、armv7s 以及 i386 架构的 iOS 项目 (iOS真机只支持arm64, 要支持啊armv7、armv7s 以及 i386，请使用 v3.8.4 及以下版本)
+* iOS v3.8.5 - v3.9.0 真机只支持arm64
 
 Vendors - 用到的第三方开源库
 ---
@@ -923,6 +923,14 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十一 更新日志
+
+**v3.9.1  2023 年 3 月 24 日**
+* 支持armv7
+* 支持讯前表单标题显示富文本
+* 支持撤回消息提示语工作台可配置
+* 优化预览图片模糊问题
+* 修复视频第一帧图片显示失败的问题
+* 修复多语言应用内不能实时切换的问题
 
 **v3.9.0  2023 年 2 月 9 日**
 * 优化留言界面留言标题展示样式
