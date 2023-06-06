@@ -295,6 +295,11 @@
  */
 - (void)cacheSendVideoFilePath:(NSString *)filePath;
 
+/**
+ * 当前的会话访客是否发送过消息
+ */
+- (BOOL)haveSendMessage;
+
 #ifndef INCLUDE_MEIQIA_SDK
 
 /**

@@ -48,7 +48,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.9.2'
+pod 'Meiqia', '~> 3.9.3'
 ```
 接着安装美洽 pod 即可：
 
@@ -56,32 +56,16 @@ pod 'Meiqia', '~> 3.9.2'
 $ pod install
 ```
 
-## 1.2 Carthage 集成
-
->温馨提示:Swift项目已经完美支持CocoPods,推荐你使用CocoPods集成
-
- 1.在 Cartfile 中增加:
-
-```
-github "meiqia/MeiqiaSDK-iOS"
-```
-
-2. 将 Meiqia.framework 中的 MeiQiaSDK.framework 拖到与Meiqia.framework 同一级目录
-
-3. 将 Meiqia.framework 和 MeiQiaSDK.framework 两个包拖入工程中
-
-4. 将 Meiqia.framework 拖入 Embedded Binearies 中
-
-## 1.3 手动导入美洽SDK
-###1.3.1 导入到OC 项目
+## 1.2 手动导入美洽SDK
+###1.2.1 导入到OC 项目
 打开下载到本地的文件, 找到Meiqia-SDK-files文件夹下的 `MeiQiaSDK.framework` 、 `MQChatViewController` 、 `MeiqiaSDKViewInterface` 、`Notification`和 `MQMessageForm`,将这五个文件夹拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者直接拖入 Xcode 工程目录结构中。
 
-###1.3.2  导入到Swift 项目
+###1.2.2  导入到Swift 项目
 
 * 按照上面的方法引入美洽 SDK 的文件。
 * 在 Bridging Header 头文件中，‘#import <MeiQiaSDK/MQManager.h>’、'#import "MQChatViewManager.h"'。注：[如何添加 Bridging Header](http://bencoding.com/2015/04/15/adding-a-swift-bridge-header-manually/)。
 
-###1.3.3 引入依赖库
+###1.2.3 引入依赖库
 
 美洽 SDK 的实现，依赖了一些系统框架，在开发应用时，要在工程里加入这些框架。开发者首先点击工程右边的工程名,然后在工程名右边依次选择 *TARGETS* -> *BuiLd Phases* -> *Link Binary With Libraries*，展开 *LinkBinary With Libraries* 后点击展开后下面的 *+* 来添加下面的依赖项:
 
@@ -923,6 +907,11 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十一 更新日志
+
+**v3.9.3  2023 年 6 月 6 日**
+* 修复iOS 16内存暴涨崩溃问题
+* 优化富文本图片显示复用的问题
+* 支持客服评价按钮显示工作台可配置
 
 **v3.9.2  2023 年 3 月 24 日**
 

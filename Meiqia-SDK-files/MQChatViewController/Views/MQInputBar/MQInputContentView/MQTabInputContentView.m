@@ -26,6 +26,8 @@
         self.textField.maxNumberOfLines = 8;
         self.textField.returnKeyType = UIReturnKeySend;
         self.textField.delegate = (id)self;
+        self.textField.backgroundColor = [UIColor whiteColor];
+        self.textField.textColor = [UIColor blackColor];
         [self addSubview:self.textField];
 
         topBoder = [CALayer layer];

@@ -1516,6 +1516,21 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
 }
 
+- (BOOL)haveSendMessage {
+    for (id<MQCellModelProtocol> cellModel in [self.cellModels reverseObjectEnumerator]) {
+        if (!([MQServiceToViewInterface getCurrentConversationID] && [[cellModel getMessageConversionId] isEqualToString:[MQServiceToViewInterface getCurrentConversationID]])) {
+            return NO;
+        }
+        if ([cellModel isKindOfClass:[MQTextCellModel class]] || [cellModel isKindOfClass:[MQVoiceCellModel class]] || [cellModel isKindOfClass:[MQVideoCellModel class]] || [cellModel isKindOfClass:[MQImageCellModel class]] || [cellModel isKindOfClass:[MQProductCardCellModel class]]) {
+            BOOL status = (MQChatCellFromType)[cellModel performSelector:@selector(cellFromType)] == MQChatCellOutgoing;
+            if (status) {
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
 #pragma mark - MQServiceToViewInterfaceDelegate
 
 // 进入页面从服务器或者数据库获取历史消息

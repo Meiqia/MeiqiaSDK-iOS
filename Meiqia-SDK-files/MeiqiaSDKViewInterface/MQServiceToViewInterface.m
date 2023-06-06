@@ -299,6 +299,10 @@
     return [MQManager enableLeaveComment];
 }
 
++ (BOOL)allowActiveEvaluation {
+    return [MQManager allowActiveEvaluation];
+}
+
 #pragma 实例方法
 - (instancetype)init {
     if (self = [super init]) {

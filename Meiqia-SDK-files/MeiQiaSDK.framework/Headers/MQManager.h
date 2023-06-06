@@ -17,7 +17,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.9.2"
+#define MQSDKVersion @"3.9.3"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -723,6 +723,11 @@
  * 是否开启留言功能
  */
 + (BOOL)enableLeaveComment;
+
+/**
+ * 是否允许顾客主动评价客服
+ */
++ (BOOL)allowActiveEvaluation;
 
 /**
  * 当前是否开启无消息访客过滤

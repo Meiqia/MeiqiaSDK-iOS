@@ -63,6 +63,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, copy) NSString *evaluationPromtText;///客服邀请评价显示的文案
 
+@property (nonatomic, assign) BOOL allow_active_evaluation; /// 是否允许顾客主动评价
+
 @property (nonatomic, assign) bool showSwitch; //
 
 @property (nonatomic, assign) BOOL enableBotFeedback; // 机器人的回答评价反馈功能是否开启

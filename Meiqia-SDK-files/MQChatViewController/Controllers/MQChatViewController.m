@@ -65,6 +65,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 @property (nonatomic, assign) BOOL isFirstScheduleClient;
 
+@property (nonatomic, assign) BOOL showEvaluatBarButton; // 是否显示评价按钮，需要在访客发送了消息才能显示
+
 @end
 
 @implementation MQChatViewController {
@@ -428,6 +430,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)insertCellAtBottomForModelCount:(NSInteger)count {
+    [self checkEvaluationBarButton];
     NSMutableArray *indexToAdd = [NSMutableArray new];
     NSInteger currentCellCount = [self.chatTableView numberOfRowsInSection: 0];
     for (int i = 0; i < count; i ++) {
@@ -463,6 +466,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)scrollTableViewToBottomAnimated:(BOOL)animated {
+    [self checkEvaluationBarButton];
     [self chatTableViewScrollToBottomWithAnimated: animated];
 }
 
@@ -495,23 +499,44 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)changeNavReightBtnWithAgentType:(NSString *)agentType hidden:(BOOL)hidden {
     // 隐藏 loading
     [self dismissActivityIndicatorView];
-    __block UIBarButtonItem *item = nil;
+    UIBarButtonItem *item = nil;
+    self.showEvaluatBarButton = NO;
     if ([agentType isEqualToString:@"bot"]) {
+        __weak typeof(self) weakSelf = self;
         [MQServiceToViewInterface getIsShowRedirectHumanButtonComplete:^(BOOL isShow, NSError *error) {
-            if (isShow) {
-                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_redirect_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRedirectBtn:)];
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (isShow && strongSelf) {
+                UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+                btn.frame = CGRectMake(0, 0, 30, 30);
+                [btn setTitle:[MQBundleUtil localizedStringForKey:@"meiqia_redirect_sheet"] forState:UIControlStateNormal];
+                btn.titleLabel.font = [MQChatViewConfig sharedConfig].chatViewStyle.navTitleFont ?: [UIFont systemFontOfSize:16.0];
+                [btn addTarget:strongSelf action:@selector(tapNavigationRedirectBtn:) forControlEvents:UIControlEventTouchUpInside];
+                strongSelf.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
             }
         }];
         return;
     } else if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         item = [[UIBarButtonItem alloc]initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
     } else {
-        if (![MQChatViewConfig sharedConfig].navBarRightButton && !hidden && [MQChatViewConfig sharedConfig].enableEvaluationButton) {
-            item =  [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapNavigationRightBtn:)];
+        if (![MQChatViewConfig sharedConfig].navBarRightButton && !hidden && [MQChatViewConfig sharedConfig].enableEvaluationButton && [MQServiceToViewInterface allowActiveEvaluation]) {
+            self.showEvaluatBarButton = YES;
         }
     }
     
     self.navigationItem.rightBarButtonItem = item;
+}
+
+- (void)checkEvaluationBarButton {
+    if (self.showEvaluatBarButton && [self.chatViewService haveSendMessage]) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+        btn.frame = CGRectMake(0, 0, 30, 30);
+        [btn setTitle:[MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"] forState:UIControlStateNormal];
+        btn.titleLabel.font = [MQChatViewConfig sharedConfig].chatViewStyle.navTitleFont ?: [UIFont systemFontOfSize:16.0];
+        [btn addTarget:self action:@selector(tapNavigationRightBtn:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+
+        self.showEvaluatBarButton = NO;
+    }
 }
 
 - (void)didReceiveMessage {

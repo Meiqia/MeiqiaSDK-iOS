@@ -38,6 +38,16 @@
     return self;
 }
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    for (UIView *tempView in self.contentView.subviews) {
+        if ([tempView isKindOfClass:[MQTagListView class]]) {
+            [tempView removeFromSuperview];
+        }
+    }
+    [self.bubbleImageView.subviews.firstObject removeFromSuperview];
+}
+
 - (void)updateCellWithCellModel:(id<MQCellModelProtocol>)model {
     if (![model isKindOfClass:[MQWebViewBubbleCellModel class]]) {
         NSAssert(NO, @"传给MQWebViewBubbleCell的Model类型不正确");
@@ -61,13 +71,9 @@
     
     CGFloat tagViewHeight = 0;
     
-    for (UIView *tempView in self.contentView.subviews) {
-        if ([tempView isKindOfClass:[MQTagListView class]]) {
-            [tempView removeFromSuperview];
-        }
-    }
-    [self.bubbleImageView.subviews.firstObject removeFromSuperview];
     [self.bubbleImageView addSubview:cellModel.contentWebView];
+    cellModel.contentWebView.scrollView.zoomScale = 1.0;
+    cellModel.contentWebView.scrollView.contentSize = CGSizeMake(0, 0);
     
     [cellModel.contentWebView setTappedLink:^(NSURL *url) {
         if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {

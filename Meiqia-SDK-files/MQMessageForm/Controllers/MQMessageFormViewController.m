@@ -91,7 +91,12 @@ static NSString * const kMessageFormMessageKey = @"message";
     self.navigationItem.title = [MQBundleUtil localizedStringForKey:@"leave_a_message"];
     
     if ([MQServiceToViewInterface enableLeaveComment]) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"submit"] style:(UIBarButtonItemStylePlain) target:self action:@selector(tapSubmitBtn:)];
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+        btn.frame = CGRectMake(0, 0, 30, 30);
+        [btn setTitle:[MQBundleUtil localizedStringForKey:@"submit"] forState:UIControlStateNormal];
+        btn.titleLabel.font = [UIFont systemFontOfSize:16.0];
+        [btn addTarget:self action:@selector(tapSubmitBtn:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
     }
 }
 

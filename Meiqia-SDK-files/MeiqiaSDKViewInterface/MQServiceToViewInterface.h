@@ -514,6 +514,11 @@
 + (BOOL)enableLeaveComment;
 
 /**
+ * 是否允许顾客主动评价客服
+ */
++ (BOOL)allowActiveEvaluation;
+
+/**
  在准备显示聊天界面是调用
  */
 + (void)prepareForChat;
