@@ -129,6 +129,7 @@
     
     NSMutableArray *highMenu = [[NSMutableArray alloc] init];
     NSInteger highMenuPageSize = 0;
+    BOOL needTip = YES;
     
     NSArray *contentRobot = [data objectForKey:@"content_robot"] ?: [NSArray new];
     for (NSInteger i=0; i < [contentRobot count]; i++) {
@@ -139,6 +140,15 @@
         }
         if (i == 0 && [[subContent objectForKey:@"type"] isEqualToString:@"text"]) {
             content = [subContent objectForKey:@"text"];
+        } else if ([[subContent objectForKey:@"type"] isEqualToString:@"related"]) {
+            content = [subContent objectForKey:@"text_before"];
+            if ([subContent objectForKey:@"items"]) {
+                NSArray *dataArr = [subContent objectForKey:@"items"];
+                for (NSDictionary *dic in dataArr) {
+                    [menu addObject:dic[@"text"]];
+                }
+            }
+            needTip = NO;
         } else if ([[subContent objectForKey:@"type"] isEqualToString:@"menu"]) {
             if ([subContent objectForKey:@"c_type"]) {
                 if ([subContent objectForKey:@"page_size"]) {
@@ -182,9 +192,15 @@
         botMessage.richContent = richContent;
         return botMessage;
     } else {
-        MQBotMenuMessage *botMessage = [[MQBotMenuMessage alloc] initWithContent:content menu:menu];
-        botMessage.richContent = richContent;
-        return botMessage;
+        if (richContent.length > 0) {
+            MQBotRichTextMessage *botMessage = [[MQBotRichTextMessage alloc]initWithDictionary:@{@"content": richContent}];
+            return botMessage;
+        }else {
+            MQBotMenuMessage *botMessage = [[MQBotMenuMessage alloc] initWithContent:content menu:menu];
+            botMessage.tipType = needTip ? MQBotMenuMessageNormal : MQBotMenuMessageNoTip;
+            botMessage.richContent = richContent;
+            return botMessage;
+        }
     }
 }
 

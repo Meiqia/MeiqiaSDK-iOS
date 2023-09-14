@@ -133,30 +133,36 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
 
 /**
  *  设置底部自定义发送图片的按钮图片；
+ *  @param photoSenderImage 图片发送按钮image
+ *  @param photoSenderHighlightedImage 图片发送按钮高亮image
  */
 @property (nonatomic, strong) UIImage *photoSenderImage;
 @property (nonatomic, strong) UIImage *photoSenderHighlightedImage;
 
 /**
  *  设置底部自定义发送语音的按钮图片；
- *  @param image 语音发送按钮image
- *  @param highlightedImage 语音发送按钮选中image
+ *  @param voiceSenderImage 语音发送按钮image
+ *  @param voiceSenderHighlightedImage 语音发送按钮高亮的image
  */
 @property (nonatomic, strong) UIImage *voiceSenderImage;
 @property (nonatomic, strong) UIImage *voiceSenderHighlightedImage;
 
-
-@property (nonatomic, strong) UIImage *keyboardSenderImage;
-@property (nonatomic, strong) UIImage *keyboardSenderHighlightedImage;
+/**
+ *  设置底部自定义相机的按钮图片；
+ *  @param cameraSenderImage 相机按钮image
+ *  @param cameraSenderHighlightedImage 相机按钮高亮的image
+ */
+@property (nonatomic, strong) UIImage *cameraSenderImage;
+@property (nonatomic, strong) UIImage *cameraSenderHighlightedImage;
 
 /**
- *  设置底部自定义取消键盘的按钮图片
- *
- *  @param image            取消键盘按钮image
- *  @param highlightedImage 取消键盘按钮选中image
+ *  设置底部自定义表情的按钮图片；
+ *  @param emojiSenderImage 表情发送按钮image
+ *  @param emojiSenderHighlightedImage 表情发送按钮高亮的image
  */
-@property (nonatomic, strong) UIImage *resignKeyboardImage;
-@property (nonatomic, strong) UIImage *resignKeyboardHighlightedImage;
+@property (nonatomic, strong) UIImage *emojiSenderImage;
+@property (nonatomic, strong) UIImage *emojiSenderHighlightedImage;
+
 
 /**
  * 设置自定义客服的消息气泡（发送过来的消息气泡）的背景图片；

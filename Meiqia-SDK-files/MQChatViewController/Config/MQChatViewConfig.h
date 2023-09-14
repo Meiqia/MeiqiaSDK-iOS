@@ -157,10 +157,6 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @property (nonatomic, strong) UIImage *photoSenderHighlightedImage;
 @property (nonatomic, strong) UIImage *voiceSenderImage;
 @property (nonatomic, strong) UIImage *voiceSenderHighlightedImage;
-@property (nonatomic, strong) UIImage *keyboardSenderImage;
-@property (nonatomic, strong) UIImage *keyboardSenderHighlightedImage;
-@property (nonatomic, strong) UIImage *resignKeyboardImage;
-@property (nonatomic, strong) UIImage *resignKeyboardHighlightedImage;
 @property (nonatomic, strong) UIImage *incomingBubbleImage;
 @property (nonatomic, strong) UIImage *outgoingBubbleImage;
 @property (nonatomic, strong) UIImage *imageLoadErrorImage;

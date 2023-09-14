@@ -29,9 +29,6 @@
 + (UIImage *)messageVoiceInputImage;
 + (UIImage *)messageVoiceInputHighlightedImage;
 
-+ (UIImage *)messageResignKeyboardImage;
-+ (UIImage *)messageResignKeyboardHighlightedImage;
-
 + (UIImage *)bubbleIncomingImage;
 + (UIImage *)bubbleOutgoingImage;
 

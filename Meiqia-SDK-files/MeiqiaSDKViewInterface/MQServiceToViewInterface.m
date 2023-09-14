@@ -92,6 +92,13 @@
             fromMessage.messageAvatar = [MQServiceToViewInterface getEnterpriseConfigAvatar];
             fromMessage.messageUserName = [MQServiceToViewInterface getEnterpriseConfigName];
          }
+        
+        // 非顾客消息 又没有头像 补充企业头像
+        else if (fromMessage.fromType != MQMessageFromTypeClient && fromMessage.messageAvatar.length < 1) {
+            fromMessage.messageAvatar = [MQServiceToViewInterface getEnterpriseConfigAvatar];
+            fromMessage.messageUserName = [MQServiceToViewInterface getEnterpriseConfigName];
+        }
+        
         MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType fromType:fromMessage.fromType] createMessage:fromMessage];
         if (toMessage) {
             [toMessages addObject:toMessage];

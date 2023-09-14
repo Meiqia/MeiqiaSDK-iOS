@@ -383,28 +383,6 @@
     }
 }
 
-- (void)setTextSenderImage:(UIImage *)image
-          highlightedImage:(UIImage *)highlightedImage
-{
-    if (image) {
-        chatViewConfig.keyboardSenderImage = image;
-    }
-    if (highlightedImage) {
-        chatViewConfig.keyboardSenderHighlightedImage = highlightedImage;
-    }
-}
-
-- (void)setResignKeyboardImage:(UIImage *)image
-              highlightedImage:(UIImage *)highlightedImage
-{
-    if (image) {
-        chatViewConfig.resignKeyboardImage = image;
-    }
-    if (highlightedImage) {
-        chatViewConfig.resignKeyboardHighlightedImage = highlightedImage;
-    }
-}
-
 - (void)setIncomingBubbleImage:(UIImage *)bubbleImage {
     if (!bubbleImage) {
         return;

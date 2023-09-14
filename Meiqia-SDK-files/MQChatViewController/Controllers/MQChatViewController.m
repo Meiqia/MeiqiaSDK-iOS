@@ -1006,19 +1006,31 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     self.bottomBar.buttonGroupBar.buttons = [NSMutableArray new];
     CGRect rect = CGRectMake(0, 0, 40, 40);
     UIButton *recorderBtn  = [[UIButton alloc] initWithFrame:rect];
-    [recorderBtn setImage:[MQAssetUtil imageFromBundleWithName:@"micIcon"] forState:(UIControlStateNormal)];
+    [recorderBtn setImage: [MQChatViewConfig sharedConfig].chatViewStyle.voiceSenderImage forState:(UIControlStateNormal)];
+    if ([MQChatViewConfig sharedConfig].chatViewStyle.voiceSenderHighlightedImage) {
+        [recorderBtn setImage: [MQChatViewConfig sharedConfig].chatViewStyle.voiceSenderHighlightedImage forState:UIControlStateHighlighted];
+    }
     [recorderBtn addTarget:self action:@selector(showRecorder) forControlEvents:(UIControlEventTouchUpInside)];
     
     UIButton *cameraBtn  = [[UIButton alloc] initWithFrame:rect];
-    [cameraBtn setImage:[MQAssetUtil imageFromBundleWithName:@"cameraIcon"] forState:(UIControlStateNormal)];
+    [cameraBtn setImage: [MQChatViewConfig sharedConfig].chatViewStyle.cameraSenderImage forState:(UIControlStateNormal)];
+    if ([MQChatViewConfig sharedConfig].chatViewStyle.cameraSenderHighlightedImage) {
+        [cameraBtn setImage: [MQChatViewConfig sharedConfig].chatViewStyle.cameraSenderHighlightedImage forState:UIControlStateHighlighted];
+    }
     [cameraBtn addTarget:self action:@selector(camera) forControlEvents:(UIControlEventTouchUpInside)];
     
     UIButton *imageRoll  = [[UIButton alloc] initWithFrame:rect];
-    [imageRoll setImage:[MQAssetUtil imageFromBundleWithName:@"imageIcon"] forState:(UIControlStateNormal)];
+    [imageRoll setImage: [MQChatViewConfig sharedConfig].chatViewStyle.photoSenderImage forState:(UIControlStateNormal)];
+    if ([MQChatViewConfig sharedConfig].chatViewStyle.photoSenderHighlightedImage) {
+        [imageRoll setImage: [MQChatViewConfig sharedConfig].chatViewStyle.photoSenderHighlightedImage forState:UIControlStateHighlighted];
+    }
     [imageRoll addTarget:self action:@selector(imageRoll) forControlEvents:(UIControlEventTouchUpInside)];
     
     UIButton *emoji  = [[UIButton alloc] initWithFrame:rect];
-    [emoji setImage:[MQAssetUtil imageFromBundleWithName:@"emoji"] forState:(UIControlStateNormal)];
+    [emoji setImage:[MQChatViewConfig sharedConfig].chatViewStyle.emojiSenderImage forState:(UIControlStateNormal)];
+    if ([MQChatViewConfig sharedConfig].chatViewStyle.emojiSenderHighlightedImage) {
+        [emoji setImage: [MQChatViewConfig sharedConfig].chatViewStyle.emojiSenderHighlightedImage forState:UIControlStateHighlighted];
+    }
     [emoji addTarget:self action:@selector(emoji) forControlEvents:(UIControlEventTouchUpInside)];
     
 //    UIButton *send  = [[UIButton alloc] initWithFrame:rect];

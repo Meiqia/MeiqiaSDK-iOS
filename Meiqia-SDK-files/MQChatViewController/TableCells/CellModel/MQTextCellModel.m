@@ -274,7 +274,8 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
     //文字高度
     //        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
     self.textLabelForHeightCalculation.attributedText = self.cellText;
-    CGFloat messageTextHeight = [self.textLabelForHeightCalculation sizeThatFits:CGSizeMake(maxLabelWidth, MAXFLOAT)].height;
+    CGSize messageTextSize = [self.textLabelForHeightCalculation sizeThatFits:CGSizeMake(maxLabelWidth, MAXFLOAT)];
+    CGFloat messageTextHeight = messageTextSize.height;
     
     //判断文字中是否有emoji
 //    if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
@@ -285,6 +286,9 @@ static CGFloat const kMQTextCellSensitiveHeight = 25.0;
 //    }
     //文字宽度
     CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
+    if (messageTextSize.width > messageTextWidth) {
+        messageTextWidth = messageTextSize.width;
+    }
     //#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
     NSRange periodRange = [self.messageContent rangeOfString:@"."];
     if (periodRange.location != NSNotFound) {

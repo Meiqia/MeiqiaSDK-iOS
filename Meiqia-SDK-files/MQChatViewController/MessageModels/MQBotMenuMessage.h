@@ -8,6 +8,11 @@
 
 #import "MQBaseMessage.h"
 
+typedef enum : NSUInteger {
+    MQBotMenuMessageNormal = 0,        //包含tip，和replay的提示语
+    MQBotMenuMessageNoTip = 1 // 不包含提示语的
+} MQBotMenuTipType;
+
 @interface MQBotMenuMessage : MQBaseMessage
 
 /** 消息content */
@@ -18,6 +23,9 @@
 
 /** 消息 menu */
 @property (nonatomic, copy) NSArray *menu;
+
+/** 消息 menu */
+@property (nonatomic, assign) MQBotMenuTipType tipType;
 
 /**
  * 初始化message

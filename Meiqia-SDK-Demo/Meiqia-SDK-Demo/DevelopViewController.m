@@ -348,7 +348,6 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     //开启同步消息
     [chatViewManager enableSyncServerMessage:true];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
-    [chatViewManager setScheduleLogicWithRule:(MQChatScheduleRulesRedirectNone)];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -666,7 +665,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  */
 - (void)chatViewStyle1 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    UIImage *photoImage = [UIImage imageNamed:@"MQMessageCameraInputImageNormalStyleTwo"];
+    UIImage *photoImage = [UIImage imageNamed:@"MQMessageCameraInputImageNormalStyleOne"];
     UIImage *photoHighlightedImage = [UIImage imageNamed:@"MQMessageCameraInputHighlightedImageStyleTwo"];
     UIImage *voiceImage = [UIImage imageNamed:@"MQMessageVoiceInputImageNormalStyleTwo"];
     UIImage *voiceHighlightedImage = [UIImage imageNamed:@"MQMessageVoiceInputHighlightedImageStyleTwo"];
@@ -682,10 +681,6 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewStyle setPhotoSenderHighlightedImage:photoHighlightedImage];
     [chatViewStyle setVoiceSenderImage:voiceImage];
     [chatViewStyle setVoiceSenderHighlightedImage:voiceHighlightedImage];
-    [chatViewStyle setKeyboardSenderImage:keyboardImage];
-    [chatViewStyle setKeyboardSenderHighlightedImage:keyboardHighlightedImage];
-    [chatViewStyle setResignKeyboardImage:resightKeyboardImage];
-    [chatViewStyle setResignKeyboardHighlightedImage:resightKeyboardHighlightedImage];
     [chatViewStyle setIncomingBubbleColor:[UIColor redColor]];
     [chatViewStyle setIncomingMsgTextColor:[UIColor whiteColor]];
     [chatViewStyle setOutgoingBubbleColor:[UIColor yellowColor]];

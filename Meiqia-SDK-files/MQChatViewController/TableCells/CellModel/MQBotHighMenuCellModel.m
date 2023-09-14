@@ -116,12 +116,18 @@ static CGFloat const kMQBotHighMenuTitleHeight = 30;
  */
 @property (nonatomic, readwrite, strong) NSString *conversionId;
 
+@property (nonatomic, strong) TTTAttributedLabel *textLabelForHeightCalculation;
+
 @end
 
 @implementation MQBotHighMenuCellModel
 
 - (MQBotHighMenuCellModel *)initCellModelWithMessage:(MQBotHighMenuMessage *)message cellWidth:(CGFloat)cellWidth delegate:(nonnull id<MQCellModelDelegate>)delegate {
     if (self = [super init]) {
+        
+        self.textLabelForHeightCalculation = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
+        self.textLabelForHeightCalculation.numberOfLines = 0;
+        
         self.messageId = message.messageId;
         self.conversionId = message.conversionId;
         self.sendStatus = message.sendStatus;
@@ -186,7 +192,9 @@ static CGFloat const kMQBotHighMenuTitleHeight = 30;
         }
         
         //文字高度
-        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
+        self.textLabelForHeightCalculation.attributedText = self.cellText;
+        CGSize messageTextSize = [self.textLabelForHeightCalculation sizeThatFits:CGSizeMake(maxLabelWidth, MAXFLOAT)];
+        CGFloat messageTextHeight = messageTextSize.height;
         //文字宽度
         CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
         NSRange periodRange = [message.content rangeOfString:@"."];
@@ -207,7 +215,7 @@ static CGFloat const kMQBotHighMenuTitleHeight = 30;
         }
         
         //气泡高度
-        CGFloat bubbleHeight = messageTextHeight;
+        CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;
         //气泡宽度
         CGFloat bubbleWidth = messageTextWidth + kMQCellBubbleToTextHorizontalLargerSpacing + kMQCellBubbleToTextHorizontalSmallerSpacing;
         
@@ -231,7 +239,7 @@ static CGFloat const kMQBotHighMenuTitleHeight = 30;
                 self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
             }
             
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, 0, messageTextWidth, messageTextHeight);
+            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, kMQCellBubbleToTextVerticalSpacing, messageTextWidth, messageTextHeight);
             //气泡的frame
             self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
             
@@ -246,7 +254,7 @@ static CGFloat const kMQBotHighMenuTitleHeight = 30;
                 self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
             }
             
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, 0, messageTextWidth, messageTextHeight);
+            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, kMQCellBubbleToTextVerticalSpacing, messageTextWidth, messageTextHeight);
             //气泡的frame
             self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
         }

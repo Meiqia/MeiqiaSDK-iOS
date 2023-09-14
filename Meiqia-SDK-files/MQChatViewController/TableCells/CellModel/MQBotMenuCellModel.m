@@ -132,6 +132,11 @@
 @property (nonatomic, readwrite, assign) CGRect replyTipLabelFrame;
 
 /**
+ * @brief 是否需要 提示语
+ */
+@property (nonatomic, readwrite, assign) BOOL needTip;
+
+/**
  * @brief cell中消息的会话id
  */
 @property (nonatomic, readwrite, strong) NSString *conversionId;
@@ -148,6 +153,7 @@
         self.messageId = message.messageId;
         self.conversionId = message.conversionId;
         self.sendStatus = message.sendStatus;
+        self.needTip = message.tipType == MQBotMenuMessageNormal;
         //文字最大宽度
         CGFloat maxLabelWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
         NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -237,12 +243,12 @@
         
         // menu的「常见问题」tip的高度
         CGFloat menuTipHeight = 0;
-        if (menuTotalHeight > 0) {
+        if (message.tipType == MQBotMenuMessageNormal && menuTotalHeight > 0) {
             menuTipHeight = [MQStringSizeUtil getHeightForText:[NSString stringWithFormat:@"%@:", [MQBundleUtil localizedStringForKey:@"bot_menu_problem_tip_text"]] withFont:[UIFont systemFontOfSize:kMQBotMenuTipSize] andWidth:maxLabelWidth];
         }
         
         CGFloat replyTipHeight = 0;
-        if (menuTotalHeight > 0) {
+        if (message.tipType == MQBotMenuMessageNormal && menuTotalHeight > 0) {
             menuTotalHeight -= kMQBotMenuVerticalSpacingInMenus;
             // 「点击回复」的提示 label 高度
             replyTipHeight = [MQStringSizeUtil getHeightForText:[MQBundleUtil localizedStringForKey:@"bot_menu_tip_text"] withFont:[UIFont systemFontOfSize:kMQBotMenuReplyTipSize] andWidth:maxLabelWidth];
@@ -278,7 +284,7 @@
             //气泡的frame
             self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
             //文字的frame
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, 0, maxLabelWidth, messageTextHeight);
+            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, self.needTip ? 0 : kMQCellBubbleToTextVerticalSpacing, maxLabelWidth, messageTextHeight);
         } else {
             //收到的消息
             self.cellFromType = MQChatCellIncoming;
@@ -292,7 +298,7 @@
             //气泡的frame
             self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
             //文字的frame
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, 0, maxLabelWidth, messageTextHeight);
+            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, self.needTip ? 0 : kMQCellBubbleToTextVerticalSpacing, maxLabelWidth, messageTextHeight);
         }
         
         // menu tip frame

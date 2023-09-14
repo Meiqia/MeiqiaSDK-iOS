@@ -70,14 +70,14 @@
         self.outgoingBubbleColor    = [UIColor colorWithRed:22/255.0 green:199/255.0 blue:209/255.0 alpha:1];
         self.navTitleColor          = nil;//[UIColor whiteColor];
         
-        self.photoSenderImage               = [MQAssetUtil messageCameraInputImage];
+        self.photoSenderImage               = [MQAssetUtil imageFromBundleWithName:@"imageIcon"];
         self.photoSenderHighlightedImage    = nil;
-        self.keyboardSenderImage            = [MQAssetUtil messageTextInputImage];
-        self.keyboardSenderHighlightedImage = nil;
-        self.voiceSenderImage               = [MQAssetUtil messageVoiceInputImage];
+        self.voiceSenderImage               = [MQAssetUtil imageFromBundleWithName:@"micIcon"];
         self.voiceSenderHighlightedImage    = nil;
-        self.resignKeyboardImage            = [MQAssetUtil messageResignKeyboardImage];
-        self.resignKeyboardHighlightedImage = nil;
+        self.cameraSenderImage              = [MQAssetUtil imageFromBundleWithName:@"cameraIcon"];
+        self.cameraSenderHighlightedImage   = nil;
+        self.emojiSenderImage               = [MQAssetUtil imageFromBundleWithName:@"emoji"];
+        self.emojiSenderHighlightedImage    = nil;
         self.incomingBubbleImage            = [MQAssetUtil bubbleIncomingImage];
         self.outgoingBubbleImage            = [MQAssetUtil bubbleOutgoingImage];
         self.messageSendFailureImage        = [MQAssetUtil messageWarningImage];

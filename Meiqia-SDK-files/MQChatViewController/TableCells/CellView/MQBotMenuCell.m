@@ -201,7 +201,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
     }
     
     // 刷新 reply tip label 和「常见问题」tip label
-    if (menuNum > 0) {
+    if (menuNum > 0 && cellModel.needTip) {
         replyTipLabel.hidden = false;
         replyTipLabel.frame = cellModel.replyTipLabelFrame;
         menuTipLabel.hidden = false;

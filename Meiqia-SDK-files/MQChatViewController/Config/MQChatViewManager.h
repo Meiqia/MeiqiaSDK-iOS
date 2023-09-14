@@ -357,22 +357,6 @@
 - (void)setVoiceSenderImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage style_deprecated;
 
 /**
- *  设置底部自定义发送文字的按钮图片
- *
- *  @param image            文字发送按钮image
- *  @param highlightedImage 文字发送按钮选中image
- */
-- (void)setTextSenderImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage style_deprecated;
-
-/**
- *  设置底部自定义取消键盘的按钮图片
- *
- *  @param image            取消键盘按钮image
- *  @param highlightedImage 取消键盘按钮选中image
- */
-- (void)setResignKeyboardImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage style_deprecated;
-
-/**
  * 设置自定义客服的消息气泡（发送过来的消息气泡）的背景图片；
  * @param bubbleImage 气泡图片
  */

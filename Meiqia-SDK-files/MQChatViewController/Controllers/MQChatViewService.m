@@ -57,6 +57,8 @@
 
 #import "MQBotMenuWebViewBubbleAnswerCellModel.h"
 
+#import "MQBotHighMenuRichCellModel.h"
+
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
 /** 一次获取历史消息数的个数 */
@@ -242,6 +244,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [cellModel isKindOfClass:[MQBotMenuAnswerCellModel class]] ||
             [cellModel isKindOfClass:[MQBotMenuCellModel class]] ||
             [cellModel isKindOfClass:[MQBotHighMenuCellModel class]] ||
+            [cellModel isKindOfClass:[MQBotHighMenuRichCellModel class]] ||
             [cellModel isKindOfClass:[MQBotMenuWebViewBubbleAnswerCellModel class]] ||
             [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
             [cellModel isKindOfClass:[MQBotGuideCellModel class]] ||
@@ -273,6 +276,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [cellModel isKindOfClass:[MQBotMenuAnswerCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotMenuCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotHighMenuCellModel class]] ||
+                [cellModel isKindOfClass:[MQBotHighMenuRichCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotMenuWebViewBubbleAnswerCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
                 [cellModel isKindOfClass:[MQBotWebViewBubbleAnswerCellModel class]] ||
@@ -878,7 +882,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             cellModel = [[MQBotMenuCellModel alloc] initCellModelWithMessage:(MQBotMenuMessage *)message cellWidth:self.chatViewWidth delegate:self];
             
         } else if ([message isKindOfClass:[MQBotHighMenuMessage class]]) {
-            cellModel = [[MQBotHighMenuCellModel alloc] initCellModelWithMessage:(MQBotHighMenuMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            NSString *richText = [(MQBotHighMenuMessage *)message richContent];
+            if (richText.length > 0) {
+                cellModel = [[MQBotHighMenuRichCellModel alloc] initCellModelWithMessage:(MQBotHighMenuMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            }else {
+                cellModel = [[MQBotHighMenuCellModel alloc] initCellModelWithMessage:(MQBotHighMenuMessage *)message cellWidth:self.chatViewWidth delegate:self];
+            }
         } else if ([message isKindOfClass:[MQBotGuideMessage class]]) {
             cellModel = [[MQBotGuideCellModel alloc] initCellModelWithMessage:(MQBotGuideMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQCardMessage class]]) {
@@ -1830,7 +1839,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if (needSplitLine) {
             MQSplitLineCellModel *cellModel1 = [[MQSplitLineCellModel alloc] initCellModelWithCellWidth:self.chatViewWidth withConversionDate:newMessageDate];
             [self.cellModels replaceObjectAtIndex:index withObject:cellModel1];
-            [self.cellModels addObject:cellModel];
+            // 首条消息重复问题
+//            [self.cellModels addObject:cellModel];
             [self reloadChatTableView];
             [self scrollToBottom];
         } else {

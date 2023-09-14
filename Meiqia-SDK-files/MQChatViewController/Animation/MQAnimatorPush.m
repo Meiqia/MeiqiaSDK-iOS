@@ -37,13 +37,9 @@
         self.toViewController.view.frame = CGRectMake(screenSize.width, 0, screenSize.width, screenSize.height);
         [[transitionContext containerView] addSubview:self.toViewController.view];
     } else {
-        UIGraphicsBeginImageContextWithOptions([[UIScreen mainScreen] bounds].size, YES, 0);
-        [self.toViewController.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-        self.backViewContentImageView = [[UIImageView alloc] initWithImage:UIGraphicsGetImageFromCurrentImageContext()];
-        UIGraphicsEndImageContext();
-        [[transitionContext containerView] addSubview:self.backViewContentImageView];
+        [[transitionContext containerView] addSubview:self.toViewController.view];
         [[transitionContext containerView] addSubview:self.fromViewController.view];
-        self.backViewContentImageView.frame = CGRectMake(-screenSize.width / 2, 0, screenSize.width, screenSize.height);
+        self.toViewController.view.frame = CGRectMake(-screenSize.width / 2, 0, screenSize.width, screenSize.height);
         self.fromViewController.view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
     }
     

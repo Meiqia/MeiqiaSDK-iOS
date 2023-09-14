@@ -76,16 +76,6 @@
     return [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleOne"];
 }
 
-+ (UIImage *)messageResignKeyboardImage
-{
-    return [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleOne"];
-}
-
-+ (UIImage *)messageResignKeyboardHighlightedImage
-{
-    return [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleOne"];
-}
-
 + (UIImage *)bubbleIncomingImage
 {
     return [MQAssetUtil imageFromBundleWithName:@"MQBubbleIncoming"];

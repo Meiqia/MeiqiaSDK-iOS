@@ -142,6 +142,11 @@ static CGFloat const kMQBotMenuVerticalSpacingInMenus = 12.0;
 @property (nonatomic, readonly, assign) CGRect replyTipLabelFrame;
 
 /**
+ * @brief 是否需要 提示语
+ */
+@property (nonatomic, readonly, assign) BOOL needTip;
+
+/**
  * @brief 消息的发送状态
  */
 @property (nonatomic, assign) MQChatMessageSendStatus sendStatus;
