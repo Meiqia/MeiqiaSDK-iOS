@@ -377,6 +377,12 @@
 + (void)getUnreadMessagesWithCompletion:(void (^)(NSArray *messages, NSError *error))completion;
 
 /**
+ * 获得指定customizedId服务端未读消息
+ */
++ (void)getUnreadMessagesWithCustomizedId:(NSString *)customizedId withCompletion:(void (^)(NSArray *messages, NSError *error))completion;
+
+
+/**
  * 获得本地未读消息
  
  * @return 输入文字

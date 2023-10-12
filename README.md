@@ -48,7 +48,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.9.4'
+pod 'Meiqia', '~> 3.9.5'
 ```
 接着安装美洽 pod 即可：
 
@@ -664,6 +664,11 @@ MQAgent *agent = [MQManager getCurrentAgent];
 开发者使用此接口来统一获取所有的未读消息，用户可以在需要显示未读消息数是调用此接口，此接口会自动判断并合并本地和服务器上的未读消息，当用户进入聊天界面后，未读消息将会清零。
 `[MQManager getUnreadMessagesWithCompletion:completion]`
 
+### 获取自定义 id 未读消息
+
+开发者使用此接口来统一获取自定义 id 所有的未读消息
+`[MQManager getUnreadMessagesWithCustomizedId:customizedId completion:completion]`
+
 ###录音和播放录音
 
 录音和播放录音分别包含 3 种可配置的模式：
@@ -907,6 +912,9 @@ VoiceConvert |  N/A | AMR 和 WAV 语音格式的互转；没找到出处，哪�
 [AGEmojiKeyboard](https://github.com/ayushgoel/AGEmojiKeyboard)|0.2.0|表情键盘，布局进行自定义，源码可以在工程中查看；
 
 # 十一 更新日志
+
+**v3.9.5  2023 年 10 月 12 日**
+* 新增获取自定义 id 未读消息
 
 **v3.9.4  2023 年 9 月 13 日**
 * 优化底部功能按钮的自定义适配

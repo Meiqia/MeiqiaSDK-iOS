@@ -17,7 +17,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.9.4"
+#define MQSDKVersion @"3.9.5"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -255,7 +255,7 @@
  *  获取当前顾客的顾客id，开发者可保存该顾客id，下次使用setClientOnlineWithClientId接口来让该顾客登陆美洽客服系统
  *
  *  @return 当前的顾客id
- *  
+ *
  */
 + (NSString *)getCurrentClientId;
 
@@ -507,6 +507,11 @@
  * 获得所有未读消息，包括本地和服务端的
  */
 + (void)getUnreadMessagesWithCompletion:(void (^)(NSArray *messages, NSError *error))completion;
+
+/**
+ *  获取指定 customizedId 顾客的未读消息
+ */
++ (void)getUnreadMessagesWithCustomizedId:(NSString *)customizedId completion:(void (^)(NSArray *messages, NSError *error))completion;
 
 /**
  获得本地未读消息

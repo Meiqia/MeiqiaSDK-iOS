@@ -449,6 +449,10 @@
     return [MQManager getUnreadMessagesWithCompletion:completion];
 }
 
++ (void)getUnreadMessagesWithCustomizedId:(NSString *)customizedId withCompletion:(void (^)(NSArray *, NSError *))completion {
+    return [MQManager getUnreadMessagesWithCustomizedId:customizedId completion:completion];
+}
+
 + (NSArray *)getLocalUnreadMessages {
     return [MQManager getLocalUnreadeMessages];
 }

@@ -27,7 +27,8 @@ typedef enum : NSUInteger {
     MQSDKDemoManagerGroupId,
     MQSDKDemoManagerClientAttrs,
     MQSDKDemoManagerClientOffline,
-    MQSDKDemoManagerEndConversation
+    MQSDKDemoManagerEndConversation,
+    MQSDKDemoManagerCustomizedIdUnreadCount
 } MQSDKDemoManager;
 
 static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
@@ -81,6 +82,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                              @"预发送消息上线",
                              @"切换 appKey 上线",
                              @"获取当前顾客的群发消息",
+                             @"显示自定义id未读的消息数",
                              ],
                          @[
                              @"自定义主题 1",
@@ -217,6 +219,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                 break;
             case 18:
                 [self getCurrentClientGroupNotifications];
+                break;
+            case 19:
+                [self inputCustomizedIdGetUnreadMessageCount];
                 break;
             default:
                 break;
@@ -578,6 +583,22 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     }];
 }
 
+- (void)showUnreadMessageCountWithCustomizedId:(NSString *)customizedId {
+    NSLog(@"input customizedId === %@", customizedId);
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    
+    [MQServiceToViewInterface getUnreadMessagesWithCustomizedId:customizedId withCompletion:^(NSArray *messages, NSError *error) {
+        [indicator stopAnimating];
+        UIAlertView *alert = [UIAlertView new];
+        alert.title = @"未读消息";
+        alert.message = error.localizedDescription.length > 0 ? error.localizedDescription : [NSString stringWithFormat:@"未读消息数为: %d",(int)messages.count];
+        [alert addButtonWithTitle:@"OK"];
+        [alert show];
+    }];
+}
+
 /**
  *  显示顾客的属性
  */
@@ -612,6 +633,16 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     if (currentClientId) {
         [[MQNotificationManager sharedManager] openMQGroupNotificationServer];
     }
+}
+
+/**
+ *  输入自定义Id获取未读消息数<##>
+ */
+- (void)inputCustomizedIdGetUnreadMessageCount {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入自定义Id获取未读消息数" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerCustomizedIdUnreadCount;
+    [alertView show];
 }
 
 #pragma UIAlertViewDelegate
@@ -652,6 +683,10 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                 break;
             case MQ_DEMO_ALERTVIEW_TAG_PRESENDMSG: {
                 [self setClientOnlineWithPresendMessage:[alertView textFieldAtIndex:0].text];
+            }
+                break;
+            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerCustomizedIdUnreadCount: {
+                [self showUnreadMessageCountWithCustomizedId:[alertView textFieldAtIndex:0].text];
             }
                 break;
             default:
