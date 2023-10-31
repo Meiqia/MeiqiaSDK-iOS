@@ -12,6 +12,7 @@
 #import "NSArray+MQFunctional.h"
 #import "MQChatViewConfig.h"
 #import "MQJsonUtil.h"
+#import "MQBundleUtil.h"
 
 @implementation MQPreChatFormViewModel
 
@@ -170,7 +171,7 @@
             return block(r, e);
         }];
     } else {
-        block(nil, [NSError errorWithDomain:@"请填写完整标记部分的内容" code:1 userInfo:nil]);
+        block(nil, [NSError errorWithDomain:[MQBundleUtil localizedStringForKey:@"pre_chat_form_black_alert_label"] code:1 userInfo:nil]);
     }
     
     return unsatisfiedIndexs;

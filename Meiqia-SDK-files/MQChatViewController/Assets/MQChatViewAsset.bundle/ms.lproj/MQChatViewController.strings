@@ -198,4 +198,5 @@
 "mq_evaluation_bad" = "Kurang memuaskan";
 "mq_evaluation_content" = "Masukkan penilaian terperinci (tidak wajib)";
 
-
+"waiting_agent_send_message" = "Beratur, sila tunggu";
+"pre_chat_form_input" = "masuk";

@@ -1067,7 +1067,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     //xlp 旧的: waitingInQueuePosition>0 && getCurrentAgent].privilege != MQAgentPrivilegeBot  改为 waitingInQueuePosition>0
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
         [self.view.window endEditing:YES];
-        [MQToast showToast:@"正在排队，请等待客服接入后发送消息" duration:2.5 window:self.view.window];
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"waiting_agent_send_message"] duration:2.5 window:self.view.window];
         
         [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
             //从后台获取 position 然后保存到本地

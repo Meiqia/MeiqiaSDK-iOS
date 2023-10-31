@@ -195,4 +195,5 @@
 "mq_evaluation_bad" = "差评";
 "mq_evaluation_content" = "填写评价内容(可选)";
 
-
+"waiting_agent_send_message" = "正在排队，请等待客服接入后发送消息";
+"pre_chat_form_input" = "输入";

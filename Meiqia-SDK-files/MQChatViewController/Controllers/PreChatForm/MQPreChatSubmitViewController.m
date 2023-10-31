@@ -14,6 +14,7 @@
 #import "MQToast.h"
 #import "MQAssetUtil.h"
 #import "MQPreChatTopView.h"
+#import "MQBundleUtil.h"
 
 #pragma mark -
 #pragma mark -
@@ -60,7 +61,7 @@
     [self.tableView registerClass:[MQPreChatCaptchaCell class] forCellReuseIdentifier:NSStringFromClass([MQPreChatCaptchaCell class])];
     [self.tableView registerClass:[MQPreChatSectionHeaderView class] forHeaderFooterViewReuseIdentifier:NSStringFromClass([MQPreChatSectionHeaderView class])];
     
-    UIBarButtonItem *submit = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:(UIBarButtonItemStylePlain) target:self action:@selector(submitAction)];
+    UIBarButtonItem *submit = [[UIBarButtonItem alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"submit"] style:(UIBarButtonItemStylePlain) target:self action:@selector(submitAction)];
     self.navigationItem.rightBarButtonItem = submit;
 }
 

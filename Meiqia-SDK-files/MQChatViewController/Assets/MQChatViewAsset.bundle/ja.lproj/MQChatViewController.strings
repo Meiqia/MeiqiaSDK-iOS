@@ -1,0 +1,199 @@
+"new_message"         = "メッセージを送信してください...";
+
+"record_speak"        = "押し続けて話す";
+
+"record_end"          = "リリースして送信する";
+
+"cancel"              = "キャンセル";
+
+"select_gallery"      = "アルバム";
+
+"select_camera"       = "カメラ";
+
+"wait_agent"          = "エージェントを割り当てています...";
+
+"waiting_title"       = "列に並んで待っています...";
+
+"not_access_camera"   = "[設定] – [プライバシー] – [写真] に移動してください。 次に、このアプリをオンにします。";
+
+"not_access_photos"   = "[設定] - [プライバシー] - [カメラ] に移動してください。 次に、このアプリをオンにします。";
+
+"display_new_message" = "新しいメッセージを受信しました";
+
+"display_video_expired" = "ビデオの有効期限が切れました";
+
+"display_video_more_than_limit" = "最大400Mを超える動画";
+
+"network_jam"         = "インターネット接続を確認して、もう一度試してください。";
+
+"simulator_not_support_camera"      = "シミュレーターがカメラにアクセスできません";
+
+"simulator_not_support_microphone"  = "シミュレータはマイクにアクセスできません";
+
+"recode_time_too_short" = "メッセージが短すぎます";
+
+"record_cancel_swipe"   = "上にスワイプしてキャンセルします";
+
+"record_cancel_realse"  = "放してキャンセル";
+
+"save_photo_error"      = "申し訳ありませんが、写真を保存できませんでした";
+
+"save_photo_success"    = "保存された写真";
+
+"save_text_success"     = "コピーされました";
+
+"save_photo"            = "保存";
+
+"save_text"             = "コピー";
+
+"record_error"          = "申し訳ありません、記録できませんでした-_-";
+
+"user_confirm"          = "わかりました";
+
+"no_more_messages"      = "これ以上のメッセージはありません";
+
+"welcome_chat"          = "";
+
+"default_assistant"     = "アシスタント";
+
+"no_agent_title"        = "メッセージを残す";
+
+"no_agent_tips"         = "申し訳ありませんが、エージェントはいません。\n連絡先情報をお送りください。 できるだけ早くご連絡させていただきます。";
+
+"retry_send_message"    = "メッセージを再送信しますか?";
+
+"alert_view_cancel"     = "キャンセル";
+"alert_view_send"     = "送信";
+
+"alert_view_confirm"    = "確認する";
+
+"cannot_refresh"        = "もうリフレッシュできません~";
+
+"make_call_to"          = "電話 ";
+
+"send_message_to"       = "にメッセージを送信してください ";
+
+"open_url_by_safari"    = "このURLをSafariで開いてください";
+
+"make_email_to"         = "メールを送る";
+
+"load_history_message_error"    = "申し訳ありませんが、履歴メッセージを読み込めませんでした";
+
+"microphone_denied"     = "「設定」に進んでください。 そして、このアプリのマイク許可を開きます。";
+
+"meiqia_communication_failed" = "申し訳ありませんが、通信サーバーにアクセスできません。ネットワークを変更して再試行してください。";
+
+"meiqia_evaluation_sheet"     = "評価する";
+
+"meiqia_redirect_sheet"     = "リダイレクト";
+
+"file_download_file_is_expired" = "ファイルの期限が切れています";
+"file_download_canceld" = "ダウンロードがキャンセルされました";
+"file_download_failed" = "ダウンロード失敗";
+"file_download_downloading" = "ダウンロード中...";
+"file_download_complete" = "ダウンロード完了";
+"file_upload_limit" = "アップロードファイルの最大制限を超えました";
+"file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ 時間以内に期限を過ぎます";
+
+"message_tips_send_message_fail_listed_in_black_list" = "申し訳ありませんが、CS システムがダウンしています。";
+
+"message_tips_online_failed_listed_in_black_list" = "申し訳ありませんが、CS システムがダウンしています。";
+
+"reply_tip_text"        = "申し訳ありませんが、対応可能なエージェントはいません。";
+
+"reply_tip_leave"        = " メッセージをいただけます";
+
+"bot_redirect_tip_text"  = "申し訳ありませんが、ロボットの返信では問題は解決できませんでした。 ここをタップしてエージェントにリダイレクトします。";
+
+"bot_manual_redirect_tip_text" = "サポートが必要な場合は、ここをタップしてエージェントにリダイレクトしてください。";
+
+"bot_menu_tip_text" = "対応する番号に返信するか、質問をクリックして回答を表示します";
+
+"bot_menu_problem_tip_text" = "よくある問題";
+
+"cannot_text_client_is_onlining"  = "あなたに代わってエージェントを割り当てます。 後で再送信してください。";
+
+"send_to_fast"  = "送信が速すぎます。 休憩する ：）";
+"leave_a_message" = "伝言を残す";
+"submit" = "提出する";
+"leave_a_message_placeholder" = "メッセージを入力してください";
+"param_not_allow_null" = "％@ 空にすることはできません";
+"contact_at_lease_enter_one" = "少なくとも 1 つの連絡先情報を入力してください";
+"submit_failure" = "送信に失敗しました";
+"add_picture" = "画像を追加";
+"tel" = "電話";
+"tel_placeholder" = "電話番号を入力してください";
+"email" = "Eメール";
+"email_placeholder" = "あなたのメールアドレスを入力してください";
+"qq" = "QQ";
+"qq_placeholder" = "QQ番号を入力してください";
+"wechat" = "WeChat";
+"wechat_placeholder" = "WeChat アカウントを入力してください";
+"name" = "Name";
+"name_placeholder" = "あなたの名前を入力してください";
+"gender" = "性別";
+"age" = "年齢";
+"age_placeholder" = "あなたの年齢を入力してください";
+"weibo" = "WeiBo";
+"weibo_placeholder" = "WeiBo アカウントを入力してください";
+"address" = "住所";
+"address_placeholder" = "住所を入力してください";
+"comment" = "コメント";
+"comment_placeholder" = "コメントを入力してください";
+"contact" = "連絡先";
+"contact_placeholder" = "連絡先を入力してください";
+"man" = "男";
+"woman" = "女性";
+"time_placeholder" = "年-月-日";
+
+"wating_in_queue_tip_number" = "現在待機中の人数";
+"wating_in_queue_tip_choice" = "待ちきれない場合は選択できます";
+"wating_in_queue_tip_leave_message" = "伝言を残す";
+
+"product_message_sales" = "販売";
+"product_message_check_details" = "詳細を確認する";
+"next_page" = "次のページ";
+"last_page" = "前の";
+
+//询前表单
+"pre_chat_list_title" = "クライアントサポート";
+"pre_chat_form_title" =  "これらの空白を埋めてください";
+"pre_chat_form_mutiple_selection_label" = "（複数）";
+"pre_chat_form_black_alert_label" = "赤い空欄を埋めてください";
+
+//pull refresh
+"pull_refresh_normal" = "引いてロードする";
+"pull_refresh_triggered" = "放してロードする";
+//xlp
+// 请输入消息
+"input_content" = "内容を入力してください...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "サービスが接続中です。お待ちください";
+
+"network_connect_error" = "ネットワークが利用できません。ネットワーク設定を確認してください。";
+"network_connect_warning" = "ネットワークに接続しています，メッセージが見つからない可能性があります";
+
+"mq_direct_content" = "%@ がお手伝いいたします。";
+"mq_send" = "送信";
+"mq_delete" = "消去";
+"mq_record_count_down" = "あと %li 秒間話せます";
+"mq_record_will_send" = "録音は %li 秒以内に送信されます";
+"mq_audio_status_normal" = "押して話す";
+"mq_display_preview" = "プレビューを表示する";
+"mq_open_file" = "ファイルを開く";
+
+"mq_solved" = "解決しました";
+"mq_unsolved" = "未解決の";
+"mq_commited" = "コミットした";
+
+"mq_evaluation_title" = "このサービスに満足していますか?";
+"mq_evaluation_good" = "良い";
+"mq_evaluation_middle" = "真ん中";
+"mq_evaluation_bad" = "悪い";
+"mq_evaluation_content" = "入力内容(任意)";
+
+"waiting_agent_send_message" = "列に並んでいます。お待ちください";
+"pre_chat_form_input" = "入力";
+
+
+

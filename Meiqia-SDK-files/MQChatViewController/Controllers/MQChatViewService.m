@@ -1457,7 +1457,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                     agentStatus = MQChatAgentStatusNone;
                     break;
                 case MQStateQueueing:
-                    viewTitle = [MQBundleUtil localizedStringForKey:@"waiting_title"];;
+                    viewTitle = [MQBundleUtil localizedStringForKey:@"waiting_title"];
                     agentStatus = MQChatAgentStatusNone;
                     break;
                 case MQStateAllocatedAgent:

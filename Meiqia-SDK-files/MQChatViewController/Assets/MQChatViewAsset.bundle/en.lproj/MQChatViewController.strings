@@ -192,4 +192,6 @@
 "mq_evaluation_bad" = "bad";
 "mq_evaluation_content" = "input content(optional)";
 
+"waiting_agent_send_message" = "Queuing, please wait";
+"pre_chat_form_input" = "input";
 

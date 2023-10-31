@@ -1,0 +1,197 @@
+"new_message" = "ส่งข้อความของคุณ...";
+
+"record_speak" = "กดค้างไว้เพื่อพูด";
+
+"record_end" = "ปล่อยเพื่อส่ง";
+
+"cancel" = "ยกเลิก";
+
+"select_gallery" = "อัลบั้ม";
+
+"select_camera" = "กล้อง";
+
+"wait_agent" = "กําลังจัดสรรเอเจนต์ให้คุณ...";
+
+"waiting_title" = "กําลังรอในคิว...";
+
+"not_access_camera" = "โปรดไปที่การตั้งค่า - ความเป็นส่วนตัว - รูปภาพ จากนั้นเลือก เปิด สําหรับแอปพลิเคชันนี้";
+
+"not_access_photos" = "โปรดไปที่การตั้งค่า - ความเป็นส่วนตัว - กล้อง จากนั้นเลือก เปิด สําหรับแอปพลิเคชันนี้";
+
+"display_new_message" = "ได้รับข้อความใหม่";
+
+"display_video_expired" = "วิดีโอหมดอายุแล้ว";
+
+"display_video_more_than_limit" = "วิดีโอมากกว่าขนาดสูงสุด 400M";
+
+"network_jam" = "โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ตของคุณแล้วลองอีกครั้ง";
+
+"simulator_not_support_camera" = "ซิมมูเลเตอร์ไม่สามารถเข้าถึงกล้องได้";
+
+"simulator_not_support_microphone" = "ซิมมูเลเตอร์ไม่สามารถเข้าถึงไมโครโฟนได้";
+
+"recode_time_too_short" = "ข้อความสั้นเกินไป";
+
+"record_cancel_swipe" = "เลื่อนขึ้นเพื่อยกเลิก";
+
+"record_cancel_realse" = "ปล่อยเพื่อยกเลิก";
+
+"save_photo_error" = "ขออภัย ไม่สามารถบันทึกรูปภาพได้";
+
+"save_photo_success" = "บันทึกรูปภาพแล้ว";
+
+"save_text_success" = "คัดลอกแล้ว";
+
+"save_photo" = "บันทึก";
+
+"save_text" = "คัดลอก";
+
+"record_error" = "ขออภัย ไม่สามารถบันทึกได้";
+
+"user_confirm" = "ตกลง";
+
+"no_more_messages" = "ไม่มีข้อความเพิ่มเติม";
+
+"welcome_chat" = "";
+
+"default_assistant" = "ผู้ช่วย";
+
+"no_agent_title" = "ฝากข้อความ";
+
+"no_agent_tips" = "ขออภัย ไม่มีเอเจนต์ให้บริการในขณะนี้\nโปรดส่งข้อมูลการติดต่อของคุณให้เรา เราจะติดต่อกลับโดยเร็วที่สุด";
+
+"retry_send_message" = "ส่งข้อความอีกครั้ง?";
+
+"alert_view_cancel" = "ยกเลิก";
+
+"alert_view_send" = "ส่ง";
+
+"alert_view_confirm" = "ยืนยัน";
+
+"cannot_refresh" = "ไม่สามารถโหลดใหม่ได้อีกแล้ว~";
+
+"make_call_to" = "โทรไปหา ";
+
+"send_message_to" = "ส่งข้อความไปหา ";
+
+"open_url_by_safari" = "เปิดลิงก์นี้ด้วย Safari";
+
+"make_email_to" = "ส่งอีเมล";
+
+"load_history_message_error" = "ขออภัย โหลดข้อความย้อนหลังไม่สําเร็จ";
+
+"microphone_denied" = "โปรดไปที่การตั้งค่า แล้วอนุญาตการใช้ไมโครโฟนสําหรับแอปพลิเคชันนี้";
+
+"meiqia_communication_failed" = "ขออภัย เข้าถึงเซิร์ฟเวอร์การสื่อสารไม่ได้ โปรดเปลี่ยนเครือข่ายแล้วลองอีกครั้ง";
+
+"meiqia_evaluation_sheet" = "ประเมิน";
+
+"meiqia_redirect_sheet" = "เปลี่ยนเส้นทาง";
+
+"file_download_file_is_expired" = "ไฟล์หมดอายุแล้ว";
+"file_download_canceld" = "ยกเลิกการดาวน์โหลด";
+"file_download_failed" = "ดาวน์โหลดล้มเหลว";
+"file_download_downloading" = "กําลังดาวน์โหลด...";
+"file_download_complete" = "ดาวน์โหลดเสร็จสมบูรณ์";
+"file_upload_limit" = "เกินขีดจํากัดขนาดไฟล์สูงสุดที่อนุญาต";
+"file_download_%@ ∙ %@overdue" = "%@ ∙ หมดเขตในอีก %@ ชั่วโมง";
+
+"message_tips_send_message_fail_listed_in_black_list" = "ขออภัย ระบบศูนย์บริการล่มแล้ว";
+
+"message_tips_online_failed_listed_in_black_list" = "ขออภัย ระบบศูนย์บริการล่มแล้ว";
+
+"reply_tip_text" = "ขออภัย ไม่มีเอเจนต์พร้อมให้บริการ";
+
+"reply_tip_leave" = "คุณสามารถฝากข้อความให้เราได้";
+
+"bot_redirect_tip_text" = "ขออภัย คําตอบของระบบไม่สามารถแก้ปัญหาของคุณได้ แตะที่นี่เพื่อโอนไปยังเอเจนต์";
+
+"bot_manual_redirect_tip_text" = "หากต้องการความช่วยเหลือ แตะที่นี่เพื่อโอนไปยังเอเจนต์";
+
+"bot_menu_tip_text" = "ตอบกลับตามหมายเลขที่กําหนด หรือคลิกที่คําถามเพื่อดูคําตอบ";
+
+"bot_menu_problem_tip_text" = "ปัญหาทั่วไป";
+
+"cannot_text_client_is_onlining" = "กําลังจัดสรรเอเจนต์ให้คุณ โปรดส่งข้อความอีกครั้งในภายหลัง";
+
+"send_to_fast"  = "ส่งเร็วเกินไป. หยุดพัก :)";
+"leave_a_message" = "ฝากข้อความ";
+"submit" = "ส่ง";
+"leave_a_message_placeholder" = "กรุณากรอกข้อความของคุณ";
+"param_not_allow_null" = "%@ ไม่สามารถเว้นว่างได้";
+"contact_at_lease_enter_one" = "กรุณาป้อนข้อมูลติดต่ออย่างน้อยหนึ่งรายการ";
+"submit_failure" = "ส่งล้มเหลว";
+"add_picture" = "เพิ่มรูปภาพ";
+"tel" = "โทรศัพท์";
+"tel_placeholder" = "กรุณากรอกหมายเลขโทรศัพท์ของคุณ";
+"email" = "อีเมล";
+"email_placeholder" = "กรุณากรอกอีเมล์ของคุณ";
+"qq" = "QQ";
+"qq_placeholder" = "กรุณากรอกหมายเลข QQ ของคุณ";
+"wechat" = "WeChat";
+"wechat_placeholder" = "กรุณากรอกบัญชี WeChat ของคุณ";
+"name" = "Name";
+"name_placeholder" = "กรุณากรอกชื่อของคุณ";
+"gender" = "เพศ";
+"age" = "อายุ";
+"age_placeholder" = "กรุณากรอกอายุของคุณ";
+"weibo" = "เว่ยป๋อ";
+"weibo_placeholder" = "กรุณากรอกบัญชี WeiBo ของคุณ";
+"address" = "ที่อยู่";
+"address_placeholder" = "กรุณากรอกที่อยู่ของคุณ";
+"comment" = "Comment";
+"comment_placeholder" = "กรุณาใส่ความคิดเห็นของคุณ";
+"contact" = "ติดต่อ";
+"contact_placeholder" = "กรุณากรอกที่อยู่ติดต่อของคุณ";
+"man" = "ผู้ชาย";
+"woman" = "ผู้หญิง";
+"time_placeholder" = "ปี-เดือน-วัน";
+
+"wating_in_queue_tip_number" = "จำนวนคนที่รออยู่ในขณะนี้";
+"wating_in_queue_tip_choice" = "รอไม่ไหวก็เลือกได้";
+"wating_in_queue_tip_leave_message" = "ฝากข้อความ";
+
+"product_message_sales" = "ฝ่ายขาย";
+"product_message_check_details" = "ตรวจสอบรายละเอียด";
+"next_page" = "ต่อไป";
+"last_page" = "ก่อนหน้า";
+
+//询前表单
+"pre_chat_list_title" = "การสนับสนุนลูกค้า";
+"pre_chat_form_title" =  "กรุณากรอกช่องว่างเหล่านั้น";
+"pre_chat_form_mutiple_selection_label" = "(หลายรายการ)";
+"pre_chat_form_black_alert_label" = "กรุณากรอกช่องว่างสีแดง";
+
+//pull refresh
+"pull_refresh_normal" = "ดึงเพื่อโหลด";
+"pull_refresh_triggered" = "ปล่อยเพื่อโหลด";
+//xlp
+// 请输入消息
+"input_content" = "กรุณากรอกเนื้อหาของคุณ...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "กำลังเชื่อมต่อบริการ โปรดรอสักครู่";
+
+"network_connect_error" = "เครือข่ายไม่พร้อมใช้งาน โปรดตรวจสอบการตั้งค่าเครือข่าย";
+"network_connect_warning" = "กำลังเชื่อมต่อเครือข่าย ข้อความอาจหายไป";
+
+"mq_direct_content" = "คุณจะได้รับความช่วยเหลือจาก %@";
+"mq_send" = "ส่ง";
+"mq_delete" = "ลบ";
+"mq_record_count_down" = "คุณสามารถพูดได้อีก %li วินาที";
+"mq_record_will_send" = "การบันทึกจะถูกส่งใน %li วินาที";
+"mq_audio_status_normal" = "กดเพื่อพูดคุย";
+"mq_display_preview" = "แสดงตัวอย่าง";
+"mq_open_file" = "เปิดไฟล์";
+
+"mq_solved" = "แก้ไขแล้ว";
+"mq_unsolved" = "ยังไม่ได้รับการแก้ไข";
+"mq_commited" = "มุ่งมั่น";
+
+"mq_evaluation_title" = "คุณพอใจกับบริการนี้หรือไม่?";
+"mq_evaluation_good" = "ดี";
+"mq_evaluation_middle" = "กลาง";
+"mq_evaluation_bad" = "แย่";
+"mq_evaluation_content" = "เนื้อหาอินพุต (ไม่จำเป็น)";
+
+"waiting_agent_send_message" = "กำลังเข้าคิว กรุณารอสักครู่.";
+"pre_chat_form_input" = "เข้า";

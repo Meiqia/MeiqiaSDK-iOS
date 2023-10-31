@@ -167,7 +167,7 @@
 
 //xlp
 // 请输入消息
-"input_content" = "输入消息...";
+"input_content" = "輸入訊息...";
 // 服务连接中,请稍候
 "service_connectting_wait" = "服務連接中,請稍後...";
 
@@ -193,4 +193,5 @@
 "mq_evaluation_bad" = "差評";
 "mq_evaluation_content" = "填寫評價內容(可選)";
 
-
+"waiting_agent_send_message" = "正在排隊，請等待客服接取後發送訊息";
+"pre_chat_form_input" = "輸入";

@@ -1,0 +1,196 @@
+"new_message"         = "अपना संदेश भेजें...";
+
+"record_speak"        = "लगा रहो बातो मै";
+
+"record_end"          = "भेजने के लिए जारी करें";
+
+"cancel"              = "रद्द करना";
+
+"select_gallery"      = "एलबम";
+
+"select_camera"       = "कैमरा";
+
+"wait_agent"          = "आपके लिए एक एजेंट आवंटित किया जा रहा है...";
+
+"waiting_title"       = "कतार में इन्तेजार...";
+
+"not_access_camera"   = "कृपया सेटिंग्स - गोपनीयता - फ़ोटो पर जाएँ। फिर इस ऐप के लिए ON चुनें।";
+
+"not_access_photos"   = "कृपया सेटिंग्स- गोपनीयता- कैमरा पर जाएं। फिर इस ऐप के लिए ON चुनें।";
+
+"display_new_message" = "एक नया संदेश प्राप्त हुआ";
+
+"display_video_expired" = "वीडियो समाप्त हो गया है";
+
+"display_video_more_than_limit" = "अधिकतम 400M से अधिक का वीडियो";
+
+"network_jam"         = "अपने इंटरनेट कनेक्शन की जाँच करें और पुन: प्रयास करें।";
+
+"simulator_not_support_camera"      = "सिम्युलेटर कैमरे तक नहीं पहुंच सकता";
+
+"simulator_not_support_microphone"  = "सिम्युलेटर माइक्रोफ़ोन तक नहीं पहुंच सकता";
+
+"recode_time_too_short" = "संदेश बहुत छोटा है";
+
+"record_cancel_swipe"   = "रद्द करने के लिए ऊपर स्वाइप करें";
+
+"record_cancel_realse"  = "रद्द करने के लिए जारी करें";
+
+"save_photo_error"      = "क्षमा करें, फ़ोटो सहेजने में विफल रहा";
+
+"save_photo_success"    = "फ़ोटो सहेजा गया";
+
+"save_text_success"     = "कॉपी किया गया";
+
+"save_photo"            = "बचाना";
+
+"save_text"             = "कॉपी";
+
+"record_error"          = "क्षमा करें, रिकॉर्ड करने में विफल-_-";
+
+"user_confirm"          = "ठीक है";
+
+"no_more_messages"      = "कोई और संदेश नहीं";
+
+"welcome_chat"          = "";
+
+"default_assistant"     = "सहायक";
+
+"no_agent_title"        = "संदेश छोड़ें";
+
+"no_agent_tips"         = "क्षमा करें, कोई एजेंट नहीं है।\nकृपया अपनी संपर्क जानकारी हमें भेजें। हम जितनी जल्दी हो सके आपसे संपर्क करेंगे।";
+
+"retry_send_message"    = "संदेश पुनः भेजें?";
+
+"alert_view_cancel"     = "रद्द करना";
+"alert_view_send"     = "भेजना";
+
+"alert_view_confirm"    = "पुष्टि करना";
+
+"cannot_refresh"        = "अब ताज़ा नहीं किया जा सकता~";
+
+"make_call_to"          = "पुकारना ";
+
+"send_message_to"       = "को संदेश भेजें ";
+
+"open_url_by_safari"    = "सफारी द्वारा इस यूआरएल को खोलें";
+
+"make_email_to"         = "ईमेल भेजें";
+
+"load_history_message_error"    = "क्षमा करें, इतिहास संदेश लोड करने में विफल रहा";
+
+"microphone_denied"     = "कृपया सेटिंग्स पर जाएं. और इस ऐप के लिए माइक्रोफ़ोन अनुमति खोलें।";
+
+"meiqia_communication_failed" = "क्षमा करें, संचार सर्वर तक नहीं पहुंच सकता, कृपया अपना नेटवर्क बदलें और पुनः प्रयास करें।";
+
+"meiqia_evaluation_sheet"     = "मूल्यांकन करना";
+
+"meiqia_redirect_sheet"     = "पुनर्निर्देशन";
+
+"file_download_file_is_expired" = "फ़ाइल अतिदेय है";
+"file_download_canceld" = "डाउनलोड रद्द कर दिया गया";
+"file_download_failed" = "डाउनलोड विफल";
+"file_download_downloading" = "डाउनलोड हो रहा है...";
+"file_download_complete" = "डाउनलोड पूर्ण";
+"file_upload_limit" = "अधिकतम अपलोड फ़ाइल सीमा पार हो गई";
+"file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ घंटों में अतिदेय";
+
+"message_tips_send_message_fail_listed_in_black_list" = "क्षमा करें, सीएस सिस्टम डाउन है।";
+
+"message_tips_online_failed_listed_in_black_list" = "क्षमा करें, सीएस सिस्टम डाउन है।";
+
+"reply_tip_text"        = "क्षमा करें, कोई एजेंट उपलब्ध नहीं है।";
+
+"reply_tip_leave"        = " आप हमें एक संदेश दे सकते हैं";
+
+"bot_redirect_tip_text"  = "मुझे खेद है कि रोबोट के उत्तर से आपकी समस्या का समाधान नहीं हुआ। किसी एजेंट पर रीडायरेक्ट करने के लिए यहां टैप करें।";
+
+"bot_manual_redirect_tip_text" = "यदि आपको सहायता की आवश्यकता है, तो किसी एजेंट पर रीडायरेक्ट करने के लिए यहां टैप करें।";
+
+"bot_menu_tip_text" = "संबंधित नंबर पर उत्तर दें या उत्तर देखने के लिए प्रश्न पर क्लिक करें";
+
+"bot_menu_problem_tip_text" = "आम समस्या";
+
+"cannot_text_client_is_onlining"  = "आपके लिए एक एजेंट का आवंटन। कृपया बाद में पुनः भेजें.";
+
+"send_to_fast"  = "बहुत तेजी से भेजें. एक ब्रेक ले लो :)";
+"leave_a_message" = "एक संदेश छोड़ें";
+"submit" = "जमा करना";
+"leave_a_message_placeholder" = "कृपया अपना संदेश लिखें";
+"param_not_allow_null" = "%@ खाली नहीं किया जा सकता";
+"contact_at_lease_enter_one" = "कृपया कम से कम एक संपर्क जानकारी दर्ज करें";
+"submit_failure" = "सबमिट विफल";
+"add_picture" = "चित्र जोड़ें";
+"tel" = "फ़ोन";
+"tel_placeholder" = "कृपया अपना फोन नंबर दर्ज करें";
+"email" = "ईमेल";
+"email_placeholder" = "अपना ईमेल दर्ज करें";
+"qq" = "QQ";
+"qq_placeholder" = "कृपया अपना QQ नंबर दर्ज करें";
+"wechat" = "WeChat";
+"wechat_placeholder" = "कृपया अपना WeChat खाता दर्ज करें";
+"name" = "नाम";
+"name_placeholder" = "कृपया अपना नाम दर्ज करें";
+"gender" = "लिंग";
+"age" = "आयु";
+"age_placeholder" = "कृपया अपनी उम्र दर्ज करें";
+"weibo" = "WeiBo";
+"weibo_placeholder" = "कृपया अपना WeiBo खाता दर्ज करें";
+"address" = "पता";
+"address_placeholder" = "कृपया अपना पता दर्ज करें";
+"comment" = "टिप्पणी";
+"comment_placeholder" = "कृपया अपनी टिप्पणी दर्ज करें";
+"contact" = "संपर्क";
+"contact_placeholder" = "कृपया अपना संपर्क दर्ज करें";
+"man" = "आदमी";
+"woman" = "महिला";
+"time_placeholder" = "साल महीना दिन";
+
+"wating_in_queue_tip_number" = "वर्तमान में प्रतीक्षारत लोगों की संख्या";
+"wating_in_queue_tip_choice" = "यदि आप प्रतीक्षा नहीं कर सकते, तो आप चुन सकते हैं";
+"wating_in_queue_tip_leave_message" = "एक संदेश छोड़ें";
+
+"product_message_sales" = "बिक्री";
+"product_message_check_details" = "विवरण जांचें";
+"next_page" = "अगला";
+"last_page" = "पहले का";
+
+//询前表单
+"pre_chat_list_title" = "ग्राहक सहायता";
+"pre_chat_form_title" =  "कृपया उन रिक्त स्थानों को भरें";
+"pre_chat_form_mutiple_selection_label" = "(एकाधिक)";
+"pre_chat_form_black_alert_label" = "कृपया लाल रिक्त स्थान पूरा करें";
+
+//pull refresh
+"pull_refresh_normal" = "लोड करने के लिए खींचो";
+"pull_refresh_triggered" = "लोड करने के लिए रिलीज़ करें";
+//xlp
+// 请输入消息
+"input_content" = "कृपया अपनी सामग्री इनपुट करें...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "सेवा कनेक्ट हो रही है, कृपया प्रतीक्षा करें";
+
+"network_connect_error" = "नेटवर्क उपलब्ध नहीं है, कृपया नेटवर्क सेटिंग्स जांचें";
+"network_connect_warning" = "नेटवर्क कनेक्ट हो रहा है，संदेश गायब हो सकता है";
+
+"mq_direct_content" = "%@ द्वारा आपकी सहायता की जाएगी";
+"mq_send" = "भेजना";
+"mq_delete" = "मिटाना";
+"mq_record_count_down" = "आप %li अधिक सेकंड तक बात कर सकते हैं";
+"mq_record_will_send" = "रिकॉर्डिंग %li सेकंड में भेज दी जाएगी";
+"mq_audio_status_normal" = "बात करने के लिए दबाएँ";
+"mq_display_preview" = "पूर्वावलोकन प्रदर्शित करें";
+"mq_open_file" = "फ़ाइल खोलें";
+
+"mq_solved" = "हल किया";
+"mq_unsolved" = "न सुलझा हुआ";
+"mq_commited" = "प्रति प्रतिबद्ध";
+
+"mq_evaluation_title" = "क्या आप इस सेवा से संतुष्ट हैं?";
+"mq_evaluation_good" = "अच्छा";
+"mq_evaluation_middle" = "मध्य";
+"mq_evaluation_bad" = "खराब";
+"mq_evaluation_content" = "इनपुट सामग्री (वैकल्पिक)";
+
+"waiting_agent_send_message" = "कृपया प्रतीक्षा करें";
+"pre_chat_form_input" = "प्रवेश करना";

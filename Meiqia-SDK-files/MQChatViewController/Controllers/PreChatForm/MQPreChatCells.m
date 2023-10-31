@@ -8,6 +8,7 @@
 
 #import "MQPreChatCells.h"
 #import "MQChatViewStyle.h"
+#import "MQBundleUtil.h"
 
 @implementation MQPreChatSelectionCell
 
@@ -39,7 +40,7 @@
         self.textField.delegate = self;
         self.textField.font = [UIFont systemFontOfSize:14];
         self.textField.textColor = [UIColor mq_colorWithHexString:ebonyClay];
-        self.textField.placeholder = @"输入";
+        self.textField.placeholder = [MQBundleUtil localizedStringForKey:@"pre_chat_form_input"];
         self.textField.viewWidth = self.contentView.viewWidth - 20;
         self.textField.viewHeight = self.viewHeight;
         [self.textField align:(ViewAlignmentMiddleLeft) relativeToPoint:CGPointMake(10, self.viewHeight / 2)];
@@ -144,7 +145,7 @@
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.textField = [[UITextField alloc] init];
         self.textField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.textField.placeholder = @"输入";
+        self.textField.placeholder = [MQBundleUtil localizedStringForKey:@"pre_chat_form_input"];
         [self.textField setKeyboardType:(UIKeyboardTypeASCIICapable)];
         self.textField.font = [UIFont systemFontOfSize:14];
         self.textField.textColor = [UIColor mq_colorWithHexString:ebonyClay];

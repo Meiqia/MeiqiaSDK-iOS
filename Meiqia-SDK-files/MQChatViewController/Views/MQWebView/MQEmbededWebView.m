@@ -8,11 +8,18 @@
 
 #import "MQEmbededWebView.h"
 #import "UIView+MQLayout.h"
+#import "MQImageViewerViewController.h"
+#import "UIViewController+MQHieriachy.h"
 
 @interface MQEmbededWebView()<WKNavigationDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, assign) NSInteger requestCount;
+
+@property (nonatomic, strong) NSMutableArray *allUrlArray;
+@property (nonatomic, strong) NSMutableArray *finalImagesUrl;
+
+@property (nonatomic, strong) NSString *requestURLString;
 
 @end
 
@@ -20,6 +27,8 @@
 
 - (instancetype)init {
     if (self = [super init]) {
+        self.allUrlArray = [NSMutableArray array];
+        self.finalImagesUrl = [NSMutableArray array];
         self.backgroundColor = [UIColor clearColor];
         self.opaque = false;
         self.navigationDelegate = self;
@@ -46,6 +55,7 @@
 - (void)loadHTML:(NSString *)html WithCompletion:(void(^)(CGFloat))block {
     NSString *htmlStr = [NSString stringWithFormat:@"<html><head><meta content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" name=\"viewport\"><style type=\"text/css\">img{display: inline-block;max-width: 100%%}</style></head><body>%@</body></html>",html];
     self.viewHeight = 0;
+    self.requestURLString = htmlStr;
     [self loadHTMLString:htmlStr baseURL:nil];//xlp 修改
 //    [self loadHTMLString:html baseURL:[[NSBundle mainBundle]bundleURL]];  //不能这样修改 否则导致富文本不显示
 
@@ -60,6 +70,13 @@
         if (self.tappedLink) {
             self.tappedLink(request.URL);
         }
+    }
+    
+    NSString *requestString = navigationAction.request.URL.absoluteString;
+    if ([requestString hasPrefix:@"myweb:imageClick:"]) {
+        NSString *imageUrl = [requestString substringFromIndex:@"myweb:imageClick:".length];
+        // 创建视图并显示图片
+        [self showBigImage:imageUrl];
     }
     if (request.URL.path.length == 0) {
         decisionHandler(WKNavigationActionPolicyAllow);
@@ -102,6 +119,33 @@
 //    if (self.loadComplete) {
 //        self.loadComplete(height);
 //    }
+    
+    static  NSString * const jsGetImages =
+        @"function getImages(){\
+        var objs = document.getElementsByTagName(\"img\");\
+        var imgScr = '';\
+        for(var i=0;i<objs.length;i++){\
+        imgScr = imgScr + objs[i].src +'MQindex'+ i +'M+Q';\
+        (function(arg){\
+        objs[arg].onclick=function(){\
+        document.location=\"myweb:imageClick:\"+this.src + 'MQindex' + arg;\
+        };\
+        })(i); \
+        };\
+        return imgScr;\
+        };";
+
+    [webView evaluateJavaScript:jsGetImages completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+    }];
+    [webView evaluateJavaScript:@"getImages()" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        if (!error && [result isKindOfClass:[NSString class]]) {
+            NSString *urlResurlt = result;
+            self.allUrlArray = [NSMutableArray arrayWithArray:[urlResurlt componentsSeparatedByString:@"M+Q"]];
+            if (self.allUrlArray.count >= 2) {
+                [self.allUrlArray removeLastObject];// 此时数组为每一个图片的url
+            }
+        }
+    }];
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
@@ -117,5 +161,31 @@
     if (self.loadComplete) {
         self.loadComplete(height);
     }
+}
+
+#pragma mark 显示大图片
+- (void)showBigImage:(NSString *)imageUrl {
+    // 分解出所有图片的链接地址
+    [self.finalImagesUrl removeAllObjects];
+    for (int i = 0; i < self.allUrlArray.count; i++) {
+        NSArray *imageIndex = [NSMutableArray arrayWithArray:[self.allUrlArray[i] componentsSeparatedByString:@"MQindex"]];
+        NSString *imgStr = imageIndex.firstObject;
+        // 这里出现了一个问题就是拿到的所有的图片有一个链接是web本身页面的地址 不知道怎么产生的 在这里判断下去掉
+        if (![imgStr isEqualToString:self.requestURLString]) {
+            [self.finalImagesUrl addObject:imgStr];
+        }
+    }
+    
+    MQImageViewerViewController *viewerVC = [MQImageViewerViewController new];
+    viewerVC.imagePaths = self.finalImagesUrl;
+    
+    __weak MQImageViewerViewController *wViewerVC = viewerVC;
+    [viewerVC setSelection:^(NSUInteger index) {
+        __strong MQImageViewerViewController *sViewerVC = wViewerVC;
+        [sViewerVC dismiss];
+    }];
+    
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    [viewerVC showOn:[UIViewController mq_topMostViewController] fromRectArray:[NSArray arrayWithObject:[NSValue valueWithCGRect:[self convertRect:self.frame toView:[UIApplication sharedApplication].keyWindow]]]];
 }
 @end

@@ -1,0 +1,196 @@
+"new_message"         = "Gửi tin nhắn của bạn...";
+
+"record_speak"        = "Giữ để nói chuyện";
+
+"record_end"          = "Phát hành để gửi";
+
+"cancel"              = "Hủy bỏ";
+
+"select_gallery"      = "Tập ảnh";
+
+"select_camera"       = "Máy ảnh";
+
+"wait_agent"          = "Phân công đại lý cho bạn...";
+
+"waiting_title"       = "Xếp hàng chờ...";
+
+"not_access_camera"   = "Vui lòng đi tới Cài đặt — Quyền riêng tư — Ảnh. Sau đó chọn BẬT cho Ứng dụng này.";
+
+"not_access_photos"   = "Vui lòng đi tới Cài đặt — Quyền riêng tư — Máy ảnh. Sau đó chọn BẬT cho Ứng dụng này.";
+
+"display_new_message" = "Đã nhận được tin nhắn mới";
+
+"display_video_expired" = "Video đã hết hạn";
+
+"display_video_more_than_limit" = "Video nhiều hơn tối đa 400M";
+
+"network_jam"         = "Vui lòng kiểm tra kết nối internet của bạn và thử lại.";
+
+"simulator_not_support_camera"      = "Trình mô phỏng không thể truy cập máy ảnh";
+
+"simulator_not_support_microphone"  = "Trình mô phỏng không thể truy cập micrô";
+
+"recode_time_too_short" = "Tin nhắn quá ngắn";
+
+"record_cancel_swipe"   = "Vuốt lên để hủy";
+
+"record_cancel_realse"  = "Phát hành để hủy bỏ";
+
+"save_photo_error"      = "Rất tiếc, không lưu được ảnh";
+
+"save_photo_success"    = "Ảnh đã lưu";
+
+"save_text_success"     = "Đã sao chép";
+
+"save_photo"            = "cứu";
+
+"save_text"             = "sao chép";
+
+"record_error"          = "Xin lỗi, không ghi được-_-";
+
+"user_confirm"          = "ĐƯỢC RỒI";
+
+"no_more_messages"      = "Không còn tin nhắn nào nữa";
+
+"welcome_chat"          = "";
+
+"default_assistant"     = "Trợ lý";
+
+"no_agent_title"        = "Để lại tin nhắn";
+
+"no_agent_tips"         = "Rất tiếc, không có đại lý nào.\nVui lòng gửi thông tin liên hệ của bạn cho chúng tôi. Chúng tôi sẽ liên hệ với bạn ngay khi có thể.";
+
+"retry_send_message"    = "Gửi lại tin nhắn?";
+
+"alert_view_cancel"     = "Hủy bỏ";
+"alert_view_send"     = "gửi";
+
+"alert_view_confirm"    = "xác nhận";
+
+"cannot_refresh"        = "Không thể làm mới được nữa~";
+
+"make_call_to"          = "Gọi ";
+
+"send_message_to"       = "Gửi tin nhắn đến ";
+
+"open_url_by_safari"    = "Mở url này bằng Safari";
+
+"make_email_to"         = "Gửi email";
+
+"load_history_message_error"    = "Rất tiếc, không tải được tin nhắn lịch sử";
+
+"microphone_denied"     = "Vui lòng đi tới Cài đặt. Và mở quyền micrô cho Ứng dụng này.";
+
+"meiqia_communication_failed" = "Rất tiếc, không thể truy cập máy chủ liên lạc, vui lòng thay đổi mạng của bạn và thử lại.";
+
+"meiqia_evaluation_sheet"     = "Đánh giá";
+
+"meiqia_redirect_sheet"     = "Chuyển hướng";
+
+"file_download_file_is_expired" = "Tệp đã quá hạn";
+"file_download_canceld" = "Đã hủy tải xuống";
+"file_download_failed" = "Tải xuống không thành công";
+"file_download_downloading" = "Đang tải xuống...";
+"file_download_complete" = "Hoan thanh tải";
+"file_upload_limit" = "Đã vượt quá giới hạn tệp tải lên tối đa";
+"file_download_ %@ ∙ %@overdue" = "%@ ∙ quá hạn sau %@ giờ";
+
+"message_tips_send_message_fail_listed_in_black_list" = "Rất tiếc, hệ thống CS đã ngừng hoạt động.";
+
+"message_tips_online_failed_listed_in_black_list" = "Rất tiếc, hệ thống CS đã ngừng hoạt động.";
+
+"reply_tip_text"        = "Xin lỗi, không có đại lý có sẵn.";
+
+"reply_tip_leave"        = " Bạn có thể gửi tin nhắn cho chúng tôi";
+
+"bot_redirect_tip_text"  = "Tôi rất tiếc, câu trả lời của robot không giải quyết được vấn đề của bạn. Nhấn vào đây để chuyển hướng đến một đại lý.";
+
+"bot_manual_redirect_tip_text" = "Nếu bạn cần trợ giúp, hãy nhấn vào đây để chuyển hướng đến một đại lý.";
+
+"bot_menu_tip_text" = "Trả lời số tương ứng hoặc click vào câu hỏi để xem đáp án";
+
+"bot_menu_problem_tip_text" = "Vấn đề thường gặp";
+
+"cannot_text_client_is_onlining"  = "Phân bổ một đại lý cho bạn. Vui lòng gửi lại sau.";
+
+"send_to_fast"  = "Gửi quá nhanh. Nghỉ ngơi một lát :)";
+"leave_a_message" = "Để lại lời nhắn";
+"submit" = "nộp";
+"leave_a_message_placeholder" = "Vui lòng nhập tin nhắn của bạn";
+"param_not_allow_null" = "%@ không được để trống";
+"contact_at_lease_enter_one" = "Vui lòng nhập ít nhất một thông tin liên hệ";
+"submit_failure" = "Gửi không thành công";
+"add_picture" = "Thêm ảnh";
+"tel" = "Điện thoại";
+"tel_placeholder" = "Xin vui lòng điền số điện thoại của bạn";
+"email" = "E-mail";
+"email_placeholder" = "Vui lòng nhập email";
+"qq" = "QQ";
+"qq_placeholder" = "Vui lòng nhập số QQ của bạn";
+"wechat" = "WeChat";
+"wechat_placeholder" = "Vui lòng nhập tài khoản WeChat của bạn";
+"name" = "Tên";
+"name_placeholder" = "xin hãy nhập tên của bạn";
+"gender" = "Giới tính";
+"age" = "Tuổi";
+"age_placeholder" = "Làm ơn viết tuổi của bạn";
+"weibo" = "WeiBo";
+"weibo_placeholder" = "Vui lòng nhập tài khoản WeiBo của bạn";
+"address" = "Địa chỉ";
+"address_placeholder" = "Vui lòng nhập địa chỉ của bạn";
+"comment" = "Bình luận";
+"comment_placeholder" = "Vui lòng nhập bình luận của bạn";
+"contact" = "liên hệ";
+"contact_placeholder" = "Vui lòng nhập liên hệ của bạn";
+"man" = "Người đàn ông";
+"woman" = "Đàn bà";
+"time_placeholder" = "Năm tháng ngày";
+
+"wating_in_queue_tip_number" = "Số người hiện đang chờ đợi";
+"wating_in_queue_tip_choice" = "Nếu bạn không thể chờ đợi, bạn có thể chọn";
+"wating_in_queue_tip_leave_message" = "Để lại lời nhắn";
+
+"product_message_sales" = "Việc bán hàng";
+"product_message_check_details" = "Kiểm tra chi tiết";
+"next_page" = "Kế tiếp";
+"last_page" = "Trước";
+
+//询前表单
+"pre_chat_list_title" = "Hỗ trợ khách hàng";
+"pre_chat_form_title" =  "Hãy điền vào những chỗ trống đó";
+"pre_chat_form_mutiple_selection_label" = "(nhiều)";
+"pre_chat_form_black_alert_label" = "Vui lòng điền vào chỗ trống màu đỏ";
+
+//pull refresh
+"pull_refresh_normal" = "Kéo để tải";
+"pull_refresh_triggered" = "Phát hành để tải";
+//xlp
+// 请输入消息
+"input_content" = "Vui lòng nhập nội dung của bạn...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "Dịch vụ đang kết nối, vui lòng chờ";
+
+"network_connect_error" = "Mạng không khả dụng, vui lòng kiểm tra cài đặt mạng";
+"network_connect_warning" = "Mạng đang kết nối, có thể thiếu tin nhắn";
+
+"mq_direct_content" = "Bạn sẽ được hỗ trợ bởi %@";
+"mq_send" = "Gửi";
+"mq_delete" = "Xóa bỏ";
+"mq_record_count_down" = "Bạn có thể nói chuyện thêm %li giây nữa";
+"mq_record_will_send" = "Bản ghi sẽ được gửi sau %li giây";
+"mq_audio_status_normal" = "Nhấn để nói chuyện";
+"mq_display_preview" = "Hiển thị bản xem trước";
+"mq_open_file" = "Mở tập tin";
+
+"mq_solved" = "đã giải quyết";
+"mq_unsolved" = "chưa được giải quyết";
+"mq_commited" = "cam kết";
+
+"mq_evaluation_title" = "Bạn có hài lòng với dịch vụ này không?";
+"mq_evaluation_good" = "Tốt";
+"mq_evaluation_middle" = "ở giữa";
+"mq_evaluation_bad" = "xấu";
+"mq_evaluation_content" = "nội dung đầu vào (tùy chọn)";
+
+"waiting_agent_send_message" = "Đang xếp hàng, vui lòng đợi";
+"pre_chat_form_input" = "đi vào";

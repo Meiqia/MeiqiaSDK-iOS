@@ -196,4 +196,5 @@
 "mq_evaluation_bad" = "Buruk";
 "mq_evaluation_content" = "Isi komentar (bebas pilih)";
 
-
+"waiting_agent_send_message" = "Mengantri, harap tunggu";
+"pre_chat_form_input" = "memasuki";

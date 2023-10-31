@@ -1,0 +1,197 @@
+"new_message" = "Envía tu mensaje...";
+
+"record_speak" = "Mantener para hablar";
+
+"record_end" = "Suelte para enviar";
+
+"cancel" = "cancelar";
+
+"select_gallery" = "Álbumes";
+
+"select_camera" = "Cámara";
+
+"wait_agent" = "Asignando un agente para ti...";
+
+"waiting_title" = "Esperando en la línea...";
+
+"not_access_camera" = "Por favor vaya a Ajustes - Privacidad - Fotos. Luego seleccione EN para esta aplicación.";
+
+"not_access_photos" = "Por favor vaya a Ajustes - Privacidad - Cámara. Luego seleccione EN para esta aplicación.";
+
+"display_new_message" = "Mensaje nuevo recibido";
+
+"display_video_expired" = "El video ha expirado";
+
+"display_video_more_than_limit" = "El video supera los 400MB máximos";
+
+"network_jam" = "Por favor revise su conexión a Internet e inténtelo de nuevo.";
+
+"simulator_not_support_camera" = "El simulador no puede acceder a la cámara";
+
+"simulator_not_support_microphone" = "El simulador no puede acceder al micrófono";
+
+"recode_time_too_short" = "El mensaje es muy corto";
+
+"record_cancel_swipe" = "Deslice hacia arriba para cancelar";
+
+"record_cancel_realse" = "Suelte para cancelar";
+
+"save_photo_error" = "Lo siento, falló guardar la foto";
+
+"save_photo_success" = "Foto guardada";
+
+"save_text_success" = "Copiado";
+
+"save_photo" = "guardar";
+
+"save_text" = "copiar";
+
+"record_error" = "Lo siento, falló grabar -_-";
+
+"user_confirm" = "De acuerdo";
+
+"no_more_messages" = "No hay más mensajes";
+
+"welcome_chat" = "";
+
+"default_assistant" = "Asistente";
+
+"no_agent_title" = "Dejar mensaje";
+
+"no_agent_tips" = "Lo sentimos, no hay agentes actualmente.\nPor favor envíenos su información de contacto. Nos pondremos en contacto con usted tan pronto como sea posible.";
+
+"retry_send_message" = "¿Reenviar mensaje?";
+
+"alert_view_cancel" = "cancelar";
+"alert_view_send" = "enviar";
+
+"alert_view_confirm" = "confirmar";
+
+"cannot_refresh" = "No se puede actualizar más~";
+
+"make_call_to" = "Llamar a ";
+
+"send_message_to" = "Enviar un mensaje a ";
+
+"open_url_by_safari" = "Abrir esta URL con Safari";
+
+"make_email_to" = "Enviar correo";
+
+"load_history_message_error" = "Lo sentimos, falló cargar los mensajes históricos";
+
+"microphone_denied" = "Por favor vaya a Ajustes. Y abra el permiso de micrófono para esta aplicación.";
+
+"meiqia_communication_failed" = "Lo siento, no se puede acceder al servidor de comunicación, cambie la red e inténtelo de nuevo.";
+
+"meiqia_evaluation_sheet" = "Evaluar";
+
+"meiqia_redirect_sheet" = "Redireccionar";
+
+"file_download_file_is_expired" = "El archivo ha expirado";
+"file_download_canceld" = "Descarga cancelada";
+"file_download_failed" = "Fallo de la descarga";
+"file_download_downloading" = "Descargando...";
+"file_download_complete" = "Descarga completa";
+"file_upload_limit" = "Se ha superado el límite máximo de carga de archivos";
+"file_download_ %@ ∙ %@caducado" = "%@ ∙ caducado en %@ horas";
+
+"message_tips_send_message_fail_listed_in_black_list" = "Lo sentimos, el sistema CS está caído.";
+
+"message_tips_online_failed_listed_in_black_list" = "Lo sentimos, el sistema CS está caído.";
+
+"reply_tip_text" = "Lo sentimos, actualmente no hay agentes disponibles.";
+
+"reply_tip_leave" = " Puede dejarnos un mensaje";
+
+"bot_redirect_tip_text" = "Lo siento, la respuesta del robot no resolvió tu problema. Pulsa aquí para redireccionar a un agente.";
+
+"bot_manual_redirect_tip_text" = "Si necesita ayuda, pulse aquí para redireccionar a un agente.";
+
+"bot_menu_tip_text" = "Responda al número correspondiente o haga clic en la pregunta para ver la respuesta";
+
+"bot_menu_problem_tip_text" = "Problema común";
+
+"cannot_text_client_is_onlining" = "Se está asignando un agente para ti. Vuelve a enviar más tarde.";
+
+"send_to_fast" = "Envío demasiado rápido. ¡Tómese un descanso!";
+"leave_a_message" = "Dejar un mensaje";
+"submit" = "enviar";
+"leave_a_message_placeholder" = "Por favor ingrese su mensaje";
+"param_not_allow_null" = "%@ no puede estar vacío";
+"contact_at_lease_enter_one" = "Por favor ingrese al menos un dato de contacto";
+"submit_failure" = "Envío fallido";
+"add_picture" = "Agregar imagen";
+"tel" = "Teléfono";
+"tel_placeholder" = "Por favor ingrese su número de teléfono";
+"email" = "Correo electrónico";
+"email_placeholder" = "Por favor ingrese su dirección de correo electrónico";
+"qq" = "QQ";
+"qq_placeholder" = "Por favor ingrese su número de QQ";
+"wechat" = "WeChat";
+"wechat_placeholder" = "Por favor ingrese su cuenta de WeChat";
+"name" = "Nombre";
+"name_placeholder" = "Por favor ingrese su nombre";
+"gender" = "Género";
+"age" = "Edad";
+"age_placeholder" = "Por favor ingrese su edad";
+"weibo" = "WeiBo";
+"weibo_placeholder" = "Por favor ingrese su cuenta de WeiBo";
+"address" = "Dirección";
+"address_placeholder" = "Por favor ingrese su dirección";
+"comment" = "Comentario";
+"comment_placeholder" = "Por favor ingrese su comentario";
+"contact" = "contacto";
+"contact_placeholder" = "Por favor ingrese su contacto";
+"man" = "Hombre";
+"woman" = "Mujer";
+"time_placeholder" = "Año-Mes-Día";
+
+"wating_in_queue_tip_number" = "Número de personas actualmente en cola";
+"wating_in_queue_tip_choice" = "Si no puede esperar, puede elegir";
+"wating_in_queue_tip_leave_message" = "Dejar un mensaje";
+
+"product_message_sales" = "Ventas";
+"product_message_check_details" = "Revisar detalles";
+"next_page" = "Siguiente";
+"last_page" = "Anterior";
+
+//询前表单
+"pre_chat_list_title" = "Soporte para clientes";
+"pre_chat_form_title" = "Por favor complete esos espacios";
+"pre_chat_form_mutiple_selection_label" = "(múltiple)";
+"pre_chat_form_black_alert_label" = "Por favor complete el espacio en rojo";
+
+//pull refresh
+"pull_refresh_normal" = "Tire para cargar";
+"pull_refresh_triggered" = "Suelte para cargar";
+//xlp
+// 请输入消息
+"input_content" = "Por favor introduzca su contenido...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "El servicio está conectando, espere por favor";
+
+"network_connect_error" = "La red no está disponible, revise la configuración de red";
+"network_connect_warning" = "La red está conectando, los mensajes podrían faltar";
+
+"mq_direct_content" = "Se le asistirá por %@";
+"mq_send" = "Enviar";
+"mq_delete" = "Borrar";
+"mq_record_count_down" = "Puede hablar durante %li segundos más";
+"mq_record_will_send" = "La grabación se enviará en %li segundos";
+"mq_audio_status_normal" = "Presione para hablar";
+"mq_display_preview" = "Mostrar la vista previa";
+"mq_open_file" = "Abrir archivo";
+
+"mq_solved" = "resuelto";
+"mq_unsolved" = "sin resolver";
+"mq_commited" = "comprometido";
+
+"mq_evaluation_title" = "¿Está satisfecho con este servicio?";
+"mq_evaluation_good" = "bueno";
+"mq_evaluation_middle" = "regular";
+"mq_evaluation_bad" = "malo";
+"mq_evaluation_content" = "contenido (opcional)";
+
+"waiting_agent_send_message" = "Cola, por favor espere";
+"pre_chat_form_input" = "ingresar";
+

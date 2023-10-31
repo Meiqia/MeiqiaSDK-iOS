@@ -1,0 +1,200 @@
+"new_message" = "Пожалуйста, введите...";
+
+"record_speak" = "Удерживайте, чтобы говорить";
+
+"record_end" = "Окончание выпуска";
+
+"cancel"              = "отмена";
+
+"select_gallery" = "Выбрать из фотоальбома";
+
+"select_camera" = "камера";
+
+"wait_agent" = "Назначение службы поддержки клиентов...";
+
+"waiting_title" = "Ожидание в очереди...";
+
+"not_access_camera" = "Разрешите этому приложению доступ к камере в настройках системы";
+
+"not_access_photos" = "Разрешите этому приложению доступ к фотоальбому в настройках системы";
+
+"display_new_message" = "Ниже есть новое сообщение";
+
+"display_video_expired" = "Срок действия видео истек";
+
+"display_video_more_than_limit" = "Видео превышает максимальный лимит в 400 M";
+
+"network_jam" = "Сеть работает нестабильно, проверьте сеть";
+
+"simulator_not_support_camera" = "Симулятор не может использовать камеру";
+
+"simulator_not_support_microphone" = "Симулятор не может использовать микрофон";
+
+"recode_time_too_short" = "Время записи слишком короткое";
+
+"record_cancel_swipe" = "Проведите вверх, чтобы отменить отправку";
+
+"record_cancel_realse" = "Отпустите палец, чтобы отменить отправку";
+
+"save_photo_error" = "К сожалению, сохранение не удалось";
+
+"save_photo_success" = "Изображения сохранены в локальном альбоме";
+
+"save_text_success" = "Скопировано";
+
+"save_photo" = "сохранить";
+
+"save_text" = "Копировать";
+
+"record_error" = "Извините, возникла небольшая проблема с записью-_-";
+
+"user_confirm" = "Понятно";
+
+"no_more_messages" = "Сообщений больше нет~";
+
+"welcome_chat" = "";
+
+"default_assistant" = "Помощник Meiqia";
+
+"no_agent_title" = "Сообщение";
+
+"no_agent_tips" = "К сожалению, сейчас на сайте нет сотрудников службы поддержки клиентов\nВы можете оставить свою контактную информацию, и мы свяжемся с вами как можно скорее~";
+
+"retry_send_message" = "Отправить повторно?";
+
+"alert_view_cancel" = "отмена";
+"alert_view_send" = "Отправить";
+
+"alert_view_confirm" = "Подтвердить";
+
+"cannot_refresh" = "Невозможно обновить~";
+
+"make_call_to" = "Позвонить";
+
+"send_message_to" = "Сообщение SMS";
+
+"open_url_by_safari" = "Откройте эту ссылку в Safari";
+
+"make_email_to" = "Отправить письмо на этот адрес электронной почты";
+
+"load_history_message_error" = "К сожалению, сообщение истории не было получено правильно -_-";
+
+"microphone_denied" = "Разрешите этому приложению доступ к микрофону в настройках системы";
+
+"meiqia_communication_failed" = "К сожалению, возможно, возникла проблема с подключением к сети связи. Попробуйте сменить сеть.";
+
+"meiqia_evaluation_sheet" = "Оценка";
+
+"meiqia_redirect_sheet" = "Перенаправление в руководство";
+
+"file_download_file_is_expired" = "Срок действия файла истек";
+"file_download_canceld" = "Загрузка отменена";
+"file_download_failed" = "Загрузка не удалась";
+"file_download_downloading" = "Загрузка...";
+"file_download_complete" = "Загрузка завершена";
+"file_upload_limit" = "Превышен максимальный лимит загружаемых файлов";
+"file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ часов спустя";
+
+"message_tips_send_message_fail_listed_in_black_list" = "К сожалению, текущая система обслуживания клиентов временно недоступна.";
+
+"message_tips_online_failed_listed_in_black_list" = "К сожалению, текущая система обслуживания клиентов временно недоступна.";
+
+"reply_tip_text" = "К сожалению, в данный момент служба поддержки клиентов не работает";
+
+"reply_tip_leave" = "Вы можете оставить нам сообщение";
+
+"bot_redirect_tip_text" = "Мне жаль, что вас не удовлетворил ответ робота. Вы можете попробовать переключиться в ручной режим";
+
+"bot_manual_redirect_tip_text" = "Если ваша проблема требует поддержки вручную, вы можете передать ее вручную";
+
+"bot_menu_tip_text" = "Нажмите на номер, соответствующий вопросу или ответу, чтобы просмотреть ответ";
+
+"bot_menu_problem_tip_text" = "Часто задаваемые вопросы";
+
+"cannot_text_client_is_onlining" = "Вам назначена служба поддержки клиентов, повторите попытку позже.";
+
+"cannot_text_client_is_onlining" = "Вам назначена служба поддержки клиентов, повторите попытку позже.";
+
+"send_to_fast" = "Вы отправили слишком быстро, пожалуйста, отдохните~";
+"leave_a_message" = "leave_a_message";
+"Отправить" = "Отправить";
+"leave_a_message_placeholder" = "Пожалуйста, введите свое сообщение";
+"param_not_allow_null" = "%@ не может иметь значение NULL";
+"contact_at_lease_enter_one" = "Пожалуйста, укажите хотя бы один способ связи";
+"submit_failure" = "Отправить не удалось";
+"add_picture" = "Добавить изображение";
+"tel" = "Телефон";
+"tel_placeholder" = "Пожалуйста, введите свой номер телефона";
+"электронная почта" = "электронная почта";
+"email_placeholder" = "Пожалуйста, введите свой адрес электронной почты";
+"qq" = "QQ";
+"qq_placeholder" = "Пожалуйста, введите свой номер qq";
+"wechat" = "WeChat";
+"wechat_placeholder" = "Пожалуйста, введите свой идентификатор WeChat";
+"name" = "имя";
+"name_placeholder" = "Пожалуйста, введите свое имя";
+"gender" = "пол";
+"age" = "возраст";
+"age_placeholder" = "Пожалуйста, введите свой возраст";
+"weibo" = "Вейбо";
+"weibo_placeholder" = "Пожалуйста, введите свой идентификатор Weibo";
+"address" = "адрес";
+"address_placeholder" = "Пожалуйста, введите адрес";
+"comment" = "Примечание";
+"comment_placeholder" = "Пожалуйста, введите комментарий";
+"contact" = "Контакт";
+"contact_placeholder" = "Пожалуйста, введите контактное лицо";
+"man" = "мужской";
+"woman" = "женский";
+"time_placeholder" = "Год-месяц-день";
+
+"wating_in_queue_tip_number" = "Количество людей, ожидающих в данный момент";
+"wating_in_queue_tip_choice" = "Если вы не можете ждать, вы можете выбрать";
+"wating_in_queue_tip_leave_message" = "Оставьте нам сообщение";
+
+"product_message_sales" = "Продажи";
+"product_message_check_details" = "Просмотреть подробности";
+"next_page" = "Следующая страница";
+"last_page" = "Предыдущая страница";
+
+//询前表单
+"pre_chat_list_title" = "Служба поддержки клиентов";
+"pre_chat_form_title" = "Пожалуйста, заполните следующее";
+"pre_chat_form_mutiple_selection_label" = "(Множественный выбор)";
+"pre_chat_form_black_alert_label" = "Поля с красным текстом являются обязательными, пожалуйста, заполните их полностью";
+
+//pull refresh
+"pull_refresh_normal" = "Потяните вниз, чтобы загрузить исторические сообщения";
+"pull_refresh_triggered" = "Освободить сообщение истории загрузки";
+
+//xlp
+// 请输入消息
+"input_content" = "Входное сообщение...";
+// 服务连接中,请稍候
+"service_connectting_wait" = "Услуга подключается, подождите...";
+
+"network_connect_error" = "Текущая сеть недоступна, проверьте настройки сети";
+"network_connect_warning" = "Во время текущего сетевого подключения полученные сообщения могут быть пропущены";
+
+"mq_direct_content" = "Далее вас будет обслуживать %@";
+"mq_send" = "Отправить";
+"mq_delete" = "Удалить";
+"mq_record_count_down" = "Запись закончится через %li секунд";
+"mq_record_will_send" = "Запись будет отправлена ​​через %li секунд";
+"mq_audio_status_normal" = "Удерживайте, чтобы говорить";
+"mq_display_preview" = "Предварительный просмотр";
+"mq_open_file" = "Открыть файл";
+
+"mq_solved" = "Решено";
+"mq_unsolved" = "Нерешено";
+"mq_commited" = "Зафиксировано";
+
+"mq_evaluation_title" = "Вы довольны этой услугой?";
+"mq_evaluation_good" = "Хороший отзыв";
+"mq_evaluation_middle" = "Средняя оценка";
+"mq_evaluation_bad" = "Плохая оценка";
+"mq_evaluation_content" = "Заполните содержание оценки (необязательно)";
+
+"waiting_agent_send_message" = "В очереди, пожалуйста, подождите";
+"pre_chat_form_input" = "входить";
+

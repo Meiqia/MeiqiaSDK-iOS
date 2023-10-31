@@ -41,10 +41,25 @@
         language = @"ms"; // 马来语
     } else if ([language hasPrefix:@"id"]) {
         language = @"id"; // 印尼语
+    } else if ([language hasPrefix:@"ja"]) {
+        language = @"ja"; // 日语
+    } else if ([language hasPrefix:@"th"]) {
+        language = @"th"; // 泰语
+    } else if ([language hasPrefix:@"vi"]) {
+        language = @"vi"; // 越南
+    } else if ([language hasPrefix:@"pt"]) {
+        language = @"pt"; // 葡萄牙语
+    } else if ([language hasPrefix:@"hi"]) {
+        language = @"hi"; // 印地语
+    } else if ([language hasPrefix:@"es"]) {
+        language = @"es"; // 西班牙语
+    }  else if ([language hasPrefix:@"ru"]) {
+        language = @"ru"; // 俄语
+    } else if ([language hasPrefix:@"ko"]) {
+        language = @"ko"; // 韩语
     } else {
         language = @"en";
     }
-    
     NSBundle *bundle = [NSBundle bundleWithPath:[[MQBundleUtil assetBundle] pathForResource:language ofType:@"lproj"]];
     
     return [MQCustomizedUIText customiedTextForBundleKey:key] ?: [bundle localizedStringForKey:key value:nil table:@"MQChatViewController"];
