@@ -51,8 +51,8 @@
 
     self.tableView.allowsMultipleSelection = YES;
     
-    if (self.viewModel.formData.form.title.length > 0) {
-        self.title = self.viewModel.formData.form.title;
+    if (self.viewModel.formData.title.length > 0) {
+        self.title = self.viewModel.formData.title;
     }
     
     [self.tableView registerClass:[MQPreChatMultiLineTextCell class] forCellReuseIdentifier:NSStringFromClass([MQPreChatMultiLineTextCell class])];
@@ -87,7 +87,7 @@
         UIView *view = [[UIView alloc] init];
         [view addSubview:self.topView];
         
-        header.frame = CGRectMake(0, [self.topView getTopViewHeight], header.viewWidth, header.viewHeight);
+        header.frame = CGRectMake(0, [self.topView getTopViewHeight] + 20 + [self getMarkTitleHeight], header.viewWidth, header.viewHeight);
         [view addSubview:header];
         
         return view;
@@ -99,7 +99,7 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
     if (self.viewModel.formData.content.length > 0 && section == 0) {
-        return HEIGHT_SECTION_HEADER + [self.topView getTopViewHeight];
+        return HEIGHT_SECTION_HEADER + [self.topView getTopViewHeight] + 20 + [self getMarkTitleHeight];
     }
     return HEIGHT_SECTION_HEADER;
 }
@@ -262,7 +262,7 @@
                 [self resetCaptchaCellIfExists];
             }
             
-            [MQToast showToast:e.domain duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
+            [MQToast showToast:e.domain duration:2 window:[UIApplication sharedApplication].keyWindow];
         }
     }];
     
@@ -314,11 +314,39 @@ static UIBarButtonItem *rightBarButtonItemCache = nil;
 - (MQPreChatTopView *)topView {
     if (!_topView) {
         CGFloat horizontalSpacing = 10.0;
-        _topView = [[MQPreChatTopView alloc] initWithHTMLText:self.viewModel.formData.content maxWidth:self.tableView.viewWidth - 2 * horizontalSpacing];
-        _topView.frame = CGRectMake(horizontalSpacing, 0, self.tableView.viewWidth - 2 * horizontalSpacing, [_topView getTopViewHeight]);
+        
+//        CGFloat headerMaxWidth = self.tableView.viewWidth - horizontalSpacing * 2;
+//        CGSize textSize = CGSizeMake(headerMaxWidth, MAXFLOAT);
+//        CGRect textRect = [self.viewModel.formData.menu.title boundingRectWithSize:textSize
+//                                                     options:NSStringDrawingUsesLineFragmentOrigin
+//                                                  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.0 weight:UIFontWeightMedium]}
+//                                                     context:nil];
+        
+        _topView = [[MQPreChatTopView alloc] initWithHTMLText:self.viewModel.formData.content maxWidth:[self headerMaxWidth]];
+        _topView.frame = CGRectMake(horizontalSpacing, 0, [self headerMaxWidth], [_topView getTopViewHeight] + 20 + [self getMarkTitleHeight]);
+        
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, [_topView getTopViewHeight] + 10, [self headerMaxWidth], [self getMarkTitleHeight])];
+        titleLabel.text = self.viewModel.formData.form.title;
+        titleLabel.textColor = [UIColor mq_colorWithHexString:ebonyClay];
+        titleLabel.font = [UIFont systemFontOfSize:16 weight: UIFontWeightMedium];
+        [_topView addSubview:titleLabel];
     }
     return _topView;
 }
 
+- (CGFloat)getMarkTitleHeight {
+    CGFloat headerMaxWidth = [self headerMaxWidth]; //self.tableView.viewWidth - 10 * 2;
+    CGSize textSize = CGSizeMake(headerMaxWidth, MAXFLOAT);
+    CGRect textRect = [self.viewModel.formData.menu.title boundingRectWithSize:textSize
+                                                 options:NSStringDrawingUsesLineFragmentOrigin
+                                              attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.0 weight:UIFontWeightMedium]}
+                                                 context:nil];
+    return textRect.size.height;
+}
+
+- (CGFloat)headerMaxWidth {
+    CGFloat horizontalSpacing = 10.0;
+    return self.tableView.viewWidth - horizontalSpacing * 2;
+}
 
 @end

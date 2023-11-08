@@ -144,8 +144,25 @@
             if (self.allUrlArray.count >= 2) {
                 [self.allUrlArray removeLastObject];// 此时数组为每一个图片的url
             }
+            
+            // 最后的图片数组
+            [self getFinalImagesUrls];
         }
     }];
+}
+
+#pragma mark - 获取最后所有图片
+- (void)getFinalImagesUrls {
+    // 分解出所有图片的链接地址
+    [self.finalImagesUrl removeAllObjects];
+    for (int i = 0; i < self.allUrlArray.count; i++) {
+        NSArray *imageIndex = [NSMutableArray arrayWithArray:[self.allUrlArray[i] componentsSeparatedByString:@"MQindex"]];
+        NSString *imgStr = imageIndex.firstObject;
+        // 这里出现了一个问题就是拿到的所有的图片有一个链接是web本身页面的地址 不知道怎么产生的 在这里判断下去掉
+        if (![imgStr isEqualToString:self.requestURLString]) {
+            [self.finalImagesUrl addObject:imgStr];
+        }
+    }
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
@@ -165,20 +182,13 @@
 
 #pragma mark 显示大图片
 - (void)showBigImage:(NSString *)imageUrl {
-    // 分解出所有图片的链接地址
-    [self.finalImagesUrl removeAllObjects];
-    for (int i = 0; i < self.allUrlArray.count; i++) {
-        NSArray *imageIndex = [NSMutableArray arrayWithArray:[self.allUrlArray[i] componentsSeparatedByString:@"MQindex"]];
-        NSString *imgStr = imageIndex.firstObject;
-        // 这里出现了一个问题就是拿到的所有的图片有一个链接是web本身页面的地址 不知道怎么产生的 在这里判断下去掉
-        if (![imgStr isEqualToString:self.requestURLString]) {
-            [self.finalImagesUrl addObject:imgStr];
-        }
-    }
+    
+    NSArray *imageIndex = [NSMutableArray arrayWithArray:[imageUrl componentsSeparatedByString:@"MQindex"]];
+    NSString *indexStr = imageIndex.lastObject;
     
     MQImageViewerViewController *viewerVC = [MQImageViewerViewController new];
     viewerVC.imagePaths = self.finalImagesUrl;
-    
+    viewerVC.currentIndex = indexStr.integerValue;
     __weak MQImageViewerViewController *wViewerVC = viewerVC;
     [viewerVC setSelection:^(NSUInteger index) {
         __strong MQImageViewerViewController *sViewerVC = wViewerVC;

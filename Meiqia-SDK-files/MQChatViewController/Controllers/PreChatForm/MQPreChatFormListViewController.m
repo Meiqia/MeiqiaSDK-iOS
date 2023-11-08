@@ -102,7 +102,13 @@
     
     self.navigationItem.leftBarButtonItem =  [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
     
-    self.title = [MQBundleUtil localizedStringForKey:@"pre_chat_list_title"];
+    if (self.viewModel.formData.title.length > 0) {
+        self.title = self.viewModel.formData.title;
+    }else {
+        self.title = [MQBundleUtil localizedStringForKey:@"pre_chat_list_title"];
+    }
+    
+    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)dismiss {
@@ -199,12 +205,12 @@
         CGSize textSize = CGSizeMake([self getHeaderMaxWidth], MAXFLOAT);
         CGRect textRect = [self.viewModel.formData.menu.title boundingRectWithSize:textSize
                                                      options:NSStringDrawingUsesLineFragmentOrigin
-                                                  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0]}
+                                                  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.0 weight:UIFontWeightMedium]}
                                                      context:nil];
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kMQPreChatHeaderHorizontalSpacing, topViewHeight + kMQPreChatHeaderBottom, [self getHeaderMaxWidth], textRect.size.height)];
         titleLabel.text = self.viewModel.formData.menu.title;
         titleLabel.textColor = [UIColor mq_colorWithHexString:ebonyClay];
-        titleLabel.font = [UIFont systemFontOfSize:14];
+        titleLabel.font = [UIFont systemFontOfSize:16 weight: UIFontWeightMedium];
         
         _cacheHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.viewWidth, CGRectGetMaxY(titleLabel.frame) + kMQPreChatHeaderBottom)];
         [_cacheHeaderView addSubview:topView];

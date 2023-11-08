@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, MQPreChatFormItemInputType) {
 @property (nonatomic, strong) MQPreChatMenu *menu;
 @property (nonatomic, strong) MQPreChatForm *form;
 @property (nonatomic, copy) NSString *content;
+@property (nonatomic, strong) NSString *title;
 
 @end
 
