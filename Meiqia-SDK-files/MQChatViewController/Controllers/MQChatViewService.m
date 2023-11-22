@@ -1810,7 +1810,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [cellModel updateCellConversionId:[MQServiceToViewInterface getCurrentConversationID]];
         }
     } else {
-        if (cellModel.getMessageConversionId != [MQServiceToViewInterface getCurrentConversationID]) {
+        if (![cellModel.getMessageConversionId isEqualToString:[MQServiceToViewInterface getCurrentConversationID]]) {
             needSplitLine = YES;
             if ([cellModel respondsToSelector:@selector(updateCellConversionId:)]) {
                 [cellModel updateCellConversionId:[MQServiceToViewInterface getCurrentConversationID]];
@@ -1839,8 +1839,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if (needSplitLine) {
             MQSplitLineCellModel *cellModel1 = [[MQSplitLineCellModel alloc] initCellModelWithCellWidth:self.chatViewWidth withConversionDate:newMessageDate];
             [self.cellModels replaceObjectAtIndex:index withObject:cellModel1];
-            // 首条消息重复问题
-//            [self.cellModels addObject:cellModel];
+            [self.cellModels addObject:cellModel];
             [self reloadChatTableView];
             [self scrollToBottom];
         } else {
