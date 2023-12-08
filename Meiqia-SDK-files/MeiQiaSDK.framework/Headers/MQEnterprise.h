@@ -85,6 +85,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, readonly, assign) bool videoMsgStatus; //是否可以发送video类型消息
 
+@property (nonatomic, readonly, assign) bool hideHistoryConvoStatus; //是否隐藏历史对话
+
 @property (nonatomic, strong) MQPreChatData *preChatData; //讯前表单数据模型
 
 @property (nonatomic, strong) MQTicketConfigInfo *ticketConfigInfo; //留言数据配置

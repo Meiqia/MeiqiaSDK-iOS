@@ -81,6 +81,12 @@ static CGFloat const kMQMenuItemContentHeight = 15.0;
     return self;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    [self layoutUI];
+}
+
 - (void)updateCellWithCellModel:(id<MQCellModelProtocol>)model {
     if ([model isKindOfClass:[MQBotMenuWebViewBubbleAnswerCellModel class]]) {
         self.viewModel = model;

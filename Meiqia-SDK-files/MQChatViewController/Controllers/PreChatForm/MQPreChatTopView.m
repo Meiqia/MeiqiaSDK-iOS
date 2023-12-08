@@ -67,7 +67,7 @@
     return [[NSAttributedString alloc] initWithData:[str dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
 }
 
--(CGFloat)getTopViewHeight {
+- (CGFloat)getTopViewHeight {
     return self.cacheContentHeight;
 }
 

@@ -40,6 +40,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if (@available(iOS 13.0, *)) {
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+    }
+    
     if ([self.navigationController.viewControllers firstObject] == self) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[MQAssetUtil backArrow] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
     }
@@ -63,6 +67,8 @@
     
     UIBarButtonItem *submit = [[UIBarButtonItem alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"submit"] style:(UIBarButtonItemStylePlain) target:self action:@selector(submitAction)];
     self.navigationItem.rightBarButtonItem = submit;
+    
+    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)dismiss {
