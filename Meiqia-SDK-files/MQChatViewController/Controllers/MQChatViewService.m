@@ -924,6 +924,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     
     // 1. 如果相同 messaeg Id 的 cell model 存在，则替换，否则追加
     for (MQBaseMessage *message in newMessages) {
+        
+        // 如果开启了隐藏历史对话 且 消息所属会话与当前会话不相同，则不添加
+        if ([MQServiceToViewInterface currentHideHistoryConversation] && ![message.conversionId isEqualToString:[MQServiceToViewInterface getCurrentConversationID]]) {
+            continue;
+        }
+         
         id<MQCellModelProtocol> newCellModel = [self createCellModelWith:message];
         
         if (!newCellModel) { // EventMessage 不会生成 cell model
@@ -1221,6 +1227,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
          }
         MQBaseMessage *toMessage = [[MQMessageFactoryHelper factoryWithMessageAction:fromMessage.action contentType:fromMessage.contentType fromType:fromMessage.fromType] createMessage:fromMessage];
         if (toMessage) {
+            // 开启了隐藏历史会话 且 该消息不是是当前会话的消息 则不添加
+            if ([MQServiceToViewInterface currentHideHistoryConversation] && ![toMessage.conversionId isEqualToString:[MQServiceToViewInterface getCurrentConversationID]]) {
+                continue;
+            }
             [toMessages addObject:toMessage];
         }
     }

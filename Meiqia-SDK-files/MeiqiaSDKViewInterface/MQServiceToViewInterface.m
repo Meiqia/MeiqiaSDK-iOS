@@ -649,4 +649,8 @@
     return [MQManager currentOpenVisitorNoMessage];
 }
 
++ (BOOL)currentHideHistoryConversation {
+    return [MQManager currentHideHistoryConversation];
+}
+
 @end

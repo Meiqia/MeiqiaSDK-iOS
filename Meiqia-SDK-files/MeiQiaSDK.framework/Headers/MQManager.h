@@ -17,7 +17,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.9.9"
+#define MQSDKVersion @"4.0.0"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -738,5 +738,10 @@
  * 当前是否开启无消息访客过滤
  */
 + (BOOL)currentOpenVisitorNoMessage;
+
+/**
+ * 当前是否隐藏历史对话
+ */
++ (BOOL)currentHideHistoryConversation;
 
 @end

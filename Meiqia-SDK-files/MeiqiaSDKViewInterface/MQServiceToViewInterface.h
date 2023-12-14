@@ -594,5 +594,10 @@
  */
 + (BOOL)currentOpenVisitorNoMessage;
 
+/**
+ * 当前是否隐藏历史对话
+ */
++ (BOOL)currentHideHistoryConversation;
+
 @end
 
