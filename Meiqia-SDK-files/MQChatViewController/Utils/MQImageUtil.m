@@ -62,7 +62,9 @@
 
 + (UIImage *)scaleImage:(UIImage *)image toNewSize:(CGSize)size {
 //    CGSize newSize = CGSizeApplyAffineTransform(size, CGAffineTransformMakeScale(1/[UIScreen mainScreen].scale, 1/[UIScreen mainScreen].scale));
-    
+    if (size.width <= 0 || size.height <= 0) {
+        return image;
+    }
     UIGraphicsBeginImageContextWithOptions(size, NO, 1);
     
     [image drawInRect:CGRectMake(0, 0, ceil(size.width), ceil(size.height))];

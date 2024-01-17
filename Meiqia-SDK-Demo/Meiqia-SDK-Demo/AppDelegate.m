@@ -9,8 +9,12 @@
 #import "AppDelegate.h"
 #import <MeiQiaSDK/MQManager.h>
 #import "MQServiceToViewInterface.h"
+#import <CoreTelephony/CTCellularData.h>
 
 @interface AppDelegate ()
+
+@property (nonatomic, assign) BOOL mqRegisterState;
+@property (nonatomic, strong) CTCellularData *cellularData;
 
 @end
 
@@ -35,19 +39,25 @@
 #endif
     
 #pragma mark  集成第一步: 初始化,  参数:appkey
-    [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
-
-        if (!error) {
-            // 这里可以开启SDK的群发功能, 注意需要在SDK初始化成功以后调用
-            //[[MQNotificationManager sharedManager] openMQGroupNotificationServer];
-            NSLog(@"美洽 SDK：初始化成功");
-        } else {
-            NSLog(@"error:%@",error);
-        }
-
-    }];
+    [self networkPermissionMonitoring];
     
     return YES;
+}
+
+#pragma mark  集成第一步: 初始化,  参数:appkey
+- (void)initMeiqiaSDK {
+    __weak typeof(self) weakSelf = self;
+    [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
+        if (!error) {
+            weakSelf.mqRegisterState = YES;
+            // 这里可以开启SDK的群发功能, 注意需要在SDK初始化成功以后调用
+            //[[MQNotificationManager sharedManager] openMQGroupNotificationServer];
+        } else {
+            weakSelf.mqRegisterState = NO;
+            NSLog(@"美洽 SDK：初始化失败:%@",error);
+        }
+    }];
+    
 }
 
 
@@ -82,5 +92,28 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
 }
 
+// 处理第一次安装app，还没授权网络权限，sdk初始化失败问题
+- (void)networkPermissionMonitoring {
+    self.cellularData = [[CTCellularData alloc] init];
+    __weak typeof(self) weakSelf = self;
+    self.cellularData.cellularDataRestrictionDidUpdateNotifier=^(CTCellularDataRestrictedState state) {
+        switch(state){
+            case kCTCellularDataRestricted:
+            case kCTCellularDataNotRestricted:
+            {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    __strong typeof(weakSelf) strongSelf = weakSelf;
+                    if (strongSelf && !strongSelf.mqRegisterState) {
+                        strongSelf.mqRegisterState = YES;
+                        [strongSelf initMeiqiaSDK];
+                    }
+                });
+            }
+                break;
+            default:
+                break;
+        }
+    };
+}
 
 @end
