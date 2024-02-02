@@ -54,6 +54,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @interface MQChatViewController()
 
 @property (nonatomic, strong) id evaluateBarButtonItem;//保存隐藏的barButtonItem
+@property (nonatomic, strong) MQTabInputContentView *contentView;
 @property (nonatomic, strong) MQBottomBar *bottomBar;
 @property (nonatomic, strong) NSLayoutConstraint *constaintInputBarHeight;
 @property (nonatomic, strong) NSLayoutConstraint *constraintInputBarBottom;
@@ -62,6 +63,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @property (nonatomic, strong) MQRecordView *recordView;
 @property (nonatomic, strong) MQRecorderView *displayRecordView;//只用来显示
 @property (nonatomic, assign) bool sendVideoMsgStatus;
+@property (nonatomic, assign) bool sendPhotoMsgStatus;
 
 @property (nonatomic, assign) BOOL isFirstScheduleClient;
 
@@ -179,8 +181,12 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             [MQChatViewConfig sharedConfig].preSendMessages = m;
         }
         // TODO: [MQServiceToViewInterface prepareForChat]也会初始化企业配置，这里会导致获取企业配置的接口调用两次,APP第一次初始化时会调3次
-        [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:YES complete:^(MQEnterprise *enterprise, NSError *e) {
+        [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:NO complete:^(MQEnterprise *enterprise, NSError *e) {
             weakSelf.sendVideoMsgStatus = enterprise.configInfo.videoMsgStatus;
+            // 配置 和 本地设置 都开的时候才能发送图片
+            weakSelf.sendPhotoMsgStatus = enterprise.configInfo.photoMsgStatus && [MQChatViewConfig sharedConfig].enableSendImageMessage;
+            // 添加操作按钮
+            [weakSelf.contentView setupButtons];
             weakSelf.isFirstScheduleClient = YES;
             [weakSelf.chatViewService setClientOnline];
         }];
@@ -617,7 +623,14 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.sourceType               = (int)sourceType;
-        picker.mediaTypes               = self.sendVideoMsgStatus ? @[@"public.movie",@"public.image"] : @[@"public.image"];
+        if (self.sendVideoMsgStatus && self.sendPhotoMsgStatus) {
+            picker.mediaTypes = @[@"public.movie",@"public.image"];
+        }else if (self.sendVideoMsgStatus) {
+            picker.mediaTypes = @[@"public.movie"];
+        }else {
+            picker.mediaTypes = @[@"public.image"];
+        }
+//        picker.mediaTypes               = self.sendVideoMsgStatus ? @[@"public.movie",@"public.image"] : @[@"public.image"];
         picker.videoQuality             = UIImagePickerControllerQualityTypeHigh;
         picker.delegate                 = (id)self;
         picker.allowsEditing            = [MQChatViewConfig sharedConfig].enablePhotoLibraryEdit;
@@ -1044,8 +1057,11 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         [self.bottomBar.buttonGroupBar addButton:recorderBtn];
     }
     
-    if ([MQChatViewConfig sharedConfig].enableSendImageMessage) {
+    // 可以发视频或者可以发图片才添加拍照按钮
+    if (self.sendVideoMsgStatus || self.sendPhotoMsgStatus) {
         [self.bottomBar.buttonGroupBar addButton:cameraBtn];
+    }
+    if (self.sendPhotoMsgStatus) {
         [self.bottomBar.buttonGroupBar addButton:imageRoll];
     }
     
@@ -1294,14 +1310,21 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     return _evaluationView;
 }
 
+- (MQTabInputContentView *)contentView {
+    if (!_contentView) {
+        _contentView = [[MQTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, emojikeyboardHeight )];
+    }
+    return _contentView;
+}
+
 - (MQBottomBar *)bottomBar {
     if (!_bottomBar) {
-        MQTabInputContentView *contentView = [[MQTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, emojikeyboardHeight )];
+//        MQTabInputContentView *contentView = [[MQTabInputContentView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, emojikeyboardHeight )];
         
-        _bottomBar = [[MQBottomBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kMQChatViewInputBarHeight) contentView: contentView];
+        _bottomBar = [[MQBottomBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kMQChatViewInputBarHeight) contentView: self.contentView];
         _bottomBar.delegate = self;
         _bottomBar.contentViewDelegate = self;
-        [contentView setupButtons];
+//        [contentView setupButtons];
         
     }
     return _bottomBar;
