@@ -39,7 +39,8 @@
 #endif
     
 #pragma mark  集成第一步: 初始化,  参数:appkey
-    [self networkPermissionMonitoring];
+//    [self networkPermissionMonitoring];
+    [self initMeiqiaSDK];
     
     return YES;
 }
