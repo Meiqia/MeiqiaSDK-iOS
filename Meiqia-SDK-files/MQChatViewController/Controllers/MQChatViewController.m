@@ -825,7 +825,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (void)evaluateBotAnswer:(BOOL)isUseful messageId:(NSString *)messageId {
-    [self.chatViewService evaluateBotAnswer:isUseful messageId:messageId];
+    if ([self handleSendMessageAbility]) {
+        [self.chatViewService evaluateBotAnswer:isUseful messageId:messageId];
+    }
 }
 
 - (void)collectionOperationIndex:(int)index messageId:(NSString *)messageId {
@@ -838,14 +840,18 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if (orderRange.location == NSNotFound) {
         return ;
     }
-    NSString *sendText = [menuText substringFromIndex:orderRange.location+2];
-    [self.chatViewService sendTextMessageWithContent:sendText];
-    [self chatTableViewScrollToBottomWithAnimated:YES];
+    if ([self handleSendMessageAbility]) {
+        NSString *sendText = [menuText substringFromIndex:orderRange.location+2];
+        [self.chatViewService sendTextMessageWithContent:sendText];
+        [self chatTableViewScrollToBottomWithAnimated:YES];
+    }
 }
 
 - (void)didTapGuideWithText:(NSString *)guideText {
-    [self.chatViewService sendTextMessageWithContent:guideText];
-    [self chatTableViewScrollToBottomWithAnimated:YES];
+    if ([self handleSendMessageAbility]) {
+        [self.chatViewService sendTextMessageWithContent:guideText];
+        [self chatTableViewScrollToBottomWithAnimated:YES];
+    }
 }
 
 - (void)didTapReplyBtn {

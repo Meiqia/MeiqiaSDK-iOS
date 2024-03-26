@@ -312,6 +312,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  * 发送文字消息
  */
 - (void)sendTextMessageWithContent:(NSString *)content {
+    // 排队中 不能发消息
+    if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
+        [[[UIApplication sharedApplication].windows lastObject] endEditing:YES];
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"waiting_agent_send_message"] duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
+            //从后台获取 position 然后保存到本地
+        }];
+        return;
+    }
+    
     MQTextMessage *message = [[MQTextMessage alloc] initWithContent:content];
     message.conversionId = [MQServiceToViewInterface getCurrentConversationID] ?:@"";
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
