@@ -117,7 +117,8 @@
 }
 
 + (NSString *)getVideoCachePathWithServerUrl:(NSString *)serverUrl {
-    NSURL *videoUrl = [NSURL URLWithString:serverUrl];
+    NSString *encodeUrlStr = [serverUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSURL *videoUrl = [NSURL URLWithString:encodeUrlStr];
     NSString *videoName = [self getMd5WithString:serverUrl];
     NSString *videoExtension = [videoUrl pathExtension];
     NSString *directoryPath = DIR_RECEIVED_FILE;
