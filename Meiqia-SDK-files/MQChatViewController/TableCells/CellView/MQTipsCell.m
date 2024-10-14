@@ -17,6 +17,7 @@
     CALayer *bottomLineLayer;
     UITapGestureRecognizer *tapReconizer;
     MQTipType tipType;
+    BOOL showLeaveMessage;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -57,6 +58,8 @@
     MQTipsCellModel *cellModel = (MQTipsCellModel *)model;
     
     tipType = cellModel.tipType;
+    
+    showLeaveMessage = cellModel.showLeaveCommentBtn;
     
     //刷新时间label
     NSMutableAttributedString *tipsString = [[NSMutableAttributedString alloc] initWithString:cellModel.tipText];
@@ -111,6 +114,11 @@
 
 - (void)tapTipCell:(id)sender {
     if ([tipsLabel.text isEqualToString:[NSString stringWithFormat:@"%@%@",[MQBundleUtil localizedStringForKey:@"reply_tip_text"], [MQBundleUtil localizedStringForKey:@"reply_tip_leave"]]]) {
+        if ([self.chatCellDelegate respondsToSelector:@selector(didTapReplyBtn)]) {
+            [self.chatCellDelegate didTapReplyBtn];
+        }
+    }
+    if (tipType == MQTipTypeReply && showLeaveMessage) {
         if ([self.chatCellDelegate respondsToSelector:@selector(didTapReplyBtn)]) {
             [self.chatCellDelegate didTapReplyBtn];
         }

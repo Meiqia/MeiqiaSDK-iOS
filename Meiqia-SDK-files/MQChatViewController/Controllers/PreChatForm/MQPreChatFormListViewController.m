@@ -175,7 +175,8 @@
             if (self.completeBlock) {
                 NSString *target = selectedMenu.target;
                 NSString *targetType = selectedMenu.targetKind;
-                self.completeBlock(@{@"target":target, @"targetType":targetType, @"menu":selectedMenu.desc});
+                NSInteger fallback = selectedMenu.fallback;
+                self.completeBlock(@{@"target":target, @"targetType":targetType, @"menu":selectedMenu.desc, @"fallback": @(fallback)});
             }
         }];
     } else {
@@ -185,7 +186,8 @@
                 if (self.completeBlock) {
                     NSString *target = selectedMenu.target;
                     NSString *targetType = selectedMenu.targetKind;
-                    self.completeBlock(@{@"target":target, @"targetType":targetType, @"menu":selectedMenu.desc});
+                    NSInteger fallback = selectedMenu.fallback;
+                    self.completeBlock(@{@"target":target, @"targetType":targetType, @"menu":selectedMenu.desc, @"fallback": @(fallback)});
                 }
             }];
         } else {

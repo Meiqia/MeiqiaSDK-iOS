@@ -880,8 +880,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             cellModel = [[MQWebViewBubbleCellModel alloc] initCellModelWithMessage:(MQRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
             
         } else if ([message isKindOfClass:[MQBotAnswerMessage class]]) {
-            
-            if ([(MQBotAnswerMessage *)message menu] == nil) {
+            if ([[(MQBotAnswerMessage *)message subType] isEqualToString:@"reply"] && ![MQServiceToViewInterface enableLeaveComment]) { // 不留言才显示为tips
+                [self addTipCellModelWithType:MQTipTypeReply tipText:[(MQBotAnswerMessage *)message content]];
+            } else if ([(MQBotAnswerMessage *)message menu] == nil) {
                 cellModel = [[MQBotAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
             } else {
                 cellModel = [[MQBotMenuAnswerCellModel alloc] initCellModelWithMessage:(MQBotAnswerMessage *)message cellWidth:self.chatViewWidth delegate:self];
@@ -1084,9 +1085,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 // 增加留言提示的 cell model
-- (void)addTipCellModelWithType:(MQTipType)tipType {
+- (void)addTipCellModelWithType:(MQTipType)tipType tipText:(NSString *)tipText {
     // 判断当前是否是机器人客服
     if ([MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
+        return;
+    }
+    // 如果当前是回复留言，允许留言显示为气泡样式，不显示 tips
+    if (tipType == MQTipTypeReply && [MQServiceToViewInterface enableLeaveComment]) {
         return;
     }
     // 判断 table 中是否出现「转人工」或「留言」，如果出现过，并不在最后一个 cell，则将之移到底部
@@ -1108,7 +1113,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self.cellModels addObject:tipModel];
         [self.delegate reloadChatTableView];
     } else {
-        MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initBotTipCellModelWithCellWidth:self.chatViewWidth tipType:tipType showLeaveCommentBtn:[MQServiceToViewInterface enableLeaveComment]];
+        MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initBotTipCellModelWithTips:tipText cellWidth:self.chatViewWidth tipType:tipType showLeaveCommentBtn:[MQServiceToViewInterface enableLeaveComment]];
         [self.cellModels addObject:cellModel];
         [self.delegate insertCellAtBottomForModelCount: 1];
     }
@@ -1220,7 +1225,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)removeScheduledAgentWithType:(NSString *)agentType {
-    if (![agentType isEqualToString:@"bot"]) {
+    if (agentType.length > 0 && ![agentType isEqualToString:@"bot"]) {
         [MQServiceToViewInterface deleteScheduledAgent];
     }
 }
@@ -1310,7 +1315,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     NSError * error = [MQServiceToViewInterface checkGlobalError];
     if (error) {
         if (error.code == MQErrorCodeBotFailToRedirectToHuman) {
-            [self addTipCellModelWithType:MQTipTypeReply];
+            [self addTipCellModelWithType:MQTipTypeReply tipText:@""];
         }
     }
     
@@ -1714,7 +1719,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         MQEventMessage *eventMessage = (MQEventMessage *)[messages firstObject];
         if (eventMessage.eventType == MQChatEventTypeRedirectFail) {
             //转人工失败
-            [self addTipCellModelWithType:MQTipTypeReply];
+            [self addTipCellModelWithType:MQTipTypeReply tipText:@""];
         } else {
             [self handleEventMessage:eventMessage];
         }
@@ -1747,7 +1752,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
         //渲染手动转人工
         if ([((MQBotAnswerMessage *)[messages firstObject]).subType isEqualToString:@"manual_redirect"]) {
-            [self addTipCellModelWithType:MQTipTypeBotManualRedirect];
+            [self addTipCellModelWithType:MQTipTypeBotManualRedirect tipText:@""];
         }
     }
     
@@ -1933,7 +1938,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                                           MQAgent *agent = [MQServiceToViewInterface getCurrentAgent];
                                           if (!isUseful && agent.privilege == MQAgentPrivilegeBot) {
                                               // 生成转人工的状态
-                                              [self addTipCellModelWithType:MQTipTypeBotRedirect];
+                                              [self addTipCellModelWithType:MQTipTypeBotRedirect tipText:@""];
                                           }
                                       }];
     // 改变 botAnswerCellModel 的值

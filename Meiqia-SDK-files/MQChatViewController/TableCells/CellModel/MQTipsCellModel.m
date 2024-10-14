@@ -96,8 +96,13 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
 // 排队的留言引导提示文案
 @property (nonatomic, readwrite, copy) NSString *queueTicketIntro;
 
-// tip 的类型
+// 队列位置
 @property (nonatomic, readwrite, assign) int queuePosition;
+
+/**
+ *  是否显示留言
+ */
+@property (nonatomic, readwrite, assign) BOOL showLeaveCommentBtn;
 
 @end
 
@@ -155,14 +160,17 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
 /**
  *  生成留言提示的 cell，支持点击留言
  */
-- (MQTipsCellModel *)initBotTipCellModelWithCellWidth:(CGFloat)cellWidth
+- (MQTipsCellModel *)initBotTipCellModelWithTips:(NSString *)tips
+                                       cellWidth:(CGFloat)cellWidth
                                               tipType:(MQTipType)tipType
                                   showLeaveCommentBtn:(BOOL)showBtn
 {
     if (self = [super init]) {
         self.tipType = tipType;
         self.date = [NSDate date];
-        if (tipType == MQTipTypeReply) {
+        if (tips.length > 0) {
+            self.tipText = tips;
+        }else if (tipType == MQTipTypeReply) {
             self.tipText = [NSString stringWithFormat:@"%@%@",[MQBundleUtil localizedStringForKey:@"reply_tip_text"], showBtn ? [MQBundleUtil localizedStringForKey:@"reply_tip_leave"] : @""];
         } else if (tipType == MQTipTypeBotRedirect) {
             self.tipText = [MQBundleUtil localizedStringForKey:@"bot_redirect_tip_text"];
@@ -170,6 +178,7 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
             self.tipText = [MQBundleUtil localizedStringForKey:@"bot_manual_redirect_tip_text"];
         }
         self.enableLinesDisplay = false;
+        self.showLeaveCommentBtn = showBtn;
         
         //tip frame
         CGFloat tipsWidth = cellWidth - kMQMessageReplyTipsCellHorizontalSpacing * 2;

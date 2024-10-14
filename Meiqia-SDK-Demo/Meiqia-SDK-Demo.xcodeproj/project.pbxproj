@@ -37,7 +37,6 @@
 		36A950BC2864590E0052645C /* MQAGEmojiPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F442864590D0052645C /* MQAGEmojiPageView.m */; };
 		36A950BD2864590E0052645C /* MEIQIA_VoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F492864590D0052645C /* MEIQIA_VoiceConverter.mm */; };
 		36A950BE2864590E0052645C /* wav.mm in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F4B2864590D0052645C /* wav.mm */; };
-		36A950BF2864590E0052645C /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F4C2864590D0052645C /* amrFileCodec.mm */; };
 		36A950C02864590E0052645C /* MEIQIA_CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F512864590D0052645C /* MEIQIA_CustomIOSAlertView.m */; };
 		36A950C12864590E0052645C /* MEIQIA_InputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F542864590D0052645C /* MEIQIA_InputView.m */; };
 		36A950C22864590E0052645C /* MEIQIA_EmojiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F552864590D0052645C /* MEIQIA_EmojiCell.m */; };
@@ -205,6 +204,7 @@
 		CCE9D1461C181399004E862E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1451C181399004E862E /* SystemConfiguration.framework */; };
 		CCE9D1481C18139E004E862E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE9D1471C18139E004E862E /* MobileCoreServices.framework */; };
 		CCE9D14D1C1813BE004E862E /* DevelopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D14C1C1813BE004E862E /* DevelopViewController.m */; };
+		DA149C062CA956CC0007867D /* MEIQIA_amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA149C052CA956CC0007867D /* MEIQIA_amrFileCodec.mm */; };
 		E40C2C7B1D2B710300744577 /* testdata.txt in Resources */ = {isa = PBXBuildFile; fileRef = E40C2C7A1D2B710300744577 /* testdata.txt */; };
 		E41DDDA61DD18DE0000B3083 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E41DDDA51DD18DE0000B3083 /* libz.tbd */; };
 		E4275AD91DEC1B5F0011B32B /* MQOnlineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4275AD51DEC16400011B32B /* MQOnlineTests.m */; };
@@ -312,8 +312,6 @@
 		36A94F482864590D0052645C /* MEIQIA_VoiceConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_VoiceConverter.h; sourceTree = "<group>"; };
 		36A94F492864590D0052645C /* MEIQIA_VoiceConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MEIQIA_VoiceConverter.mm; sourceTree = "<group>"; };
 		36A94F4B2864590D0052645C /* wav.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = wav.mm; sourceTree = "<group>"; };
-		36A94F4C2864590D0052645C /* amrFileCodec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = amrFileCodec.mm; sourceTree = "<group>"; };
-		36A94F4D2864590D0052645C /* amrFileCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = amrFileCodec.h; sourceTree = "<group>"; };
 		36A94F4E2864590D0052645C /* wav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wav.h; sourceTree = "<group>"; };
 		36A94F4F2864590D0052645C /* MQNamespacedDependencies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQNamespacedDependencies.h; sourceTree = "<group>"; };
 		36A94F512864590D0052645C /* MEIQIA_CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_CustomIOSAlertView.m; sourceTree = "<group>"; };
@@ -649,6 +647,8 @@
 		CCE9D1471C18139E004E862E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		CCE9D14B1C1813BE004E862E /* DevelopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevelopViewController.h; sourceTree = "<group>"; };
 		CCE9D14C1C1813BE004E862E /* DevelopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevelopViewController.m; sourceTree = "<group>"; };
+		DA149C042CA956CC0007867D /* MEIQIA_amrFileCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MEIQIA_amrFileCodec.h; path = "../../../../../../sdk-ios-demo/MQEcoboostSDK-test/MQChatViewController/Vendors/VoiceConvert/amrwapper/MEIQIA_amrFileCodec.h"; sourceTree = "<group>"; };
+		DA149C052CA956CC0007867D /* MEIQIA_amrFileCodec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MEIQIA_amrFileCodec.mm; path = "../../../../../../sdk-ios-demo/MQEcoboostSDK-test/MQChatViewController/Vendors/VoiceConvert/amrwapper/MEIQIA_amrFileCodec.mm"; sourceTree = "<group>"; };
 		E40C2C7A1D2B710300744577 /* testdata.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testdata.txt; sourceTree = "<group>"; };
 		E41DDDA51DD18DE0000B3083 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		E4275AD51DEC16400011B32B /* MQOnlineTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQOnlineTests.m; sourceTree = "<group>"; };
@@ -933,8 +933,8 @@
 		36A94F4A2864590D0052645C /* amrwapper */ = {
 			isa = PBXGroup;
 			children = (
-				36A94F4D2864590D0052645C /* amrFileCodec.h */,
-				36A94F4C2864590D0052645C /* amrFileCodec.mm */,
+				DA149C042CA956CC0007867D /* MEIQIA_amrFileCodec.h */,
+				DA149C052CA956CC0007867D /* MEIQIA_amrFileCodec.mm */,
 				36A94F4E2864590D0052645C /* wav.h */,
 				36A94F4B2864590D0052645C /* wav.mm */,
 			);
@@ -1866,6 +1866,7 @@
 				36A950C12864590E0052645C /* MEIQIA_InputView.m in Sources */,
 				36A951502864590E0052645C /* UIColor+MQHex.m in Sources */,
 				CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */,
+				DA149C062CA956CC0007867D /* MEIQIA_amrFileCodec.mm in Sources */,
 				36A950EB2864590E0052645C /* MQMessageFactoryHelper.m in Sources */,
 				36A9513D2864590E0052645C /* MQTagListView.m in Sources */,
 				36A9511A2864590E0052645C /* MQAnimatorPush.m in Sources */,
@@ -1891,7 +1892,6 @@
 				36A951442864590E0052645C /* MQRecorderView.m in Sources */,
 				36A9511F2864590E0052645C /* MQBundleUtil.m in Sources */,
 				36A950E42864590E0052645C /* MQPhotoCardMessage.m in Sources */,
-				36A950BF2864590E0052645C /* amrFileCodec.mm in Sources */,
 				36A950CB2864590E0052645C /* MEIQIA_FBSquareFont.m in Sources */,
 				36A950B62864590E0052645C /* MQMessageFormChoiceView.m in Sources */,
 				CBF12C872AB18FB200FBA29F /* MQCardMessageCell.m in Sources */,
@@ -2213,7 +2213,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.9.17;
+				MARKETING_VERSION = 3.9.18;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2257,7 +2257,7 @@
 					"$(SRCROOT)/../Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/**",
 					"$(PROJECT_DIR)/MeiqiaSDK/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
-				MARKETING_VERSION = 3.9.17;
+				MARKETING_VERSION = 3.9.18;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meiqia.sdk.test.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";

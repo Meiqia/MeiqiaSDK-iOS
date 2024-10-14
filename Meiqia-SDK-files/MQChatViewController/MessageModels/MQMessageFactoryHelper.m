@@ -15,7 +15,7 @@
 
 + (id<MQMessageFactory>)factoryWithMessageAction:(MQMessageAction)action contentType:(MQMessageContentType)contenType fromType:(MQMessageFromType)fromType {
     if (action == MQMessageActionMessage || action == MQMessageActionTicketReply || action == MQMessageActionAgentSendCard) {
-        if (contenType == MQMessageContentTypeBot || (contenType == MQMessageContentTypeHybrid && fromType == MQMessageFromTypeBot)) {
+        if (contenType == MQMessageContentTypeBot || ((contenType == MQMessageContentTypeHybrid || contenType == MQMessageCardTypeText) && fromType == MQMessageFromTypeBot)) {
             return [MQBotMessageFactory new];
         } else {
             return [MQVisialMessageFactory new];

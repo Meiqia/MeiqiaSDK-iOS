@@ -310,8 +310,8 @@ static UIBarButtonItem *rightBarButtonItemCache = nil;
     if (self.selectedMenuItem) {
         NSString *target = self.selectedMenuItem.target;
         NSString *targetType = self.selectedMenuItem.targetKind;
-        
-        return @{@"target":target, @"targetType":targetType, @"menu":[self.selectedMenuItem desc]};
+        NSInteger fallback = self.selectedMenuItem.fallback;
+        return @{@"target":target, @"targetType":targetType, @"menu":[self.selectedMenuItem desc], @"fallback": @(fallback)};
     } else {
         return nil;
     }

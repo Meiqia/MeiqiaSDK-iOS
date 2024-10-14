@@ -48,6 +48,7 @@ typedef NS_ENUM(NSUInteger, MQPreChatFormItemInputType) {
 @property (nonatomic, copy) NSString *desc;
 @property (nonatomic, copy) NSString *targetKind;
 @property (nonatomic, copy) NSString *target;
+@property (nonatomic, assign) NSInteger fallback;
 
 @end
 

@@ -16,4 +16,7 @@
 + (NSDate *)convertToLoaclDateFromUTCDate:(NSDate *)anyDate;
 + (NSDate *)convertToUTCDateFromLocalDate:(NSDate *)fromDate;
 
++ (BOOL)isValidISO8601Format:(NSString *)dateString;
++ (NSDate *)convertISODateFromDateString:(NSString *)dateString;
+
 @end

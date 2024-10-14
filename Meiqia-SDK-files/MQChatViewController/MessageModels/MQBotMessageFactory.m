@@ -111,9 +111,9 @@
     BOOL isEvaluated = [data objectForKey:@"is_evaluated"] ? [[data objectForKey:@"is_evaluated"] boolValue] : false;
     BOOL isSolved = [data objectForKey:@"is_useful"] ? [[data objectForKey:@"is_useful"] boolValue] : YES;
 
-    if ([subType isEqualToString:@"reply"] && ![MQManager enableLeaveComment]) {
-        subType = @"normal";
-    }
+//    if ([subType isEqualToString:@"reply"] && ![MQManager enableLeaveComment]) {
+//        subType = @"normal";
+//    }
     MQBotAnswerMessage *botMessage = [[MQBotAnswerMessage alloc] initWithContent:content subType:subType isEvaluated:isEvaluated];
     botMessage.solved = isSolved;
     if (embedMenuMessage) {

@@ -87,6 +87,11 @@ typedef NS_ENUM(NSUInteger, MQTipType) {
 @property (nonatomic, readonly, assign) MQTipType tipType;
 
 /**
+ *  是否显示留言按钮
+ */
+@property (nonatomic, readonly, assign) BOOL showLeaveCommentBtn;
+
+/**
  *  根据tips内容来生成cell model
  */
 - (MQTipsCellModel *)initCellModelWithTips:(NSString *)tips
@@ -96,7 +101,10 @@ typedef NS_ENUM(NSUInteger, MQTipType) {
 /**
  *  生成留言提示的 cell，支持点击留言
  */
-- (MQTipsCellModel *)initBotTipCellModelWithCellWidth:(CGFloat)cellWidth tipType:(MQTipType)tipType showLeaveCommentBtn:(BOOL)showBtn;
+- (MQTipsCellModel *)initBotTipCellModelWithTips:(NSString *)tips
+                                       cellWidth:(CGFloat)cellWidth
+                                              tipType:(MQTipType)tipType
+                                  showLeaveCommentBtn:(BOOL)showBtn;
 
 - (MQTipsCellModel *)initWaitingInQueueTipCellModelWithCellWidth:(CGFloat)cellWidth withIntro:(NSString *)intro ticketIntro:(NSString *)ticketIntro position:(int)position tipType:(MQTipType)tipType showLeaveCommentBtn:(BOOL)showBtn;
 

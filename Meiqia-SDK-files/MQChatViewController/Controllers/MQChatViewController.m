@@ -169,16 +169,22 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         NSString *targetType = userInfo[@"targetType"];
         NSString *target = userInfo[@"target"];
         NSString *menu = userInfo[@"menu"];
+        NSInteger fallback = [[userInfo objectForKey:@"fallback"] integerValue];
         if ([targetType isEqualToString:@"agent"]) {
             [MQChatViewConfig sharedConfig].scheduledAgentId = target;
         } else if ([targetType isEqualToString:@"group"]) {
             [MQChatViewConfig sharedConfig].scheduledGroupId = target;
         }
+        if (fallback && fallback > 0) {
+            [MQChatViewConfig sharedConfig].scheduleRule = fallback;
+        }
+    
         if ([menu length] > 0) {
             [weakSelf.chatViewService selectedFormProblem:menu];
-            NSMutableArray *m = [[MQChatViewConfig sharedConfig].preSendMessages mutableCopy] ?: [NSMutableArray new];
-            [m addObject:menu];
-            [MQChatViewConfig sharedConfig].preSendMessages = m;
+            // 添加 fallback 后 取消发送一条消息
+//            NSMutableArray *m = [[MQChatViewConfig sharedConfig].preSendMessages mutableCopy] ?: [NSMutableArray new];
+//            [m addObject:menu];
+//            [MQChatViewConfig sharedConfig].preSendMessages = m;
         }
         // TODO: [MQServiceToViewInterface prepareForChat]也会初始化企业配置，这里会导致获取企业配置的接口调用两次,APP第一次初始化时会调3次
         [MQServiceToViewInterface getEnterpriseConfigInfoWithCache:NO complete:^(MQEnterprise *enterprise, NSError *e) {
