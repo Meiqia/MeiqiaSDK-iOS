@@ -477,6 +477,10 @@
     chatViewConfig.didSetStatusBarStyle = true;
 }
 
+- (void)setNoReallocate:(BOOL)isNoReallocate {
+    [MQManager setNoReallocate:isNoReallocate];
+}
+
 #ifdef INCLUDE_MEIQIA_SDK
 - (void)enableSyncServerMessage:(BOOL)enable {
     chatViewConfig.enableSyncServerMessage = enable;

@@ -56,6 +56,10 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    if (@available(iOS 13.0, *)) {
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+    }
+    
     sectionHeaders = @[
                        @"以下是开发者可能会用到的客服功能，请参考^.^",
                        @"以下是开源界面的不同的设置"
@@ -83,6 +87,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
                              @"切换 appKey 上线",
                              @"获取当前顾客的群发消息",
                              @"显示自定义id未读的消息数",
+                             @"指定分配不再重新分配客服",
                              ],
                          @[
                              @"自定义主题 1",
@@ -223,6 +228,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
             case 19:
                 [self inputCustomizedIdGetUnreadMessageCount];
                 break;
+            case 20:
+                [self chooseIsNoReallocate];
+                break;
             default:
                 break;
         }
@@ -259,6 +267,23 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
         default:
             break;
     }
+}
+
+- (void)chooseIsNoReallocate {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"不再重新分配？" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setIsNoReallocateOnline:NO];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setIsNoReallocateOnline:YES];
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)setIsNoReallocateOnline:(BOOL)isReallocate {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager setNoReallocate:isReallocate];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
 #pragma UITableViewDataSource
@@ -372,9 +397,16 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  @param clientId 顾客id
  */
 - (void)setClientOnlineWithClientId:(NSString *)clientId {
+    clientId = @"2eDTdfN0zDy7uWedvV4RZliXAVh";
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager setLoginMQClientId:clientId];
     [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
+    [chatViewManager.chatViewStyle setIncomingBubbleColor:[UIColor mq_colorWithHexString:@"#00CE7D"]];
+    [chatViewManager.chatViewStyle setIncomingMsgTextColor:[UIColor mq_colorWithHexString:@"#FF5C5E"]];
+    [chatViewManager.chatViewStyle setOutgoingBubbleColor:[UIColor mq_colorWithHexString:@"#FFB652"]];
+    [chatViewManager.chatViewStyle setOutgoingMsgTextColor:[UIColor mq_colorWithHexString:@"#17C7D1"]];
+    [chatViewManager.chatViewStyle setBackgroundColor:[UIColor mq_colorWithHexString:@"#303D42"]];
+    [chatViewManager.chatViewStyle setEventTextColor:[UIColor purpleColor]];
     [chatViewManager presentMQChatViewControllerInViewController:self];
 }
 
@@ -401,13 +433,13 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  @param customizedId 自定义id
  */
 - (void)setClientOnlineWithCustomizedId:(NSString *)customizedId {
-    [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
-        if (!error) {
+//    [MQManager initWithAppkey:@"" completion:^(NSString *clientId, NSError *error) {
+//        if (!error) {
             MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
             [chatViewManager setLoginCustomizedId:customizedId];
             [chatViewManager pushMQChatViewControllerInViewController:self];
-        }
-    }];
+//        }
+//    }];
     
 }
 

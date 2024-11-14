@@ -17,7 +17,7 @@
 #import "MQPreChatData.h"
 
 
-#define MQSDKVersion @"3.9.18"
+#define MQSDKVersion @"3.9.19"
 @protocol MQManagerDelegate <NSObject>
 
 /**
@@ -748,5 +748,11 @@
  * 设置设备信息
  */
 + (void)setClientVisitInfoToService;
+
+/**
+ *  已分配客服的情况下，如果是指定分配，需不需要重新走指定分配规则
+ *  为 true 代表第二次 schedule 即使设置了 agent_token, group_token 跟当前客服不匹配也不转接
+ */
++ (void)setNoReallocate:(BOOL)isNoReallocate;
 
 @end
