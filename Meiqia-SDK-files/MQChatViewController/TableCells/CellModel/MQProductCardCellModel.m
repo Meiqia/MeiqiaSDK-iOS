@@ -347,13 +347,13 @@ static CGFloat const kMQCellImageRatio = 0.75;
         //商品图片的frame
         self.contentImageViewFrame = CGRectMake(kMQCellBubbleToContentSpacing, kMQCellBubbleToContentSpacing, imageWidth, imageHeight);
         //商品title的frame
-        self.titleFrame = CGRectMake(kMQCellBubbleToContentSpacing, kMQCellBubbleToContentSpacing, imageWidth, kMQCellTitleHeigh);
+        self.titleFrame = CGRectMake(kMQCellBubbleToContentSpacing, kMQCellBubbleToContentSpacing + CGRectGetMaxY(self.contentImageViewFrame), imageWidth, kMQCellTitleHeigh);
         //商品描述内容的frame
-        self.descriptionFrame = CGRectMake(kMQCellBubbleToContentSpacing, kMQCellTextContentSpacing, imageWidth, kMQCellDescriptionHeigh);
+        self.descriptionFrame = CGRectMake(kMQCellBubbleToContentSpacing, kMQCellTextContentSpacing + CGRectGetMaxY(self.titleFrame), imageWidth, kMQCellDescriptionHeigh);
         //商品销量的frame
-        self.saleCountFrame = CGRectMake(kMQCellBubbleToContentSpacing, kMQCellTextContentSpacing, imageWidth / 2.0, kMQCellSaleCountHeigh);
+        self.saleCountFrame = CGRectMake(kMQCellBubbleToContentSpacing, kMQCellTextContentSpacing + CGRectGetMaxY(self.descriptionFrame), imageWidth / 2.0, kMQCellSaleCountHeigh);
         //商品详情链接提示的frame
-        self.linkFrame = CGRectMake(kMQCellBubbleToContentSpacing + imageWidth - kMQCellLinkWidth , kMQCellTextContentSpacing, kMQCellLinkWidth, kMQCellSaleCountHeigh);
+        self.linkFrame = CGRectMake(kMQCellBubbleToContentSpacing + imageWidth - kMQCellLinkWidth , CGRectGetMinY(self.saleCountFrame), kMQCellLinkWidth, kMQCellSaleCountHeigh);
         //气泡的frame
         self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing,
                                       self.avatarFrame.origin.y,
