@@ -69,6 +69,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 @property (nonatomic, assign) BOOL showEvaluatBarButton; // 是否显示评价按钮，需要在访客发送了消息才能显示
 
+@property (nonatomic, assign) CGFloat lastSafeAreaInset; // 记录上一次的安全区域值
+
 @end
 
 @implementation MQChatViewController {
@@ -214,9 +216,13 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         bottomSafeAreaInset = self.view.safeAreaInsets.bottom;
     }
 
-    // 只有当安全区域值变化时才更新约束
-    if (self.constraintInputBarBottom.constant != bottomSafeAreaInset) {
+    // 只有当键盘未显示且安全区域值变化时才更新约束
+    if (self.keyboardView.keyboardStatus == MQKeyboardStatusHide &&
+        self.constraintInputBarBottom.constant != bottomSafeAreaInset &&
+        self.lastSafeAreaInset != bottomSafeAreaInset) {
+
         self.constraintInputBarBottom.constant = bottomSafeAreaInset;
+        self.lastSafeAreaInset = bottomSafeAreaInset;
         [self.view layoutIfNeeded];
     }
 }
@@ -356,7 +362,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeLeft) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeLeft) multiplier:1 constant:0]];
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeRight) relatedBy:(NSLayoutRelationEqual) toItem:self.view attribute:(NSLayoutAttributeRight) multiplier:1 constant:0]];
     [constrains addObject:[NSLayoutConstraint constraintWithItem:self.chatTableView attribute:(NSLayoutAttributeBottom) relatedBy:(NSLayoutRelationEqual) toItem:self.bottomBar attribute:(NSLayoutAttributeTop) multiplier:1 constant:0]];
-   
+
 
 
     // 初始设置为0，稍后在viewDidLayoutSubviews中更新
@@ -373,7 +379,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (NSArray *)addFitWidthConstraintsToView:(UIView *)innerView onTo:(UIView *)outterView {
     return @[[NSLayoutConstraint constraintWithItem:innerView attribute:NSLayoutAttributeWidth relatedBy:(NSLayoutRelationEqual) toItem:outterView attribute:(NSLayoutAttributeWidth) multiplier:1 constant:0],
-    [NSLayoutConstraint constraintWithItem:innerView attribute:NSLayoutAttributeCenterX relatedBy:(NSLayoutRelationEqual) toItem:outterView attribute:(NSLayoutAttributeCenterX) multiplier:1 constant:0]];
+             [NSLayoutConstraint constraintWithItem:innerView attribute:NSLayoutAttributeCenterX relatedBy:(NSLayoutRelationEqual) toItem:outterView attribute:(NSLayoutAttributeCenterX) multiplier:1 constant:0]];
 }
 
 #pragma 添加消息通知的observer
@@ -658,8 +664,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         picker.delegate                 = (id)self;
         picker.allowsEditing            = [MQChatViewConfig sharedConfig].enablePhotoLibraryEdit;
         if (@available(iOS 11.0, *)) {
-            picker.videoExportPreset    = AVAssetExportPresetPassthrough;
-        }
+        picker.videoExportPreset    = AVAssetExportPresetPassthrough;
+    }
         picker.modalPresentationStyle   = UIModalPresentationFullScreen;
         [self presentViewController:picker animated:YES completion:nil];
     }];
@@ -768,8 +774,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         // 图片
         UIImage *image          =  [MQImageUtil resizeImage:[MQImageUtil fixrotation:[info objectForKey:[MQChatViewConfig sharedConfig].enablePhotoLibraryEdit ? UIImagePickerControllerEditedImage : UIImagePickerControllerOriginalImage]]maxSize:CGSizeMake(1000, 1000)];
         [picker dismissViewControllerAnimated:YES completion:^{
-    //        [self.chatViewService sendImageMessageWithImage:image];
-    //        [self chatTableViewScrollToBottomWithAnimated:true];
+            //        [self.chatViewService sendImageMessageWithImage:image];
+            //        [self chatTableViewScrollToBottomWithAnimated:true];
             [self sendMessagePrepareWithText:nil image:image andAMRFilePath:nil andVideoFilePath:nil];
         }];
         return;
@@ -830,8 +836,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if (needToBotttom) {
         __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-        NSIndexPath* indexPath = [NSIndexPath indexPathForRow: ([weakSelf.chatTableView numberOfRowsInSection:([weakSelf.chatTableView numberOfSections]-1)]-1) inSection:([weakSelf.chatTableView numberOfSections]-1)];
-        [weakSelf.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:false];
+            NSIndexPath* indexPath = [NSIndexPath indexPathForRow: ([weakSelf.chatTableView numberOfRowsInSection:([weakSelf.chatTableView numberOfSections]-1)]-1) inSection:([weakSelf.chatTableView numberOfSections]-1)];
+            [weakSelf.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:false];
         });
     }
 }
@@ -916,12 +922,12 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)getLoadHistoryMessageError {
     //    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:0 isLoadOver:YES];
     [self.chatTableView stopAnimationCompletion:^{
-        
+
 //        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"load_history_message_error"] duration:1.0 window:self.view];
 
         //后端获取信息失败，取消错误信息提示，从数据库获取历史消息
         [self.chatViewService startGettingDateBaseHistoryMessages];
-        
+
     }];
 }
 
@@ -936,7 +942,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     UIView *titleView = [UIView new];
     UILabel *titleLabel = [UILabel new];
     titleLabel.text = agentName;
-    
+
     UIFont *font = [MQChatViewConfig sharedConfig].chatViewStyle.navTitleFont ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSFontAttributeName] ?: [UIFont systemFontOfSize:16.0];
     UIColor *color = [MQChatViewConfig sharedConfig].navTitleColor ?: [[UINavigationBar appearance].titleTextAttributes objectForKey:NSForegroundColorAttributeName];
     titleLabel.font = font;
@@ -957,7 +963,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         default:
             break;
     }
-    
+
     if ([titleLabel.text isEqualToString:[MQBundleUtil localizedStringForKey:@"no_agent_title"]] || [MQServiceToViewInterface waitingInQueuePosition] > 0) {
         statusImageView.image = nil;
     }
@@ -965,7 +971,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     CGFloat statusImageWidth = statusImageView.image.size.width;
     CGFloat titleLabelOriginX = statusImageWidth + 8;
     CGFloat titleLabelWidth =  titleLabelOriginX + titleWidth > maxTitleViewWidth ? maxTitleViewWidth - (statusImageView.image.size.width + 8) : titleWidth;
-    
+
     statusImageView.frame = CGRectMake(0, titleHeight/2 - statusImageView.image.size.height/2, statusImageWidth, statusImageView.image.size.height);
     titleLabel.frame = CGRectMake(titleLabelOriginX, 0, titleLabelWidth, titleHeight);
     titleView.frame = CGRectMake(0, 0, titleLabelOriginX + titleLabelWidth, titleHeight);
@@ -1023,7 +1029,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self updateTableCells];
     [self.view endEditing:YES];
-    
+
 }
 #else
 #endif
@@ -1056,28 +1062,28 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         [recorderBtn setImage: [MQChatViewConfig sharedConfig].chatViewStyle.voiceSenderHighlightedImage forState:UIControlStateHighlighted];
     }
     [recorderBtn addTarget:self action:@selector(showRecorder) forControlEvents:(UIControlEventTouchUpInside)];
-    
+
     UIButton *cameraBtn  = [[UIButton alloc] initWithFrame:rect];
     [cameraBtn setImage: [MQChatViewConfig sharedConfig].chatViewStyle.cameraSenderImage forState:(UIControlStateNormal)];
     if ([MQChatViewConfig sharedConfig].chatViewStyle.cameraSenderHighlightedImage) {
         [cameraBtn setImage: [MQChatViewConfig sharedConfig].chatViewStyle.cameraSenderHighlightedImage forState:UIControlStateHighlighted];
     }
     [cameraBtn addTarget:self action:@selector(camera) forControlEvents:(UIControlEventTouchUpInside)];
-    
+
     UIButton *imageRoll  = [[UIButton alloc] initWithFrame:rect];
     [imageRoll setImage: [MQChatViewConfig sharedConfig].chatViewStyle.photoSenderImage forState:(UIControlStateNormal)];
     if ([MQChatViewConfig sharedConfig].chatViewStyle.photoSenderHighlightedImage) {
         [imageRoll setImage: [MQChatViewConfig sharedConfig].chatViewStyle.photoSenderHighlightedImage forState:UIControlStateHighlighted];
     }
     [imageRoll addTarget:self action:@selector(imageRoll) forControlEvents:(UIControlEventTouchUpInside)];
-    
+
     UIButton *emoji  = [[UIButton alloc] initWithFrame:rect];
     [emoji setImage:[MQChatViewConfig sharedConfig].chatViewStyle.emojiSenderImage forState:(UIControlStateNormal)];
     if ([MQChatViewConfig sharedConfig].chatViewStyle.emojiSenderHighlightedImage) {
         [emoji setImage: [MQChatViewConfig sharedConfig].chatViewStyle.emojiSenderHighlightedImage forState:UIControlStateHighlighted];
     }
     [emoji addTarget:self action:@selector(emoji) forControlEvents:(UIControlEventTouchUpInside)];
-    
+
 //    UIButton *send  = [[UIButton alloc] initWithFrame:rect];
 //    [send setImage:[MQAssetUtil imageFromBundleWithName:@"emoji"] forState:(UIControlStateNormal)];
 //    [send addTarget:self action:@selector(send) forControlEvents:(UIControlEventTouchUpInside)];
@@ -1085,7 +1091,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if ([MQChatViewConfig sharedConfig].enableSendVoiceMessage) {
         [self.bottomBar.buttonGroupBar addButton:recorderBtn];
     }
-    
+
     // 可以发视频或者可以发图片才添加拍照按钮
     if (self.sendVideoMsgStatus || self.sendPhotoMsgStatus) {
         [self.bottomBar.buttonGroupBar addButton:cameraBtn];
@@ -1093,41 +1099,41 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if (self.sendPhotoMsgStatus) {
         [self.bottomBar.buttonGroupBar addButton:imageRoll];
     }
-    
+
     if ([MQChatViewConfig sharedConfig].enableSendEmoji) {
         [self.bottomBar.buttonGroupBar addButton:emoji];
     }
-    
+
 //            [self.bottomBar.buttonGroupBar addButton:send];
 
 }
 
 - (BOOL)handleSendMessageAbility {
-    
+
     //xlp 检测网络 排除断网状态还能发送信息
     if (![MQManager obtainNetIsReachable] || isMQSocketFailed) {
         [[(MQTabInputContentView *)self.bottomBar.contentView textField] resignFirstResponder];
         [MQToast showToast:[MQBundleUtil localizedStringForKey:@"meiqia_communication_failed"] duration:2.0 window:self.view];
         return NO;
     }
-        
-    
+
+
     //xlp 旧的: waitingInQueuePosition>0 && getCurrentAgent].privilege != MQAgentPrivilegeBot  改为 waitingInQueuePosition>0
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
         [self.view.window endEditing:YES];
         [MQToast showToast:[MQBundleUtil localizedStringForKey:@"waiting_agent_send_message"] duration:2.5 window:self.view.window];
-        
+
         [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
             //从后台获取 position 然后保存到本地
         }];
         return NO;
     }
-    
+
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
     if (self.chatViewService.clientStatus == MQStateAllocatingAgent) {
         NSString *alertText = @"cannot_text_client_is_onlining";
         [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
-        
+
         return NO;
     }
     return YES;
@@ -1160,21 +1166,27 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     if ([self handleSendMessageAbility]) {
         if (self.bottomBar.isFirstResponder) {
             [self.bottomBar resignFirstResponder];
-        }else{
-            
-            CGFloat emojiViewHeight = MQToolUtil.kMQObtainDeviceVersionIsIphoneX ? (emojikeyboardHeight + 34) : emojikeyboardHeight;
-            
-            MEIQIA_InputView * mmView = [[MEIQIA_InputView alloc]initWithFrame:CGRectMake(0,0, self.view.frame.size.width, emojiViewHeight)];
+        } else {
+            // 获取当前安全区高度
+            CGFloat bottomSafeAreaInset = 0;
+            if (@available(iOS 11.0, *)) {
+                bottomSafeAreaInset = self.view.safeAreaInsets.bottom;
+            }
+
+            // 使用实际安全区高度而不是硬编码值
+            CGFloat emojiViewHeight = emojikeyboardHeight + bottomSafeAreaInset;
+
+            MEIQIA_InputView * mmView = [[MEIQIA_InputView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, emojiViewHeight)];
             mmView.inputViewDelegate = self;
             self.bottomBar.inputView = mmView;
-            
+
             [self.bottomBar becomeFirstResponder];
         }
     }
 }
 
 - (BOOL)inputContentViewShouldReturn:(MQInputContentView *)inputContentView content:(NSString *)content userObject:(NSObject *)object {
-    
+
     if ([content length] > 0) {
         if ([self handleSendMessageAbility]) {
             [self sendTextMessage:content];
@@ -1187,7 +1199,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 }
 
 - (BOOL)inputContentViewShouldBeginEditing:(MQInputContentView *)inputContentView {
-    
+
     //xlp 检测网络 排除断网状态还能发送信息
     if (![MQManager obtainNetIsReachable] || isMQSocketFailed) {
         [MQToast showToast:[MQBundleUtil localizedStringForKey:@"meiqia_communication_failed"] duration:2.0 window:self.view];
@@ -1204,7 +1216,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         if (diff < self.chatTableView.contentInset.top + self.self.chatTableView.contentSize.height) {
             self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
         }
-        
+
         [self changeInputBarHeightConstraintConstant:height];
     }else{
         [self changeInputBarHeightConstraintConstant:kMQChatViewInputBarHeight];
@@ -1213,55 +1225,77 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)changeInputBarHeightConstraintConstant:(CGFloat)height {
     self.constaintInputBarHeight.constant = height;
-    
+
     self.keyboardView.keyboardTriggerPoint = CGPointMake(0, height);
     [self.view setNeedsUpdateConstraints];
     [self.view layoutIfNeeded];
 }
 
 - (void)changeInputBarBottomLayoutGuideConstant:(CGFloat)height {
-    //xlp 收回键盘 时 减去 34 todo
-    if (MQToolUtil.kMQObtainDeviceVersionIsIphoneX ) {
-        if (height == 0) {
-            height = 34;
-            
-        } else if(height == emojikeyboardHeight) {
-            // 点击表情 弹出表情键盘时
-            height += 34;
-        }
+    // 获取当前安全区高度
+    CGFloat bottomSafeAreaInset = 0;
+    if (@available(iOS 11.0, *)) {
+        bottomSafeAreaInset = self.view.safeAreaInsets.bottom;
     }
-    
+
+    // 键盘隐藏时，恢复到记录的安全区高度
+    if (height == 0) {
+        // 使用记录的安全区高度或当前安全区高度
+        height = self.lastSafeAreaInset > 0 ? self.lastSafeAreaInset : bottomSafeAreaInset;
+    } else if (height == emojikeyboardHeight) {
+        // 表情键盘显示时，始终添加安全区高度，无论是否是 iPhone X 及以上机型
+        height += bottomSafeAreaInset;
+    }
+
     self.constraintInputBarBottom.constant = height;
-    
+
     [self.view setNeedsUpdateConstraints];
     [self.view layoutIfNeeded];
 }
 
 #pragma mark - keyboard controller delegate
 - (void)keyboardController:(MQKeyboardController *)keyboardController keyboardChangeFrame:(CGRect)keyboardFrame isImpressionOfGesture:(BOOL)isImpressionOfGesture {
-    
-    CGFloat viewHeight = self.navigationController.navigationBar.translucent ? CGRectGetMaxY(self.view.frame) : CGRectGetMaxY(self.view.frame) - MQToolUtil.kMQObtainNaviHeight;
-    
+
+    // 获取安全区高度
+    CGFloat bottomSafeAreaInset = 0;
+    if (@available(iOS 11.0, *)) {
+        bottomSafeAreaInset = self.view.safeAreaInsets.bottom;
+    }
+
+    // 计算视图高度，考虑导航条的半透明性
+    CGFloat viewHeight = self.navigationController.navigationBar.translucent ?
+        CGRectGetMaxY(self.view.frame) :
+        CGRectGetMaxY(self.view.frame) - MQToolUtil.kMQObtainNaviHeight;
+
+    // 判断是否是表情键盘
+    BOOL isEmojiKeyboard = NO;
+    if (self.bottomBar.isFirstResponder && [self.bottomBar.inputView isKindOfClass:[MEIQIA_InputView class]]) {
+        isEmojiKeyboard = YES;
+    }
+
+    // 计算距离底部的高度
     CGFloat heightFromBottom = MAX(0.0, viewHeight - CGRectGetMinY(keyboardFrame));
-    
+
+    // 如果是表情键盘，确保添加安全区高度
+    if (isEmojiKeyboard && heightFromBottom > 0 && heightFromBottom <= emojikeyboardHeight) {
+        heightFromBottom = emojikeyboardHeight + bottomSafeAreaInset;
+    }
+
     if (!isImpressionOfGesture) {
-        
-        if (MQToolUtil.kMQObtainDeviceVersionIsIphoneX ) {
-            
-            CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant + (heightFromBottom == 0 ? 34 : 0);
-            if (diff < self.chatTableView.contentInset.top + self.chatTableView.contentSize.height) {
-                self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
-            }
-            
-        }else{
-            
-            CGFloat diff = heightFromBottom - self.constraintInputBarBottom.constant;
-            if (diff < self.chatTableView.contentInset.top + self.chatTableView.contentSize.height) {
-                self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
-            }
+        // 计算内容偏移量
+        CGFloat diff = 0;
+        if (MQToolUtil.kMQObtainDeviceVersionIsIphoneX) {
+            diff = heightFromBottom - self.constraintInputBarBottom.constant + (heightFromBottom == 0 ? bottomSafeAreaInset : 0);
+        } else {
+            diff = heightFromBottom - self.constraintInputBarBottom.constant;
+        }
+
+        // 更新内容偏移
+        if (diff < self.chatTableView.contentInset.top + self.chatTableView.contentSize.height) {
+            self.chatTableView.contentOffset = CGPointMake(self.chatTableView.contentOffset.x, self.chatTableView.contentOffset.y + diff);
         }
     }
-    
+
     [self changeInputBarBottomLayoutGuideConstant:heightFromBottom];
 }
 
@@ -1294,7 +1328,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)MQInputViewSendEmoji{
     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.bottomBar.contentView textField];
     if (textField.text.length > 0) {
-        
+
         [self sendTextMessage:textField.text];
         [(MQTabInputContentView *)self.bottomBar.contentView textField].text = @"";
     }
@@ -1305,9 +1339,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)handlePopRecognizer:(UIScreenEdgePanGestureRecognizer*)recognizer {
     CGPoint translation = [recognizer translationInView:self.view];
-    
+
     CGFloat xPercent = translation.x / CGRectGetWidth(self.view.bounds) * 0.5;
-    
+
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
             [MQTransitioningAnimation setInteractive:YES];
@@ -1382,7 +1416,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         _recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0,
                                                                      0,
                                                                      self.chatTableView.frame.size.width,
-                                                                     /*viewSize.height*/[UIScreen mainScreen].bounds.size.height - self.bottomBar.frame.size.height)
+                        /*viewSize.height*/[UIScreen mainScreen].bounds.size.height - self.bottomBar.frame.size.height)
                                         maxRecordDuration:[MQChatViewConfig sharedConfig].maxVoiceDuration];
         _recordView.recordMode = [MQChatViewConfig sharedConfig].recordMode;
         _recordView.keepSessionActive = [MQChatViewConfig sharedConfig].keepAudioSessionActive;
@@ -1449,10 +1483,10 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         [self.view bringSubviewToFront:networkStatusLable];
         networkStatusLable.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view addConstraints:@[
-        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:[MQChatDeviceUtil getDeviceNavRect:self].size.height + [MQChatDeviceUtil getDeviceStatusBarRect].size.height],
-        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0],
-        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0],
-        [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30],
+                [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:[MQChatDeviceUtil getDeviceNavRect:self].size.height + [MQChatDeviceUtil getDeviceStatusBarRect].size.height],
+                [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0],
+                [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0],
+                [NSLayoutConstraint constraintWithItem:networkStatusLable attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30],
         ]];
     }
 
@@ -1466,8 +1500,8 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
     [mutableAttr appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
 
     [mutableAttr appendAttributedString:[
-                                         [NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",content] attributes:@{NSFontAttributeName :[UIFont systemFontOfSize:14.0],
-                                                                                                                        NSForegroundColorAttributeName : [UIColor grayColor],}]];
+            [NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",content] attributes:@{NSFontAttributeName :[UIFont systemFontOfSize:14.0],
+                                                                                                                     NSForegroundColorAttributeName : [UIColor grayColor],}]];
 
     networkStatusLable.attributedText = mutableAttr;
     networkStatusLable.hidden = NO;
