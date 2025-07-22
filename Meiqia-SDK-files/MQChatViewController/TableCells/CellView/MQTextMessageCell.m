@@ -166,13 +166,13 @@ static const NSString *kMQTextCellsensitiveWords = @"！消息包含不规范用
                     }
                     break;
                 case MQMessageBottomTagTypeCall:
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", model.value]]];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", model.value]] options:@{} completionHandler:nil];
                     break;
                 case MQMessageBottomTagTypeLink:
                     if ([model.value rangeOfString:@"://"].location == NSNotFound) {
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", model.value]]];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", model.value]] options:@{} completionHandler:nil];
                     } else {
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:model.value]];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:model.value] options:@{} completionHandler:nil];
                     }
                     break;
                 default:
@@ -220,10 +220,10 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
         case kMQTextCellSelectedNumberActionSheetTag: {
             switch (buttonIndex) {
                 case 0:
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", actionSheet.title]]];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", actionSheet.title]] options:@{} completionHandler:nil];
                     break;
                 case 1:
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"sms://%@", actionSheet.title]]];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"sms://%@", actionSheet.title]] options:@{} completionHandler:nil];
                     break;
                 case 2:
                     [UIPasteboard generalPasteboard].string = actionSheet.title;
@@ -236,11 +236,13 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
         case kMQTextCellSelectedUrlActionSheetTag: {
             switch (buttonIndex) {
                 case 0: {
+                    NSURL *url;
                     if ([actionSheet.title rangeOfString:@"://"].location == NSNotFound) {
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", actionSheet.title]]];
+                        url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", actionSheet.title]];
                     } else {
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:actionSheet.title]];
+                        url = [NSURL URLWithString:actionSheet.title];
                     }
+                    [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
                     break;
                 }
                 case 1:
@@ -254,7 +256,7 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
         case kMQTextCellSelectedEmailActionSheetTag: {
             switch (buttonIndex) {
                 case 0: {
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto://%@", actionSheet.title]]];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto://%@", actionSheet.title]] options:@{} completionHandler:nil];
                     break;
                 }
                 case 1:

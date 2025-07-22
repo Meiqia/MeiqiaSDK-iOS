@@ -84,7 +84,7 @@
 #pragma 单击气泡
 - (void)bubbleTapped {
     
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:cellModel.targetUrl]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:cellModel.targetUrl] options:@{} completionHandler:nil];
 }
 
 @end

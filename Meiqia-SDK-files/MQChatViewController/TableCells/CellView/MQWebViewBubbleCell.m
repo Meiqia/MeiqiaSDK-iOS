@@ -80,12 +80,12 @@
             if ([url.absoluteString rangeOfString:@"tel:"].location != NSNotFound) {
                 // 和后台预定的是 tel:182xxxxxxxxx
                 NSString *path = [url.absoluteString stringByReplacingOccurrencesOfString:@"tel:" withString:@"tel://"];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path] options:@{} completionHandler:nil];
             } else {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]] options:@{} completionHandler:nil];
             }
         } else {
-            [[UIApplication sharedApplication] openURL:url];
+            [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
         }
     }];
     
@@ -111,13 +111,13 @@
                     }
                     break;
                 case MQMessageBottomTagTypeCall:
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", model.value]]];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", model.value]] options:@{} completionHandler:nil];
                     break;
                 case MQMessageBottomTagTypeLink:
                     if ([model.value rangeOfString:@"://"].location == NSNotFound) {
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", model.value]]];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", model.value]] options:@{} completionHandler:nil];
                     } else {
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:model.value]];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:model.value] options:@{} completionHandler:nil];
                     }
                     break;
                 default:

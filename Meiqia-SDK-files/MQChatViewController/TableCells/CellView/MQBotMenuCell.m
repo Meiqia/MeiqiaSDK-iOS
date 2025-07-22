@@ -271,7 +271,7 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
                     if ([actionSheet.title rangeOfString:@"://"].location == NSNotFound) {
                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", actionSheet.title]]];
                     } else {
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:actionSheet.title]];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:actionSheet.title] options:@{} completionHandler:nil];
                     }
                     break;
                 }

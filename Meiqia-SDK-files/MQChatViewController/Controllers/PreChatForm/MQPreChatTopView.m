@@ -50,9 +50,9 @@
             if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {
                 if ([url.absoluteString rangeOfString:@"tel:"].location != NSNotFound) {
                     NSString *path = [url.absoluteString stringByReplacingOccurrencesOfString:@"tel:" withString:@"tel://"];
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path]];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path] options:@{} completionHandler:nil];
                 } else {
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]]];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]] options:@{} completionHandler:nil];
                 }
             } else {
                 [[UIApplication sharedApplication] openURL:url];
@@ -77,14 +77,14 @@
     
     NSString *urlStr = [url absoluteString];
     if ([urlStr rangeOfString:@"://"].location == NSNotFound) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", urlStr]]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", urlStr]] options:@{} completionHandler:nil];
     } else {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlStr]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlStr] options:@{} completionHandler:nil];
     }
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phoneNumber]]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phoneNumber]] options:@{} completionHandler:nil];
 }
 
 - (MQEmbededWebView *)contentWebView {

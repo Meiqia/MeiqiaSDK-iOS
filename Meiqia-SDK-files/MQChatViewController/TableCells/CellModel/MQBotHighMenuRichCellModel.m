@@ -192,6 +192,61 @@ static CGFloat const kMQBotHighMenuTitleHeight = 30;
         
         //文字高度
         CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
+        
+        // 对于富文本，使用更精确的高度计算和适度的缓冲
+        if (message.richContent && message.richContent.length > 0) {
+            // 使用 boundingRectWithSize 获取更精确的高度
+            CGSize constraintSize = CGSizeMake(maxLabelWidth, CGFLOAT_MAX);
+            CGRect textRect = [self.cellText boundingRectWithSize:constraintSize
+                                                         options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
+                                                         context:nil];
+            CGFloat preciseHeight = ceil(textRect.size.height);
+            
+            // 智能判断是否需要额外高度
+            CGFloat maxHeight = MAX(messageTextHeight, preciseHeight);
+            CGFloat minHeight = MIN(messageTextHeight, preciseHeight);
+            CGFloat heightDiff = maxHeight - minHeight;
+            
+            // NSLog(@"🔍 富文本高度分析 - MQStringSizeUtil: %.1f, boundingRect: %.1f, 差异: %.1f, 最大高度: %.1f", 
+            //       messageTextHeight, preciseHeight, heightDiff, maxHeight);
+            
+            // 根据设备特征动态调整缓冲
+            CGFloat buffer = 0.0;
+            // 已验证 iPhone 11、iPhone 12、iPhone 14 Pro、iPhone 15 Pro、iPhone 16、iPhone 16 Pro Max、iPhone Xs
+            
+            // 获取设备信息
+            CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+            CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+            NSString *deviceModel = [[UIDevice currentDevice] model];
+            
+            // NSLog(@"📱 设备信息 - 屏幕: %.0fx%.0f, 设备: %@", screenWidth, screenHeight, deviceModel);
+            
+            // 基于设备特征动态计算缓冲
+            CGFloat deviceScale = [UIScreen mainScreen].scale;
+            CGFloat widthRatio = screenWidth / 390.0; // 以iPhone 12为基准
+            CGFloat heightRatio = screenHeight / 844.0; // 以iPhone 12为基准
+            
+            // 根据设备比例和屏幕密度动态调整
+            if (widthRatio >= 0.98 && widthRatio <= 1.02) {
+                // iPhone 12, 13, 14 等标准尺寸设备
+                buffer = 8.0;
+                // NSLog(@"📏 标准屏设备(比例: %.2f) - 添加缓冲: %.1f", widthRatio, buffer);
+            } else {
+                // 其他设备（iPhone XS、Pro Max系列等）
+                buffer = -10.0;
+                // NSLog(@"📏 非标准屏设备(比例: %.2f) - 减少缓冲: %.1f", widthRatio, buffer);
+            }
+            
+            // 根据屏幕密度微调（3x屏幕可能需要更精确的调整）
+            if (deviceScale >= 3.0) {
+                buffer *= 0.8; // 高密度屏幕稍微减少缓冲
+                // NSLog(@"📏 高密度屏幕(%.1fx) - 调整缓冲: %.1f", deviceScale, buffer);
+            }
+            
+            messageTextHeight = maxHeight + buffer;
+            // NSLog(@"📏 最终高度: %.1f (最大高度: %.1f + 缓冲: %.1f)", messageTextHeight, maxHeight, buffer);
+        }
+        
         //文字宽度
         CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
         NSRange periodRange = [message.content rangeOfString:@"."];
@@ -212,7 +267,7 @@ static CGFloat const kMQBotHighMenuTitleHeight = 30;
         }
         
         //气泡高度
-        CGFloat bubbleHeight = messageTextHeight;
+        CGFloat bubbleHeight = messageTextHeight + kMQCellBubbleToTextVerticalSpacing * 2;  // 修复：添加上下垂直间距
         //气泡宽度
         CGFloat bubbleWidth = messageTextWidth + kMQCellBubbleToTextHorizontalLargerSpacing + kMQCellBubbleToTextHorizontalSmallerSpacing;
         
@@ -236,7 +291,7 @@ static CGFloat const kMQBotHighMenuTitleHeight = 30;
                 self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
             }
             
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, 0, messageTextWidth, messageTextHeight);
+            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalSmallerSpacing, kMQCellBubbleToTextVerticalSpacing, messageTextWidth, messageTextHeight);
             //气泡的frame
             self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
             
@@ -251,7 +306,7 @@ static CGFloat const kMQBotHighMenuTitleHeight = 30;
                 self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
             }
             
-            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, 0, messageTextWidth, messageTextHeight);
+            self.textLabelFrame = CGRectMake(kMQCellBubbleToTextHorizontalLargerSpacing, kMQCellBubbleToTextVerticalSpacing, messageTextWidth, messageTextHeight);
             //气泡的frame
             self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
         }

@@ -100,7 +100,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
         if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {
             if ([url.absoluteString rangeOfString:@"tel:"].location != NSNotFound) {
                 NSString *path = [url.absoluteString stringByReplacingOccurrencesOfString:@"tel:" withString:@"tel://"];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path] options:@{} completionHandler:nil];
             } else {
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@", url.absoluteString]]];
             }
@@ -153,7 +153,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
                     if ([actionSheet.title rangeOfString:@"://"].location == NSNotFound) {
                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", actionSheet.title]]];
                     } else {
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:actionSheet.title]];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:actionSheet.title] options:@{} completionHandler:nil];
                     }
                     break;
                 }
