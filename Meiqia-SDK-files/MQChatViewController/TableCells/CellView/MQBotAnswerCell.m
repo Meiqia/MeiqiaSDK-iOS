@@ -178,7 +178,13 @@ static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
             }
         }
         if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-            [textLabel addLinkToPhoneNumber:longestKey withRange:[cellModel.numberRangeDic[longestKey] rangeValue]];
+            NSRange range = [cellModel.numberRangeDic[longestKey] rangeValue];
+            // 验证范围是否有效
+            NSString *labelText = textLabel.text;
+            if (range.location != NSNotFound && labelText && 
+                range.location + range.length <= labelText.length) {
+                [textLabel addLinkToPhoneNumber:longestKey withRange:range];
+            }
         }
     }
     if (cellModel.linkNumberRangeDic.count > 0) {
@@ -190,7 +196,13 @@ static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
             }
         }
         if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-            [textLabel addLinkToURL:[NSURL URLWithString:longestKey] withRange:[cellModel.linkNumberRangeDic[longestKey] rangeValue]];
+            NSRange range = [cellModel.linkNumberRangeDic[longestKey] rangeValue];
+            // 验证范围是否有效
+            NSString *labelText = textLabel.text;
+            if (range.location != NSNotFound && labelText && 
+                range.location + range.length <= labelText.length) {
+                [textLabel addLinkToURL:[NSURL URLWithString:longestKey] withRange:range];
+            }
         }
     }
     if (cellModel.emailNumberRangeDic.count > 0) {
@@ -202,7 +214,13 @@ static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
             }
         }
         if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-            [textLabel addLinkToTransitInformation:@{@"email" : longestKey} withRange:[cellModel.emailNumberRangeDic[longestKey] rangeValue]];
+            NSRange range = [cellModel.emailNumberRangeDic[longestKey] rangeValue];
+            // 验证范围是否有效
+            NSString *labelText = textLabel.text;
+            if (range.location != NSNotFound && labelText && 
+                range.location + range.length <= labelText.length) {
+                [textLabel addLinkToTransitInformation:@{@"email" : longestKey} withRange:range];
+            }
         }
     }
     

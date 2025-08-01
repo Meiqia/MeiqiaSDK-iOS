@@ -120,17 +120,35 @@ static const NSString *kMQTextCellsensitiveWords = @"！消息包含不规范用
     //获取文字中的可选中的元素
     if (cellModel.emailNumberRangeDic.count > 0) {
         for (NSString *key in cellModel.emailNumberRangeDic.allKeys) {
-            [textLabel addLinkToTransitInformation:@{@"email" : key} withRange:[cellModel.emailNumberRangeDic[key] rangeValue]];
+            NSRange range = [cellModel.emailNumberRangeDic[key] rangeValue];
+            // 验证范围是否有效
+            NSString *labelText = textLabel.text;
+            if (range.location != NSNotFound && labelText && 
+                range.location + range.length <= labelText.length) {
+                [textLabel addLinkToTransitInformation:@{@"email" : key} withRange:range];
+            }
         }
     }
     if (cellModel.numberRangeDic.count > 0) {
         for (NSString *key in cellModel.numberRangeDic.allKeys) {
-            [textLabel addLinkToPhoneNumber:key withRange:[cellModel.numberRangeDic[key] rangeValue]];
+            NSRange range = [cellModel.numberRangeDic[key] rangeValue];
+            // 验证范围是否有效
+            NSString *labelText = textLabel.text;
+            if (range.location != NSNotFound && labelText && 
+                range.location + range.length <= labelText.length) {
+                [textLabel addLinkToPhoneNumber:key withRange:range];
+            }
         }
     }
     if (cellModel.linkNumberRangeDic.count > 0) {
         for (NSString *key in cellModel.linkNumberRangeDic.allKeys) {
-            [textLabel addLinkToURL:[NSURL URLWithString:key] withRange:[cellModel.linkNumberRangeDic[key] rangeValue]];
+            NSRange range = [cellModel.linkNumberRangeDic[key] rangeValue];
+            // 验证范围是否有效
+            NSString *labelText = textLabel.text;
+            if (range.location != NSNotFound && labelText && 
+                range.location + range.length <= labelText.length) {
+                [textLabel addLinkToURL:[NSURL URLWithString:key] withRange:range];
+            }
         }
     }
     
