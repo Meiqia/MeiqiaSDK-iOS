@@ -863,9 +863,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             
             if ([message isKindOfClass:[MQBotRichTextMessage class]]) {
                 if ([(MQBotRichTextMessage *)message menu] != nil) {
-                    if ([[(MQBotRichTextMessage *)message subType] isEqualToString:@"evaluate"]) {
+                    // 如果有菜单，使用带菜单的模型（支持 evaluate 和 message 类型）
+                    NSString *subType = [(MQBotRichTextMessage *)message subType];
+                    if ([subType isEqualToString:@"evaluate"] || [subType isEqualToString:@"message"]) {
                         MQBotMenuWebViewBubbleAnswerCellModel *cellModel = [[MQBotMenuWebViewBubbleAnswerCellModel alloc] initCellModelWithMessage:(MQBotRichTextMessage *)message cellWidth:self.chatViewWidth delegate:self];
-                        cellModel.needShowFeedback = [MQServiceToViewInterface enableBotEvaluateFeedback];
+                        if ([subType isEqualToString:@"evaluate"]) {
+                            cellModel.needShowFeedback = [MQServiceToViewInterface enableBotEvaluateFeedback];
+                        }
                         return cellModel;
                     }
                 } else {

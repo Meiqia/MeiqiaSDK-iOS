@@ -48,7 +48,7 @@ edition: m2016
 在 Podfile 中加入：
 
 ```
-pod 'Meiqia', '~> 3.9.27'
+pod 'Meiqia', '~> 3.9.28'
 ```
 接着安装美洽 pod 即可：
 

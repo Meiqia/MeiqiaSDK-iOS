@@ -23,19 +23,55 @@
     
     NSString *subType = [plainMessage.accessoryData objectForKey:@"sub_type"] ?: @"";
     MQBaseMessage *message = nil;
-    if ([[plainMessage.accessoryData objectForKey:@"content_robot"] count] > 0) {
+    
+    // 检查是否有 content_robot 数组
+    NSArray *contentRobot = [plainMessage.accessoryData objectForKey:@"content_robot"];
+    BOOL hasContentRobot = contentRobot && [contentRobot isKindOfClass:[NSArray class]] && contentRobot.count > 0;
+    
+    if (hasContentRobot) {
+        // 检查 content_robot 中第一个元素的类型
+        NSDictionary *firstContent = nil;
+        NSString *firstContentType = nil;
+        if ([contentRobot firstObject] && [[contentRobot firstObject] isKindOfClass:[NSDictionary class]]) {
+            firstContent = [contentRobot firstObject];
+            firstContentType = firstContent[@"type"];
+        }
+        
         if ([normalTypes containsObject:subType]) {
             message = [self getNormalBotAnswerMessage:plainMessage.accessoryData subType:subType];
         } else if ([subType isEqualToString:@"menu"]) {
             message = [self getMenuBotMessage:plainMessage.accessoryData];
         } else if ([subType isEqualToString:@"message"]) {
-            message = [self getTextMessage:plainMessage.accessoryData];
-            
-            if ([plainMessage.accessoryData objectForKey:@"operator_msg"] && ![[plainMessage.accessoryData objectForKey:@"operator_msg"] isEqual:[NSNull null]] && [message isKindOfClass:[MQBotRichTextMessage class]]) {
-                // 营销机器人的底部操做按钮
-                MQBotRichTextMessage *botRichTextMessage = (MQBotRichTextMessage *)message;
-                botRichTextMessage.tags = [self getMessageBottomTagModel:plainMessage];
-                message = botRichTextMessage;
+            // 如果第一个元素是 "related" 类型，应该按照菜单消息处理
+            if ([firstContentType isEqualToString:@"related"]) {
+                message = [self getMenuBotMessage:plainMessage.accessoryData];
+            } else {
+                // 检查 content_robot 数组中是否有 "related" 类型的元素
+                BOOL hasRelatedType = NO;
+                NSInteger relatedIndex = -1;
+                for (NSInteger i = 0; i < contentRobot.count; i++) {
+                    NSDictionary *contentItem = contentRobot[i];
+                    if ([contentItem isKindOfClass:[NSDictionary class]] && 
+                        [contentItem[@"type"] isEqualToString:@"related"]) {
+                        hasRelatedType = YES;
+                        relatedIndex = i;
+                        break;
+                    }
+                }
+                
+                if (hasRelatedType) {
+                    // 如果有 related 类型，需要同时处理文本和相关问题
+                    message = [self getTextMessageWithRelatedMenu:plainMessage.accessoryData relatedIndex:relatedIndex];
+                } else {
+                    message = [self getTextMessage:plainMessage.accessoryData];
+                }
+                
+                if ([plainMessage.accessoryData objectForKey:@"operator_msg"] && ![[plainMessage.accessoryData objectForKey:@"operator_msg"] isEqual:[NSNull null]] && [message isKindOfClass:[MQBotRichTextMessage class]]) {
+                    // 营销机器人的底部操做按钮
+                    MQBotRichTextMessage *botRichTextMessage = (MQBotRichTextMessage *)message;
+                    botRichTextMessage.tags = [self getMessageBottomTagModel:plainMessage];
+                    message = botRichTextMessage;
+                }
             }
         } else if ([subType isEqualToString:@"button"]) {
             // 营销机器人的引导按钮
@@ -45,20 +81,35 @@
             MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:@"当前 App 暂不支持该类型消息。"];
             message = textMessage;
         }
+    } else {
+        // 没有 content_robot 数组时，处理直接使用 content 字段的机器人消息
+        if ([subType isEqualToString:@"message"] || subType.length == 0) {
+            // 使用 plainMessage.content 创建文本消息
+            NSString *content = plainMessage.content ?: @"";
+            if (content.length > 0) {
+                content = [MQManager convertToUnicodeWithEmojiAlias:content];
+                message = [[MQTextMessage alloc] initWithContent:content];
+            }
+        }
     }
     
-    message.messageId = plainMessage.messageId;
-    message.date = plainMessage.createdOn;
-    message.userName = plainMessage.messageUserName;
-    message.userAvatarPath = plainMessage.messageAvatar;
-    message.fromType = MQChatMessageIncoming;
-    message.conversionId = plainMessage.conversationId;
-    // 处理托管机器人的
-    if ([plainMessage.accessoryData objectForKey:@"display_avatar"]) {
-        message.userAvatarPath = [plainMessage.accessoryData objectForKey:@"display_avatar"];
-    }
-    if ([plainMessage.accessoryData objectForKey:@"display_nickname"]) {
-        message.userName = [plainMessage.accessoryData objectForKey:@"display_nickname"];
+    // 只有当 message 不为 nil 时才设置属性
+    if (message) {
+        message.messageId = plainMessage.messageId;
+        message.date = plainMessage.createdOn;
+        message.userName = plainMessage.messageUserName;
+        message.userAvatarPath = plainMessage.messageAvatar;
+        message.fromType = MQChatMessageIncoming;
+        message.conversionId = plainMessage.conversationId;
+        // 处理托管机器人的
+        if (plainMessage.accessoryData && [plainMessage.accessoryData isKindOfClass:[NSDictionary class]]) {
+            if ([plainMessage.accessoryData objectForKey:@"display_avatar"]) {
+                message.userAvatarPath = [plainMessage.accessoryData objectForKey:@"display_avatar"];
+            }
+            if ([plainMessage.accessoryData objectForKey:@"display_nickname"]) {
+                message.userName = [plainMessage.accessoryData objectForKey:@"display_nickname"];
+            }
+        }
     }
     
     return message;
@@ -230,37 +281,113 @@
         //如果是富文本cell，直接返回
         return message;
     } else {
-        NSString *content = [[data objectForKey:@"content_robot"] firstObject][@"text"];
-        content = [MQManager convertToUnicodeWithEmojiAlias:content];
-        MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:content];
-        return textMessage;
+        NSArray *contentRobot = [data objectForKey:@"content_robot"];
+        if (contentRobot && contentRobot.count > 0) {
+            NSDictionary *firstContent = [contentRobot firstObject];
+            if ([firstContent isKindOfClass:[NSDictionary class]]) {
+                NSString *content = firstContent[@"text"];
+                if (content && content.length > 0) {
+                    content = [MQManager convertToUnicodeWithEmojiAlias:content];
+                    MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:content];
+                    return textMessage;
+                }
+            }
+        }
+        // 如果无法从 content_robot 获取文本，返回空消息或 nil
+        return nil;
     }
 }
 
-- (MQBaseMessage *)tryToGetRichTextMessage:(NSDictionary *)data {
-    id content = [[data objectForKey:@"content_robot"] firstObject][@"rich_text"];
-    if (content) {
-        MQBotRichTextMessage *botRichTextMessage;
-        if ([content isKindOfClass:[NSDictionary class]]) {
-            botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:content];
-        } else {
-            botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:@{@"content":content}];
+- (MQBaseMessage *)getTextMessageWithRelatedMenu:(NSDictionary *)data relatedIndex:(NSInteger)relatedIndex {
+    NSArray *contentRobot = [data objectForKey:@"content_robot"];
+    if (!contentRobot || contentRobot.count == 0) {
+        return [self getTextMessage:data];
+    }
+    
+    // 先尝试获取富文本消息
+    MQBaseMessage *message = [self tryToGetRichTextMessage:data];
+    NSString *content = @"";
+    
+    // 获取第一个元素的文本内容
+    if (contentRobot.count > 0) {
+        NSDictionary *firstContent = [contentRobot firstObject];
+        if ([firstContent isKindOfClass:[NSDictionary class]]) {
+            content = firstContent[@"text"] ?: @"";
+            content = [MQManager convertToUnicodeWithEmojiAlias:content];
         }
-        botRichTextMessage.thumbnail = data[@"thumbnail"];
-        botRichTextMessage.summary = data[@"thumbnail"];
-        botRichTextMessage.questionId = data[@"question_id"];
-        
-        botRichTextMessage.subType = data[@"sub_type"];
-        
-        BOOL isEvaluated = [data objectForKey:@"is_evaluated"] ? [[data objectForKey:@"is_evaluated"] boolValue] : false;
-        BOOL isSolved = [data objectForKey:@"is_useful"] ? [[data objectForKey:@"is_useful"] boolValue] : YES;
-
-        botRichTextMessage.isEvaluated = isEvaluated;
-        botRichTextMessage.solved = isSolved;
+    }
+    
+    // 获取 related 类型的菜单数据
+    MQBotMenuMessage *embedMenuMessage = nil;
+    if (relatedIndex >= 0 && relatedIndex < contentRobot.count) {
+        NSDictionary *relatedContent = contentRobot[relatedIndex];
+        if ([relatedContent isKindOfClass:[NSDictionary class]] && 
+            [relatedContent[@"type"] isEqualToString:@"related"]) {
+            embedMenuMessage = [self getEmbedMenuBotMessage:relatedContent];
+        }
+    }
+    
+    if (message && [message isKindOfClass:[MQBotRichTextMessage class]]) {
+        // 如果是富文本消息，附加菜单
+        MQBotRichTextMessage *botRichTextMessage = (MQBotRichTextMessage *)message;
+        if (embedMenuMessage) {
+            botRichTextMessage.menu = embedMenuMessage;
+        }
+        // 确保 subType 被设置
+        if (!botRichTextMessage.subType) {
+            botRichTextMessage.subType = data[@"sub_type"] ?: @"message";
+        }
         return botRichTextMessage;
     } else {
-        return nil;
+        // 如果不是富文本，创建文本消息，但需要返回一个支持菜单的消息类型
+        // 由于 MQTextMessage 不支持 menu，我们需要创建一个 MQBotRichTextMessage 或使用其他方式
+        // 但根据代码逻辑，应该创建一个包含文本和菜单的消息
+        // 查看 getNormalBotAnswerMessage 的实现，它使用 MQBotAnswerMessage
+        // 但这里 sub_type 是 "message"，不是 "reply" 等类型
+        // 所以我们可以创建一个 MQBotRichTextMessage，即使没有 rich_text
+        if (content.length > 0) {
+            MQBotRichTextMessage *botRichTextMessage = [[MQBotRichTextMessage alloc] initWithDictionary:@{@"content": content}];
+            if (embedMenuMessage) {
+                botRichTextMessage.menu = embedMenuMessage;
+            }
+            // 设置 subType
+            botRichTextMessage.subType = data[@"sub_type"] ?: @"message";
+            return botRichTextMessage;
+        }
     }
+    
+    return message ?: [self getTextMessage:data];
+}
+
+- (MQBaseMessage *)tryToGetRichTextMessage:(NSDictionary *)data {
+    NSArray *contentRobot = [data objectForKey:@"content_robot"];
+    if (contentRobot && contentRobot.count > 0) {
+        NSDictionary *firstContent = [contentRobot firstObject];
+        if ([firstContent isKindOfClass:[NSDictionary class]]) {
+            id content = firstContent[@"rich_text"];
+            if (content) {
+                MQBotRichTextMessage *botRichTextMessage;
+                if ([content isKindOfClass:[NSDictionary class]]) {
+                    botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:content];
+                } else {
+                    botRichTextMessage = [[MQBotRichTextMessage alloc]initWithDictionary:@{@"content":content}];
+                }
+                botRichTextMessage.thumbnail = data[@"thumbnail"];
+                botRichTextMessage.summary = data[@"thumbnail"];
+                botRichTextMessage.questionId = data[@"question_id"];
+                
+                botRichTextMessage.subType = data[@"sub_type"];
+                
+                BOOL isEvaluated = [data objectForKey:@"is_evaluated"] ? [[data objectForKey:@"is_evaluated"] boolValue] : false;
+                BOOL isSolved = [data objectForKey:@"is_useful"] ? [[data objectForKey:@"is_useful"] boolValue] : YES;
+
+                botRichTextMessage.isEvaluated = isEvaluated;
+                botRichTextMessage.solved = isSolved;
+                return botRichTextMessage;
+            }
+        }
+    }
+    return nil;
 }
 
 - (NSArray *)getMessageBottomTagModel:(MQMessage *)message

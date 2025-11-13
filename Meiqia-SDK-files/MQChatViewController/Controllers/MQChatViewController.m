@@ -865,12 +865,15 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 
 - (void)didTapMenuWithText:(NSString *)menuText {
     //去掉 menu 的序号后，主动发送该 menu 消息
+    NSString *sendText = menuText;
     NSRange orderRange = [menuText rangeOfString:@". "];
-    if (orderRange.location == NSNotFound) {
-        return ;
+    if (orderRange.location != NSNotFound) {
+        // 如果有序号格式（如 "1. 问题文本"），去掉序号部分
+        sendText = [menuText substringFromIndex:orderRange.location+2];
     }
+    // 如果没有序号格式，直接使用原始文本
+    
     if ([self handleSendMessageAbility]) {
-        NSString *sendText = [menuText substringFromIndex:orderRange.location+2];
         [self.chatViewService sendTextMessageWithContent:sendText];
         [self chatTableViewScrollToBottomWithAnimated:YES];
     }
