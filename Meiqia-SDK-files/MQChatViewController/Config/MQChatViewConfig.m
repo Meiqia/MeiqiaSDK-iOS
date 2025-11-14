@@ -115,6 +115,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
 
 @implementation MQChatViewConfig(deprecated)
 @dynamic enableRoundAvatar;
+@dynamic enableSendButton;
 @dynamic enableIncomingAvatar;
 @dynamic enableOutgoingAvatar;
 @dynamic incomingMsgTextColor;

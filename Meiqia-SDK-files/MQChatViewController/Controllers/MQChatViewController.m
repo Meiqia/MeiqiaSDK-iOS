@@ -44,6 +44,19 @@
 #import "MQNotificationManager.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 80.0;
+static CGFloat const kMQToolbarSendButtonSide = 32.0;
+
+static inline UIColor *MQToolbarSendButtonActiveColor(void) {
+    UIColor *styleColor = [MQChatViewConfig sharedConfig].chatViewStyle.btnTextColor;
+    if (styleColor) {
+        return styleColor;
+    }
+    return [UIColor colorWithRed:62/255.0 green:139/255.0 blue:255/255.0 alpha:1.0];
+}
+
+static inline UIColor *MQToolbarSendButtonInactiveColor(void) {
+    return [UIColor colorWithRed:220/255.0 green:223/255.0 blue:228/255.0 alpha:1.0];
+}
 
 @interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQBottomBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQServiceToViewInterfaceErrorDelegate,UINavigationControllerDelegate, MQEvaluationViewDelegate, MQInputContentViewDelegate, MQKeyboardControllerDelegate, MQRecordViewDelegate, MQRecorderViewDelegate,MEIQIA_InputViewDelegate>
 
@@ -70,6 +83,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 @property (nonatomic, assign) BOOL showEvaluatBarButton; // 是否显示评价按钮，需要在访客发送了消息才能显示
 
 @property (nonatomic, assign) CGFloat lastSafeAreaInset; // 记录上一次的安全区域值
+
+@property (nonatomic, strong) UIButton *toolbarSendButton;
+@property (nonatomic, strong) NSArray<NSLayoutConstraint *> *toolbarSendButtonConstraints;
 
 @end
 
@@ -601,6 +617,9 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         NSString *alertText = self.chatViewService.clientStatus == MQStateAllocatingAgent ? @"cannot_text_client_is_onlining" : @"send_to_fast";
         [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:self.view.window];
         [[(MQTabInputContentView *)self.bottomBar.contentView textField] setText:text];
+        if (text.length > 0) {
+            [self updateToolbarSendButtonState];
+        }
         return NO;
     }
     
@@ -683,6 +702,130 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
             });
         }
     }
+    [self updateToolbarSendButtonState];
+}
+
+#pragma mark - Toolbar send button
+
+- (UIButton *)toolbarSendButton {
+    if (!_toolbarSendButton) {
+        CGFloat side = kMQToolbarSendButtonSide;
+        _toolbarSendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _toolbarSendButton.frame = CGRectMake(0, 0, side, side);
+        UIColor *backgroundColor = MQToolbarSendButtonInactiveColor();
+        _toolbarSendButton.backgroundColor = backgroundColor;
+        _toolbarSendButton.layer.cornerRadius = side / 2.0;
+        _toolbarSendButton.layer.masksToBounds = YES;
+        UIImage *arrowImage = nil;
+        if (@available(iOS 13.0, *)) {
+            arrowImage = [UIImage systemImageNamed:@"arrow.up"];
+        }
+        if (!arrowImage) {
+            arrowImage = [[self class] mq_toolbarSendArrowImage];
+        }
+        arrowImage = [arrowImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [_toolbarSendButton setImage:arrowImage forState:UIControlStateNormal];
+        _toolbarSendButton.tintColor = [UIColor whiteColor];
+        _toolbarSendButton.imageEdgeInsets = UIEdgeInsetsMake(6, 6, 6, 6);
+        [_toolbarSendButton addTarget:self action:@selector(toolbarSendButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+        _toolbarSendButton.enabled = NO;
+    }
+    return _toolbarSendButton;
+}
+
+- (void)toolbarSendButtonTapped {
+    if (![MQChatViewConfig sharedConfig].chatViewStyle.enableSendButton) {
+        return;
+    }
+    MQTabInputContentView *contentView = (MQTabInputContentView *)self.bottomBar.contentView;
+    NSString *text = contentView.textField.text ?: @"";
+    NSString *trimmed = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (trimmed.length == 0) {
+        return;
+    }
+    if (![self handleSendMessageAbility]) {
+        return;
+    }
+    BOOL didSend = [self sendTextMessage:text];
+    if (didSend) {
+        contentView.textField.text = @"";
+    }
+    [self updateToolbarSendButtonState];
+}
+
+- (void)updateToolbarSendButtonState {
+    if (![MQChatViewConfig sharedConfig].chatViewStyle.enableSendButton) {
+        return;
+    }
+    if (!_toolbarSendButton) {
+        return;
+    }
+    NSString *text = [(MQTabInputContentView *)self.bottomBar.contentView textField].text ?: @"";
+    NSString *trimmed = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    BOOL hasContent = trimmed.length > 0;
+    _toolbarSendButton.enabled = hasContent;
+    _toolbarSendButton.alpha = 1.0;
+    _toolbarSendButton.backgroundColor = hasContent ? MQToolbarSendButtonActiveColor() : MQToolbarSendButtonInactiveColor();
+    _toolbarSendButton.imageView.alpha = 1.0;
+}
+
+- (void)configureToolbarSendButtonPosition {
+    if (![MQChatViewConfig sharedConfig].chatViewStyle.enableSendButton) {
+        [self removeToolbarSendButtonFromInputBar];
+        return;
+    }
+    UIButton *sendButton = [self toolbarSendButton];
+    if (sendButton.superview != self.bottomBar) {
+        [sendButton removeFromSuperview];
+        sendButton.translatesAutoresizingMaskIntoConstraints = NO;
+        if (self.toolbarSendButtonConstraints.count > 0) {
+            [NSLayoutConstraint deactivateConstraints:self.toolbarSendButtonConstraints];
+            self.toolbarSendButtonConstraints = nil;
+        }
+        [self.bottomBar addSubview:sendButton];
+        NSLayoutConstraint *bottom = [sendButton.bottomAnchor constraintEqualToAnchor:self.bottomBar.buttonGroupBar.bottomAnchor constant:-8];
+        NSLayoutConstraint *trailing = [sendButton.trailingAnchor constraintEqualToAnchor:self.bottomBar.trailingAnchor constant:-12];
+        NSLayoutConstraint *width = [sendButton.widthAnchor constraintEqualToConstant:kMQToolbarSendButtonSide];
+        NSLayoutConstraint *height = [sendButton.heightAnchor constraintEqualToConstant:kMQToolbarSendButtonSide];
+        self.toolbarSendButtonConstraints = @[bottom, trailing, width, height];
+        [NSLayoutConstraint activateConstraints:self.toolbarSendButtonConstraints];
+    }
+    CGFloat padding = kMQToolbarSendButtonSide + 14.0;
+    [self.bottomBar setButtonGroupRightPadding:padding];
+}
+
+- (void)removeToolbarSendButtonFromInputBar {
+    if (self.toolbarSendButtonConstraints.count > 0) {
+        [NSLayoutConstraint deactivateConstraints:self.toolbarSendButtonConstraints];
+        self.toolbarSendButtonConstraints = nil;
+    }
+    if (self.toolbarSendButton.superview) {
+        [self.toolbarSendButton removeFromSuperview];
+    }
+    [self.bottomBar setButtonGroupRightPadding:0];
+}
+
++ (UIImage *)mq_toolbarSendArrowImage {
+    CGSize size = CGSizeMake(22, 22);
+    CGFloat lineWidth = 2.0;
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    path.lineWidth = lineWidth;
+    CGFloat centerX = size.width / 2.0;
+    CGFloat bottomY = size.height - lineWidth;
+    CGFloat topY = lineWidth;
+    [path moveToPoint:CGPointMake(centerX, bottomY)];
+    [path addLineToPoint:CGPointMake(centerX, topY)];
+    CGFloat wing = 6.0;
+    [path moveToPoint:CGPointMake(centerX, topY)];
+    [path addLineToPoint:CGPointMake(centerX - wing, topY + wing)];
+    [path moveToPoint:CGPointMake(centerX, topY)];
+    [path addLineToPoint:CGPointMake(centerX + wing, topY + wing)];
+    [[UIColor whiteColor] setStroke];
+    [path stroke];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image ?: [UIImage new];
 }
 
 - (void)chatTableViewScrollToBottomWithAnimated:(BOOL)animated {
@@ -1107,8 +1250,12 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         [self.bottomBar.buttonGroupBar addButton:emoji];
     }
     
-//            [self.bottomBar.buttonGroupBar addButton:send];
-
+    if ([MQChatViewConfig sharedConfig].chatViewStyle.enableSendButton) {
+        [self configureToolbarSendButtonPosition];
+        [self updateToolbarSendButtonState];
+    } else {
+        [self removeToolbarSendButtonFromInputBar];
+    }
 }
 
 - (BOOL)handleSendMessageAbility {
@@ -1320,6 +1467,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
 - (void)MQInputViewObtainEmojiStr:(NSString *)emojiStr{
     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.bottomBar.contentView textField];
     textField.text = [textField.text stringByAppendingString:emojiStr];
+    [self updateToolbarSendButtonState];
 }
 - (void)MQInputViewDeleteEmoji{
     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.bottomBar.contentView textField];
@@ -1327,6 +1475,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         NSRange lastRange = [textField.text rangeOfComposedCharacterSequenceAtIndex:([textField.text length] - 1)];
         textField.text = [textField.text stringByReplacingCharactersInRange:lastRange withString:@""];
     }
+    [self updateToolbarSendButtonState];
 }
 - (void)MQInputViewSendEmoji{
     MEIQIA_HPGrowingTextView *textField = [(MQTabInputContentView *)self.bottomBar.contentView textField];
@@ -1334,6 +1483,7 @@ static CGFloat const kMQChatViewInputBarHeight = 80.0;
         
         [self sendTextMessage:textField.text];
         [(MQTabInputContentView *)self.bottomBar.contentView textField].text = @"";
+        [self updateToolbarSendButtonState];
     }
 }
 

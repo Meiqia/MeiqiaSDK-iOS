@@ -229,6 +229,7 @@
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableRoundAvatar:(BOOL)enable style_deprecated;
+- (void)enableSendButton:(BOOL)enable style_deprecated;
 
 /**
  *  是否支持欢迎语；默认不支持

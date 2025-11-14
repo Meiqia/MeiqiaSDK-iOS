@@ -12,6 +12,7 @@
 {
     UIView *buttonContainerView;
     NSLayoutConstraint *buttonContainerViewHeightConstraint;
+    NSLayoutConstraint *buttonGroupTrailingConstraint;
     id resignFirstResponderBlock;
 }
 
@@ -110,7 +111,10 @@
     self.buttonGroupBar.padding = UIEdgeInsetsMake(0, 5, 0, 5);
     
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_contentView]-0-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(_contentView)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_buttonGroupBar]-0-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(_buttonGroupBar)]];
+    
+    NSLayoutConstraint *buttonGroupLeading = [NSLayoutConstraint constraintWithItem:_buttonGroupBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1 constant:0];
+    buttonGroupTrailingConstraint = [NSLayoutConstraint constraintWithItem:_buttonGroupBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1 constant:0];
+    [self addConstraints:@[buttonGroupLeading, buttonGroupTrailingConstraint]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[buttonContainerView]-0-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(buttonContainerView)]];
     
     buttonContainerViewHeightConstraint = [NSLayoutConstraint constraintWithItem:buttonContainerView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:0];
@@ -207,5 +211,18 @@
             [self.delegate textContentDidChange:newString];
         }
     }
+}
+
+- (void)setButtonGroupRightPadding:(CGFloat)padding {
+    if (!buttonGroupTrailingConstraint) {
+        return;
+    }
+    CGFloat constant = -MAX(0, padding);
+    if (buttonGroupTrailingConstraint.constant == constant) {
+        return;
+    }
+    buttonGroupTrailingConstraint.constant = constant;
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 @end
