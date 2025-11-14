@@ -221,6 +221,13 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
 @property (nonatomic, assign) BOOL enableRoundAvatar;
 
 /**
+ *  是否在输入栏显示发送按钮；默认不显示
+ *
+ *  @param enable YES:显示 NO:不显示
+ */
+@property (nonatomic, assign) BOOL enableSendButton;
+
+/**
  * 是否支持对方头像的显示；默认支持
  * @param enable YES:支持 NO:不支持
  */

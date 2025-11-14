@@ -434,6 +434,10 @@
     chatViewConfig.enableRoundAvatar = enable;
 }
 
+- (void)enableSendButton:(BOOL)enable {
+    chatViewConfig.enableSendButton = enable;
+}
+
 - (void)enableTopAutoRefresh:(BOOL)enable {
     chatViewConfig.enableTopAutoRefresh = enable;
 }

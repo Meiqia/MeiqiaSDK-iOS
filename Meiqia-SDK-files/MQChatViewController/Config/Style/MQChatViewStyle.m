@@ -55,6 +55,7 @@
         self.enableRoundAvatar       = false;
         self.enableIncomingAvatar    = true;
         self.enableOutgoingAvatar    = true;
+        self.enableSendButton        = false;
 
         self.backgroundColor = [UIColor whiteColor];
         self.incomingMsgTextColor   = [UIColor colorWithRed:90/255.0 green:105/255.0 blue:120/255.0 alpha:1];

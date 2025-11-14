@@ -135,6 +135,7 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 @interface MQChatViewConfig(deprecated)
 
 @property (nonatomic, assign) BOOL enableRoundAvatar;
+@property (nonatomic, assign) BOOL enableSendButton;
 @property (nonatomic, assign) BOOL enableIncomingAvatar;
 @property (nonatomic, assign) BOOL enableOutgoingAvatar;
 
@@ -171,4 +172,3 @@ typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
 
 
 @end
-
