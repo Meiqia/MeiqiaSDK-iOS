@@ -40,6 +40,10 @@
 
 "save_photo_success"    = "Foto sudah tersimpan di album";
 
+"save_video_success"    = "Video tersimpan di album";
+
+"save_video_downloading" = "Mengunduh video...";
+
 "save_text_success"     = "Sudah dicopy";
 
 "save_photo"            = "Simpan";

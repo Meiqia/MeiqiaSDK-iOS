@@ -11,21 +11,21 @@
 #import "MQBotHighMenuCellModel.h"
 #import "MQChatViewConfig.h"
 #import <UIKit/UIKit.h>
-#import "TTTAttributedLabel.h"
+#import "MQTTTAttributedLabel.h"
 #import "MQBundleUtil.h"
 
 static const NSInteger kMQBotMenuCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQBotMenuCellSelectedNumberActionSheetTag = 2001;
 static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
 
-@interface MQBotHighMenuCell()<TTTAttributedLabelDelegate, UIActionSheetDelegate>
+@interface MQBotHighMenuCell()<MQTTTAttributedLabelDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) UIImageView *bubbleImageView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
 
 @property (nonatomic, strong) UILabel *menuTitleLabel;
 
-@property (nonatomic, strong) TTTAttributedLabel *contentLabel;
+@property (nonatomic, strong) MQTTTAttributedLabel *contentLabel;
 
 @property (nonatomic, strong) UIView *menuBackView;
 
@@ -46,7 +46,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
         self.bubbleImageView.userInteractionEnabled = YES;
         [self.contentView addSubview:self.bubbleImageView];
         
-        self.contentLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+        self.contentLabel = [[MQTTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
         self.contentLabel.delegate = self;
         self.contentLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
         self.contentLabel.numberOfLines = 0;
@@ -115,21 +115,21 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
     
 //    self.pageView = cellModel.pageView;
 }
-#pragma TTTAttributedLabelDelegate 点击事件
+#pragma MQTTTAttributedLabelDelegate 点击事件
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
+- (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:phoneNumber delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"make_call_to"], phoneNumber], [NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"send_message_to"], phoneNumber], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
     sheet.tag = kMQBotMenuCellSelectedNumberActionSheetTag;
     [sheet showInView:[UIApplication sharedApplication].keyWindow];
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+- (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"open_url_by_safari"], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
     sheet.tag = kMQBotMenuCellSelectedUrlActionSheetTag;
     [sheet showInView:[UIApplication sharedApplication].keyWindow];
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithTransitInformation:(NSDictionary *)components {
+- (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithTransitInformation:(NSDictionary *)components {
     if (!components[@"email"]) {
         return ;
     }

@@ -10,10 +10,13 @@
 #import "MQChatFileUtil.h"
 #import "MQChatViewConfig.h"
 #import "MQBundleUtil.h"
+#import <Photos/Photos.h>
 
 @implementation MQChatBaseCell {
     NSString *copiedText;
     UIImage *copiedImage;
+    NSString *copiedVideoPath;
+    NSString *copiedVideoServerPath;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -53,6 +56,12 @@
         UIMenuItem *copyImageItem = [[UIMenuItem alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"save_photo"] action:@selector(copyImageSender:)];
         [menuItems addObject:copyImageItem];
     }
+    if ([menuItemsName[@"videoCopy"] isKindOfClass:[NSString class]]) {
+        copiedVideoPath = menuItemsName[@"videoCopy"];
+        copiedVideoServerPath = menuItemsName[@"videoServerPath"];
+        UIMenuItem *copyVideoItem = [[UIMenuItem alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"save_photo"] action:@selector(copyVideoSender:)];
+        [menuItems addObject:copyVideoItem];
+    }
     UIMenuController *menu = [UIMenuController sharedMenuController];
     [menu setMenuItems:menuItems];
     [menu setTargetRect:targetRect inView:inView];
@@ -70,6 +79,8 @@
     if (action == @selector(copyTextSender:)) {
         return true;
     } else if (action == @selector(copyImageSender:)) {
+        return true;
+    } else if (action == @selector(copyVideoSender:)) {
         return true;
     } else {
         return false;
@@ -98,6 +109,49 @@ didFinishSavingWithError:(NSError *)error
     }else{
         [self.chatCellDelegate showToastViewInCell:self toastText:[MQBundleUtil localizedStringForKey:@"save_photo_success"]];
     }
+}
+
+-(void)copyVideoSender:(id)sender {
+    if (copiedVideoPath.length > 0 && [MQChatFileUtil fileExistsAtPath:copiedVideoPath isDirectory:NO]) {
+        [self saveVideoToAlbumWithPath:copiedVideoPath];
+    } else if (copiedVideoServerPath.length > 0) {
+        NSString *cachePath = [MQChatFileUtil getVideoCachePathWithServerUrl:copiedVideoServerPath];
+        if ([MQChatFileUtil fileExistsAtPath:cachePath isDirectory:NO]) {
+            [self saveVideoToAlbumWithPath:cachePath];
+            return;
+        }
+        // 提示正在下载
+        [self.chatCellDelegate showToastViewInCell:self toastText:[MQBundleUtil localizedStringForKey:@"save_video_downloading"]];
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSString *encodedUrlStr = [copiedVideoServerPath stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+            NSURL *videoURL = [NSURL URLWithString:encodedUrlStr];
+            NSData *videoData = [NSData dataWithContentsOfURL:videoURL];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (videoData && videoData.length > 0) {
+                    [videoData writeToFile:cachePath atomically:YES];
+                    [weakSelf saveVideoToAlbumWithPath:cachePath];
+                } else {
+                    [weakSelf.chatCellDelegate showToastViewInCell:weakSelf toastText:[MQBundleUtil localizedStringForKey:@"save_photo_error"]];
+                }
+            });
+        });
+    }
+}
+
+- (void)saveVideoToAlbumWithPath:(NSString *)videoPath {
+    __weak typeof(self) weakSelf = self;
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:[NSURL fileURLWithPath:videoPath]];
+    } completionHandler:^(BOOL success, NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (success) {
+                [weakSelf.chatCellDelegate showToastViewInCell:weakSelf toastText:[MQBundleUtil localizedStringForKey:@"save_video_success"]];
+            } else {
+                [weakSelf.chatCellDelegate showToastViewInCell:weakSelf toastText:[MQBundleUtil localizedStringForKey:@"save_photo_error"]];
+            }
+        });
+    }];
 }
 
 

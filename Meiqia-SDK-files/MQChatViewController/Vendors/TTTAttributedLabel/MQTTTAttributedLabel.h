@@ -1,4 +1,4 @@
-// TTTAttributedLabel.h
+// MQTTTAttributedLabel.h
 //
 // Copyright (c) 2011 Mattt Thompson (http://mattt.me)
 // 
@@ -23,68 +23,68 @@
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
 
-//! Project version number for TTTAttributedLabel.
-FOUNDATION_EXPORT double TTTAttributedLabelVersionNumber;
+//! Project version number for MQTTTAttributedLabel.
+FOUNDATION_EXPORT double MQTTTAttributedLabelVersionNumber;
 
-//! Project version string for TTTAttributedLabel.
-FOUNDATION_EXPORT const unsigned char TTTAttributedLabelVersionString[];
+//! Project version string for MQTTTAttributedLabel.
+FOUNDATION_EXPORT const unsigned char MQTTTAttributedLabelVersionString[];
 
-@class TTTAttributedLabelLink;
+@class MQTTTAttributedLabelLink;
 
 /**
  Vertical alignment for text in a label whose bounds are larger than its text bounds
  */
-typedef NS_ENUM(NSInteger, TTTAttributedLabelVerticalAlignment) {
-    TTTAttributedLabelVerticalAlignmentCenter   = 0,
-    TTTAttributedLabelVerticalAlignmentTop      = 1,
-    TTTAttributedLabelVerticalAlignmentBottom   = 2,
+typedef NS_ENUM(NSInteger, MQTTTAttributedLabelVerticalAlignment) {
+    MQTTTAttributedLabelVerticalAlignmentCenter   = 0,
+    MQTTTAttributedLabelVerticalAlignmentTop      = 1,
+    MQTTTAttributedLabelVerticalAlignmentBottom   = 2,
 };
 
 /**
  Determines whether the text to which this attribute applies has a strikeout drawn through itself.
  */
-extern NSString * const kTTTStrikeOutAttributeName;
+extern NSString * const kMQTTTStrikeOutAttributeName;
 
 /**
  The background fill color. Value must be a `CGColorRef`. Default value is `nil` (no fill).
  */
-extern NSString * const kTTTBackgroundFillColorAttributeName;
+extern NSString * const kMQTTTBackgroundFillColorAttributeName;
 
 /**
  The padding for the background fill. Value must be a `UIEdgeInsets`. Default value is `UIEdgeInsetsZero` (no padding).
  */
-extern NSString * const kTTTBackgroundFillPaddingAttributeName;
+extern NSString * const kMQTTTBackgroundFillPaddingAttributeName;
 
 /**
  The background stroke color. Value must be a `CGColorRef`. Default value is `nil` (no stroke).
  */
-extern NSString * const kTTTBackgroundStrokeColorAttributeName;
+extern NSString * const kMQTTTBackgroundStrokeColorAttributeName;
 
 /**
  The background stroke line width. Value must be an `NSNumber`. Default value is `1.0f`.
  */
-extern NSString * const kTTTBackgroundLineWidthAttributeName;
+extern NSString * const kMQTTTBackgroundLineWidthAttributeName;
 
 /**
  The background corner radius. Value must be an `NSNumber`. Default value is `5.0f`.
  */
-extern NSString * const kTTTBackgroundCornerRadiusAttributeName;
+extern NSString * const kMQTTTBackgroundCornerRadiusAttributeName;
 
-@protocol TTTAttributedLabelDelegate;
+@protocol MQTTTAttributedLabelDelegate;
 
 // Override UILabel @property to accept both NSString and NSAttributedString
-@protocol TTTAttributedLabel <NSObject>
+@protocol MQTTTAttributedLabel <NSObject>
 @property (nonatomic, copy) IBInspectable id text;
 @end
 
 IB_DESIGNABLE
 
 /**
- `TTTAttributedLabel` is a drop-in replacement for `UILabel` that supports `NSAttributedString`, as well as automatically-detected and manually-added links to URLs, addresses, phone numbers, and dates.
+ `MQTTTAttributedLabel` is a drop-in replacement for `UILabel` that supports `NSAttributedString`, as well as automatically-detected and manually-added links to URLs, addresses, phone numbers, and dates.
  
- ## Differences Between `TTTAttributedLabel` and `UILabel`
+ ## Differences Between `MQTTTAttributedLabel` and `UILabel`
  
- For the most part, `TTTAttributedLabel` behaves just like `UILabel`. The following are notable exceptions, in which `TTTAttributedLabel` may act differently:
+ For the most part, `MQTTTAttributedLabel` behaves just like `UILabel`. The following are notable exceptions, in which `MQTTTAttributedLabel` may act differently:
  
  - `text` - This property now takes an `id` type argument, which can either be a kind of `NSString` or `NSAttributedString` (mutable or immutable in both cases)
  - `attributedText` - Do not set this property directly. Instead, pass an `NSAttributedString` to `text`.
@@ -98,13 +98,13 @@ IB_DESIGNABLE
  
  ### NSCoding
  
- `TTTAttributedLabel`, like `UILabel`, conforms to `NSCoding`. However, if the build target is set to less than iOS 6.0, `linkAttributes` and `activeLinkAttributes` will not be encoded or decoded. This is due to an runtime exception thrown when attempting to copy non-object CoreText values in dictionaries.
+ `MQTTTAttributedLabel`, like `UILabel`, conforms to `NSCoding`. However, if the build target is set to less than iOS 6.0, `linkAttributes` and `activeLinkAttributes` will not be encoded or decoded. This is due to an runtime exception thrown when attempting to copy non-object CoreText values in dictionaries.
  
  @warning Any properties changed on the label after setting the text will not be reflected until a subsequent call to `setText:` or `setText:afterInheritingLabelAttributesAndConfiguringWithBlock:`. This is to say, order of operations matters in this case. For example, if the label text color is originally black when the text is set, changing the text color to red will have no effect on the display of the label until the text is set once again.
  
  @bug Setting `attributedText` directly is not recommended, as it may cause a crash when attempting to access any links previously set. Instead, call `setText:`, passing an `NSAttributedString`.
  */
-@interface TTTAttributedLabel : UILabel <TTTAttributedLabel, UIGestureRecognizerDelegate>
+@interface MQTTTAttributedLabel : UILabel <MQTTTAttributedLabel, UIGestureRecognizerDelegate>
 
 /**
  * The designated initializers are @c initWithFrame: and @c initWithCoder:.
@@ -119,9 +119,9 @@ IB_DESIGNABLE
 /**
  The receiver's delegate.
  
- @discussion A `TTTAttributedLabel` delegate responds to messages sent by tapping on links in the label. You can use the delegate to respond to links referencing a URL, address, phone number, date, or date with a specified time zone and duration.
+ @discussion A `MQTTTAttributedLabel` delegate responds to messages sent by tapping on links in the label. You can use the delegate to respond to links referencing a URL, address, phone number, date, or date with a specified time zone and duration.
  */
-@property (nonatomic, unsafe_unretained) IBOutlet id <TTTAttributedLabelDelegate> delegate;
+@property (nonatomic, unsafe_unretained) IBOutlet id <MQTTTAttributedLabelDelegate> delegate;
 
 ///--------------------------------------------
 /// @name Detecting, Accessing, & Styling Links
@@ -234,9 +234,9 @@ IB_DESIGNABLE
 @property (nonatomic, assign) IBInspectable UIEdgeInsets textInsets;
 
 /**
- The vertical text alignment for the label, for when the frame size is greater than the text rect size. The vertical alignment is `TTTAttributedLabelVerticalAlignmentCenter` by default.
+ The vertical text alignment for the label, for when the frame size is greater than the text rect size. The vertical alignment is `MQTTTAttributedLabelVerticalAlignmentCenter` by default.
  */
-@property (nonatomic, assign) TTTAttributedLabelVerticalAlignment verticalAlignment;
+@property (nonatomic, assign) MQTTTAttributedLabelVerticalAlignment verticalAlignment;
 
 ///--------------------------------------------
 /// @name Accessing Truncation Token Appearance
@@ -313,13 +313,13 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 ///-------------------
 
 /**
- Adds a link. You can customize an individual link's appearance and accessibility value by creating your own @c TTTAttributedLabelLink and passing it to this method. The other methods for adding links will use the label's default attributes.
+ Adds a link. You can customize an individual link's appearance and accessibility value by creating your own @c MQTTTAttributedLabelLink and passing it to this method. The other methods for adding links will use the label's default attributes.
  
  @warning Modifying the link's attribute dictionaries must be done before calling this method.
  
- @param link A @c TTTAttributedLabelLink object.
+ @param link A @c MQTTTAttributedLabelLink object.
  */
-- (void)addLink:(TTTAttributedLabelLink *)link;
+- (void)addLink:(MQTTTAttributedLabelLink *)link;
 
 /**
  Adds a link to an @c NSTextCheckingResult.
@@ -328,7 +328,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  
  @return The newly added link object.
  */
-- (TTTAttributedLabelLink *)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
+- (MQTTTAttributedLabelLink *)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
 
 /**
  Adds a link to an @c NSTextCheckingResult.
@@ -338,7 +338,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  
  @return The newly added link object.
  */
-- (TTTAttributedLabelLink *)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result
+- (MQTTTAttributedLabelLink *)addLinkWithTextCheckingResult:(NSTextCheckingResult *)result
                                                attributes:(NSDictionary *)attributes;
 
 /**
@@ -349,7 +349,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  
  @return The newly added link object.
  */
-- (TTTAttributedLabelLink *)addLinkToURL:(NSURL *)url
+- (MQTTTAttributedLabelLink *)addLinkToURL:(NSURL *)url
                                withRange:(NSRange)range;
 
 /**
@@ -362,7 +362,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  
  @return The newly added link object.
  */
-- (TTTAttributedLabelLink *)addLinkToAddress:(NSDictionary *)addressComponents
+- (MQTTTAttributedLabelLink *)addLinkToAddress:(NSDictionary *)addressComponents
                                    withRange:(NSRange)range;
 
 /**
@@ -373,7 +373,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  
  @return The newly added link object.
  */
-- (TTTAttributedLabelLink *)addLinkToPhoneNumber:(NSString *)phoneNumber
+- (MQTTTAttributedLabelLink *)addLinkToPhoneNumber:(NSString *)phoneNumber
                                        withRange:(NSRange)range;
 
 /**
@@ -384,7 +384,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  
  @return The newly added link object.
  */
-- (TTTAttributedLabelLink *)addLinkToDate:(NSDate *)date
+- (MQTTTAttributedLabelLink *)addLinkToDate:(NSDate *)date
                                 withRange:(NSRange)range;
 
 /**
@@ -397,7 +397,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  
  @return The newly added link object.
  */
-- (TTTAttributedLabelLink *)addLinkToDate:(NSDate *)date
+- (MQTTTAttributedLabelLink *)addLinkToDate:(NSDate *)date
                                  timeZone:(NSTimeZone *)timeZone
                                  duration:(NSTimeInterval)duration
                                 withRange:(NSRange)range;
@@ -410,7 +410,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  
  @return The newly added link object.
  */
-- (TTTAttributedLabelLink *)addLinkToTransitInformation:(NSDictionary *)components
+- (MQTTTAttributedLabelLink *)addLinkToTransitInformation:(NSDictionary *)components
                                               withRange:(NSRange)range;
 
 /**
@@ -423,20 +423,20 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 - (BOOL)containslinkAtPoint:(CGPoint)point;
 
 /**
- Returns the @c TTTAttributedLabelLink at the give point if it exists.
+ Returns the @c MQTTTAttributedLabelLink at the give point if it exists.
  
  @discussion This can be used together with @c UIViewControllerPreviewingDelegate to peek into links.
  
  @param point The point inside the label.
  */
-- (TTTAttributedLabelLink *)linkAtPoint:(CGPoint)point;
+- (MQTTTAttributedLabelLink *)linkAtPoint:(CGPoint)point;
 
 @end
 
 /**
- The `TTTAttributedLabelDelegate` protocol defines the messages sent to an attributed label delegate when links are tapped. All of the methods of this protocol are optional.
+ The `MQTTTAttributedLabelDelegate` protocol defines the messages sent to an attributed label delegate when links are tapped. All of the methods of this protocol are optional.
  */
-@protocol TTTAttributedLabelDelegate <NSObject>
+@protocol MQTTTAttributedLabelDelegate <NSObject>
 
 ///-----------------------------------
 /// @name Responding to Link Selection
@@ -449,7 +449,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  @param label The label whose link was selected.
  @param url The URL for the selected link.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
    didSelectLinkWithURL:(NSURL *)url;
 
 /**
@@ -458,7 +458,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  @param label The label whose link was selected.
  @param addressComponents The components of the address for the selected link.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didSelectLinkWithAddress:(NSDictionary *)addressComponents;
 
 /**
@@ -467,7 +467,7 @@ didSelectLinkWithAddress:(NSDictionary *)addressComponents;
  @param label The label whose link was selected.
  @param phoneNumber The phone number for the selected link.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didSelectLinkWithPhoneNumber:(NSString *)phoneNumber;
 
 /**
@@ -476,7 +476,7 @@ didSelectLinkWithPhoneNumber:(NSString *)phoneNumber;
  @param label The label whose link was selected.
  @param date The datefor the selected link.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
   didSelectLinkWithDate:(NSDate *)date;
 
 /**
@@ -487,7 +487,7 @@ didSelectLinkWithPhoneNumber:(NSString *)phoneNumber;
  @param timeZone The time zone of the date for the selected link.
  @param duration The duration, in seconds from the date for the selected link.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
   didSelectLinkWithDate:(NSDate *)date
                timeZone:(NSTimeZone *)timeZone
                duration:(NSTimeInterval)duration;
@@ -498,18 +498,18 @@ didSelectLinkWithPhoneNumber:(NSString *)phoneNumber;
  @param label The label whose link was selected.
  @param components A dictionary containing the transit components. The currently supported keys are `NSTextCheckingAirlineKey` and `NSTextCheckingFlightKey`.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didSelectLinkWithTransitInformation:(NSDictionary *)components;
 
 /**
  Tells the delegate that the user did select a link to a text checking result.
  
- @discussion This method is called if no other delegate method was called, which can occur by either now implementing the method in `TTTAttributedLabelDelegate` corresponding to a particular link, or the link was added by passing an instance of a custom `NSTextCheckingResult` subclass into `-addLinkWithTextCheckingResult:`.
+ @discussion This method is called if no other delegate method was called, which can occur by either now implementing the method in `MQTTTAttributedLabelDelegate` corresponding to a particular link, or the link was added by passing an instance of a custom `NSTextCheckingResult` subclass into `-addLinkWithTextCheckingResult:`.
  
  @param label The label whose link was selected.
  @param result The custom text checking result.
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didSelectLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
 
 ///---------------------------------
@@ -528,7 +528,7 @@ didSelectLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
  @param url The URL for the link.
  @param point the point pressed, in the label's coordinate space
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didLongPressLinkWithURL:(NSURL *)url
                 atPoint:(CGPoint)point;
 
@@ -539,7 +539,7 @@ didLongPressLinkWithURL:(NSURL *)url
  @param addressComponents The components of the address for the link.
  @param point the point pressed, in the label's coordinate space
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didLongPressLinkWithAddress:(NSDictionary *)addressComponents
                 atPoint:(CGPoint)point;
 
@@ -550,7 +550,7 @@ didLongPressLinkWithAddress:(NSDictionary *)addressComponents
  @param phoneNumber The phone number for the link.
  @param point the point pressed, in the label's coordinate space
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
                 atPoint:(CGPoint)point;
 
@@ -562,7 +562,7 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
  @param date The date for the selected link.
  @param point the point pressed, in the label's coordinate space
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didLongPressLinkWithDate:(NSDate *)date
                 atPoint:(CGPoint)point;
 
@@ -576,7 +576,7 @@ didLongPressLinkWithDate:(NSDate *)date
  @param duration The duration, in seconds from the date for the link.
  @param point the point pressed, in the label's coordinate space
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didLongPressLinkWithDate:(NSDate *)date
                timeZone:(NSTimeZone *)timeZone
                duration:(NSTimeInterval)duration
@@ -590,7 +590,7 @@ didLongPressLinkWithDate:(NSDate *)date
  @param components A dictionary containing the transit components. The currently supported keys are `NSTextCheckingAirlineKey` and `NSTextCheckingFlightKey`.
  @param point the point pressed, in the label's coordinate space
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didLongPressLinkWithTransitInformation:(NSDictionary *)components
                 atPoint:(CGPoint)point;
 
@@ -603,15 +603,15 @@ didLongPressLinkWithTransitInformation:(NSDictionary *)components
  @param result The custom text checking result.
  @param point the point pressed, in the label's coordinate space
  */
-- (void)attributedLabel:(TTTAttributedLabel *)label
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didLongPressLinkWithTextCheckingResult:(NSTextCheckingResult *)result
                 atPoint:(CGPoint)point;
 
 @end
 
-@interface TTTAttributedLabelLink : NSObject <NSCoding>
+@interface MQTTTAttributedLabelLink : NSObject <NSCoding>
 
-typedef void (^TTTAttributedLabelLinkBlock) (TTTAttributedLabel *, TTTAttributedLabelLink *);
+typedef void (^MQTTTAttributedLabelLinkBlock) (MQTTTAttributedLabel *, MQTTTAttributedLabelLink *);
 
 /**
  An `NSTextCheckingResult` representing the link's location and type.
@@ -641,16 +641,16 @@ typedef void (^TTTAttributedLabelLinkBlock) (TTTAttributedLabel *, TTTAttributed
 /**
  A block called when this link is tapped.
  If non-nil, tapping on this link will call this block instead of the 
- @c TTTAttributedLabelDelegate tap methods, which will not be called for this link.
+ @c MQTTTAttributedLabelDelegate tap methods, which will not be called for this link.
  */
-@property (nonatomic, copy) TTTAttributedLabelLinkBlock linkTapBlock;
+@property (nonatomic, copy) MQTTTAttributedLabelLinkBlock linkTapBlock;
 
 /**
  A block called when this link is long-pressed.
  If non-nil, long pressing on this link will call this block instead of the
- @c TTTAttributedLabelDelegate long press methods, which will not be called for this link.
+ @c MQTTTAttributedLabelDelegate long press methods, which will not be called for this link.
  */
-@property (nonatomic, copy) TTTAttributedLabelLinkBlock linkLongPressBlock;
+@property (nonatomic, copy) MQTTTAttributedLabelLinkBlock linkLongPressBlock;
 
 /**
  Initializes a link using the attribute dictionaries specified.
@@ -675,7 +675,7 @@ typedef void (^TTTAttributedLabelLinkBlock) (TTTAttributedLabel *, TTTAttributed
  
  @return The initialized link object.
  */
-- (instancetype)initWithAttributesFromLabel:(TTTAttributedLabel*)label
+- (instancetype)initWithAttributesFromLabel:(MQTTTAttributedLabel*)label
                          textCheckingResult:(NSTextCheckingResult *)result;
 
 @end

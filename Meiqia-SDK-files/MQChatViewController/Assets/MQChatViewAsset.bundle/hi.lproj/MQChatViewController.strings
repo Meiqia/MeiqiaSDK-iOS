@@ -40,6 +40,10 @@
 
 "save_photo_success"    = "फ़ोटो सहेजा गया";
 
+"save_video_success"    = "वीडियो सहेजा गया";
+
+"save_video_downloading" = "वीडियो डाउनलोड हो रहा है...";
+
 "save_text_success"     = "कॉपी किया गया";
 
 "save_photo"            = "बचाना";

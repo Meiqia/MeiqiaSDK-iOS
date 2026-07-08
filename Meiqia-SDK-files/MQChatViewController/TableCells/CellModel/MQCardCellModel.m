@@ -8,7 +8,7 @@
 
 #import "MQCardCellModel.h"
 #import "MQCardMessageCell.h"
-#import "TTTAttributedLabel.h"
+#import "MQTTTAttributedLabel.h"
 #import "MQServiceToViewInterface.h"
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
@@ -83,7 +83,7 @@
  */
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
 
-@property (nonatomic, strong) TTTAttributedLabel *textLabelForHeightCalculation;
+@property (nonatomic, strong) MQTTTAttributedLabel *textLabelForHeightCalculation;
 
 @end
 
@@ -95,7 +95,7 @@
                                     cellWidth:(CGFloat)cellWidth delegate:(id<MQCellModelDelegate>)delegator
 {
     if (self = [super init]) {
-        self.textLabelForHeightCalculation = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
+        self.textLabelForHeightCalculation = [[MQTTTAttributedLabel alloc] initWithFrame:CGRectZero];
         self.textLabelForHeightCalculation.numberOfLines = 0;
         self.conversionId = message.conversionId;
         self.messageId = message.messageId;

@@ -40,6 +40,10 @@
 
 "save_photo_success"    = "保存された写真";
 
+"save_video_success"    = "動画を保存しました";
+
+"save_video_downloading" = "動画をダウンロード中...";
+
 "save_text_success"     = "コピーされました";
 
 "save_photo"            = "保存";

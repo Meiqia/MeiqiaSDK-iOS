@@ -13,7 +13,7 @@
 #import "MQImageUtil.h"
 #import "MQBundleUtil.h"
 #import "MQStringSizeUtil.h"
-#import "TTTAttributedLabel.h"
+#import "MQTTTAttributedLabel.h"
 
 /**
  *常见问题标题的高度
@@ -116,7 +116,7 @@ static CGFloat const kMQBotHighMenuTitleHeight = 30;
  */
 @property (nonatomic, readwrite, strong) NSString *conversionId;
 
-@property (nonatomic, strong) TTTAttributedLabel *textLabelForHeightCalculation;
+@property (nonatomic, strong) MQTTTAttributedLabel *textLabelForHeightCalculation;
 
 @end
 
@@ -125,7 +125,7 @@ static CGFloat const kMQBotHighMenuTitleHeight = 30;
 - (MQBotHighMenuCellModel *)initCellModelWithMessage:(MQBotHighMenuMessage *)message cellWidth:(CGFloat)cellWidth delegate:(nonnull id<MQCellModelDelegate>)delegate {
     if (self = [super init]) {
         
-        self.textLabelForHeightCalculation = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
+        self.textLabelForHeightCalculation = [[MQTTTAttributedLabel alloc] initWithFrame:CGRectZero];
         self.textLabelForHeightCalculation.numberOfLines = 0;
         
         self.messageId = message.messageId;

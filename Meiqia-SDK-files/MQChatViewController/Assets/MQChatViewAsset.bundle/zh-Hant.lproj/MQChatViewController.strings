@@ -40,6 +40,10 @@
 
 "save_photo_success"    = "已保存圖片到本地相冊";
 
+"save_video_success"    = "已保存視頻到本地相冊";
+
+"save_video_downloading" = "正在下載視頻...";
+
 "save_text_success"     = "已複制";
 
 "save_photo"            = "保存";

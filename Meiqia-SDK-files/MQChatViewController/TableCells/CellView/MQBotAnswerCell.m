@@ -10,7 +10,7 @@
 #import "MQChatViewConfig.h"
 #import "MQChatFileUtil.h"
 #import "MQBundleUtil.h"
-#import "TTTAttributedLabel.h"
+#import "MQTTTAttributedLabel.h"
 #import "MQStringSizeUtil.h"
 #import "MQChatViewStyle.h"
 #import "MQBotAnswerCellModel.h"
@@ -20,13 +20,13 @@ static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;
 static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
 static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
 
-@interface MQBotAnswerCell() <TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+@interface MQBotAnswerCell() <MQTTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 @end
 
 @implementation MQBotAnswerCell  {
     UIImageView *avatarImageView;
-    TTTAttributedLabel *textLabel;
+    MQTTTAttributedLabel *textLabel;
     UIImageView *bubbleImageView;
     UIActivityIndicatorView *sendingIndicator;
     UIImageView *failureImageView;
@@ -54,7 +54,7 @@ static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
         [self.contentView addSubview:bubbleImageView];
         //初始化文字
         if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-            textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+            textLabel = [[MQTTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
             textLabel.delegate = self;
         } else {
 #pragma clang diagnostic push
@@ -157,7 +157,7 @@ static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
     
     //刷新聊天文字
     textLabel.frame = cellModel.textLabelFrame;
-    if ([textLabel isKindOfClass:[TTTAttributedLabel class]]) {
+    if ([textLabel isKindOfClass:[MQTTTAttributedLabel class]]) {
         textLabel.text = cellModel.cellText;
     } else {
         textLabel.attributedText = cellModel.cellText;
@@ -274,26 +274,26 @@ static const CGFloat   kMQBotAnswerEvaluateTextSize = 16.0;
     }
 }
 
-#pragma TTTAttributedLabelDelegate 点击事件
-- (void)attributedLabel:(TTTAttributedLabel *)label
+#pragma MQTTTAttributedLabelDelegate 点击事件
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
                 atPoint:(CGPoint)point {
     [self showMenueController];
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
+- (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:phoneNumber delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"make_call_to"], phoneNumber], [NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"send_message_to"], phoneNumber], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
     sheet.tag = kMQTextCellSelectedNumberActionSheetTag;
     [sheet showInView:[UIApplication sharedApplication].keyWindow];
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+- (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"open_url_by_safari"], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
     sheet.tag = kMQTextCellSelectedUrlActionSheetTag;
     [sheet showInView:[UIApplication sharedApplication].keyWindow];
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithTransitInformation:(NSDictionary *)components {
+- (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithTransitInformation:(NSDictionary *)components {
     if (!components[@"email"]) {
         return ;
     }

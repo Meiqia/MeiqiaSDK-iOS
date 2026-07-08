@@ -44,7 +44,7 @@
 		36A950C62864590E0052645C /* MLAudioMeterObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F5D2864590D0052645C /* MLAudioMeterObserver.m */; };
 		36A950C72864590E0052645C /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36A94F692864590D0052645C /* libopencore-amrwb.a */; };
 		36A950C82864590E0052645C /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36A94F6A2864590D0052645C /* libopencore-amrnb.a */; };
-		36A950C92864590E0052645C /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F6F2864590D0052645C /* TTTAttributedLabel.m */; };
+		36A950C92864590E0052645C /* MQTTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F6F2864590D0052645C /* MQTTTAttributedLabel.m */; };
 		36A950CA2864590E0052645C /* MEIQIA_FBBitmapFontView.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F712864590D0052645C /* MEIQIA_FBBitmapFontView.m */; };
 		36A950CB2864590E0052645C /* MEIQIA_FBSquareFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F722864590D0052645C /* MEIQIA_FBSquareFont.m */; };
 		36A950CC2864590E0052645C /* MEIQIA_FBFontSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A94F742864590D0052645C /* MEIQIA_FBFontSymbol.m */; };
@@ -331,8 +331,8 @@
 		36A94F6A2864590D0052645C /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
 		36A94F6B2864590D0052645C /* CafRecordWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CafRecordWriter.h; sourceTree = "<group>"; };
 		36A94F6C2864590D0052645C /* MLAudioRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLAudioRecorder.h; sourceTree = "<group>"; };
-		36A94F6E2864590D0052645C /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
-		36A94F6F2864590D0052645C /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
+		36A94F6E2864590D0052645C /* MQTTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTTTAttributedLabel.h; sourceTree = "<group>"; };
+		36A94F6F2864590D0052645C /* MQTTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTTTAttributedLabel.m; sourceTree = "<group>"; };
 		36A94F712864590D0052645C /* MEIQIA_FBBitmapFontView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_FBBitmapFontView.m; sourceTree = "<group>"; };
 		36A94F722864590D0052645C /* MEIQIA_FBSquareFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEIQIA_FBSquareFont.m; sourceTree = "<group>"; };
 		36A94F732864590D0052645C /* MEIQIA_FBBitmapFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEIQIA_FBBitmapFont.h; sourceTree = "<group>"; };
@@ -892,7 +892,7 @@
 				36A94F502864590D0052645C /* CustomIOSAlertView */,
 				36A94F532864590D0052645C /* EmojiView */,
 				36A94F582864590D0052645C /* MLAudioRecorder */,
-				36A94F6D2864590D0052645C /* TTTAttributedLabel */,
+				36A94F6D2864590D0052645C /* MQTTTAttributedLabel */,
 				36A94F702864590D0052645C /* FBDigitalFont */,
 			);
 			path = Vendors;
@@ -1002,11 +1002,11 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
-		36A94F6D2864590D0052645C /* TTTAttributedLabel */ = {
+		36A94F6D2864590D0052645C /* MQTTTAttributedLabel */ = {
 			isa = PBXGroup;
 			children = (
-				36A94F6E2864590D0052645C /* TTTAttributedLabel.h */,
-				36A94F6F2864590D0052645C /* TTTAttributedLabel.m */,
+				36A94F6E2864590D0052645C /* MQTTTAttributedLabel.h */,
+				36A94F6F2864590D0052645C /* MQTTTAttributedLabel.m */,
 			);
 			path = TTTAttributedLabel;
 			sourceTree = "<group>";
@@ -1972,7 +1972,7 @@
 				36A950AD2864590E0052645C /* MQMessageFormViewStyleBlue.m in Sources */,
 				36A9512D2864590E0052645C /* MQDateFormatterUtil.m in Sources */,
 				36A950CC2864590E0052645C /* MEIQIA_FBFontSymbol.m in Sources */,
-				36A950C92864590E0052645C /* TTTAttributedLabel.m in Sources */,
+				36A950C92864590E0052645C /* MQTTTAttributedLabel.m in Sources */,
 				36A950E72864590E0052645C /* MQEventMessageFactory.m in Sources */,
 				36A951312864590E0052645C /* MQPreChatFormViewModel.m in Sources */,
 				CBF12C742AB18FB200FBA29F /* MQBotWebViewBubbleAnswerCellModel.m in Sources */,

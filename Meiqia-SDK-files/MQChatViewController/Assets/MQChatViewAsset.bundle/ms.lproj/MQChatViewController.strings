@@ -40,6 +40,10 @@
 
 "save_photo_success"    = "Gambar telah disimpan dalam album";
 
+"save_video_success"    = "Video telah disimpan";
+
+"save_video_downloading" = "Memuat turun video...";
+
 "save_text_success"     = "Telah salin";
 
 "save_photo"            = "Simpan";

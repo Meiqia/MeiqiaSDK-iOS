@@ -40,6 +40,10 @@
 
 "save_photo_success" = "บันทึกรูปภาพแล้ว";
 
+"save_video_success"    = "บันทึกวิดีโอแล้ว";
+
+"save_video_downloading" = "กำลังดาวน์โหลดวิดีโอ...";
+
 "save_text_success" = "คัดลอกแล้ว";
 
 "save_photo" = "บันทึก";

@@ -11,20 +11,20 @@
 #import "MQChatViewConfig.h"
 #import "MQBundleUtil.h"
 #import "MQBotMenuCellModel.h"
-#import "TTTAttributedLabel.h"
+#import "MQTTTAttributedLabel.h"
 #import "MQBundleUtil.h"
 
 static const NSInteger kMQBotMenuCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQBotMenuCellSelectedNumberActionSheetTag = 2001;
 static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
 
-@interface MQBotMenuCell() <TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+@interface MQBotMenuCell() <MQTTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 @end
 
 @implementation MQBotMenuCell  {
     UIImageView *avatarImageView;
-    TTTAttributedLabel *textLabel;
+    MQTTTAttributedLabel *textLabel;
     UIImageView *bubbleImageView;
     UIActivityIndicatorView *sendingIndicator;
     UIImageView *failureImageView;
@@ -47,7 +47,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
         [self.contentView addSubview:bubbleImageView];
         //初始化文字
 //        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-//            textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+//            textLabel = [[MQTTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
 //            textLabel.delegate = self;
 //        } else {
 //#pragma clang diagnostic push
@@ -56,7 +56,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
 //#pragma clang diagnostic pop
 //        }
         
-        textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+        textLabel = [[MQTTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
 
         textLabel.numberOfLines = 0;
         textLabel.textAlignment = NSTextAlignmentLeft;
@@ -129,7 +129,7 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
     
     //刷新聊天文字
     textLabel.frame = cellModel.textLabelFrame;
-    if ([textLabel isKindOfClass:[TTTAttributedLabel class]]) {
+    if ([textLabel isKindOfClass:[MQTTTAttributedLabel class]]) {
         textLabel.text = cellModel.cellText;
     } else {
         textLabel.attributedText = cellModel.cellText;
@@ -214,26 +214,26 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
     }
 }
 
-#pragma TTTAttributedLabelDelegate 点击事件
-- (void)attributedLabel:(TTTAttributedLabel *)label
+#pragma MQTTTAttributedLabelDelegate 点击事件
+- (void)attributedLabel:(MQTTTAttributedLabel *)label
 didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
                 atPoint:(CGPoint)point {
     [self showMenueController];
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
+- (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:phoneNumber delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"make_call_to"], phoneNumber], [NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"send_message_to"], phoneNumber], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
     sheet.tag = kMQBotMenuCellSelectedNumberActionSheetTag;
     [sheet showInView:[UIApplication sharedApplication].keyWindow];
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+- (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"open_url_by_safari"], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
     sheet.tag = kMQBotMenuCellSelectedUrlActionSheetTag;
     [sheet showInView:[UIApplication sharedApplication].keyWindow];
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithTransitInformation:(NSDictionary *)components {
+- (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithTransitInformation:(NSDictionary *)components {
     if (!components[@"email"]) {
         return ;
     }

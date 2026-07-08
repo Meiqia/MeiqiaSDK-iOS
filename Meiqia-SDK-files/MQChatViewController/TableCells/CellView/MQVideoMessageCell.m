@@ -11,6 +11,7 @@
 #import "MQChatViewConfig.h"
 #import "MQAssetUtil.h"
 #import "MQRoundProgressView.h"
+#import "MQChatFileUtil.h"
 
 @interface MQVideoMessageCell ()
 @property (nonatomic, copy) NSString *mediaPath;
@@ -39,6 +40,9 @@
         bubbleView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:247/255.0 alpha:1];
         bubbleView.layer.masksToBounds = true;
         bubbleView.layer.cornerRadius = 6.0;
+        bubbleView.userInteractionEnabled = YES;
+        UILongPressGestureRecognizer *longPressBubbleGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressBubbleView:)];
+        [bubbleView addGestureRecognizer:longPressBubbleGesture];
         [self.contentView addSubview:bubbleView];
         
         //初始化contentImageView
@@ -123,11 +127,35 @@
         if (self.mediaPath && [MQChatFileUtil fileExistsAtPath:self.mediaPath isDirectory:NO]) {
             [self.chatCellDelegate showPlayVideoControllerWith:self.mediaPath serverPath:self.mediaServerPath];
         } else {
-            __weak typeof(self) weakSelf = self;
-            [cellModel startDownloadMediaCompletion:^(NSString * _Nonnull mediaPath) {
-                [weakSelf.chatCellDelegate showPlayVideoControllerWith:mediaPath serverPath:weakSelf.mediaServerPath];
-            }];
+            // 检查是否已缓存（例如通过长按保存时已下载）
+            NSString *cachePath = [MQChatFileUtil getVideoCachePathWithServerUrl:self.mediaServerPath];
+            if (cachePath && [MQChatFileUtil fileExistsAtPath:cachePath isDirectory:NO]) {
+                self.mediaPath = cachePath;
+                [self.chatCellDelegate showPlayVideoControllerWith:cachePath serverPath:self.mediaServerPath];
+            } else {
+                __weak typeof(self) weakSelf = self;
+                [cellModel startDownloadMediaCompletion:^(NSString * _Nonnull mediaPath) {
+                    weakSelf.mediaPath = mediaPath;
+                    [weakSelf.chatCellDelegate showPlayVideoControllerWith:mediaPath serverPath:weakSelf.mediaServerPath];
+                }];
+            }
         }
+    }
+}
+
+#pragma 长按事件
+- (void)longPressBubbleView:(id)sender {
+    if (((UILongPressGestureRecognizer*)sender).state == UIGestureRecognizerStateBegan) {
+        NSMutableDictionary *menuItems = [NSMutableDictionary dictionary];
+        if (self.mediaPath.length > 0) {
+            menuItems[@"videoCopy"] = self.mediaPath;
+        } else {
+            menuItems[@"videoCopy"] = @"";
+        }
+        if (self.mediaServerPath.length > 0) {
+            menuItems[@"videoServerPath"] = self.mediaServerPath;
+        }
+        [self showMenuControllerInView:self targetRect:bubbleView.frame menuItemsName:menuItems];
     }
 }
 

@@ -11,7 +11,7 @@
 #import "MQStringSizeUtil.h"
 #import "MQBundleUtil.h"
 #import "MQToolUtil.h"
-#import "TTTAttributedLabel.h"
+#import "MQTTTAttributedLabel.h"
 
 //static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 
@@ -90,8 +90,8 @@
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    if ([touch.view isKindOfClass:[TTTAttributedLabel class]]){
-           TTTAttributedLabel *label = (TTTAttributedLabel *)touch.view;
+    if ([touch.view isKindOfClass:[MQTTTAttributedLabel class]]){
+           MQTTTAttributedLabel *label = (MQTTTAttributedLabel *)touch.view;
            if ([label containslinkAtPoint:[touch locationInView:label]]){
                return NO;
            }else{

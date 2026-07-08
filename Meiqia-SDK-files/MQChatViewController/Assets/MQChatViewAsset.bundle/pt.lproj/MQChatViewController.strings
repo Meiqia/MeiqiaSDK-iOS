@@ -40,6 +40,10 @@
 
 "save_photo_success" = "Foto salva";
 
+"save_video_success"    = "Vídeo salvo";
+
+"save_video_downloading" = "Baixando vídeo...";
+
 "save_text_success" = "Copiado";
 
 "save_photo" = "salvar";

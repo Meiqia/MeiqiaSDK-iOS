@@ -7,13 +7,13 @@
 //
 
 #import "MQPreChatTopView.h"
-#import "TTTAttributedLabel.h"
+#import "MQTTTAttributedLabel.h"
 #import "MQStringSizeUtil.h"
 #import "MQEmbededWebView.h"
 
-@interface MQPreChatTopView()<TTTAttributedLabelDelegate>
+@interface MQPreChatTopView()<MQTTTAttributedLabelDelegate>
 
-//@property (nonatomic, strong) TTTAttributedLabel * attributedLabel;
+//@property (nonatomic, strong) MQTTTAttributedLabel * attributedLabel;
 @property (nonatomic, strong) MQEmbededWebView *contentWebView;
 @property (nonatomic, assign) CGFloat cacheMaxWidth;
 @property (nonatomic, assign) CGFloat cacheContentHeight;
@@ -29,7 +29,7 @@
         self.content = text;
         self.cacheContentHeight = [MQStringSizeUtil getHeightForAttributedText:[self getAttributedText] textWidth:maxWidth];
         
-//        self.attributedLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, maxWidth, self.cacheContentHeight)];
+//        self.attributedLabel = [[MQTTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, maxWidth, self.cacheContentHeight)];
 //        self.attributedLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink | NSTextCheckingTypePhoneNumber;
 //        self.attributedLabel.delegate = self;
 //        self.attributedLabel.numberOfLines = 0;
@@ -71,9 +71,9 @@
     return self.cacheContentHeight;
 }
 
-#pragma TTTAttributedLabelDelegate 点击事件
+#pragma MQTTTAttributedLabelDelegate 点击事件
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+- (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
     
     NSString *urlStr = [url absoluteString];
     if ([urlStr rangeOfString:@"://"].location == NSNotFound) {
@@ -83,7 +83,7 @@
     }
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
+- (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phoneNumber]] options:@{} completionHandler:nil];
 }
 

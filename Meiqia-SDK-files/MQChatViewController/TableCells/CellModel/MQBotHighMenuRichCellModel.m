@@ -13,7 +13,7 @@
 #import "MQImageUtil.h"
 #import "MQBundleUtil.h"
 #import "MQStringSizeUtil.h"
-#import "TTTAttributedLabel.h"
+#import "MQTTTAttributedLabel.h"
 
 /**
  *常见问题标题的高度

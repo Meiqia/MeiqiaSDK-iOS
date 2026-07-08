@@ -40,6 +40,10 @@
 
 "save_photo_success" = "Изображения сохранены в локальном альбоме";
 
+"save_video_success"    = "Видео сохранено";
+
+"save_video_downloading" = "Загрузка видео...";
+
 "save_text_success" = "Скопировано";
 
 "save_photo" = "сохранить";

@@ -40,6 +40,10 @@
 
 "save_photo_success"    = "Ảnh đã lưu";
 
+"save_video_success"    = "Đã lưu video";
+
+"save_video_downloading" = "Đang tải video...";
+
 "save_text_success"     = "Đã sao chép";
 
 "save_photo"            = "cứu";

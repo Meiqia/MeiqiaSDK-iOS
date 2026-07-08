@@ -28,3 +28,4 @@ DerivedData
 Meiqia-SDK-files/MeiQiaSDK.framework/_CodeSignature
 fastlane/Appfile
 Meiqia-SDK-Demo.app.dSYM.zip
+.DS_Store

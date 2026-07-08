@@ -40,6 +40,10 @@
 
 "save_photo_success"    = "로컬 앨범에 저장된 사진";
 
+"save_video_success"    = "비디오가 저장되었습니다";
+
+"save_video_downloading" = "비디오 다운로드 중...";
+
 "save_text_success"     = "복사됨";
 
 "save_photo"            = "구하다";
