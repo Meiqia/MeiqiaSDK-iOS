@@ -16,7 +16,7 @@
 #import "MQBundleUtil.h"
 #import "MQWindowUtil.h"
 
-@interface MQFileDownloadCell()<UIActionSheetDelegate>
+@interface MQFileDownloadCell()
 
 @property (nonatomic, strong) MQFileDownloadCellModel *viewModel;
 
@@ -192,20 +192,33 @@
 }
 
 - (void)showActionSheet {
-    [self.window endEditing:YES];
-    UIActionSheet *as = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"mq_display_preview"],[MQBundleUtil localizedStringForKey:@"mq_open_file"], nil];
-
-    as.delegate = self;
-    [as showInView:self];
-}
-
-#pragma mark - action sheet delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        [self.viewModel previewFileFromController:[MQWindowUtil topController]];
-    } else if (buttonIndex == 1) {
-        [self.viewModel openFile:self];
+    [[MQWindowUtil currentWindowForView:self] endEditing:YES];
+    UIViewController *controller = [MQWindowUtil topControllerForView:self];
+    if (!controller) {
+        return;
     }
+
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    __weak typeof(self) weakSelf = self;
+    __weak typeof(alertController) weakAlertController = alertController;
+    __weak typeof(controller) weakController = controller;
+    [alertController addAction:[UIAlertAction actionWithTitle:[MQBundleUtil localizedStringForKey:@"mq_display_preview"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __strong typeof(weakAlertController) strongAlertController = weakAlertController;
+        __strong typeof(weakController) strongController = weakController;
+        [strongAlertController dismissViewControllerAnimated:NO completion:^{
+            [strongSelf.viewModel previewFileFromController:strongController];
+        }];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:[MQBundleUtil localizedStringForKey:@"mq_open_file"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf.viewModel openFile:strongSelf];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:[MQBundleUtil localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:nil]];
+
+    alertController.popoverPresentationController.sourceView = self.itemsView ?: self.contentView;
+    alertController.popoverPresentationController.sourceRect = (self.itemsView ?: self.contentView).bounds;
+    [controller presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - lazy load

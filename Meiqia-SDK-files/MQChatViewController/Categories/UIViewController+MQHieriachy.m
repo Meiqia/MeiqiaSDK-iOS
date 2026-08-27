@@ -7,21 +7,18 @@
 //
 
 #import "UIViewController+MQHieriachy.h"
+#import "MQWindowUtil.h"
 
 @implementation UIViewController(MQHieriachy)
 
 + (UIViewController *)mq_topMostViewController
 {
-    UIViewController *topController = [self topWindow].rootViewController;
-    while (topController.presentedViewController) {
-        topController = topController.presentedViewController;
-    }
-    return topController;
+    return [MQWindowUtil topController];
 }
 
 + (UIWindow *)topWindow
 {
-    NSArray *windows = [[UIApplication sharedApplication] windows];
+    NSArray *windows = [MQWindowUtil currentWindows];
     for(UIWindow *window in [windows reverseObjectEnumerator]) {
         if ([window isKindOfClass:[UIWindow class]] &&
             window.windowLevel == UIWindowLevelNormal &&
@@ -29,7 +26,7 @@
             return window;
     }
     
-    return [UIApplication sharedApplication].keyWindow;
+    return [MQWindowUtil currentWindow];
 }
 
 

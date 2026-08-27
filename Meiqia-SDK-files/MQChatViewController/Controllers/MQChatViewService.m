@@ -8,6 +8,7 @@
 
 
 #import "MQChatViewService.h"
+#import "MQWindowUtil.h"
 #import "MQTextMessage.h"
 #import "MQImageMessage.h"
 #import "MQVoiceMessage.h"
@@ -314,8 +315,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)sendTextMessageWithContent:(NSString *)content {
     // 排队中 不能发消息
     if ([MQServiceToViewInterface waitingInQueuePosition] > 0 && [MQServiceToViewInterface getCurrentAgent].privilege != MQAgentPrivilegeBot) {
-        [[[UIApplication sharedApplication].windows lastObject] endEditing:YES];
-        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"waiting_agent_send_message"] duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
+        [[MQWindowUtil currentWindow] endEditing:YES];
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"waiting_agent_send_message"] duration:2.5 window:[MQWindowUtil currentWindow]];
         [MQServiceToViewInterface getClientQueuePositionComplete:^(NSInteger position, NSError *error) {
             //从后台获取 position 然后保存到本地
         }];
@@ -447,6 +448,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  * @param resendData 重新发送的字典 [text/image/voice : data]
  */
 - (void)resendMessageAtIndex:(NSInteger)index resendData:(NSDictionary *)resendData {
+    if (index < 0 || index >= self.cellModels.count || resendData.count == 0) {
+        return;
+    }
+
     //通知逻辑层删除该message数据
 #ifdef INCLUDE_MEIQIA_SDK
     NSString *messageId = [[self.cellModels objectAtIndex:index] getCellMessageId];
@@ -456,16 +461,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self.cellModels removeObjectAtIndex:index];
     [self.delegate removeCellAtIndex:index];
     //判断删除这个model的之前的model是否为date，如果是，则删除时间cellModel
-    if (index < 0 || self.cellModels.count <= index-1) {
-        return;
-    }
-    
-    id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index-1];
-    if (cellModel && [cellModel isKindOfClass:[MQMessageDateCellModel class]]) {
-        [self.cellModels removeObjectAtIndex:index - 1];
-        [self.delegate removeCellAtIndex:index - 1];
-        index --;
-        
+    if (index > 0 && index - 1 < self.cellModels.count) {
+        id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index - 1];
+        if (cellModel && [cellModel isKindOfClass:[MQMessageDateCellModel class]]) {
+            [self.cellModels removeObjectAtIndex:index - 1];
+            [self.delegate removeCellAtIndex:index - 1];
+            index --;
+        }
     }
     
     if (self.cellModels.count > index) {
@@ -1223,7 +1225,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
             }
         } else {
-            [MQToast showToast:[error shortDescription] duration:2.0 window:[[UIApplication sharedApplication].windows lastObject]];
+            [MQToast showToast:[error shortDescription] duration:2.0 window:[MQWindowUtil currentWindow]];
         }
     } receiveMessageDelegate:self];
 }
@@ -1275,7 +1277,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 [strongSelf handleClientOnlineWithRreceivedMessages:receivedMessages completeStatus:completion];
             }
         } else {
-            [MQToast showToast:[error shortDescription] duration:2.5 window:[[UIApplication sharedApplication].windows lastObject]];
+            [MQToast showToast:[error shortDescription] duration:2.5 window:[MQWindowUtil currentWindow]];
         }    } receiveMessageDelegate:self];
 }
 
@@ -1630,6 +1632,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma mark - handle message
 - (void)handleEventMessage:(MQEventMessage *)eventMessage {
+    if (eventMessage.eventType == MQChatEventTypeAgentInputting) {
+        if ([self.delegate respondsToSelector:@selector(didReceiveAgentInputting)]) {
+            [self.delegate didReceiveAgentInputting];
+        }
+        return;
+    }
+
     // 撤回消息 
     if (eventMessage.eventType == MQChatEventTypeWithdrawMsg) {
         [self.cellModels enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -1719,6 +1728,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #pragma mark - viewInface delegate
 
 - (void)didReceiveNewMessages:(NSArray *)messages {
+    BOOL shouldScrollToBottom = [self.delegate isChatTableViewScrolledToBottom];
     if (messages.count == 1 && [[messages firstObject] isKindOfClass:[MQEventMessage class]]) { // Event message
         MQEventMessage *eventMessage = (MQEventMessage *)[messages firstObject];
         if (eventMessage.eventType == MQChatEventTypeRedirectFail) {
@@ -1771,8 +1781,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //等待 0.1 秒，等待 tableView 更新后再滑动到底部，优化体验
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (self.delegate && isRefreshView) {
-            if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
-                [self.delegate didReceiveMessage];
+            if ([self.delegate respondsToSelector:@selector(didReceiveMessageWithShouldScrollToBottom:)]) {
+                [self.delegate didReceiveMessageWithShouldScrollToBottom:shouldScrollToBottom];
             }
         }
     });
@@ -1788,16 +1798,18 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 - (void)addCellModelAfterReceivedWithCellModel:(id<MQCellModelProtocol>)cellModel {
+    BOOL shouldScrollToBottom = [self.delegate isChatTableViewScrolledToBottom];
     [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
-    [self didReceiveMessageWithCellModel:cellModel];
+    [self didReceiveMessageWithCellModel:cellModel shouldScrollToBottom:shouldScrollToBottom];
 }
 
-- (void)didReceiveMessageWithCellModel:(id<MQCellModelProtocol>)cellModel {
+- (void)didReceiveMessageWithCellModel:(id<MQCellModelProtocol>)cellModel
+                  shouldScrollToBottom:(BOOL)shouldScrollToBottom {
     [self addCellModelAndReloadTableViewWithModel:cellModel];
     [self playReceivedMessageSound];
     if (self.delegate) {
-        if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
-            [self.delegate didReceiveMessage];
+        if ([self.delegate respondsToSelector:@selector(didReceiveMessageWithShouldScrollToBottom:)]) {
+            [self.delegate didReceiveMessageWithShouldScrollToBottom:shouldScrollToBottom];
         }
     }
 }
@@ -1881,7 +1893,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 //        [currentViewMessageIdSet addObject:newMessageId];
 //    }
     if (error && error.userInfo.count > 0 && [error.userInfo valueForKey:@"NSLocalizedDescription"] && [[error.userInfo valueForKey:@"NSLocalizedDescription"] isEqualToString:@"file upper limit!!"]) {
-        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_upload_limit"] duration:2 window:[UIApplication sharedApplication].keyWindow];
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_upload_limit"] duration:2 window:[MQWindowUtil currentWindow]];
     }
     
     // 判断是否有触发排队

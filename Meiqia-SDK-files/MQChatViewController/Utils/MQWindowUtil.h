@@ -11,6 +11,27 @@
 
 @interface MQWindowUtil : NSObject
 
++ (void)presentActionSheetWithTitle:(NSString *)title
+                       actionTitles:(NSArray<NSString *> *)actionTitles
+                        cancelTitle:(NSString *)cancelTitle
+                         sourceView:(UIView *)sourceView
+                            handler:(void (^)(NSInteger index))handler;
++ (void)presentAlertWithTitle:(NSString *)title
+                       message:(NSString *)message
+                   cancelTitle:(NSString *)cancelTitle
+                  confirmTitle:(NSString *)confirmTitle
+                       handler:(void (^)(BOOL confirmed))handler;
++ (void)presentAlertWithTitle:(NSString *)title
+                       message:(NSString *)message
+                   cancelTitle:(NSString *)cancelTitle
+                  confirmTitle:(NSString *)confirmTitle
+                    sourceView:(UIView *)sourceView
+                       handler:(void (^)(BOOL confirmed))handler;
++ (UIWindow *)currentWindow;
++ (UIWindow *)currentWindowForView:(UIView *)view;
++ (NSArray<UIWindow *> *)currentWindows;
 + (UIViewController *)topController;
++ (UIViewController *)topControllerForView:(UIView *)view;
++ (CGRect)statusBarFrame;
 
 @end

@@ -16,26 +16,11 @@
 #import "NSArray+MQFunctional.h"
 #import "MQNotificationManager.h"
 
-#define MQ_DEMO_ALERTVIEW_TAG 3000
-#define MQ_DEMO_ALERTVIEW_TAG_APPKEY 4000
-#define MQ_DEMO_ALERTVIEW_TAG_PRESENDMSG 4001
-
-typedef enum : NSUInteger {
-    MQSDKDemoManagerClientId = 0,
-    MQSDKDemoManagerCustomizedId,
-    MQSDKDemoManagerAgentId,
-    MQSDKDemoManagerGroupId,
-    MQSDKDemoManagerClientAttrs,
-    MQSDKDemoManagerClientOffline,
-    MQSDKDemoManagerEndConversation,
-    MQSDKDemoManagerCustomizedIdUnreadCount
-} MQSDKDemoManager;
-
 static CGFloat   const kMQSDKDemoTableCellHeight = 56.0;
 static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCount";
 
 
-@interface DevelopViewController ()<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, UIActionSheetDelegate>
+@interface DevelopViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @end
 
@@ -286,43 +271,70 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
+- (void)presentInputAlertWithTitle:(NSString *)title handler:(void (^)(NSString *value))handler {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:nil];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        if (handler) {
+            handler(alert.textFields.firstObject.text ?: @"");
+        }
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)presentMessageAlertWithTitle:(NSString *)title message:(NSString *)message {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)presentConfirmAlertWithTitle:(NSString *)title message:(NSString *)message handler:(void (^)(BOOL confirmed))handler {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        if (handler) {
+            handler(YES);
+        }
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 #pragma UITableViewDataSource
 - (void)switchAppKey {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"已注册的 app key 列表" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:nil];
-    [actionSheet addButtonWithTitle:@"新建"];
-    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"已注册的 app key 列表" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:[UIAlertAction actionWithTitle:@"新建" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self presentInputAlertWithTitle:@"新建 app key" handler:^(NSString *appKey) {
+            [MQManager initWithAppkey:appKey completion:^(NSString *clientId, NSError *error) {
+                if (!error) {
+                    [[MQChatViewManager new] pushMQChatViewControllerInViewController:self];
+                } else {
+                    [MQToast showToast:@"创建appkey失败" duration:1.0 window:self.view];
+                }
+            }];
+        }];
+    }]];
     for (NSString *appKey in [MQManager getLocalAppKeys]) {
-        [actionSheet addButtonWithTitle:appKey];
+        [alert addAction:[UIAlertAction actionWithTitle:appKey style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [MQManager initWithAppkey:action.title completion:^(NSString *clientId, NSError *error) {
+                if (!error) {
+                    [[MQChatViewManager new] pushMQChatViewControllerInViewController:self];
+                }
+            }];
+        }]];
     }
-
-    [actionSheet showInView:self.view];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    if (alert.popoverPresentationController) {
+        alert.popoverPresentationController.sourceView = self.view;
+        alert.popoverPresentationController.sourceRect = CGRectMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds), 1, 1);
+    }
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)presentMessageAndOnline {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入预发送消息" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alertView.tag = MQ_DEMO_ALERTVIEW_TAG_PRESENDMSG;
-    [alertView show];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        return;
-    } else if (buttonIndex == 1) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"新建 app key" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-        alertView.tag = MQ_DEMO_ALERTVIEW_TAG_APPKEY;
-        [alertView show];
-    } else {
-        NSString *selectedAppkey = [MQManager getLocalAppKeys][buttonIndex - 2];
-        
-        [MQManager initWithAppkey:selectedAppkey completion:^(NSString *clientId, NSError *error) {
-            if (!error) {
-                MQChatViewManager *chatViewManager = [MQChatViewManager new];
-                [chatViewManager pushMQChatViewControllerInViewController:self];
-            }
-        }];
-    }
+    [self presentInputAlertWithTitle:@"输入预发送消息" handler:^(NSString *message) {
+        [self setClientOnlineWithPresendMessage:message];
+    }];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -385,10 +397,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  输入顾客id
  */
 - (void)inputClientId {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入美洽顾客id" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerClientId;
-    [alertView show];
+    [self presentInputAlertWithTitle:@"输入美洽顾客id" handler:^(NSString *value) {
+        [self setClientOnlineWithClientId:value];
+    }];
 }
 
 /**
@@ -421,10 +432,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  输入开发者自定义id
  */
 - (void)inputCustomizedId {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入自定义Id进行上线" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerCustomizedId;
-    [alertView show];
+    [self presentInputAlertWithTitle:@"输入自定义Id进行上线" handler:^(NSString *value) {
+        [self setClientOnlineWithCustomizedId:value];
+    }];
 }
 
 /**
@@ -448,8 +458,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  */
 - (void)getCurrentClientId {
     NSString *clientId = [MQManager getCurrentClientId];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"当前的美洽顾客id为：" message:clientId delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-    [alertView show];
+    [self presentMessageAlertWithTitle:@"当前的美洽顾客id为：" message:clientId];
 }
 
 /**
@@ -461,8 +470,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
             self->currentClientId = clientId;
             [self->configTableView reloadData];
             NSString *clientId = [MQManager getCurrentClientId];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"新的美洽顾客id为：" message:clientId delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-            [alertView show];
+            [self presentMessageAlertWithTitle:@"新的美洽顾客id为：" message:clientId];
         } else {
             NSLog(@"新建美洽client失败");
         }
@@ -473,10 +481,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  输入指定分配客服的Id
  */
 - (void)inputScheduledAgentId {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入一个客服Id进行指定分配" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerAgentId;
-    [alertView show];
+    [self presentInputAlertWithTitle:@"输入一个客服Id进行指定分配" handler:^(NSString *value) {
+        [self setClientOnlineWithAgentId:value];
+    }];
 }
 
 /**
@@ -494,10 +501,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  输入指定分配客服组的Id
  */
 - (void)inputScheduledGroupId {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入一个客服组Id进行指定分配" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerGroupId;
-    [alertView show];
+    [self presentInputAlertWithTitle:@"输入一个客服组Id进行指定分配" handler:^(NSString *value) {
+        [self setClientOnlineWithGroupId:value];
+    }];
 }
 
 /**
@@ -516,9 +522,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  显示 设置顾客离线 的alertView
  */
 - (void)showSetClientOfflineAlertView {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"设置当前顾客离线吗？" message:@"美洽建议，退出聊天界面，不需要让顾客离线，这样 SDK 还能接收客服发送的消息。" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerClientOffline;
-    [alertView show];
+    [self presentConfirmAlertWithTitle:@"设置当前顾客离线吗？" message:@"美洽建议，退出聊天界面，不需要让顾客离线，这样 SDK 还能接收客服发送的消息。" handler:^(BOOL confirmed) {
+        [self setCurrentClientOffline];
+    }];
 }
 
 /**
@@ -529,9 +535,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 }
 
 - (void)showEndConversationAlertView {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"结束当前对话吗？" message:@"美洽建议，让美洽后台自动超时结束对话，否则结束对话后，顾客得重新分配客服，建了一个新的客服对话。" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerEndConversation;
-    [alertView show];
+    [self presentConfirmAlertWithTitle:@"结束当前对话吗？" message:@"美洽建议，让美洽后台自动超时结束对话，否则结束对话后，顾客得重新分配客服，建了一个新的客服对话。" handler:^(BOOL confirmed) {
+        [self endCurrentConversation];
+    }];
 }
 
 /**
@@ -552,8 +558,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  */
 - (void)removeMeiqiaMediaData {
     [MQManager removeAllMediaDataWithCompletion:^(float mediaSize) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"已为您移除多媒体存储，共 %f M", mediaSize] message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-        [alertView show];
+        [self presentMessageAlertWithTitle:[NSString stringWithFormat:@"已为您移除多媒体存储，共 %f M", mediaSize] message:nil];
     }];
 }
 
@@ -563,19 +568,16 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
 - (void)removeAllMesagesFromDatabase {
     [MQManager removeAllMessageFromDatabaseWithCompletion:^(BOOL success, NSError *error) {
         if (success) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"已删除本地数据库中的消息" message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-            [alertView show];
+            [self presentMessageAlertWithTitle:@"已删除本地数据库中的消息" message:nil];
         } else {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"抱歉，删除本地数据库消息失败了>.<" message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-            [alertView show];
+            [self presentMessageAlertWithTitle:@"抱歉，删除本地数据库消息失败了>.<" message:nil];
         }
     }];
 }
 
 - (void)getMeiqiaSDKVersion {
     NSString *sdkVersion = [MQManager getMeiQiaSDKVersion];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"当前美洽 SDK 版本号为：%@", sdkVersion] message:nil delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-    [alertView show];
+    [self presentMessageAlertWithTitle:[NSString stringWithFormat:@"当前美洽 SDK 版本号为：%@", sdkVersion] message:nil];
 }
 
 /**
@@ -607,11 +609,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     [MQServiceToViewInterface getUnreadMessagesWithCompletion:^(NSArray *messages, NSError *error) {
         [indicator stopAnimating];
         cell.accessoryView = nil;
-        UIAlertView *alert = [UIAlertView new];
-        alert.title = @"未读消息";
-        alert.message = [NSString stringWithFormat:@"未读消息数为: %d",(int)messages.count];
-        [alert addButtonWithTitle:@"OK"];
-        [alert show];
+        [self presentMessageAlertWithTitle:@"未读消息" message:[NSString stringWithFormat:@"未读消息数为: %d",(int)messages.count]];
     }];
 }
 
@@ -623,11 +621,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
     
     [MQServiceToViewInterface getUnreadMessagesWithCustomizedId:customizedId withCompletion:^(NSArray *messages, NSError *error) {
         [indicator stopAnimating];
-        UIAlertView *alert = [UIAlertView new];
-        alert.title = @"未读消息";
-        alert.message = error.localizedDescription.length > 0 ? error.localizedDescription : [NSString stringWithFormat:@"未读消息数为: %d",(int)messages.count];
-        [alert addButtonWithTitle:@"OK"];
-        [alert show];
+        [self presentMessageAlertWithTitle:@"未读消息" message:error.localizedDescription.length > 0 ? error.localizedDescription : [NSString stringWithFormat:@"未读消息数为: %d",(int)messages.count]];
     }];
 }
 
@@ -636,9 +630,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  */
 - (void)showSetClientAttributesAlertView {
     NSString *attrs = [NSString stringWithCString:[clientCustomizedAttrs.description cStringUsingEncoding:NSUTF8StringEncoding] encoding:NSNonLossyASCIIStringEncoding];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"上传下列属性吗？" message:attrs delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerClientAttrs;
-    [alertView show];
+    [self presentConfirmAlertWithTitle:@"上传下列属性吗？" message:attrs handler:^(BOOL confirmed) {
+        [self uploadClientAttributes];
+    }];
 }
 
 /**
@@ -653,8 +647,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
             alertString = @"上传顾客自定义信息失败";
             message = @"请检查当前的美洽顾客id是否还没有显示出来(红色字体)，没有显示出即表示没有成功初始化SDK";
         }
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertString message:message delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
-        [alertView show];
+        [self presentMessageAlertWithTitle:alertString message:message];
     }];
 }
 
@@ -671,60 +664,9 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  *  输入自定义Id获取未读消息数<##>
  */
 - (void)inputCustomizedIdGetUnreadMessageCount {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"输入自定义Id获取未读消息数" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alertView.tag = MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerCustomizedIdUnreadCount;
-    [alertView show];
-}
-
-#pragma UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        switch (alertView.tag) {
-            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerClientId:
-                [self setClientOnlineWithClientId:[alertView textFieldAtIndex:0].text];
-                break;
-            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerCustomizedId:
-                [self setClientOnlineWithCustomizedId:[alertView textFieldAtIndex:0].text];
-                break;
-            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerAgentId:
-                [self setClientOnlineWithAgentId:[alertView textFieldAtIndex:0].text];
-                break;
-            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerGroupId:
-                [self setClientOnlineWithGroupId:[alertView textFieldAtIndex:0].text];
-                break;
-            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerClientAttrs:
-                [self uploadClientAttributes];
-                break;
-            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerClientOffline:
-                [self setCurrentClientOffline];
-                break;
-            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerEndConversation:
-                [self endCurrentConversation];
-                break;
-            case MQ_DEMO_ALERTVIEW_TAG_APPKEY: {
-                [MQManager initWithAppkey:[alertView textFieldAtIndex:0].text completion:^(NSString *clientId, NSError *error) {
-                    if (!error) {
-                        MQChatViewManager *chatViewManager = [MQChatViewManager new];
-                        [chatViewManager pushMQChatViewControllerInViewController:self];
-                    }else{
-                        [MQToast showToast:@"创建appkey失败" duration:1.0 window:self.view];
-                    }
-                }];
-            }
-                break;
-            case MQ_DEMO_ALERTVIEW_TAG_PRESENDMSG: {
-                [self setClientOnlineWithPresendMessage:[alertView textFieldAtIndex:0].text];
-            }
-                break;
-            case MQ_DEMO_ALERTVIEW_TAG + (int)MQSDKDemoManagerCustomizedIdUnreadCount: {
-                [self showUnreadMessageCountWithCustomizedId:[alertView textFieldAtIndex:0].text];
-            }
-                break;
-            default:
-                break;
-        }
-    }
+    [self presentInputAlertWithTitle:@"输入自定义Id获取未读消息数" handler:^(NSString *value) {
+        [self showUnreadMessageCountWithCustomizedId:value];
+    }];
 }
 
 /**
@@ -827,7 +769,7 @@ static NSString * kSwitchShowUnreadMessageCount = @"kSwitchShowUnreadMessageCoun
  */
 
 - (void)showAlert {
-    [[[UIAlertView alloc] initWithTitle:@"test" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+    [self presentMessageAlertWithTitle:@"test" message:nil];
 }
 
 - (void)chatViewStyle6 {

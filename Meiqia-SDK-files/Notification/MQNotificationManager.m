@@ -7,6 +7,7 @@
 //
 
 #import "MQNotificationManager.h"
+#import "MQWindowUtil.h"
 #import "MQToolUtil.h"
 #import "MQNotificationView.h"
 #import "MQServiceToViewInterface.h"
@@ -48,6 +49,9 @@ static NSInteger const kMQNotificationDismissTime = 5.0;
 - (void)showNotification {
     if (!self.notificationWindow) {
         [self createNotificationWindow];
+        if (!self.notificationWindow) {
+            return;
+        }
         [self.notificationWindow addSubview:self.notificationView];
         
         UISwipeGestureRecognizer *topSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
@@ -63,7 +67,7 @@ static NSInteger const kMQNotificationDismissTime = 5.0;
         [self.notificationWindow makeKeyAndVisible];
         
         [UIView animateWithDuration:0.5 animations:^{
-            self.notificationWindow.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, kMQNotificationWindowContentHeight);
+            self.notificationWindow.frame = CGRectMake(0, 0, CGRectGetWidth(self.notificationWindow.bounds), kMQNotificationWindowContentHeight);
         } completion:^(BOOL finished) {
             [self resetCountdown:kMQNotificationDismissTime];
         }];
@@ -76,15 +80,28 @@ static NSInteger const kMQNotificationDismissTime = 5.0;
 
 - (void)dismissNotification {
     [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.notificationWindow.frame = CGRectMake(0, -(kMQNotificationWindowContentHeight), [UIScreen mainScreen].bounds.size.width, kMQNotificationWindowContentHeight);
+        self.notificationWindow.frame = CGRectMake(0, -(kMQNotificationWindowContentHeight), CGRectGetWidth(self.notificationWindow.bounds), kMQNotificationWindowContentHeight);
     } completion:^(BOOL finished) {
         self.notificationWindow = nil;
     }];
 }
 
 - (void)createNotificationWindow {
-    CGRect bounds = CGRectMake(0, -(kMQNotificationWindowContentHeight), [UIScreen mainScreen].bounds.size.width, kMQNotificationWindowContentHeight);
-    self.notificationWindow = [[UIWindow alloc] initWithFrame:bounds];
+    UIWindow *sourceWindow = [MQWindowUtil currentWindow];
+    CGFloat windowWidth = CGRectGetWidth(sourceWindow.bounds);
+    if (windowWidth <= 0) {
+        windowWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
+    }
+    CGRect bounds = CGRectMake(0, -(kMQNotificationWindowContentHeight), windowWidth, kMQNotificationWindowContentHeight);
+    if (@available(iOS 13.0, *)) {
+        UIWindowScene *windowScene = sourceWindow.windowScene;
+        if (windowScene) {
+            self.notificationWindow = [[UIWindow alloc] initWithWindowScene:windowScene];
+            self.notificationWindow.frame = bounds;
+        }
+    } else {
+        self.notificationWindow = [[UIWindow alloc] initWithFrame:bounds];
+    }
     self.notificationWindow.backgroundColor = [UIColor colorWithWhite:1 alpha:0];
     self.notificationWindow.windowLevel = 4000;
 }
@@ -166,21 +183,7 @@ static NSInteger const kMQNotificationDismissTime = 5.0;
 }
 
 - (UIViewController *)findCurrentShowingViewController {
-    
-    UIWindow* window = nil;
-    
-    if (@available(iOS 13.0, *)) {
-        for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes)
-        {
-            if (windowScene.activationState == UISceneActivationStateForegroundActive)
-            {
-                window = windowScene.windows.firstObject;
-                break;
-            }
-        }
-    } else {
-        window = [UIApplication sharedApplication].keyWindow;
-    }
+    UIWindow* window = [MQWindowUtil currentWindow];
     UIViewController *vc = window.rootViewController;
 
     return [self findCurrentShowingViewControllerFrom:vc];

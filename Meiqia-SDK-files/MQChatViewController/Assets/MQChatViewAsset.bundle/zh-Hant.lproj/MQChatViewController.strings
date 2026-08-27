@@ -199,3 +199,4 @@
 
 "waiting_agent_send_message" = "正在排隊，請等待客服接取後發送訊息";
 "pre_chat_form_input" = "輸入";
+"agent_inputting_title" = "正在輸入...";

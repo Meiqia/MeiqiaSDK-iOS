@@ -56,9 +56,16 @@
 - (void)scrollTableViewToBottomAnimated:(BOOL)animated;
 
 /**
- *  通知viewController收到了消息
+ *  获取消息列表更新前是否位于底部
  */
-- (void)didReceiveMessage;
+- (BOOL)isChatTableViewScrolledToBottom;
+
+/**
+ *  通知viewController收到了消息
+ *
+ *  @param shouldScrollToBottom 消息列表更新前是否位于底部
+ */
+- (void)didReceiveMessageWithShouldScrollToBottom:(BOOL)shouldScrollToBottom;
 
 /**
  *  通知viewController显示toast
@@ -82,6 +89,11 @@
  *
  */
 - (void)needToDisplayLeaveComment:(BOOL)display;
+
+/**
+ *  通知 viewController 客服正在输入
+ */
+- (void)didReceiveAgentInputting;
 
 #ifdef INCLUDE_MEIQIA_SDK
 /**

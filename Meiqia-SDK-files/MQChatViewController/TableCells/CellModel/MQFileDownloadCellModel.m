@@ -7,12 +7,15 @@
 //
 
 #import "MQFileDownloadCellModel.h"
+#import "MQWindowUtil.h"
 #import "MQFileDownloadMessage.h"
 #import "MQChatFileUtil.h"
 #import "MQFileDownloadCell.h"
 #import "MQServiceToViewInterface.h"
 #import "MQBundleUtil.h"
 #import "MQToast.h"
+#import "MQImageViewerViewController.h"
+#import "MQVideoPlayerViewController.h"
 #import <QuickLook/QuickLook.h>
 
 @interface MQFileDownloadCellModel()<UIDocumentInteractionControllerDelegate, QLPreviewControllerDataSource>
@@ -90,7 +93,7 @@
     }
     
     if (self.isExpired) {
-        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_download_file_is_expired"] duration:2 window:[UIApplication sharedApplication].keyWindow];
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_download_file_is_expired"] duration:2 window:[MQWindowUtil currentWindow]];
         return;
     }
     
@@ -115,7 +118,7 @@
                [self saveFile:mediaData];
                block(100);
            } else {
-               [MQToast showToast:[NSString stringWithFormat:@"%@ %@",[MQBundleUtil localizedStringForKey:@"file_download_failed"],error.localizedDescription] duration:2 window:[UIApplication sharedApplication].keyWindow];
+               [MQToast showToast:[NSString stringWithFormat:@"%@ %@",[MQBundleUtil localizedStringForKey:@"file_download_failed"],error.localizedDescription] duration:2 window:[MQWindowUtil currentWindow]];
                self.fileDownloadStatus = MQFileDownloadStatusNotDownloaded;
                block(-1);
            }
@@ -124,7 +127,7 @@
 }
 
 - (void)cancelDownload {
-    [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_download_canceld"] duration:2 window:[UIApplication sharedApplication].keyWindow];
+    [MQToast showToast:[MQBundleUtil localizedStringForKey:@"file_download_canceld"] duration:2 window:[MQWindowUtil currentWindow]];
     [MQServiceToViewInterface cancelDownloadForUrl:self.downloadingURL];
     self.downloadingURL = nil;
     self.fileDownloadStatus = MQFileDownloadStatusNotDownloaded;
@@ -141,10 +144,50 @@
 }
 
 - (void)previewFileFromController:(UIViewController *)controller {
+    NSString *filePath = [self savedFilePath];
+
+    if ([self isImageFileAtPath:filePath]) {
+        UIImage *image = [UIImage imageWithContentsOfFile:filePath];
+        if (image) {
+            MQImageViewerViewController *viewerVC = [MQImageViewerViewController new];
+            viewerVC.images = @[image];
+            __weak MQImageViewerViewController *weakViewerVC = viewerVC;
+            [viewerVC setSelection:^(NSUInteger index) {
+                [weakViewerVC dismiss];
+            }];
+            [viewerVC showOn:controller fromRectArray:nil];
+            return;
+        }
+    }
+
+    if ([self isVideoFileAtPath:filePath]) {
+        MQVideoPlayerViewController *playerVC = [[MQVideoPlayerViewController alloc] initPlayerWithLocalPath:filePath serverPath:@""];
+        [controller presentViewController:playerVC animated:YES completion:nil];
+        return;
+    }
+
     QLPreviewController *previewController = [QLPreviewController new];
     previewController.dataSource = self;
     previewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [controller presentViewController:previewController animated:YES completion:nil];
+}
+
+- (BOOL)isImageFileAtPath:(NSString *)path {
+    static NSSet *imageExtensions;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        imageExtensions = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", @"heic", @"heif", @"bmp", @"tiff", @"tif", @"webp", nil];
+    });
+    return [imageExtensions containsObject:path.pathExtension.lowercaseString];
+}
+
+- (BOOL)isVideoFileAtPath:(NSString *)path {
+    static NSSet *videoExtensions;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        videoExtensions = [NSSet setWithObjects:@"mp4", @"mov", @"m4v", @"3gp", @"avi", nil];
+    });
+    return [videoExtensions containsObject:path.pathExtension.lowercaseString];
 }
 
 #pragma mark - QLPreviewControllerDataSource

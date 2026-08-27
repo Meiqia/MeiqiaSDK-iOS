@@ -198,3 +198,4 @@
 
 "waiting_agent_send_message" = "कृपया प्रतीक्षा करें";
 "pre_chat_form_input" = "प्रवेश करना";
+"agent_inputting_title" = "टाइप कर रहे हैं...";

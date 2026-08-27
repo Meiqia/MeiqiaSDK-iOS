@@ -7,6 +7,7 @@
 //
 
 #import "MQMessageFormViewController.h"
+#import "MQWindowUtil.h"
 #import "MQBundleUtil.h"
 #import "MQToast.h"
 #import "MQChatDeviceUtil.h"
@@ -340,7 +341,7 @@ static NSString * const kMessageFormMessageKey = @"message";
             //数组
             NSArray *arr = [[NSArray alloc] initWithArray:value];
             if (model.isRequired && arr.count == 0) {
-                [MQToast showToast:[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"param_not_allow_null"], model.tip] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
+                [MQToast showToast:[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"param_not_allow_null"], model.tip] duration:1.0 window:[MQWindowUtil currentWindow]];
                 return;
             }
             if (arr.count > 0) {
@@ -351,7 +352,7 @@ static NSString * const kMessageFormMessageKey = @"message";
            //字符串
             NSString *valueStr = [[NSString alloc] initWithFormat:@"%@",value];
             if (model.isRequired && valueStr.length == 0) {
-                [MQToast showToast:[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"param_not_allow_null"], model.tip] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
+                [MQToast showToast:[NSString stringWithFormat:[MQBundleUtil localizedStringForKey:@"param_not_allow_null"], model.tip] duration:1.0 window:[MQWindowUtil currentWindow]];
                 return;
             }
             if (valueStr.length > 0) {
@@ -368,7 +369,7 @@ static NSString * const kMessageFormMessageKey = @"message";
     }
 
     if (!self.contactAllRequired && valueCharCount == 0) {
-        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"contact_at_lease_enter_one"] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"contact_at_lease_enter_one"] duration:1.0 window:[MQWindowUtil currentWindow]];
         return;
     }
 
@@ -388,7 +389,7 @@ static NSString * const kMessageFormMessageKey = @"message";
                 [self dismissMessageFormViewController];
             } else {
                 self.navigationItem.rightBarButtonItem.enabled = YES;
-                [MQToast showToast:[MQBundleUtil localizedStringForKey:@"submit_failure"] duration:1.0 window:[[UIApplication sharedApplication].windows lastObject]];
+                [MQToast showToast:[MQBundleUtil localizedStringForKey:@"submit_failure"] duration:1.0 window:[MQWindowUtil currentWindow]];
             }
         });
     }];

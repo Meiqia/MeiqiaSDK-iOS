@@ -7,6 +7,7 @@
 //
 
 #import "MQChatDeviceUtil.h"
+#import "MQWindowUtil.h"
 #import <AVFoundation/AVFoundation.h>
 
 @implementation MQChatDeviceUtil
@@ -24,7 +25,7 @@
 }
 
 +(CGRect)getDeviceStatusBarRect{
-    return [[UIApplication sharedApplication] statusBarFrame];
+    return [MQWindowUtil statusBarFrame];
 }
 
 +(CGRect)getDeviceNavRect:(UIViewController*)viewController{
@@ -32,7 +33,7 @@
 }
 
 +(CGRect)getDeviceFrameRect:(UIViewController*)viewController{
-    CGRect statusBarRect = [[UIApplication sharedApplication] statusBarFrame];
+    CGRect statusBarRect = [MQWindowUtil statusBarFrame];
     CGRect navRect = viewController.navigationController.navigationBar.frame;
     CGRect tabBarRect = (viewController.tabBarController) ? viewController.tabBarController.tabBar.frame : CGRectMake(0, 0, 0, 0);
     CGRect screenRect = [[UIScreen mainScreen] bounds];

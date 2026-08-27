@@ -192,6 +192,7 @@
 		CBF12C942AB18FB200FBA29F /* MQBotMenuAnswerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF12C5E2AB18FB200FBA29F /* MQBotMenuAnswerCell.m */; };
 		CCE9D10B1C1812F6004E862E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10A1C1812F6004E862E /* main.m */; };
 		CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE9D10D1C1812F6004E862E /* AppDelegate.m */; };
+		CD0708010000000000000002 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CD0708010000000000000001 /* SceneDelegate.m */; };
 		CCE9D1141C1812F6004E862E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCE9D1121C1812F6004E862E /* Main.storyboard */; };
 		CCE9D1161C1812F6004E862E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCE9D1151C1812F6004E862E /* Assets.xcassets */; };
 		CCE9D1191C1812F6004E862E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCE9D1171C1812F6004E862E /* LaunchScreen.storyboard */; };
@@ -209,6 +210,7 @@
 		E41DDDA61DD18DE0000B3083 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E41DDDA51DD18DE0000B3083 /* libz.tbd */; };
 		E4275AD91DEC1B5F0011B32B /* MQOnlineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4275AD51DEC16400011B32B /* MQOnlineTests.m */; };
 		E4275ADB1DEC1D000011B32B /* MQInitializationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4275ADA1DEC1D000011B32B /* MQInitializationTest.m */; };
+		CD0708010000000000000004 /* MQSceneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD0708010000000000000003 /* MQSceneTests.m */; };
 		E4275ADD1DEC41010011B32B /* MQSendTextTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4275ADC1DEC41010011B32B /* MQSendTextTests.m */; };
 		E4275AE01DED844C0011B32B /* MQStateObserverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E4275ADF1DED844C0011B32B /* MQStateObserverTests.m */; };
 		E44A5EA51D5AF47D000481E8 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E44A5EA41D5AF47D000481E8 /* Accelerate.framework */; };
@@ -627,6 +629,8 @@
 		CCE9D10A1C1812F6004E862E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CCE9D10C1C1812F6004E862E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CCE9D10D1C1812F6004E862E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CD0708010000000000000000 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		CD0708010000000000000001 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
 		CCE9D1131C1812F6004E862E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CCE9D1151C1812F6004E862E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CCE9D1181C1812F6004E862E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -653,6 +657,7 @@
 		E41DDDA51DD18DE0000B3083 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		E4275AD51DEC16400011B32B /* MQOnlineTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQOnlineTests.m; sourceTree = "<group>"; };
 		E4275ADA1DEC1D000011B32B /* MQInitializationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQInitializationTest.m; sourceTree = "<group>"; };
+		CD0708010000000000000003 /* MQSceneTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQSceneTests.m; sourceTree = "<group>"; };
 		E4275ADC1DEC41010011B32B /* MQSendTextTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQSendTextTests.m; sourceTree = "<group>"; };
 		E4275ADF1DED844C0011B32B /* MQStateObserverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQStateObserverTests.m; sourceTree = "<group>"; };
 		E44A5EA41D5AF47D000481E8 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -1569,6 +1574,8 @@
 			children = (
 				CCE9D10C1C1812F6004E862E /* AppDelegate.h */,
 				CCE9D10D1C1812F6004E862E /* AppDelegate.m */,
+				CD0708010000000000000000 /* SceneDelegate.h */,
+				CD0708010000000000000001 /* SceneDelegate.m */,
 				89B5549E1FE75E8100EAC49D /* ViewController.h */,
 				89B5549F1FE75E8100EAC49D /* ViewController.m */,
 				CCE9D14B1C1813BE004E862E /* DevelopViewController.h */,
@@ -1598,6 +1605,7 @@
 				E4275AD51DEC16400011B32B /* MQOnlineTests.m */,
 				E4275ADC1DEC41010011B32B /* MQSendTextTests.m */,
 				E4275ADA1DEC1D000011B32B /* MQInitializationTest.m */,
+				CD0708010000000000000003 /* MQSceneTests.m */,
 				E4275ADF1DED844C0011B32B /* MQStateObserverTests.m */,
 			);
 			path = "Meiqia-SDK-DemoTests";
@@ -1865,6 +1873,7 @@
 				36A950C12864590E0052645C /* MEIQIA_InputView.m in Sources */,
 				36A951502864590E0052645C /* UIColor+MQHex.m in Sources */,
 				CCE9D10E1C1812F6004E862E /* AppDelegate.m in Sources */,
+				CD0708010000000000000002 /* SceneDelegate.m in Sources */,
 				36A950EB2864590E0052645C /* MQMessageFactoryHelper.m in Sources */,
 				36A9513D2864590E0052645C /* MQTagListView.m in Sources */,
 				36A9511A2864590E0052645C /* MQAnimatorPush.m in Sources */,
@@ -2022,6 +2031,7 @@
 				E4275ADD1DEC41010011B32B /* MQSendTextTests.m in Sources */,
 				E4275AD91DEC1B5F0011B32B /* MQOnlineTests.m in Sources */,
 				E4275ADB1DEC1D000011B32B /* MQInitializationTest.m in Sources */,
+				CD0708010000000000000004 /* MQSceneTests.m in Sources */,
 				E4275AE01DED844C0011B32B /* MQStateObserverTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

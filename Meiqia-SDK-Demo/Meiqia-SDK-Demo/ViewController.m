@@ -109,6 +109,12 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
 //    [self feedback];
 }
 
+- (void)presentMeiqiaVC:(UIButton *)button {
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager setClientInfo:@{@"tel":@"18233598478",@"qq":@"484568756",@"email":@"4554455788@qq.com"} override:YES];
+    [chatViewManager presentMQChatViewControllerInViewController:self];
+}
+
 - (void)feedback
 {
     MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
@@ -143,12 +149,26 @@ static CGFloat const kMQButtonToBottomSpacing   = 128.0;
     basicFunctionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     basicFunctionBtn.frame = CGRectMake(devFunctionBtn.frame.origin.x, devFunctionBtn.frame.origin.y - kMQButtonVerticalSpacing - kMQButtonHeight, buttonWidth, kMQButtonHeight);
     basicFunctionBtn.backgroundColor = devFunctionBtn.backgroundColor;
-    [basicFunctionBtn setTitle:@"在线客服" forState:UIControlStateNormal];
+    [basicFunctionBtn setTitle:@"在线客服（pushMQChat）" forState:UIControlStateNormal];
     [basicFunctionBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    basicFunctionBtn.titleLabel.font = [UIFont systemFontOfSize:14.0];
+    basicFunctionBtn.titleLabel.adjustsFontSizeToFitWidth = YES;
+    basicFunctionBtn.titleLabel.minimumScaleFactor = 0.8;
     [self.view addSubview:basicFunctionBtn];
+
+    UIButton *presentFunctionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    presentFunctionBtn.frame = CGRectMake(basicFunctionBtn.frame.origin.x, basicFunctionBtn.frame.origin.y - kMQButtonVerticalSpacing - kMQButtonHeight, buttonWidth, kMQButtonHeight);
+    presentFunctionBtn.backgroundColor = devFunctionBtn.backgroundColor;
+    [presentFunctionBtn setTitle:@"在线客服（presentMQChat）" forState:UIControlStateNormal];
+    [presentFunctionBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    presentFunctionBtn.titleLabel.font = [UIFont systemFontOfSize:14.0];
+    presentFunctionBtn.titleLabel.adjustsFontSizeToFitWidth = YES;
+    presentFunctionBtn.titleLabel.minimumScaleFactor = 0.8;
+    [self.view addSubview:presentFunctionBtn];
     
     [devFunctionBtn addTarget:self action:@selector(didTapDevFunctionBtn:) forControlEvents:UIControlEventTouchUpInside];
     [basicFunctionBtn addTarget:self action:@selector(pushToMeiqiaVC:) forControlEvents:UIControlEventTouchUpInside];
+    [presentFunctionBtn addTarget:self action:@selector(presentMeiqiaVC:) forControlEvents:UIControlEventTouchUpInside];
     
 }
 - (void)didReceiveMemoryWarning {

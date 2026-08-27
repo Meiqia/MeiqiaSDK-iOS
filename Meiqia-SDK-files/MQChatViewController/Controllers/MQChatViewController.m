@@ -7,6 +7,7 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
+#import "MQWindowUtil.h"
 #import "MQChatViewController.h"
 #import "MQChatViewTableDataSource.h"
 #import "MQChatViewService.h"
@@ -87,6 +88,11 @@ static inline UIColor *MQToolbarSendButtonInactiveColor(void) {
 @property (nonatomic, strong) UIButton *toolbarSendButton;
 @property (nonatomic, strong) NSArray<NSLayoutConstraint *> *toolbarSendButtonConstraints;
 
+@property (nonatomic, strong) NSTimer *agentInputtingTitleTimer;
+@property (nonatomic, strong) UIView *titleViewBeforeAgentInputting;
+@property (nonatomic, copy) NSString *titleBeforeAgentInputting;
+@property (nonatomic, assign) BOOL shouldFollowIncomingMessages;
+
 @end
 
 @implementation MQChatViewController {
@@ -106,6 +112,7 @@ static inline UIColor *MQToolbarSendButtonInactiveColor(void) {
 }
 
 - (void)dealloc {
+    [self.agentInputtingTitleTimer invalidate];
     [self removeDelegateAndObserver];
     [chatViewConfig setConfigToDefault];
     [self.chatViewService setCurrentInputtingText:[(MQTabInputContentView *)self.bottomBar.contentView textField].text];
@@ -275,7 +282,7 @@ static inline UIColor *MQToolbarSendButtonInactiveColor(void) {
     [super viewWillAppear:animated];
     willDisapper = NO;
     [UIView setAnimationsEnabled:YES];
-    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+    [[MQWindowUtil currentWindowForView:self.view] endEditing:YES];
     [self.chatViewService fillTextDraftToFiledIfExists:(UITextField *)[(MQTabInputContentView *)self.bottomBar.contentView textField]];
 }
 
@@ -446,6 +453,12 @@ static inline UIColor *MQToolbarSendButtonInactiveColor(void) {
 }
 
 #pragma mark - UIScrollViewDelegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    if (scrollView == self.chatTableView) {
+        self.shouldFollowIncomingMessages = NO;
+    }
+}
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (self.chatTableView.refreshView.status == MQRefreshStatusTriggered) {
         [self.chatTableView startAnimation];
@@ -593,15 +606,47 @@ static inline UIColor *MQToolbarSendButtonInactiveColor(void) {
     }
 }
 
-- (void)didReceiveMessage {
-    //判断是否显示新消息提示  旧版本 是根据此时 是否已经滚动到底部,不在底部 则toast 提示新消息 否则直接显示最新消息
+- (BOOL)isChatTableViewScrolledToBottom {
     if ([self.chatTableView isTableViewScrolledToBottom]) {
+        self.shouldFollowIncomingMessages = YES;
+    }
+    return self.shouldFollowIncomingMessages;
+}
+
+- (void)didReceiveMessageWithShouldScrollToBottom:(BOOL)shouldScrollToBottom {
+    // 使用消息插入前的滚动状态，避免新增内容撑高列表后被误判为用户正在查看历史消息
+    if (shouldScrollToBottom) {
         [self chatTableViewScrollToBottomWithAnimated: YES];
     } else {
         if ([MQChatViewConfig sharedConfig].enableShowNewMessageAlert) {
-            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:[[UIApplication sharedApplication].windows lastObject]];
+            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:[MQWindowUtil currentWindow]];
         }
     }
+}
+
+- (void)didReceiveAgentInputting {
+    if (!self.agentInputtingTitleTimer.isValid) {
+        self.titleViewBeforeAgentInputting = self.navigationItem.titleView;
+        self.titleBeforeAgentInputting = self.navigationItem.title;
+    }
+
+    [self.agentInputtingTitleTimer invalidate];
+    self.navigationItem.titleView = nil;
+    self.navigationItem.title = [MQBundleUtil localizedStringForKey:@"agent_inputting_title"];
+    self.agentInputtingTitleTimer = [NSTimer scheduledTimerWithTimeInterval:2.0
+                                                                    target:self
+                                                                  selector:@selector(restoreTitleAfterAgentInputting)
+                                                                  userInfo:nil
+                                                                   repeats:NO];
+}
+
+- (void)restoreTitleAfterAgentInputting {
+    [self.agentInputtingTitleTimer invalidate];
+    self.agentInputtingTitleTimer = nil;
+    self.navigationItem.title = self.titleBeforeAgentInputting;
+    self.navigationItem.titleView = self.titleViewBeforeAgentInputting;
+    self.titleBeforeAgentInputting = nil;
+    self.titleViewBeforeAgentInputting = nil;
 }
 
 - (void)showToastViewWithContent:(NSString *)content {
@@ -928,7 +973,7 @@ static inline UIColor *MQToolbarSendButtonInactiveColor(void) {
         if (videoUrl) {
             float videoSize = [MQChatFileUtil getfileSizeAtPath:[videoUrl path]];
             if (videoSize > 400 * 1024 * 1024) {
-                [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_video_more_than_limit"] duration:2 window:[UIApplication sharedApplication].keyWindow];
+                [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_video_more_than_limit"] duration:2 window:[MQWindowUtil currentWindow]];
                 [MQChatFileUtil deleteFileAtPath:[videoUrl path]];
                 return;
             }
@@ -963,9 +1008,33 @@ static inline UIColor *MQToolbarSendButtonInactiveColor(void) {
 }
 
 - (void)resendMessageInCell:(UITableViewCell *)cell resendData:(NSDictionary *)resendData {
+    if (resendData.count == 0) {
+        return;
+    }
+
     //先删除之前的消息
-    NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
-    [self.chatViewService resendMessageAtIndex:indexPath.row resendData:resendData];
+    __block NSInteger messageIndex = NSNotFound;
+    NSString *messageId = resendData[@"messageId"];
+    id<MQCellModelProtocol> messageModel = resendData[@"messageModel"];
+    if (messageId.length > 0) {
+        [self.chatViewService.cellModels enumerateObjectsUsingBlock:^(id<MQCellModelProtocol> model, NSUInteger index, BOOL *stop) {
+            if ([[model getCellMessageId] isEqualToString:messageId]) {
+                messageIndex = index;
+                *stop = YES;
+            }
+        }];
+    }
+    if (messageIndex == NSNotFound && messageModel) {
+        messageIndex = [self.chatViewService.cellModels indexOfObjectIdenticalTo:messageModel];
+    }
+    if (messageIndex == NSNotFound && cell) {
+        NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
+        messageIndex = indexPath ? indexPath.row : NSNotFound;
+    }
+    if (messageIndex == NSNotFound) {
+        return;
+    }
+    [self.chatViewService resendMessageAtIndex:messageIndex resendData:resendData];
     [self chatTableViewScrollToBottomWithAnimated:true];
 }
 
@@ -1282,7 +1351,7 @@ static inline UIColor *MQToolbarSendButtonInactiveColor(void) {
     // 判断当前顾客是否正在登陆，如果正在登陆，显示禁止发送的提示
     if (self.chatViewService.clientStatus == MQStateAllocatingAgent) {
         NSString *alertText = @"cannot_text_client_is_onlining";
-        [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:[[UIApplication sharedApplication].windows lastObject]];
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:alertText] duration:2 window:[MQWindowUtil currentWindow]];
         
         return NO;
     }

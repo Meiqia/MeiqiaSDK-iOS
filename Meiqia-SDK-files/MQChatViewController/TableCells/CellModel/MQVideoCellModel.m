@@ -7,6 +7,7 @@
 //
 
 #import "MQVideoCellModel.h"
+#import "MQWindowUtil.h"
 #import "MQVideoMessageCell.h"
 #import "MQServiceToViewInterface.h"
 #import "MQImageUtil.h"
@@ -238,7 +239,7 @@ static CGFloat const kMQCellBubbleToImageSpacing = 12.0;
                 completion(mediaPath);
             }
         } else {
-            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_video_expired"] duration:1.5 window:[UIApplication sharedApplication].keyWindow];
+            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_video_expired"] duration:1.5 window:[MQWindowUtil currentWindow]];
         }
         weakSelf.isDownloading = NO;
         if (self.delegate) {

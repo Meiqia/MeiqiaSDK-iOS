@@ -198,6 +198,6 @@
 
 "waiting_agent_send_message" = "列に並んでいます。お待ちください";
 "pre_chat_form_input" = "入力";
-
+"agent_inputting_title" = "入力中...";
 
 

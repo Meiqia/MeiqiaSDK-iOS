@@ -7,6 +7,7 @@
 //
 
 #import "MQToolUtil.h"
+#import "MQWindowUtil.h"
 #import <sys/utsname.h>
 #import <UIKit/UIKit.h>
 @implementation MQToolUtil
@@ -127,15 +128,7 @@
     return 44;
 }
 + (CGFloat)kMQObtainStatusBarHeight{
-    
-    if (@available(iOS 13.0, *)) {
-        NSSet *set = [UIApplication sharedApplication].connectedScenes;
-        UIWindowScene *windowScene = [set anyObject];
-        UIStatusBarManager *statusBarManager = windowScene.statusBarManager;
-        return statusBarManager.statusBarFrame.size.height;
-    } else {
-        return [UIApplication sharedApplication].statusBarFrame.size.height;
-    }
+    return [MQWindowUtil statusBarFrame].size.height;
 }
 + (CGFloat)kMQObtainNaviHeight{
     

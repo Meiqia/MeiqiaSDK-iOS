@@ -7,6 +7,7 @@
 //
 
 #import "MQBotMenuCell.h"
+#import "MQWindowUtil.h"
 #import "MQChatFileUtil.h"
 #import "MQChatViewConfig.h"
 #import "MQBundleUtil.h"
@@ -222,24 +223,68 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
 }
 
 - (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:phoneNumber delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"make_call_to"], phoneNumber], [NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"send_message_to"], phoneNumber], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
-    sheet.tag = kMQBotMenuCellSelectedNumberActionSheetTag;
-    [sheet showInView:[UIApplication sharedApplication].keyWindow];
+    NSString *messageContent = [textLabel.text copy];
+    __weak typeof(self) weakSelf = self;
+    [MQWindowUtil presentActionSheetWithTitle:phoneNumber actionTitles:@[[NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"make_call_to"], phoneNumber], [NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"send_message_to"], phoneNumber], [MQBundleUtil localizedStringForKey:@"save_text"]] cancelTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] sourceView:label handler:^(NSInteger index) {
+        if (index == 0) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phoneNumber]] options:@{} completionHandler:nil];
+        } else if (index == 1) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"sms://%@", phoneNumber]] options:@{} completionHandler:nil];
+        } else if (index == 2) {
+            [UIPasteboard generalPasteboard].string = phoneNumber;
+        }
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        if ([strongSelf.chatCellDelegate respondsToSelector:@selector(didSelectMessageInCell:messageContent:selectedContent:)]) {
+            [strongSelf.chatCellDelegate didSelectMessageInCell:strongSelf messageContent:messageContent selectedContent:phoneNumber];
+        }
+    }];
 }
 
 - (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"open_url_by_safari"], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
-    sheet.tag = kMQBotMenuCellSelectedUrlActionSheetTag;
-    [sheet showInView:[UIApplication sharedApplication].keyWindow];
+    NSString *urlString = url.absoluteString;
+    NSString *messageContent = [textLabel.text copy];
+    __weak typeof(self) weakSelf = self;
+    [MQWindowUtil presentActionSheetWithTitle:urlString actionTitles:@[[MQBundleUtil localizedStringForKey:@"open_url_by_safari"], [MQBundleUtil localizedStringForKey:@"save_text"]] cancelTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] sourceView:label handler:^(NSInteger index) {
+        if (index == 0) {
+            NSString *openString = [urlString rangeOfString:@"://"].location == NSNotFound ? [NSString stringWithFormat:@"http://%@", urlString] : urlString;
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:openString] options:@{} completionHandler:nil];
+        } else if (index == 1) {
+            [UIPasteboard generalPasteboard].string = urlString;
+        }
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        if ([strongSelf.chatCellDelegate respondsToSelector:@selector(didSelectMessageInCell:messageContent:selectedContent:)]) {
+            [strongSelf.chatCellDelegate didSelectMessageInCell:strongSelf messageContent:messageContent selectedContent:urlString];
+        }
+    }];
 }
 
 - (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithTransitInformation:(NSDictionary *)components {
     if (!components[@"email"]) {
         return ;
     }
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:components[@"email"] delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"make_email_to"], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
-    sheet.tag = kMQBotMenuCellSelectedEmailActionSheetTag;
-    [sheet showInView:[UIApplication sharedApplication].keyWindow];
+    NSString *email = components[@"email"];
+    NSString *messageContent = [textLabel.text copy];
+    __weak typeof(self) weakSelf = self;
+    [MQWindowUtil presentActionSheetWithTitle:email actionTitles:@[[MQBundleUtil localizedStringForKey:@"make_email_to"], [MQBundleUtil localizedStringForKey:@"save_text"]] cancelTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] sourceView:label handler:^(NSInteger index) {
+        if (index == 0) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto://%@", email]] options:@{} completionHandler:nil];
+        } else if (index == 1) {
+            [UIPasteboard generalPasteboard].string = email;
+        }
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        if ([strongSelf.chatCellDelegate respondsToSelector:@selector(didSelectMessageInCell:messageContent:selectedContent:)]) {
+            [strongSelf.chatCellDelegate didSelectMessageInCell:strongSelf messageContent:messageContent selectedContent:email];
+        }
+    }];
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -322,8 +367,20 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
 
 #pragma 点击发送失败消息 重新发送事件
 - (void)tapFailImage:(id)sender {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"重新发送吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alertView show];
+    NSString *text = [textLabel.text copy];
+    if (text.length == 0) {
+        return;
+    }
+    __weak typeof(self) weakSelf = self;
+    [MQWindowUtil presentAlertWithTitle:@"重新发送吗？" message:nil cancelTitle:@"取消" confirmTitle:@"确定" sourceView:self handler:^(BOOL confirmed) {
+        if (confirmed) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            [strongSelf.chatCellDelegate resendMessageInCell:strongSelf resendData:@{@"text" : text}];
+        }
+    }];
 }
 
 #pragma UIAlertViewDelegate
@@ -344,4 +401,3 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
 
 
 @end
-

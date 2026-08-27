@@ -7,6 +7,7 @@
 //
 
 #import "MQPreChatSubmitViewController.h"
+#import "MQWindowUtil.h"
 #import "MQPreChatFormViewModel.h"
 #import "UIView+MQLayout.h"
 #import "NSArray+MQFunctional.h"
@@ -268,7 +269,7 @@
                 [self resetCaptchaCellIfExists];
             }
             
-            [MQToast showToast:e.domain duration:2 window:[UIApplication sharedApplication].keyWindow];
+            [MQToast showToast:e.domain duration:2 window:[MQWindowUtil currentWindow]];
         }
     }];
     

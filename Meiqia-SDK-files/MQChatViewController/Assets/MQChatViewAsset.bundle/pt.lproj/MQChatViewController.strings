@@ -263,3 +263,4 @@
 
 "waiting_agent_send_message" = "Na fila, por favor aguarde";
 "pre_chat_form_input" = "digitar";
+"agent_inputting_title" = "Digitando...";

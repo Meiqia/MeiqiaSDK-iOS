@@ -7,6 +7,7 @@
 //
 
 #import "MQChatViewManager.h"
+#import "MQWindowUtil.h"
 #import "MQImageUtil.h"
 #import "MQServiceToViewInterface.h"
 #import "MQTransitioningAnimation.h"
@@ -59,6 +60,7 @@
 }
 
 - (void)presentOnViewController:(UIViewController *)rootViewController transiteAnimation:(MQTransiteAnimationType)animation {
+    [MQWindowUtil currentWindowForView:rootViewController.view];
     chatViewConfig.presentingAnimation = animation;
     
     UIViewController *viewController = nil;

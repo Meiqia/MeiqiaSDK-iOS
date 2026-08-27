@@ -198,4 +198,4 @@
 
 "waiting_agent_send_message" = "Queuing, please wait";
 "pre_chat_form_input" = "input";
-
+"agent_inputting_title" = "Typing...";

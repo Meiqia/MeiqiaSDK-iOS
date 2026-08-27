@@ -204,3 +204,4 @@
 
 "waiting_agent_send_message" = "Beratur, sila tunggu";
 "pre_chat_form_input" = "masuk";
+"agent_inputting_title" = "Sedang menaip...";

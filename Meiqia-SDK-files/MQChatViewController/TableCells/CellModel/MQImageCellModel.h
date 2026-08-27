@@ -117,6 +117,8 @@ static CGFloat const kMQCellBubbleToImageVerticalSpacing = 8.0;
 
 - (void)showImageViewerFromRect:(CGRect)rect;
 
+- (void)showImageViewerFromRect:(CGRect)rect sourceView:(UIView *)sourceView;
+
 
 /**
  *  根据MQMessage内容来生成cell model

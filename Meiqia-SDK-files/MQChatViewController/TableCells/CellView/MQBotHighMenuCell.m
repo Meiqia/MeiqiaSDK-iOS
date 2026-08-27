@@ -7,6 +7,7 @@
 //
 
 #import "MQBotHighMenuCell.h"
+#import "MQWindowUtil.h"
 #import "MQPageView.h"
 #import "MQBotHighMenuCellModel.h"
 #import "MQChatViewConfig.h"
@@ -118,24 +119,41 @@ static const NSInteger kMQBotMenuCellSelectedEmailActionSheetTag = 2002;
 #pragma MQTTTAttributedLabelDelegate 点击事件
 
 - (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:phoneNumber delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"make_call_to"], phoneNumber], [NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"send_message_to"], phoneNumber], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
-    sheet.tag = kMQBotMenuCellSelectedNumberActionSheetTag;
-    [sheet showInView:[UIApplication sharedApplication].keyWindow];
+    [MQWindowUtil presentActionSheetWithTitle:phoneNumber actionTitles:@[[NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"make_call_to"], phoneNumber], [NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"send_message_to"], phoneNumber], [MQBundleUtil localizedStringForKey:@"save_text"]] cancelTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] sourceView:label handler:^(NSInteger index) {
+        if (index == 0) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phoneNumber]] options:@{} completionHandler:nil];
+        } else if (index == 1) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"sms://%@", phoneNumber]] options:@{} completionHandler:nil];
+        } else if (index == 2) {
+            [UIPasteboard generalPasteboard].string = phoneNumber;
+        }
+    }];
 }
 
 - (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"open_url_by_safari"], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
-    sheet.tag = kMQBotMenuCellSelectedUrlActionSheetTag;
-    [sheet showInView:[UIApplication sharedApplication].keyWindow];
+    NSString *urlString = url.absoluteString;
+    [MQWindowUtil presentActionSheetWithTitle:urlString actionTitles:@[[MQBundleUtil localizedStringForKey:@"open_url_by_safari"], [MQBundleUtil localizedStringForKey:@"save_text"]] cancelTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] sourceView:label handler:^(NSInteger index) {
+        if (index == 0) {
+            NSString *openString = [urlString rangeOfString:@"://"].location == NSNotFound ? [NSString stringWithFormat:@"http://%@", urlString] : urlString;
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:openString] options:@{} completionHandler:nil];
+        } else if (index == 1) {
+            [UIPasteboard generalPasteboard].string = urlString;
+        }
+    }];
 }
 
 - (void)attributedLabel:(MQTTTAttributedLabel *)label didSelectLinkWithTransitInformation:(NSDictionary *)components {
     if (!components[@"email"]) {
         return ;
     }
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:components[@"email"] delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"make_email_to"], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
-    sheet.tag = kMQBotMenuCellSelectedEmailActionSheetTag;
-    [sheet showInView:[UIApplication sharedApplication].keyWindow];
+    NSString *email = components[@"email"];
+    [MQWindowUtil presentActionSheetWithTitle:email actionTitles:@[[MQBundleUtil localizedStringForKey:@"make_email_to"], [MQBundleUtil localizedStringForKey:@"save_text"]] cancelTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] sourceView:label handler:^(NSInteger index) {
+        if (index == 0) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto://%@", email]] options:@{} completionHandler:nil];
+        } else if (index == 1) {
+            [UIPasteboard generalPasteboard].string = email;
+        }
+    }];
 }
 
 #pragma mark - UIActionSheetDelegate

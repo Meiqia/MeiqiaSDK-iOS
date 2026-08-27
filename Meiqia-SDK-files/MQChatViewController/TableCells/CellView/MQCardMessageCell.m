@@ -7,6 +7,7 @@
 //
 
 #import "MQCardMessageCell.h"
+#import "MQWindowUtil.h"
 #import "MQCardCellModel.h"
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
@@ -236,7 +237,7 @@
                 if (![text mq_isTelNumber] || !text) {
                     textField.layer.borderColor = UIColor.redColor.CGColor;
                     textField.layer.borderWidth = 1.0;
-                    [MQToast showToast:@"手机号格式不对,请重新输入" duration:2.0 window:[[UIApplication sharedApplication].windows lastObject]];
+                    [MQToast showToast:@"手机号格式不对,请重新输入" duration:2.0 window:[MQWindowUtil currentWindow]];
                     return;
                 }
             }else if ([info.name isEqualToString:@"qq"]) {
@@ -244,7 +245,7 @@
                 if (![text mq_isQQ] || !text) {
                     textField.layer.borderColor = UIColor.redColor.CGColor;
                     textField.layer.borderWidth = 1.0;
-                    [MQToast showToast:@"QQ格式不对,请重新输入" duration:2.0 window:[[UIApplication sharedApplication].windows lastObject]];
+                    [MQToast showToast:@"QQ格式不对,请重新输入" duration:2.0 window:[MQWindowUtil currentWindow]];
                     return;
                 }
             }else {
@@ -252,7 +253,7 @@
                 if (!text || text.length == 0) {
                     textField.layer.borderColor = UIColor.redColor.CGColor;
                     textField.layer.borderWidth = 1.0;
-                    [MQToast showToast:@"不能为空" duration:2.0 window:[[UIApplication sharedApplication].windows lastObject]];
+                    [MQToast showToast:@"不能为空" duration:2.0 window:[MQWindowUtil currentWindow]];
                     return;
                 }
 
@@ -297,7 +298,7 @@
     }
     
     if (!resultDic || resultDic.allValues.count != self.cardData.count) {
-        [MQToast showToast:@"请完善后再提交" duration:2.0 window:[[UIApplication sharedApplication].windows lastObject]];
+        [MQToast showToast:@"请完善后再提交" duration:2.0 window:[MQWindowUtil currentWindow]];
         return;
     }
     

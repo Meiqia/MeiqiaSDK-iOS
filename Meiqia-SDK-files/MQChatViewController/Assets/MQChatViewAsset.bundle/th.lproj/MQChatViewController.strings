@@ -199,3 +199,4 @@
 
 "waiting_agent_send_message" = "กำลังเข้าคิว กรุณารอสักครู่.";
 "pre_chat_form_input" = "เข้า";
+"agent_inputting_title" = "กำลังพิมพ์...";

@@ -11,6 +11,7 @@
 
 #import "MEIQIA_CustomIOSAlertView.h"
 #import "MQNamespacedDependencies.h"
+#import "MQWindowUtil.h"
 #import <QuartzCore/QuartzCore.h>
 
 const static CGFloat kCustomIOSAlertViewDefaultButtonHeight       = 50;
@@ -123,15 +124,7 @@ CGSize currentKeyboardSize;
             
         }
         
-        for (id window in [[UIApplication sharedApplication] windows]) {
-            if ([window isKindOfClass:[UIWindow class]]) {
-                UIWindow *currentWindow = (UIWindow *)window;
-                if (!currentWindow.hidden) {
-                    [currentWindow addSubview:self];
-                    break;
-                }
-            }
-        }
+        [[MQWindowUtil currentWindow] addSubview:self];
     }
     
     dialogView.layer.opacity = 0.5f;

@@ -7,6 +7,7 @@
 //
 
 #import "MQEmbededWebView.h"
+#import "MQWindowUtil.h"
 #import "UIView+MQLayout.h"
 #import "MQImageViewerViewController.h"
 #import "UIViewController+MQHieriachy.h"
@@ -195,7 +196,8 @@
         [sViewerVC dismiss];
     }];
     
-    [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    [viewerVC showOn:[UIViewController mq_topMostViewController] fromRectArray:[NSArray arrayWithObject:[NSValue valueWithCGRect:[self convertRect:self.frame toView:[UIApplication sharedApplication].keyWindow]]]];
+    UIWindow *window = [MQWindowUtil currentWindowForView:self];
+    [window endEditing:YES];
+    [viewerVC showOn:[MQWindowUtil topControllerForView:self] fromRectArray:[NSArray arrayWithObject:[NSValue valueWithCGRect:[self convertRect:self.bounds toView:window]]]];
 }
 @end

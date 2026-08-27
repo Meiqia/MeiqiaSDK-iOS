@@ -45,6 +45,10 @@
     return YES;
 }
 
+- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options API_AVAILABLE(ios(13.0)) {
+    return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
+}
+
 #pragma mark  集成第一步: 初始化,  参数:appkey
 - (void)initMeiqiaSDK {
     __weak typeof(self) weakSelf = self;

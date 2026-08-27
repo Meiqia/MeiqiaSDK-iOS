@@ -11,6 +11,7 @@
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
 #import "MQBundleUtil.h"
+#import "MQWindowUtil.h"
 
 @implementation MQProductCardMessageCell
 {
@@ -143,8 +144,23 @@
 
 #pragma 点击发送失败消息 重新发送事件
 - (void)tapFailImage:(id)sender {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"retry_send_message"] message:nil delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] otherButtonTitles:[MQBundleUtil localizedStringForKey:@"alert_view_confirm"], nil];
-    [alertView show];
+    if (!cellModel) {
+        return;
+    }
+    MQProductCardMessage *message = [[MQProductCardMessage alloc] initWithPictureUrl:cellModel.productPictureUrl title:cellModel.title description:cellModel.desc productUrl:cellModel.productUrl andSalesCount:cellModel.saleCount];
+    if (!message) {
+        return;
+    }
+    __weak typeof(self) weakSelf = self;
+    [MQWindowUtil presentAlertWithTitle:[MQBundleUtil localizedStringForKey:@"retry_send_message"] message:nil cancelTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] confirmTitle:[MQBundleUtil localizedStringForKey:@"alert_view_confirm"] sourceView:self handler:^(BOOL confirmed) {
+        if (confirmed) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            [strongSelf.chatCellDelegate resendMessageInCell:strongSelf resendData:@{@"productCard" : message}];
+        }
+    }];
 }
 
 #pragma UIAlertViewDelegate

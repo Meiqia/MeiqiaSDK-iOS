@@ -198,4 +198,4 @@
 
 "waiting_agent_send_message" = "Cola, por favor espere";
 "pre_chat_form_input" = "ingresar";
-
+"agent_inputting_title" = "Escribiendo...";

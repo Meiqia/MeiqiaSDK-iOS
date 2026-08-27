@@ -14,6 +14,7 @@
 #import "MQAssetUtil.h"
 #import "MQVoiceCellModel.h"
 #import "MQImageUtil.h"
+#import "MQWindowUtil.h"
 
 @interface MQVoiceMessageCell()<MQChatAudioPlayerDelegate>
 
@@ -29,6 +30,8 @@
     UIActivityIndicatorView *loadingIndicator;
     MQChatAudioPlayer *audioPlayer;
     NSData *voiceData;
+    NSString *messageId;
+    MQVoiceCellModel *voiceCellModel;
     UIView *notPlayPointView;
     BOOL isPlaying;
     BOOL isLoadVoiceSuccess;
@@ -121,6 +124,8 @@
         return ;
     }
     MQVoiceCellModel *cellModel = (MQVoiceCellModel *)model;
+    voiceCellModel = cellModel;
+    messageId = [cellModel.messageId copy];
     
     //刷新头像
     if (cellModel.avatarImage) {
@@ -249,31 +254,51 @@
 
 #pragma 点击发送失败消息 重新发送事件
 - (void)tapFailImage:(id)sender {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"重新发送吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alertView show];
+    NSData *retryVoiceData = [voiceData copy];
+    NSString *retryMessageId = [messageId copy];
+    MQVoiceCellModel *retryCellModel = voiceCellModel;
+    if (retryVoiceData.length == 0 || !retryCellModel) {
+        return;
+    }
+    __weak typeof(self) weakSelf = self;
+    [MQWindowUtil presentAlertWithTitle:@"重新发送吗？" message:nil cancelTitle:@"取消" confirmTitle:@"确定" sourceView:self handler:^(BOOL confirmed) {
+        if (confirmed) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            [strongSelf resendFailedVoiceData:retryVoiceData messageId:retryMessageId cellModel:retryCellModel];
+        }
+    }];
 }
 
-#pragma UIAlertViewDelegate
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            //将voiceData写进文件
-            NSString *wavPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-            wavPath = [wavPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.wav", (int)[NSDate date].timeIntervalSince1970]];
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            [fileManager createFileAtPath:wavPath contents:voiceData attributes:nil];
-            if (![fileManager fileExistsAtPath:wavPath]) {
-                NSAssert(NO, @"将voiceData写进文件失败");
+- (void)resendFailedVoiceData:(NSData *)retryVoiceData messageId:(NSString *)retryMessageId cellModel:(MQVoiceCellModel *)retryCellModel {
+    __weak id<MQChatCellDelegate> weakDelegate = self.chatCellDelegate;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *fileIdentifier = [NSUUID UUID].UUIDString;
+        NSString *wavPath = [documentPath stringByAppendingPathComponent:[fileIdentifier stringByAppendingPathExtension:@"wav"]];
+        NSString *amrPath = [documentPath stringByAppendingPathComponent:[fileIdentifier stringByAppendingPathExtension:@"amr"]];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if (![fileManager createFileAtPath:wavPath contents:retryVoiceData attributes:nil]) {
+            return;
+        }
+        [MEIQIA_VoiceConverter wavToAmr:wavPath amrSavePath:amrPath];
+        [fileManager removeItemAtPath:wavPath error:nil];
+        BOOL amrExists = [fileManager fileExistsAtPath:amrPath];
+        unsigned long long amrSize = [[[fileManager attributesOfItemAtPath:amrPath error:nil] objectForKey:NSFileSize] unsignedLongLongValue];
+        if (!amrExists || amrSize == 0) {
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            id<MQChatCellDelegate> delegate = weakDelegate;
+            NSMutableDictionary *resendData = [@{@"voice" : amrPath, @"messageModel" : retryCellModel} mutableCopy];
+            if (retryMessageId.length > 0) {
+                resendData[@"messageId"] = retryMessageId;
             }
-            //将wav文件转换成amr文件
-            NSString *amrPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-            amrPath = [amrPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.amr", (int)[NSDate date].timeIntervalSince1970]];
-            [MEIQIA_VoiceConverter wavToAmr:wavPath amrSavePath:amrPath];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.chatCellDelegate resendMessageInCell:self resendData:@{@"voice" : amrPath}];
-            });
+            [delegate resendMessageInCell:nil resendData:resendData];
         });
-    }
+    });
 }
 
 

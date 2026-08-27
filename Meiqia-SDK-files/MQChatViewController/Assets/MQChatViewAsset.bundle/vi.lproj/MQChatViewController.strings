@@ -198,3 +198,4 @@
 
 "waiting_agent_send_message" = "Đang xếp hàng, vui lòng đợi";
 "pre_chat_form_input" = "đi vào";
+"agent_inputting_title" = "Đang nhập...";

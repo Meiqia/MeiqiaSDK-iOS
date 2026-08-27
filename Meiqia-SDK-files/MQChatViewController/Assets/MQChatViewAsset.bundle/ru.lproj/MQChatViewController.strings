@@ -201,4 +201,4 @@
 
 "waiting_agent_send_message" = "В очереди, пожалуйста, подождите";
 "pre_chat_form_input" = "входить";
-
+"agent_inputting_title" = "Печатает...";

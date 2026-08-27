@@ -201,4 +201,4 @@
 
 "waiting_agent_send_message" = "대기 중입니다. 잠시 기다려 주세요.";
 "pre_chat_form_input" = "입력하다";
-
+"agent_inputting_title" = "입력 중...";

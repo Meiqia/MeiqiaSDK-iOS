@@ -12,6 +12,7 @@
 #import "MQAssetUtil.h"
 #import "MQRoundProgressView.h"
 #import "MQChatFileUtil.h"
+#import "MQWindowUtil.h"
 
 @interface MQVideoMessageCell ()
 @property (nonatomic, copy) NSString *mediaPath;
@@ -161,8 +162,20 @@
 
 #pragma 点击发送失败消息 重新发送事件
 - (void)tapFailImage:(id)sender {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"重新发送吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alertView show];
+    NSString *mediaPath = [self.mediaPath copy];
+    if (mediaPath.length == 0) {
+        return;
+    }
+    __weak typeof(self) weakSelf = self;
+    [MQWindowUtil presentAlertWithTitle:@"重新发送吗？" message:nil cancelTitle:@"取消" confirmTitle:@"确定" sourceView:self handler:^(BOOL confirmed) {
+        if (confirmed) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            [strongSelf.chatCellDelegate resendMessageInCell:strongSelf resendData:@{@"video" : mediaPath}];
+        }
+    }];
 }
 
 #pragma UIAlertViewDelegate

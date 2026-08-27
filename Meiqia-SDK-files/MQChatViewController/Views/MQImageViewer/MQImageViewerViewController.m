@@ -11,10 +11,11 @@
 #import "MQBundleUtil.h"
 #import "MQToast.h"
 #import "MQImageUtil.h"
+#import "MQWindowUtil.h"
 
 #define KCellReuseId @"cell"
 
-@interface MQImageViewerViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface MQImageViewerViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 
@@ -26,19 +27,78 @@
 
 @property (nonatomic, assign) CGRect centerScreenFrame;
 
+@property (nonatomic, weak) UINavigationController *presentingNavigationController;
+
+@property (nonatomic, assign) BOOL previousInteractivePopGestureEnabled;
+
+@property (nonatomic, strong) id<UIGestureRecognizerDelegate> previousInteractivePopGestureDelegate;
+
+@property (nonatomic, assign) BOOL previousNavigationBarHidden;
+
+@property (nonatomic, assign) BOOL usingNavigationPush;
+
+@property (nonatomic, assign) BOOL navigationStateApplied;
+
+@property (nonatomic, weak) UIView *containerView;
+
+@property (nonatomic, strong) NSArray<UIScreenEdgePanGestureRecognizer *> *disabledEdgePanRecognizers;
+
+@property (nonatomic, strong) NSArray<NSNumber *> *disabledEdgePanRecognizerEnabledStates;
+
+@property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *dismissEdgePanGestureRecognizer;
+
+@property (nonatomic, assign) BOOL dismissing;
+
+@property (nonatomic, assign) BOOL hasPositionedInitialImage;
+
 @end
 
 @implementation MQImageViewerViewController
 
 - (void)showOn:(UIViewController *)controller fromRectArray:(NSArray *)rectArray {
-    [controller.view addSubview:self.view];
-    [controller addChildViewController:self];
-    [self didMoveToParentViewController:controller];
+    if (!controller || self.parentViewController || self.presentingViewController || self.view.window) {
+        return;
+    }
+
+    UINavigationController *navigationController = [controller isKindOfClass:[UINavigationController class]] ? (UINavigationController *)controller : controller.navigationController;
+    UIViewController *sourceController = [controller isKindOfClass:[UINavigationController class]] ? navigationController.visibleViewController : controller;
+    if (navigationController && navigationController.topViewController == sourceController) {
+        self.usingNavigationPush = YES;
+        self.presentingNavigationController = navigationController;
+        self.fromRectArray = rectArray;
+        [navigationController pushViewController:self animated:YES];
+        return;
+    }
+    if (navigationController) {
+        return;
+    }
+
+    self.disabledEdgePanRecognizers = [self edgePanRecognizersInView:controller.view];
+    NSMutableArray<NSNumber *> *enabledStates = [NSMutableArray arrayWithCapacity:self.disabledEdgePanRecognizers.count];
+    for (UIScreenEdgePanGestureRecognizer *recognizer in self.disabledEdgePanRecognizers) {
+        [enabledStates addObject:@(recognizer.enabled)];
+        recognizer.enabled = NO;
+    }
+    self.disabledEdgePanRecognizerEnabledStates = enabledStates;
+
+    UIViewController *containerController = controller.navigationController ?: controller;
+    UIView *containerView = containerController.view;
+    self.containerView = containerView;
+    [containerView addSubview:self.view];
+    [containerController addChildViewController:self];
+    [self didMoveToParentViewController:containerController];
+
+    if (!self.dismissEdgePanGestureRecognizer) {
+        self.dismissEdgePanGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissEdgePanGesture:)];
+        self.dismissEdgePanGestureRecognizer.edges = UIRectEdgeLeft;
+        self.dismissEdgePanGestureRecognizer.delegate = self;
+    }
+    [self.view addGestureRecognizer:self.dismissEdgePanGestureRecognizer];
     
-    CGRect screenRect = [UIScreen mainScreen].bounds;
+    CGRect screenRect = containerView.bounds;
     self.centerScreenFrame = (CGRect){CGPointMake(CGRectGetMidX(screenRect), CGRectGetMidY(screenRect)), CGSizeZero};
     
-    self.fromRectArray = rectArray;
+    self.fromRectArray = [self rectArray:rectArray convertedToView:containerView];
     
     if ((self.fromRectArray.count > 0 && self.fromRectArray.count == self.images.count) || (self.fromRectArray.count > 0 && self.fromRectArray.count == self.imagePaths.count)) {
         self.view.frame = [[self.fromRectArray objectAtIndex:self.currentIndex] CGRectValue];
@@ -48,7 +108,7 @@
     }
     self.view.alpha = 0.0;
     [UIView animateWithDuration:0.25 delay:0.0 options: UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.view.frame = [UIScreen mainScreen].bounds;
+        self.view.frame = containerView.bounds;
         self.view.alpha = 1.0;
     } completion:nil];
     
@@ -57,7 +117,17 @@
 }
 
 - (void)dismiss {
+    if (self.navigationController && self.navigationController.topViewController == self) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+
+    if (self.dismissing) {
+        return;
+    }
+    self.dismissing = YES;
     self.saveButton.hidden = YES;
+    [self willMoveToParentViewController:nil];
     [UIView animateWithDuration:0.25 delay:0.0 options: UIViewAnimationOptionCurveEaseInOut animations:^{
         if ((self.fromRectArray.count > 0 && self.fromRectArray.count == self.images.count) || (self.fromRectArray.count > 0 && self.fromRectArray.count == self.imagePaths.count)) {
             self.view.frame = [[self.fromRectArray objectAtIndex:self.currentIndex] CGRectValue];
@@ -67,9 +137,104 @@
         }
         self.view.alpha = 0.0;
     } completion:^(BOOL complete){
-        [self.view removeFromSuperview];
-        [self removeFromParentViewController];
+        [self completeDismissalWithFinished:complete];
     }];
+}
+
+- (void)handleDismissEdgePanGesture:(UIScreenEdgePanGestureRecognizer *)recognizer {
+    CGPoint translation = [recognizer translationInView:self.view];
+    if (recognizer.state == UIGestureRecognizerStateChanged) {
+        CGFloat horizontalOffset = MAX(0, translation.x);
+        self.view.transform = CGAffineTransformMakeTranslation(horizontalOffset, 0);
+    } else if (recognizer.state == UIGestureRecognizerStateEnded) {
+        CGPoint velocity = [recognizer velocityInView:self.view];
+        CGFloat width = CGRectGetWidth(self.containerView.bounds);
+        if (translation.x > width * 0.25 || velocity.x > 600) {
+            [self finishInteractiveDismissal];
+        } else {
+            [UIView animateWithDuration:0.2 animations:^{
+                self.view.transform = CGAffineTransformIdentity;
+            }];
+        }
+    } else if (recognizer.state == UIGestureRecognizerStateCancelled || recognizer.state == UIGestureRecognizerStateFailed) {
+        [UIView animateWithDuration:0.2 animations:^{
+            self.view.transform = CGAffineTransformIdentity;
+        }];
+    }
+}
+
+- (void)finishInteractiveDismissal {
+    if (self.dismissing) {
+        return;
+    }
+    self.dismissing = YES;
+    [self willMoveToParentViewController:nil];
+
+    CGFloat remainingDistance = MAX(0, CGRectGetWidth(self.containerView.bounds) - self.view.transform.tx);
+    NSTimeInterval duration = MIN(0.25, MAX(0.12, remainingDistance / 1200.0));
+    [UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        self.view.transform = CGAffineTransformMakeTranslation(CGRectGetWidth(self.containerView.bounds), 0);
+    } completion:^(BOOL complete) {
+        [self completeDismissalWithFinished:complete];
+    }];
+}
+
+- (void)completeDismissalWithFinished:(BOOL)finished {
+    [self.view removeFromSuperview];
+    [self removeFromParentViewController];
+    [self.disabledEdgePanRecognizers enumerateObjectsUsingBlock:^(UIScreenEdgePanGestureRecognizer * _Nonnull recognizer, NSUInteger index, BOOL * _Nonnull stop) {
+        recognizer.enabled = [self.disabledEdgePanRecognizerEnabledStates[index] boolValue];
+    }];
+    self.disabledEdgePanRecognizerEnabledStates = nil;
+    self.disabledEdgePanRecognizers = nil;
+    self.dismissing = NO;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer == self.presentingNavigationController.interactivePopGestureRecognizer) {
+        return self.usingNavigationPush &&
+               self.presentingNavigationController.topViewController == self &&
+               self.presentingNavigationController.viewControllers.count > 1;
+    }
+
+    if (gestureRecognizer == self.dismissEdgePanGestureRecognizer) {
+        CGPoint velocity = [(UIScreenEdgePanGestureRecognizer *)gestureRecognizer velocityInView:self.view];
+        return velocity.x > fabs(velocity.y);
+    }
+    return YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return gestureRecognizer == self.dismissEdgePanGestureRecognizer || otherGestureRecognizer == self.dismissEdgePanGestureRecognizer;
+}
+
+- (NSArray *)rectArray:(NSArray *)rectArray convertedToView:(UIView *)containerView {
+    if (rectArray.count == 0) {
+        return rectArray;
+    }
+
+    UIWindow *window = containerView.window ?: [MQWindowUtil currentWindow];
+    if (!window || window == containerView) {
+        return rectArray;
+    }
+
+    NSMutableArray *convertedRectArray = [NSMutableArray arrayWithCapacity:rectArray.count];
+    for (NSValue *rectValue in rectArray) {
+        CGRect rect = [rectValue CGRectValue];
+        CGRect convertedRect = [containerView convertRect:rect fromView:window];
+        [convertedRectArray addObject:[NSValue valueWithCGRect:convertedRect]];
+    }
+    return convertedRectArray;
+}
+
+- (NSArray<UIScreenEdgePanGestureRecognizer *> *)edgePanRecognizersInView:(UIView *)view {
+    NSMutableArray<UIScreenEdgePanGestureRecognizer *> *recognizers = [NSMutableArray array];
+    for (UIGestureRecognizer *recognizer in view.gestureRecognizers) {
+        if ([recognizer isKindOfClass:[UIScreenEdgePanGestureRecognizer class]]) {
+            [recognizers addObject:(UIScreenEdgePanGestureRecognizer *)recognizer];
+        }
+    }
+    return recognizers;
 }
 
 //- (void)setImages:(NSArray *)images {
@@ -91,6 +256,75 @@
         self.saveButton.translatesAutoresizingMaskIntoConstraints = NO;
         [self leftButtonCornerConstrainsToView:self.saveButton onTo:self.view];
     }
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    NSUInteger imageCount = self.images.count ?: self.imagePaths.count;
+    if (!self.hasPositionedInitialImage && imageCount > 0 && self.currentIndex < imageCount && !CGRectIsEmpty(self.collectionView.bounds)) {
+        self.hasPositionedInitialImage = YES;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.currentIndex inSection:0];
+        [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (self.usingNavigationPush) {
+        [self applyNavigationState];
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (self.usingNavigationPush && self.navigationController.topViewController == self) {
+        self.navigationController.interactivePopGestureRecognizer.delegate = self;
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (self.usingNavigationPush &&
+        !self.isMovingFromParentViewController &&
+        self.presentingNavigationController.topViewController != self) {
+        [self restoreNavigationState];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    if (self.usingNavigationPush) {
+        [self restoreNavigationState];
+    }
+}
+
+- (void)applyNavigationState {
+    if (self.navigationStateApplied || !self.presentingNavigationController) {
+        return;
+    }
+
+    UIGestureRecognizer *interactivePopGesture = self.presentingNavigationController.interactivePopGestureRecognizer;
+    self.previousNavigationBarHidden = self.presentingNavigationController.navigationBarHidden;
+    self.previousInteractivePopGestureEnabled = interactivePopGesture.enabled;
+    self.previousInteractivePopGestureDelegate = interactivePopGesture.delegate;
+    self.navigationStateApplied = YES;
+}
+
+- (void)restoreNavigationState {
+    if (!self.navigationStateApplied || !self.presentingNavigationController) {
+        return;
+    }
+
+    UIGestureRecognizer *interactivePopGesture = self.presentingNavigationController.interactivePopGestureRecognizer;
+    [self.presentingNavigationController setNavigationBarHidden:self.previousNavigationBarHidden animated:NO];
+    if (interactivePopGesture.delegate == self) {
+        interactivePopGesture.delegate = self.previousInteractivePopGestureDelegate;
+    }
+    interactivePopGesture.enabled = self.previousInteractivePopGestureEnabled;
+    self.previousInteractivePopGestureDelegate = nil;
+    self.navigationStateApplied = NO;
 }
 
 - (void)didReceiveMemoryWarning {

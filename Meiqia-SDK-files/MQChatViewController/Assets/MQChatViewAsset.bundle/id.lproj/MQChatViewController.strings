@@ -202,3 +202,4 @@
 
 "waiting_agent_send_message" = "Mengantri, harap tunggu";
 "pre_chat_form_input" = "memasuki";
+"agent_inputting_title" = "Sedang mengetik...";

@@ -7,6 +7,7 @@
 //
 
 #import "MQChatAudioRecorder.h"
+#import "MQWindowUtil.h"
 #import "MLAudioRecorder.h"
 #import "AmrRecordWriter.h"
 #import "MQNamespacedDependencies.h"
@@ -57,7 +58,7 @@
             }
         };
         meterObserver.errorBlock = ^(NSError *error,MLAudioMeterObserver *meterObserver){
-            [[[UIAlertView alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"record_error"] message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"user_confirm"], nil]show];
+            [MQWindowUtil presentAlertWithTitle:[MQBundleUtil localizedStringForKey:@"record_error"] message:error.userInfo[NSLocalizedDescriptionKey] cancelTitle:[MQBundleUtil localizedStringForKey:@"user_confirm"] confirmTitle:nil handler:nil];
         };
         self.meterObserver = meterObserver;
         
@@ -69,7 +70,7 @@
         };
         recorder.receiveErrorBlock = ^(NSError *error){
             weakSelf.meterObserver.audioQueue = nil;
-            [[[UIAlertView alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"record_error"] message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"user_confirm"], nil]show];
+            [MQWindowUtil presentAlertWithTitle:[MQBundleUtil localizedStringForKey:@"record_error"] message:error.userInfo[NSLocalizedDescriptionKey] cancelTitle:[MQBundleUtil localizedStringForKey:@"user_confirm"] confirmTitle:nil handler:nil];
         };
         
         recorder.bufferDurationSeconds = 0.25;

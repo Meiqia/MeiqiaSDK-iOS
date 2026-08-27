@@ -7,13 +7,13 @@
 //
 
 #import "MQImageCellModel.h"
+#import "MQWindowUtil.h"
 #import "MQChatBaseCell.h"
 #import "MQImageMessageCell.h"
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
 #import "MQServiceToViewInterface.h"
 #import "MQImageViewerViewController.h"
-#import "UIViewController+MQHieriachy.h"
 #ifndef INCLUDE_MEIQIA_SDK
 #import "UIImageView+WebCache.h"
 #endif
@@ -391,6 +391,10 @@
 }
 
 - (void)showImageViewerFromRect:(CGRect)rect {
+    [self showImageViewerFromRect:rect sourceView:nil];
+}
+
+- (void)showImageViewerFromRect:(CGRect)rect sourceView:(UIView *)sourceView {
     MQImageViewerViewController *viewerVC = [MQImageViewerViewController new];
     viewerVC.images = @[self.image];
     
@@ -400,8 +404,9 @@
         [sViewerVC dismiss];
     }];
     
-    [[UIApplication sharedApplication].keyWindow endEditing:YES];
-    [viewerVC showOn:[UIViewController mq_topMostViewController] fromRectArray:[NSArray arrayWithObject:[NSValue valueWithCGRect:rect]]];
+    UIWindow *window = [MQWindowUtil currentWindowForView:sourceView];
+    [window endEditing:YES];
+    [viewerVC showOn:[MQWindowUtil topControllerForView:sourceView] fromRectArray:[NSArray arrayWithObject:[NSValue valueWithCGRect:rect]]];
 }
 
 @end
